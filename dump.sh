@@ -28,6 +28,6 @@ else
 	d=~
 fi
 
-link bashrc $d/.basrhc
+link bashrc $d/.bashrc
 link mpv $d/.config/mpv
 link aria2.conf $d/.config/aria2/aria2.conf
