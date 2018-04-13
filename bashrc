@@ -9,7 +9,7 @@ export editor=vim
 # auto color
 alias ls="ls --color=auto"
 alias pacman="pacman --color=auto"
-alias aurman="pacaur --color=auto"
+alias aurman="aurman --color=auto"
 
 # my customized du
 function sdu() { 
