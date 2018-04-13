@@ -16,6 +16,7 @@ link()
 	if [ ! -e $2 -o x$respond = "xr" ]
 	then
 		mkdir -p $(dirname $2)
+		echo "Creating link $2 -> $1"
 		ln -sf $PWD/$1 $2
 	fi	
 }
