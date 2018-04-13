@@ -20,7 +20,12 @@ link()
 	fi	
 }
 
-d=./test
+if [ x$1 = "xtest" ]
+then
+	d=./test
+else
+	d=~
+fi
 
 link bashrc $d/.basrhc
 link mpv $d/.config/mpv
