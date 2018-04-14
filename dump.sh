@@ -16,14 +16,32 @@ reallink()
 {
 	if [ -e $2 ]
 	then
-        if [ -L $2 -a `readlink $2` = $PWD/$1 ]
+		# check if there is already a symlink to the target, skip by default
+		if [ -L $2 -a "$(readlink $2)" = $1 ]
         then
             printf "$2 is already a symlink to $1, "
-        else
+			printf "do you want to replace it?\n"
+			printf "Backup[b], Replace[r], Skip[S]: "
+			read -r respond
+			[ x$respond = "x" ] && respond=s
+		# it is already a symlink but to different target, backup by default
+		elif [ -L $2 -a "$(readlink $2)" != $1 ]
+		then
+		    printf "$2 is a symlink but pointing to `readlink $2`, "
+			printf "do you want to replace it?\n"
+			printf "Backup[B], Replace[r], Skip[s]: "
+			read -r respond
+			[ x$respond = "x" ] && respond=b
+		# it is a normal file or folder, replace by default(treat it as old file, replace with new)
+		else
 		    printf "The file/folder $2 exists already, "
+			printf "do you want to replace it?\n"
+			printf "Backup[b], Replace[R], Skip[s]: "
+			read -r respond
+			[ x$respond = "x" ] && respond=r
 		fi
-		printf "do you want to replace it?\nBackup[b], Replace[R], Skip[s]: "
-		read -r respond
+		
+		# Backup file
 		if [ x$respond = "xb" ]
 		then
 			echo "Backing up $2 as $2.bak"
@@ -32,7 +50,8 @@ reallink()
 			makelink $1 $2
 		fi
 		
-		if [ x$respond = "xr" -o x$respond = "x" ]
+		# Replace file
+		if [ x$respond = "xr" ]
 		then
 			rm -rf $2
 			makelink $1 $2
