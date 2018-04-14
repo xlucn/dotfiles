@@ -1,13 +1,22 @@
 #!/usr/bin/env sh
 
+if [ x$1 = "xtest" ]
+then
+	d=./test
+else
+	d=~
+fi
+
 makelink()
+link()
 {
+	reallink $PWD/$1 $d/$2
 	mkdir -p $(dirname $2)
 	echo "Creating link $2 -> $1"
 	ln -sf $1 $2
 }
 
-link()
+reallink()
 {
 	if [ -e $2 ]
 	then
@@ -37,13 +46,7 @@ link()
 	fi
 }
 
-if [ x$1 = "xtest" ]
-then
-	d=./test
-else
-	d=~
-fi
 
-link bashrc $d/.bashrc
-link mpv $d/.config/mpv
-link aria2.conf $d/.config/aria2/aria2.conf
+link bashrc .bashrc
+link mpv .config/mpv
+link aria2.conf .config/aria2/aria2.conf
