@@ -17,6 +17,7 @@ link()
 		then
 			echo "Backing up $2 as $2.bak"
 			mv $2 $2.bak
+			makelink $PWD/$1 $2
 		fi
 		
 		if [ ! -e $2 -o x$respond = "xr" -o x$respond = "x" ]
