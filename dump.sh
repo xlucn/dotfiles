@@ -11,8 +11,8 @@ link()
 {
 	if [ -e $2 ]
 	then
-		echo -e "The file/folder $2 exists already, do you want to replace it?\nBackup[b], No[n], Replace[R]"
-		read respond
+		printf "The file/folder $2 exists already, do you want to replace it?\nBackup[b], Replace[R], Skip[s]: "
+		read -r respond
 		if [ x$respond = "xb" ]
 		then
 			echo "Backing up $2 as $2.bak"
