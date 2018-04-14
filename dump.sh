@@ -3,8 +3,9 @@ link()
 {
 	if [ -e $2 ]
 	then
-		echo -e "The file $2 exists already, do you want to replace it?\nBackup[b], No[n], Replace[r]"
+		echo -e "The file/folder $2 exists already, do you want to replace it?\nBackup[b], No[n], Replace[R]"
 		read respond
+		if [ ! -e $2 -o x$respond = "xr" -o x$respond = "x" ]
 	fi
 	
 	if [ x$respond = "xb" ]
@@ -13,7 +14,6 @@ link()
 		mv $2 $2.bak
 	fi
 	
-	if [ ! -e $2 -o x$respond = "xr" ]
 	then
 		mkdir -p $(dirname $2)
 		echo "Creating link $2 -> $1"
