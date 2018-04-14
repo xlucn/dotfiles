@@ -20,7 +20,7 @@ link()
 			makelink $PWD/$1 $2
 		fi
 		
-		if [ ! -e $2 -o x$respond = "xr" -o x$respond = "x" ]
+		if [ x$respond = "xr" -o x$respond = "x" ]
 		then
 			makelink $PWD/$1 $2
 		fi			
