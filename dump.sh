@@ -7,13 +7,9 @@ else
 	d=~
 fi
 
-makelink()
 link()
 {
 	reallink $PWD/$1 $d/$2
-	mkdir -p $(dirname $2)
-	echo "Creating link $2 -> $1"
-	ln -sf $1 $2
 }
 
 reallink()
@@ -46,6 +42,12 @@ reallink()
 	fi
 }
 
+makelink()
+{
+	mkdir -p $(dirname $2)
+	echo "Creating link $2 -> $1"
+	ln -sf $1 $2
+}
 
 link bashrc .bashrc
 link mpv .config/mpv
