@@ -11,7 +11,13 @@ link()
 {
 	if [ -e $2 ]
 	then
-		printf "The file/folder $2 exists already, do you want to replace it?\nBackup[b], Replace[R], Skip[s]: "
+        if [ -L $2 -a `readlink $2` = $PWD/$1 ]
+        then
+            printf "$2 is already a symlink to $1, "
+        else
+		    printf "The file/folder $2 exists already, "
+		fi
+		printf "do you want to replace it?\nBackup[b], Replace[R], Skip[s]: "
 		read -r respond
 		if [ x$respond = "xb" ]
 		then
