@@ -2,17 +2,17 @@ set nocompatible              " be iMproved, required
 filetype off                  " required, will turn on later
 " Vundle settings
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+""set rtp+=~/.vim/bundle/Vundle.vim
+""call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+""Plugin 'VundleVim/Vundle.vim'
 
 " vim-markdown
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+""Plugin 'godlygeek/tabular'
+""Plugin 'plasticboy/vim-markdown'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -32,11 +32,11 @@ Plugin 'plasticboy/vim-markdown'
 " Plugin 'ascenator/L9', {'name': 'newL9'}
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+""call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
 
-let g:vim_markdown_folding_style_pythonic = 1
+""let g:vim_markdown_folding_style_pythonic = 1
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
