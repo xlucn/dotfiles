@@ -16,12 +16,14 @@ link()
 		if [ x$respond = "xb" ]
 		then
 			echo "Backing up $2 as $2.bak"
+			rm -rf $2.bak
 			mv $2 $2.bak
 			makelink $PWD/$1 $2
 		fi
 		
 		if [ x$respond = "xr" -o x$respond = "x" ]
 		then
+			rm -rf $2
 			makelink $PWD/$1 $2
 		fi			
 	else
