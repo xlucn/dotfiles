@@ -50,16 +50,48 @@ syntax on
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
+" show line number
 set number
+
 " indentations
 set autoindent
 set smartindent
+
 " tabs
 set tabstop=4
 set shiftwidth=4
+set expandtab
+set smarttab
+
 " remove toolvar in gvim
 set guioptions-=T
+
+" search
 " incremental search
 set incsearch
+" case-insensitive search
+set ignorecase
+" smart case search(only when search pattern has no capital letters)
+set smartcase
+" highlight search
+" set hlsearch
 
+" highlight current line
+set cul
 
+" shows what you are typing as a command
+set showcmd
+
+" enable mouse support in console
+set mouse=a
+
+""""""""""""""""""""""""""""""""""""
+" keymaps
+""""""""""""""""""""""""""""""""""""
+" tabs
+nnoremap <silent> <C-H> :tabprevious<CR>
+nnoremap <silent> <C-L> :tabnext<CR>
+nnoremap <silent> <C-N> :tabnew<CR>
+
+" fold
+nnoremap <space> za
