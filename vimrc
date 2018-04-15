@@ -55,7 +55,7 @@ set number
 
 " indentations
 set autoindent
-set smartindent
+set cindent
 
 " tabs
 set tabstop=4
@@ -76,8 +76,12 @@ set smartcase
 " highlight search
 " set hlsearch
 
-" highlight current line
-set cul
+" show tabs and trailing whitespace
+set list
+set listchars=tab:>.,trail:.
+
+" turn on wild menu on :e <Tab>
+set wildmenu
 
 " shows what you are typing as a command
 set showcmd
