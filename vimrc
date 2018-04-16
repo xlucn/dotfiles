@@ -95,7 +95,8 @@ set mouse=a
 " tabs
 nnoremap <silent> <C-H> :tabprevious<CR>
 nnoremap <silent> <C-L> :tabnext<CR>
-nnoremap <silent> <C-N> :tabnew<CR>
+nnoremap <silent> <C-J> :tabnew<CR>
+nnoremap <silent> <C-K> :tabclose<CR>
 
 " fold
 nnoremap <space> za
