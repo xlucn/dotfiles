@@ -2,7 +2,12 @@
 config files
 
 ## Environment
-[Archlinux][] with [Gnome3][].
+- OS: [Archlinux][]
+- DE: [Gnome3][]
+
+for vim:
+- gnome-terminal
+- vim8
 
 ## Requirement
 
