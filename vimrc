@@ -45,6 +45,9 @@ let g:airline_powerline_fonts = 1
 " show line number
 set number
 
+" update time
+set updatetime=100
+
 " indentations
 set autoindent
 set cindent
