@@ -86,6 +86,14 @@ nnoremap <silent> <C-H> :tabprevious<CR>
 nnoremap <silent> <C-L> :tabnext<CR>
 nnoremap <silent> <C-J> :tabnew<CR>
 nnoremap <silent> <C-K> :tabclose<CR>
+" buffers
+nnoremap <silent> <M-H> :bprevious<CR>
+nnoremap <silent> <M-L> :bnext<CR>
+nnoremap <silent> <M-J> :badd<Tab>
+nnoremap <silent> <M-K> :bdelete<CR>
+
+" reload vimrc
+nnoremap <silent> <M-R> :so $MYVIMRC
 
 " fold
 nnoremap <space> za
