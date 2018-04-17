@@ -19,9 +19,11 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
 " }}}
-" Config {{{
+" Vim Config {{{
+" leader key
+let mapleader = ','
 " reload vimrc
-nnoremap <silent> <M-R> :so $MYVIMRC
+nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " }}}
 " Markdown {{{
 let g:vim_markdown_folding_style_pythonic = 1
