@@ -99,7 +99,9 @@ nnoremap <space> za
 " }}}
 " Gitgutter {{{
 let g:gitgutter_sign_modified_removed   = '^'
+" update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
+" always show sign column
 set signcolumn=yes
 " }}}
 " vim:foldmethod=marker:foldlevel=0
