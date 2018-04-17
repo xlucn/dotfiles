@@ -88,8 +88,9 @@ set smartcase
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 " buffers
-nnoremap <silent> <C-J> :bprevious<CR>
-nnoremap <silent> <C-K> :bnext<CR>
+nnoremap <silent> <C-H> :bprevious<CR>
+nnoremap <silent> <C-L> :bnext<CR>
+nnoremap <silent> <C-K> :bdelete<CR>
 
 " fold
 nnoremap <space> za
