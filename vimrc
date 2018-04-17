@@ -16,6 +16,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " plugin on GitHub repo
 " Plugin 'tpope/vim-fugitive'
+Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -24,12 +25,12 @@ syntax on
 
 ""let g:vim_markdown_folding_style_pythonic = 1
 
-" To ignore plugin indent changes, instead use:
+colorscheme Tomorrow-Night-Eighties
 
 " Airline configuration
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_theme='dark'
+let g:airline_theme = 'dark'
 let g:airline_powerline_fonts = 1
 
 " show line number
