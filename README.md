@@ -8,7 +8,10 @@ config files
 
 ### fonts
 
-Adobe Source Code Pro for airline(with powerline fonts). 
+For vim-airline:
+
+- Hack / Adobe Source Code Pro (these works better with powerline fonts and I like them)
+- powerline fonts
 
 ### Vundle
 
