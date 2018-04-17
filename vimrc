@@ -87,6 +87,9 @@ set mouse=a
 """"""""""""""""""""""""""""""""""""
 " keymaps
 """"""""""""""""""""""""""""""""""""
+" go up/down
+nnoremap <silent> j gj
+nnoremap <silent> k gk
 " tabs
 nnoremap <silent> <C-H> :tabprevious<CR>
 nnoremap <silent> <C-L> :tabnext<CR>
