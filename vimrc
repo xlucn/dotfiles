@@ -97,4 +97,8 @@ nnoremap <silent> <M-K> :bdelete<CR>
 " fold
 nnoremap <space> za
 " }}}
+" Gitgutter {{{
+let g:gitgutter_sign_modified_removed   = '^'
+set signcolumn=yes
+" }}}
 " vim:foldmethod=marker:foldlevel=0
