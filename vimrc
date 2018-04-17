@@ -1,3 +1,4 @@
+" Vundle {{{
 set nocompatible              " be iMproved, required
 filetype off                  " required, will turn on later
 
@@ -16,23 +17,44 @@ Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
-
+" }}}
+" Config {{{
+" reload vimrc
+nnoremap <silent> <M-R> :so $MYVIMRC
+" }}}
+" Markdown {{{
 let g:vim_markdown_folding_style_pythonic = 1
-
+" }}}
+" Theme {{{
 colorscheme Tomorrow-Night-Eighties
-
-" Airline configuration
+" }}}
+" Airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_theme = 'dark'
 let g:airline_powerline_fonts = 1
-
+" }}}
+" UI basic {{{
 " show line number
 set number
 
+" remove toolvar in gvim
+set guioptions-=T
+
+" enable mouse support in console
+set mouse=a
+" }}}
+" Misc {{{
 " update time
 set updatetime=100
 
+" turn on wild menu on :e <Tab>
+set wildmenu
+
+" shows what you are typing as a command
+set showcmd
+" }}}
+" Space Tabs Indentations {{{
 " indentations
 set autoindent
 set cindent
@@ -43,10 +65,11 @@ set shiftwidth=4
 set expandtab
 set smarttab
 
-" remove toolvar in gvim
-set guioptions-=T
-
-" search
+" show tabs and trailing whitespace
+set list
+set listchars=tab:>.,trail:.
+" }}}
+" Search {{{
 " incremental search
 set incsearch
 " case-insensitive search
@@ -55,23 +78,8 @@ set ignorecase
 set smartcase
 " highlight search
 " set hlsearch
-
-" show tabs and trailing whitespace
-set list
-set listchars=tab:>.,trail:.
-
-" turn on wild menu on :e <Tab>
-set wildmenu
-
-" shows what you are typing as a command
-set showcmd
-
-" enable mouse support in console
-set mouse=a
-
-""""""""""""""""""""""""""""""""""""
-" keymaps
-""""""""""""""""""""""""""""""""""""
+" }}}
+" Navigations {{{
 " go up/down
 nnoremap <silent> j gj
 nnoremap <silent> k gk
@@ -86,8 +94,7 @@ nnoremap <silent> <M-L> :bnext<CR>
 nnoremap <silent> <M-J> :badd<Tab>
 nnoremap <silent> <M-K> :bdelete<CR>
 
-" reload vimrc
-nnoremap <silent> <M-R> :so $MYVIMRC
-
 " fold
 nnoremap <space> za
+" }}}
+" vim:foldmethod=marker:foldlevel=0
