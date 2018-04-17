@@ -14,8 +14,8 @@ Plugin 'VundleVim/Vundle.vim'
 ""Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 
 " All of your Plugins must be added before the following line
