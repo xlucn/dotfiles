@@ -10,8 +10,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " vim-markdown
-""Plugin 'godlygeek/tabular'
-""Plugin 'plasticboy/vim-markdown'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
@@ -23,7 +23,7 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
 
-""let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_folding_style_pythonic = 1
 
 colorscheme Tomorrow-Night-Eighties
 
