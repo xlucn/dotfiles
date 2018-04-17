@@ -85,16 +85,9 @@ set smartcase
 " go up/down
 nnoremap <silent> j gj
 nnoremap <silent> k gk
-" tabs
-nnoremap <silent> <C-H> :tabprevious<CR>
-nnoremap <silent> <C-L> :tabnext<CR>
-nnoremap <silent> <C-J> :tabnew<CR>
-nnoremap <silent> <C-K> :tabclose<CR>
 " buffers
-nnoremap <silent> <M-H> :bprevious<CR>
-nnoremap <silent> <M-L> :bnext<CR>
-nnoremap <silent> <M-J> :badd<Tab>
-nnoremap <silent> <M-K> :bdelete<CR>
+nnoremap <silent> <C-J> :bprevious<CR>
+nnoremap <silent> <C-K> :bnext<CR>
 
 " fold
 nnoremap <space> za
