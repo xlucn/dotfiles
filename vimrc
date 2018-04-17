@@ -98,6 +98,7 @@ nnoremap <silent> <M-K> :bdelete<CR>
 nnoremap <space> za
 " }}}
 " Gitgutter {{{
+" the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
