@@ -14,6 +14,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plugin 'w0rp/ale'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -33,6 +34,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_theme = 'dark'
 let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts              = 1
 " }}}
 " UI basic {{{
 " show line number
@@ -104,5 +106,8 @@ let g:gitgutter_sign_modified_removed   = '^'
 let g:gitgutter_terminal_reports_focus  = 0
 " always show sign column
 set signcolumn=yes
+" }}}
+" ALE {{{
+let g:ale_sign_column_always = 1
 " }}}
 " vim:foldmethod=marker:foldlevel=0
