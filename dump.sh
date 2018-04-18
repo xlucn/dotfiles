@@ -72,3 +72,4 @@ link mpv .config/mpv
 link aria2.conf .config/aria2/aria2.conf
 link vimrc .vimrc
 link Xresources .Xresources
+link termite .config/termite
