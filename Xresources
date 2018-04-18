@@ -25,7 +25,7 @@ URxvt.underlineURLs:  True
 
 ! -- Fonts -- !
 ! URxvt.font:xft:DejaVu Sans Mono for Powerline:style=Book:size=11
-URxvt.font:xft:Source Code Pro:style=Medium:size=11
+URxvt.font:xft:Hack:size=11
 ! URxvt.allow_bold: false
 
 !!Source http://github.com/altercation/solarized
