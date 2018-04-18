@@ -29,7 +29,7 @@ TODO: can I do this with github submodule?
 [Archlinux]: www.archlinux.org
 [Gnome3]: www.gnome.org
 
-### ALE
+### ALE (optional)
 
 ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
 
