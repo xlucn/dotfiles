@@ -81,7 +81,9 @@ set ignorecase
 " smart case search(only when search pattern has no capital letters)
 set smartcase
 " highlight search
-" set hlsearch
+set hlsearch
+"This unsets the *last search pattern* register by hitting return
+nnoremap <silent> <CR> :noh<CR><CR>
 " }}}
 " Navigations {{{
 " go up/down
