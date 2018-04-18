@@ -16,14 +16,10 @@ reallink()
 {
     if [ -e $2 ]
     then
-        # check if there is already a symlink to the target, skip by default
+        # check if there is already a symlink to the target, skip
         if [ -L $2 -a "$(readlink $2)" = $1 ]
         then
-            printf "$2 is already a symlink to $1, "
-            printf "do you want to replace it?\n"
-            printf "Backup[b], Replace[r], Skip[S]: "
-            read -r respond
-            [ x$respond = "x" ] && respond=s
+            printf "$2 is already a symlink to $1, skipping\n"
         # it is already a symlink but to different target, backup by default
         elif [ -L $2 -a "$(readlink $2)" != $1 ]
         then
