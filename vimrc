@@ -24,19 +24,10 @@ syntax on
 let mapleader = ','
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
-" }}}
-" Markdown {{{
-let g:vim_markdown_folding_style_pythonic = 1
-" }}}
-" Theme {{{
-colorscheme Tomorrow-Night-Eighties
-" }}}
-" Airline {{{
-let g:airline#extensions#tabline#enabled   = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#ale#enabled       = 1
-let g:airline_theme                        = 'dark'
-let g:airline_powerline_fonts              = 1
+" update time
+set updatetime=100
+" redraw when needed
+set lazyredraw
 " }}}
 " UI basic {{{
 " show line number
@@ -47,16 +38,21 @@ set guioptions-=T
 
 " enable mouse support in console
 set mouse=a
-" }}}
-" Misc {{{
-" update time
-set updatetime=100
+
+" highlight current line
+set cursorline
+
+" shows what you are typing as a command
+set showcmd
 
 " turn on wild menu on :e <Tab>
 set wildmenu
 
-" shows what you are typing as a command
-set showcmd
+" show matching characters
+set showmatch
+" }}}
+" Theme {{{
+colorscheme Tomorrow-Night-Eighties
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -65,6 +61,7 @@ set cindent
 
 " tabs
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smarttab
@@ -83,7 +80,7 @@ set smartcase
 " highlight search
 set hlsearch
 "This unsets the *last search pattern* register by hitting return
-nnoremap <silent> <CR> :noh<CR><CR>
+nnoremap <silent> <leader><space> :noh<CR>
 " }}}
 " Navigations {{{
 " go up/down
@@ -94,8 +91,18 @@ nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
 nnoremap <silent> <C-K> :bdelete<CR>
 
-" fold
+" toggle fold
 nnoremap <space> za
+" }}}
+" Markdown {{{
+let g:vim_markdown_folding_style_pythonic = 1
+" }}}
+" Airline {{{
+let g:airline#extensions#tabline#enabled   = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#ale#enabled       = 1
+let g:airline_theme                        = 'dark'
+let g:airline_powerline_fonts              = 1
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
