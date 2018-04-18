@@ -1,0 +1,36 @@
+[options]
+# The last font override the previous ones
+font = Source Code Pro Medium 11
+font = Hack 11
+audible_bell = false
+browser = /usr/bin/firefox
+clickable_url = true
+dynamic_title = true
+# Full screen on F11
+fullscreen = true
+# Lock the resizing to cell size
+size_hints = true
+
+[colors]
+# Tomorrow Night Eighties
+# From https://github.com/ChrisKempson/Tomorrow-Theme
+background = rgba(45, 45, 45, 1)
+foreground = #cccccc
+# Red
+color1 = #f2777a
+# Green
+color2 = #99cc99
+# Yellow
+color3 = #ffcc66
+# Blue
+color4 = #6699cc
+# Purple
+color5 = #cc99cc
+# Aqua
+color6 = #66cccc
+# Comment
+color8 = #999999
+# unused colors
+#393939 Current Line
+#515151 Selection
+#f99157 Orange

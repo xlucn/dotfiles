@@ -6,7 +6,10 @@ config files
 - DE: [Gnome3][]
 
 for vim:
-- gnome-terminal
+- gnome-terminal/termite
+
+  (found termite works better with powerline glyphs)
+
 - vim8
 
 ## Requirement
