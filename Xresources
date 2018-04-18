@@ -1,0 +1,91 @@
+! -- Xft settings -- !
+Xft.dpi       : 96
+Xft.antialias : true
+Xft.rgba      : rgb
+Xft.hinting   : true
+Xft.hintstyle : hintslight
+
+! -- URxvt UI -- !
+URxvt.depth              : 32
+URxvt.geometry           : 80x24
+URxvt.transparent        : false
+URxvt.internalBorder     : 1
+URxvt.letterSpace        : -1
+URxvt.saveLines          : 10000
+URxvt.scrollBar          : false
+URxvt.scrollBar_right    : false
+URxvt.scrollBar_floating : false
+URxvt.scrollstyle        : rxvt
+
+! -- Perl extensions -- !
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard
+URxvt.matcher.button: 1
+URxvt.url-launcher: firefox
+URxvt.underlineURLs:  True
+
+! -- Fonts -- !
+! URxvt.font:xft:DejaVu Sans Mono for Powerline:style=Book:size=11
+URxvt.font:xft:Source Code Pro:style=Medium:size=11
+! URxvt.allow_bold: false
+
+!!Source http://github.com/altercation/solarized
+
+URxvt*background: #002b36
+URxvt*foreground: #657b83
+!!*fading: 40
+*fadeColor: #002b36
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+!! black dark/light
+*color0: #073642
+*color8: #002b36
+
+!! red dark/light
+*color1: #dc322f
+*color9: #cb4b16
+
+!! green dark/light
+*color2: #859900
+*color10: #586e75
+
+!! yellow dark/light
+*color3: #b58900
+*color11: #657b83
+
+!! blue dark/light
+*color4: #268bd2
+*color12: #839496
+
+!! magenta dark/light
+*color5: #d33682
+*color13: #6c71c4
+
+!! cyan dark/light
+*color6: #2aa198
+*color14: #93a1a1
+
+!! white dark/light
+*color7: #eee8d5
+*color15: #fdf6e3
+
+!! Tango color theme
+!! Strange - it matches tango from gnome-terminal, but looks different
+!! URxvt.color0: rgb:00/00/00
+!! URxvt.color1: rgb:CC/00/00
+!! URxvt.color2: rgb:4E/9A/06
+!! URxvt.color3: rgb:C4/A0/00
+!! URxvt.color4: rgb:34/65/A4
+!! URxvt.color5: rgb:75/50/7B
+!! URxvt.color6: rgb:06/98/9A
+!! URxvt.color7: rgb:D3/D7/CF
+!! URxvt.color8: rgb:55/57/53
+!! URxvt.color9: rgb:EF/29/29
+!! URxvt.color10: rgb:8A/E2/34
+!! URxvt.color11: rgb:FC/E9/4F
+!! URxvt.color12: rgb:72/9F/CF
+!! URxvt.color13: rgb:AD/7F/A8
+!! URxvt.color14: rgb:34/E2/E2
+!! URxvt.color15: rgb:EE/EE/EC
+!! URxvt.colorBD: rgb:ff/ff/ff
