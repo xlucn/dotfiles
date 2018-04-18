@@ -18,8 +18,10 @@ for vim:
 
 For vim-airline:
 
-- Hack / Adobe Source Code Pro (these works better with powerline fonts and I like them)
-- powerline fonts
+- [Hack][]
+
+  (Hack font has better patched powerline glyphs)
+
 
 ### Vundle
 
