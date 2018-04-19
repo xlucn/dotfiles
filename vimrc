@@ -147,3 +147,5 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 " }}}
 " vim:foldmethod=marker:foldlevel=0
+" TODO: change mapping to <leader>[plugin specific key][motion specific key]
+" TODO: change save to <leader>w
