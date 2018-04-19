@@ -8,7 +8,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+" Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-airline/vim-airline'
@@ -57,6 +57,9 @@ set showmatch
 
 " minimum lines above and below cursor
 set scrolloff=3
+
+" split into right by default
+set splitright
 " }}}
 " Theme {{{
 colorscheme Tomorrow-Night-Eighties
@@ -123,6 +126,9 @@ set signcolumn=yes
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>'
 let g:ale_sign_warning = '-'
+" }}}
+" Nerdtree {{{
+nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
 " nerdtree git plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
