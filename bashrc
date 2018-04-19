@@ -11,7 +11,7 @@ alias ls="ls --color=auto"
 alias pacman="pacman --color=auto"
 
 # my customized du
-function sdu() { 
+function sdu() {
     du -ahx -d 1 ${*} 2>/dev/null | sort -h;
 }
 
