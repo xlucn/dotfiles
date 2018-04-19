@@ -7,7 +7,9 @@ filetype off                  " required, will turn on later
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'godlygeek/tabular'
+Plugin 'scrooloose/nerdtree'
+" Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -22,6 +24,8 @@ syntax on
 " Vim Config {{{
 " leader key
 let mapleader = ','
+" automatically write a file when leaving a buffer
+set autowrite
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " update time
@@ -50,6 +54,12 @@ set wildmenu
 
 " show matching characters
 set showmatch
+
+" minimum lines above and below cursor
+set scrolloff=3
+
+" split into right by default
+set splitright
 " }}}
 " Theme {{{
 colorscheme Tomorrow-Night-Eighties
@@ -89,7 +99,9 @@ nnoremap <silent> k gk
 " buffers
 nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
-nnoremap <silent> <C-K> :bdelete<CR>
+"   learned from here: https://stackoverflow.com/a/16505009, gorgeous!
+"   prevent from closing the window when deleting a buffer
+nnoremap <silent> <C-K> :bp<CR>:bd #<CR>
 
 " toggle fold
 nnoremap <space> za
@@ -117,4 +129,23 @@ let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>'
 let g:ale_sign_warning = '-'
 " }}}
+" Nerdtree {{{
+nnoremap <C-N> :NERDTreeToggle<CR>
+" }}}
+" nerdtree git plugin {{{
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "~",
+    \ "Staged"    : "+",
+    \ "Untracked" : "*",
+    \ "Renamed"   : ">",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "x",
+    \ "Dirty"     : "!",
+    \ "Clean"     : "o",
+    \ 'Ignored'   : '#',
+    \ "Unknown"   : "?"
+    \ }
+" }}}
 " vim:foldmethod=marker:foldlevel=0
+" TODO: change mapping to <leader>[plugin specific key][motion specific key]
+" TODO: change save to <leader>w
