@@ -7,6 +7,14 @@ else
     d=~
 fi
 
+load()
+{
+    originalfile=$1
+    basefile=$(basename $1)
+    localefile=${basefile#*.}
+    mv $originalfile $localefile
+}
+
 link()
 {
     reallink $PWD/$1 $d/$2
