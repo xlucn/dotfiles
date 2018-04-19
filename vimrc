@@ -24,6 +24,8 @@ syntax on
 " Vim Config {{{
 " leader key
 let mapleader = ','
+" automatically write a file when leaving a buffer
+set autowrite
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " update time
@@ -52,6 +54,9 @@ set wildmenu
 
 " show matching characters
 set showmatch
+
+" minimum lines above and below cursor
+set scrolloff=3
 " }}}
 " Theme {{{
 colorscheme Tomorrow-Night-Eighties
@@ -118,5 +123,19 @@ set signcolumn=yes
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>'
 let g:ale_sign_warning = '-'
+" }}}
+" nerdtree git plugin {{{
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "~",
+    \ "Staged"    : "+",
+    \ "Untracked" : "*",
+    \ "Renamed"   : ">",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "x",
+    \ "Dirty"     : "!",
+    \ "Clean"     : "o",
+    \ 'Ignored'   : '#',
+    \ "Unknown"   : "?"
+    \ }
 " }}}
 " vim:foldmethod=marker:foldlevel=0
