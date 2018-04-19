@@ -99,7 +99,9 @@ nnoremap <silent> k gk
 " buffers
 nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
-nnoremap <silent> <C-K> :bdelete<CR>
+"   learned from here: https://stackoverflow.com/a/16505009, gorgeous!
+"   prevent from closing the window when deleting a buffer
+nnoremap <silent> <C-K> :bp<CR>:bd #<CR>
 
 " toggle fold
 nnoremap <space> za
