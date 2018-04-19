@@ -22,8 +22,11 @@ export PS1="\[\033[38;5;46m\]\u\[$(tput sgr0)\]\[\033[38;5;63m\]@\[$(tput sgr0)\
 export TERM=xterm-256color
 
 # powerline
-powerline_root=/usr/lib/python3.6/site-packages
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. $powerline_root/powerline/bindings/bash/powerline.sh
+if command -v powerline &> /dev/null
+then
+    powerline_root=/usr/lib/python3.6/site-packages
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . $powerline_root/powerline/bindings/bash/powerline.sh
+fi
