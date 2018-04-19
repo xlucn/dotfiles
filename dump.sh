@@ -44,7 +44,7 @@ reallink()
             read -r respond
             [ x$respond = "x" ] && respond=r
         fi
-        
+
         # Backup file
         if [ x$respond = "xb" ]
         then
@@ -53,13 +53,13 @@ reallink()
             mv $2 $2.bak
             makelink $1 $2
         fi
-        
+
         # Replace file
         if [ x$respond = "xr" ]
         then
             rm -rf $2
             makelink $1 $2
-        fi            
+        fi
     else
         makelink $1 $2
     fi
