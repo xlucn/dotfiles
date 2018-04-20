@@ -136,6 +136,7 @@ let g:ale_sign_error = '>'
 let g:ale_sign_warning = '-'
 " }}}
 " Nerdtree {{{
+let NERDTreeShowBookmarks=1
 nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
 " nerdtree git plugin {{{
