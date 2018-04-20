@@ -117,6 +117,15 @@ let g:airline#extensions#ale#enabled       = 1
 let g:airline_theme                        = 'dark'
 let g:airline_powerline_fonts              = 1
 " }}}
+" fugitive {{{
+" key bindings
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>gc :Gcommit -v<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gps :Gpush<CR>
+nnoremap <leader>gpl :Gpull<CR>
+" }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
