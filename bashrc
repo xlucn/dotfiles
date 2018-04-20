@@ -22,7 +22,9 @@ export PS1="\[\033[38;5;46m\]\u\[$(tput sgr0)\]\[\033[38;5;63m\]@\[$(tput sgr0)\
 export TERM=xterm-256color
 
 # powerline
-if command -v powerline &> /dev/null
+command -v powerline &> /dev/null
+powerline_check=$?
+if [ $powerline_check -eq 0 ]
 then
     powerline_root=/usr/lib/python3.6/site-packages
     powerline-daemon -q
