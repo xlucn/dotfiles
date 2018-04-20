@@ -42,6 +42,7 @@ set guioptions-=T
 
 " enable mouse support in console
 set mouse=a
+set ttymouse=xterm2
 
 " highlight current line
 set cursorline
