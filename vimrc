@@ -8,6 +8,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
 " Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
@@ -16,12 +17,14 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plugin 'hecal3/vim-leader-guide'
 Plugin 'w0rp/ale'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
 " }}}
 " Vim Config {{{
+set encoding=utf-8
 " leader key
 let mapleader = ','
 " automatically write a file when leaving a buffer
@@ -31,7 +34,7 @@ nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " update time
 set updatetime=100
 " redraw when needed
-set lazyredraw
+" set lazyredraw
 " }}}
 " UI basic {{{
 " show line number
@@ -108,7 +111,10 @@ nnoremap <silent> <C-K> :bp<CR>:bd #<CR>
 nnoremap <space> za
 " }}}
 " Markdown {{{
+set conceallevel=2
 let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_new_list_item_indent = 2
 " }}}
 " Airline {{{
 let g:airline#extensions#tabline#enabled   = 1
@@ -140,6 +146,7 @@ let g:ale_sign_error = '>'
 let g:ale_sign_warning = '-'
 " }}}
 " Nerdtree {{{
+let NERDTreeShowBookmarks=1
 nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
 " nerdtree git plugin {{{
@@ -156,6 +163,12 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 " }}}
+" Vim Leader Guide {{{
+let g:lmap = {}
+let g:lmap.g = { 'name' : 'git operation' }
+call leaderGuide#register_prefix_descriptions("<leader>", "g:lmap")
+nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
+vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
+" }}}
 " vim:foldmethod=marker:foldlevel=0
 " TODO: change mapping to <leader>[plugin specific key][motion specific key]
-" TODO: change save to <leader>w
