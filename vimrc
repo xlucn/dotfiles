@@ -8,6 +8,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
 " Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
