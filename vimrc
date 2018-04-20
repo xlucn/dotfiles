@@ -24,6 +24,7 @@ filetype plugin indent on    " required
 syntax on
 " }}}
 " Vim Config {{{
+set encoding=utf-8
 " leader key
 let mapleader = ','
 " automatically write a file when leaving a buffer
@@ -33,7 +34,7 @@ nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " update time
 set updatetime=100
 " redraw when needed
-set lazyredraw
+" set lazyredraw
 " }}}
 " UI basic {{{
 " show line number
@@ -157,4 +158,3 @@ vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0
 " TODO: change mapping to <leader>[plugin specific key][motion specific key]
-" TODO: change save to <leader>w
