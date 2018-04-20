@@ -17,6 +17,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plugin 'hecal3/vim-leader-guide'
 Plugin 'w0rp/ale'
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -146,6 +147,13 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '#',
     \ "Unknown"   : "?"
     \ }
+" }}}
+" Vim Leader Guide {{{
+let g:lmap = {}
+let g:lmap.g = { 'name' : 'git operation' }
+call leaderGuide#register_prefix_descriptions("<leader>", "g:lmap")
+nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
+vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0
 " TODO: change mapping to <leader>[plugin specific key][motion specific key]
