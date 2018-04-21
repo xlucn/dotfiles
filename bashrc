@@ -18,8 +18,29 @@ function sdu() {
 # Shell prompt
 export PS1="\[\033[38;5;46m\]\u\[$(tput sgr0)\]\[\033[38;5;63m\]@\[$(tput sgr0)\]\[\033[38;5;200m\]\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;13m\]\\$\[$(tput sgr0)\] "
 
-# TERM name
-export TERM=xterm-256color
+# Tomorrow color scheme
+if [ "$TERM" = "linux" ]; then
+  /bin/echo -e "
+  \e]P01d1f21
+  \e]P1cc6666
+  \e]P2b5bd68
+  \e]P3f0c674
+  \e]P481a2be
+  \e]P5b294bb
+  \e]P68abeb7
+  \e]P7c5c8c6
+  \e]P8969896
+  \e]P9cc6666
+  \e]PAb5bd68
+  \e]PBf0c674
+  \e]PC81a2be
+  \e]PDb294bb
+  \e]PE8abeb7
+  \e]PFffffff
+  "
+  # get rid of artifacts
+  clear
+fi
 
 # powerline
 command -v powerline &> /dev/null
