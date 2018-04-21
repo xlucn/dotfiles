@@ -11,7 +11,8 @@ config files
 
 ### fonts
 
-vim-airline: [Hack][] (Hack font has better patched powerline glyphs)
+[Hack][]: for vim-airline (Hack font has better patched powerline glyphs)
+powerline-console-fonts: for linux console
 
 ### Vundle 
 
