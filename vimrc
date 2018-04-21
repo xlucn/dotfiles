@@ -133,12 +133,16 @@ let g:airline_powerline_fonts              = 1
 let g:airline_highlighting_cache           = 0
 " }}}
 " fugitive {{{
+" wrote this by my own, show the log in a pretty way
+function! GitRepoLogAll()
+    silent Git log --all --decorate --oneline --graph
+    redraw!
+endfunction
 " key bindings
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gl :silent !git log --all --decorate --oneline --graph<CR>
-            \ :redraw!<CR>
+nnoremap <leader>gl :call GitRepoLogAll()<CR>
 nnoremap <leader>gps :Gpush<CR>
 nnoremap <leader>gpl :Gpull<CR>
 " }}}
