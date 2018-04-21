@@ -1,11 +1,16 @@
 [options]
 # The last font override the previous ones
-font = Source Code Pro Medium 11
 font = Hack 11
 audible_bell = false
 browser = /usr/bin/firefox
 clickable_url = true
 dynamic_title = true
+# scrollback lines
+scrollback_lines = 10000
+# allow bold fonts
+allow_bold = true
+# automatically hide the mouse when typing
+mouse_autohide = true
 # Full screen on F11
 fullscreen = true
 # Lock the resizing to cell size
