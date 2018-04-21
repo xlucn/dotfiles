@@ -31,8 +31,8 @@ URxvt*font:xft:Hack:pixelsize=16
 
 ! -- Color scheme -- !
 !!Source http://github.com/altercation/solarized
-*background: #002b36
-*foreground: #657b83
+XTerm.background: #002b36
+XTerm.foreground: #657b83
 *fading: 40
 *fadeColor: #002b36
 *cursorColor: #93a1a1
