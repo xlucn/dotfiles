@@ -19,6 +19,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Plugin 'hecal3/vim-leader-guide'
 Plugin 'w0rp/ale'
+Plugin 'skywind3000/asyncrun.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
