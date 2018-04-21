@@ -135,7 +135,7 @@ let g:airline_highlighting_cache           = 0
 " fugitive {{{
 " wrote this by my own, show the log in a pretty way
 function! GitRepoLogAll()
-    silent Git log --all --decorate --oneline --graph
+    silent Git log --all --decorate --oneline --graph --date-order
     redraw!
 endfunction
 " key bindings
