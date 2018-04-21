@@ -31,10 +31,14 @@ let mapleader = ','
 set autowrite
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
-" update time
+" update time 
 set updatetime=100
+" time out for key code delays, decide how long to wait for key code
+" sequence and how long leader guide (if installed) will pop up.
+set timeoutlen=300
+set ttimeoutlen=0
 " redraw when needed
-" set lazyredraw
+set lazyredraw
 " }}}
 " UI basic {{{
 " show line number
@@ -145,8 +149,8 @@ set signcolumn=yes
 " }}}
 " ALE {{{
 let g:ale_sign_column_always = 1
-let g:ale_sign_error = '>'
-let g:ale_sign_warning = '-'
+let g:ale_sign_error         = '>'
+let g:ale_sign_warning       = '-'
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
