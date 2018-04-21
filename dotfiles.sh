@@ -1,11 +1,25 @@
 #!/usr/bin/env sh
 
+usage="sh dotfile.sh [test] dump/load [<from> [<to>]]"
+
 if [ x$1 = "xtest" ]
 then
     d=./test
+    shift
 else
-    d=~
+    d=$HOME
 fi
+
+case x$1 in
+    "xdump")
+        # dump ......
+        ;;
+    "xload")
+        # link ......
+        ;;
+    *)
+        echo $usage
+esac
 
 load()
 {
@@ -16,11 +30,6 @@ load()
 }
 
 link()
-{
-    reallink $PWD/$1 $d/$2
-}
-
-reallink()
 {
     if [ -e $2 ]
     then
@@ -78,13 +87,4 @@ makelink()
     ln -sf $1 $2
 }
 
-# link $1 $2
-# $1 target file, relative path to $PWD
-# $2 symlink file, relative path to $HOME
-link bashrc .bashrc
-link mpv .config/mpv
-link aria2.conf .config/aria2/aria2.conf
-link vimrc .vimrc
-link Xresources .Xresources
-link termite .config/termite
-link tmux.conf .tmux.conf
+# link $PWD/$1 $d/$2
