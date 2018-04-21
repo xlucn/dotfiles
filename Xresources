@@ -5,6 +5,8 @@ Xft.rgba      : rgb
 Xft.hinting   : true
 Xft.hintstyle : hintslight
 
+XTerm*font:xft:Hack:size=11
+
 ! -- URxvt UI -- !
 URxvt.depth              : 32
 URxvt.geometry           : 80x24
@@ -24,8 +26,7 @@ URxvt.url-launcher: firefox
 URxvt.underlineURLs:  True
 
 ! -- Fonts -- !
-! URxvt.font:xft:DejaVu Sans Mono for Powerline:style=Book:size=11
-URxvt.font:xft:Hack:size=11
+URxvt*font:xft:Hack:pixelsize=16
 ! URxvt.allow_bold: false
 
 !!Source http://github.com/altercation/solarized
