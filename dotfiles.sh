@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-usage="sh dotfile.sh [test] dump/load [<from> [<to>]]"
+usage="sh dotfiles.sh [test] dump/load [<from> [<to>]]"
 
 if [ x$1 = "xtest" ]
 then
