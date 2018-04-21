@@ -137,7 +137,8 @@ let g:airline_highlighting_cache           = 0
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gl :silent !git log --all --decorate --oneline --graph<CR>
+            \ :redraw!<CR>
 nnoremap <leader>gps :Gpush<CR>
 nnoremap <leader>gpl :Gpull<CR>
 " }}}
