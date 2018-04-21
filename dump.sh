@@ -38,7 +38,13 @@ reallink()
             [ x$respond = "x" ] && respond=b
         # it is a normal file or folder, replace by default(treat it as old file, replace with new)
         else
-            printf "The file/folder $2 exists already, "
+            if [ -d $2 ]
+            then
+                printf "The folder $2 exists already, "
+            elif [ -f $2 ]
+            then
+                printf "The file $2 exists already, "
+            fi
             printf "do you want to replace it?\n"
             printf "Backup[b], Replace[R], Skip[s]: "
             read -r respond
