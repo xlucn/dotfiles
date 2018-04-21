@@ -45,7 +45,9 @@ set guioptions-=T
 
 " enable mouse support in console
 set mouse=a
-set ttymouse=xterm2
+if !has('nvim')
+    set ttymouse=xterm2
+endif
 
 " highlight current line
 set cursorline
