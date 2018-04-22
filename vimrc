@@ -6,19 +6,29 @@ filetype off                  " required, will turn on later
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" the Vundle plugin it self
 Plugin 'VundleVim/Vundle.vim'
+" Nerd plugin series
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 " Plugin 'Xuyuanp/nerdtree-git-plugin'
+" markdown plugins
 Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
+" airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+" git
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+" theme
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+" leader guide like in spacevim
 Plugin 'hecal3/vim-leader-guide'
+" linter plugin
 Plugin 'w0rp/ale'
+"  asynchronous run tasks in parallel
+Plugin 'skywind3000/asyncrun.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
