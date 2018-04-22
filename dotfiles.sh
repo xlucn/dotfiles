@@ -1,6 +1,35 @@
 #!/usr/bin/env sh
 
-usage="sh dotfiles.sh [test] dump/load [<from> [<to>]]"
+usage()
+{
+    echo -e "sh dotfiles.sh [test] dump/load [<from> [<to>]]
+
+[test]: If given, just treat ./test folder as \$HOME so it won't mess up
+    the home directory. Mainly for testing.
+
+dump: create link file in target location, used when setting up a new system
+    dump: 
+        read from filelist
+    dump <from>: 
+        <from> should be a local file.
+        The script will scan through filelist looking for the same file and 
+        determine the correspounding target location.
+    dump <from> <to>:
+        <from> should be a local file, <to> should be a relative path to \$HOME.
+        The script will create a link file to <from> at location <to>.
+
+load: move target file to repo directory, used when adding a new file/folder
+    load <from>:
+        <from> should be a relative path to \$HOME. The script will move the 
+        <from> file to current repo directory and rename it without prefixing 
+        '.' and folder path.
+        e.g.
+            <from>: \$HOME/.vimrc       -> vimrc
+            <from>: \$HOME/.config/mpv  -> mpv
+    load <from> <to>
+        manually specify the local file/directory name with <to>. The rest is
+        the same as without <to>."
+}
 
 if [ x$1 = "xtest" ]
 then
@@ -13,12 +42,15 @@ fi
 case x$1 in
     "xdump")
         # dump ......
+        echo dump to $d
         ;;
     "xload")
-        # link ......
+        # load ......
+        echo load from $d
         ;;
     *)
-        echo $usage
+        usage
+        exit 0
 esac
 
 load()
@@ -91,5 +123,3 @@ makelink()
     echo "Creating link $2 -> $1"
     ln -sf $1 $2
 }
-
-# link $PWD/$1 $d/$2
