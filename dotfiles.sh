@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-usage()
+help()
 {
     echo -e "sh dotfiles.sh [test] dump/load [<from> [<to>]]
 
@@ -34,6 +34,14 @@ load: move a target file to repo directory, used when adding a new file/folder
         the same as without <to>."
 }
 
+usage()
+{
+    echo -e "Usage:
+    sh dotfiles.sh [test] dump/load [<from> [<to>]]
+
+For more information, see 'sh dotfiles.sh help'"
+}
+
 if [ x$1 = "xtest" ]
 then
     d=./test
@@ -50,6 +58,10 @@ case x$1 in
     "xload")
         # load ......
         echo load from $d
+        ;;
+    "xhelp")
+        help
+        exit 0
         ;;
     *)
         usage
