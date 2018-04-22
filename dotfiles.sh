@@ -29,6 +29,11 @@ load()
     mv $originalfile $localefile
 }
 
+dump()
+{
+    link $PWD/$1 $d/$2
+}
+
 link()
 {
     if [ -e $2 ]
