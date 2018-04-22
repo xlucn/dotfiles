@@ -1,11 +1,11 @@
 # first target file, relative path to $PWD
 # second symlink file, relative path to $HOME
-
-bashrc       .bashrc
-mpv          .config/mpv
-aria2.conf   .config/aria2/aria2.conf
-vimrc        .vimrc
-Xresources   .Xresources
-termite      .config/termite
-tmux.conf    .tmux.conf
-nvim         .config/nvim
+# local file    # target(link) file
+bashrc          .bashrc
+mpv             .config/mpv
+aria2.conf      .config/aria2/aria2.conf
+vimrc           .vimrc
+Xresources      .Xresources
+termite         .config/termite
+tmux.conf       .tmux.conf
+nvim            .config/nvim
