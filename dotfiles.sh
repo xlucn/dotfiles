@@ -8,20 +8,23 @@ usage()
     the home directory. Mainly for testing.
 
 dump: create link file in target location, used when setting up a new system
-    dump: 
+    dump:
         read from filelist
-    dump <from>: 
+    dump <from>:
         <from> should be a local file.
-        The script will scan through filelist looking for the same file and 
+        The script will scan through filelist looking for the same file and
         determine the correspounding target location.
     dump <from> <to>:
         <from> should be a local file, <to> should be a relative path to \$HOME.
         The script will create a link file to <from> at location <to>.
 
-load: move target file to repo directory, used when adding a new file/folder
+load: move a target file to repo directory, used when adding a new file/folder
+    load:
+        With no <from> argument, the script will scan 'filelist' file to look
+        for files that are not loaded to local repo and load them.
     load <from>:
-        <from> should be a relative path to \$HOME. The script will move the 
-        <from> file to current repo directory and rename it without prefixing 
+        <from> should be a relative path to \$HOME. The script will move the
+        <from> file to current repo directory and rename it without prefixing
         '.' and folder path.
         e.g.
             <from>: \$HOME/.vimrc       -> vimrc
