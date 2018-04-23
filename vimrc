@@ -100,7 +100,7 @@ set smarttab
 
 " show tabs and trailing whitespace
 set list
-set listchars=tab:>.,trail:.
+set listchars=tab:>-,trail:.
 " }}}
 " Search {{{
 " incremental search
