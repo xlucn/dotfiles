@@ -41,7 +41,7 @@ let mapleader = ','
 set autowrite
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
-" update time 
+" update time
 set updatetime=100
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
@@ -100,7 +100,7 @@ set smarttab
 
 " show tabs and trailing whitespace
 set list
-set listchars=tab:>.,trail:.
+set listchars=tab:>-,trail:.
 " }}}
 " Search {{{
 " incremental search
@@ -149,12 +149,14 @@ function! GitRepoLogAll()
     redraw!
 endfunction
 " key bindings
+nnoremap <leader>gb :Git branch -a<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gl :call GitRepoLogAll()<CR>
-nnoremap <leader>gps :Gpush<CR>
-nnoremap <leader>gpl :Gpull<CR>
+nnoremap <leader>gk :Git checkout<space>
+nnoremap <leader>gu :Gpush<CR>
+nnoremap <leader>gf :Gpull<CR>
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
