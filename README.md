@@ -12,7 +12,8 @@ config files
 ### fonts
 
 [Hack][]: for vim-airline (Hack font has better patched powerline glyphs)
-powerline-console-fonts: for linux console
+
+[powerline-console-fonts][pcf]: for linux console
 
 ### Vundle 
 
@@ -20,6 +21,13 @@ To install Vundle
 
 ```sh
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+
+### Powerline
+
+For tmux status line and shell prompt
+```sh
+sudo pacman -S powerline
 ```
 
 ### Linters for ALE (optional)
@@ -55,4 +63,4 @@ this makes the list pop up in 0.3 seconds.
 [Archlinux]: https://www.archlinux.org
 [Gnome3]: https://www.gnome.org
 [Hack]: https://github.com/source-foundry/Hack
-
+[pcf]: https://github.com/powerline/fonts/tree/master/Terminus
