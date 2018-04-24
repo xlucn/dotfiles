@@ -45,41 +45,6 @@ usage()
 For more information, see 'sh dotfiles.sh help'"
 }
 
-testdir=./test
-filelist=filelist
-
-if [ x$1 = "xtest" ]
-then
-    d=$testdir
-    shift
-else
-    d=$HOME
-fi
-
-if [ x$1 = "x-f" ]
-then
-    filelist=$2
-    shift 2
-fi
-
-case x$1 in
-    "xdump")
-        # dump ......
-        echo dump to $d
-        ;;
-    "xload")
-        # load ......
-        echo load from $d
-        ;;
-    "xhelp")
-        help
-        exit 0
-        ;;
-    *)
-        usage
-        exit 0
-esac
-
 load()
 {
     originalfile=$1
@@ -150,3 +115,45 @@ makelink()
     echo "[Linking ]: $2 -> $1"
     ln -sf $1 $2
 }
+
+
+testdir=./test
+filelist=filelist
+
+if [ x$1 = "xtest" ]
+then
+    d=$testdir
+    shift
+else
+    d=$HOME
+fi
+
+if [ x$1 = "x-f" ]
+then
+    filelist=$2
+    shift 2
+fi
+
+case x$1 in
+    "xdump"|"xload")
+        grep -v '^#' $filelist | while read from to
+        do
+            case x$1 in
+                "xdump")
+                    dump $from $to
+                    ;;
+                "xload")
+                    load $from $to
+                    ;;
+            esac
+        done
+        ;;
+    "xhelp")
+        help
+        exit 0
+        ;;
+    *)
+        usage
+        exit 0
+esac
+
