@@ -100,11 +100,11 @@ link()
         # check if there is already a symlink to the target, skip
         if [ -L $2 -a "$(readlink $2)" = $1 ]
         then
-            printf "$2 is already a symlink to $1, skipping\n"
+            printf "[Skipping]: Exists already, $2 -> $1\n"
         # it is already a symlink but to different target, backup by default
         elif [ -L $2 -a "$(readlink $2)" != $1 ]
         then
-            printf "$2 is a symlink but pointing to `readlink $2`, "
+            printf "[Conflict]: $2 is a symlink but pointing to `readlink $2`, "
             printf "do you want to replace it?\n"
             printf "Backup[B], Replace[r], Skip[s]: "
             read -r respond
@@ -113,7 +113,7 @@ link()
         else
             if [ -d $2 ]
             then
-                printf "The folder $2 exists already, "
+                printf "[Conflict]: The folder $2 exists already, "
             elif [ -f $2 ]
             then
                 printf "The file $2 exists already, "
@@ -127,7 +127,7 @@ link()
         # Backup file
         if [ x$respond = "xb" ]
         then
-            echo "Backing up $2 as $2.bak"
+            echo "[Back up ]: $2 -> $2.bak"
             rm -rf $2.bak
             mv $2 $2.bak
             makelink $1 $2
@@ -147,6 +147,6 @@ link()
 makelink()
 {
     mkdir -p $(dirname $2)
-    echo "Creating link $2 -> $1"
+    echo "[Linking ]: $2 -> $1"
     ln -sf $1 $2
 }
