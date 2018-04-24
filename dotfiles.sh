@@ -26,7 +26,7 @@ load: move a target file to repo directory, used when adding a new file/folder
         With no <from> argument, the script will scan 'filelist' file to look
         for files that are not loaded to local repo and load them.
     load <from>:
-        <from> should be a relative path to \$HOME. The script will move the
+        <from> is the file you want to put in repo. The script will move the
         <from> file to current repo directory and rename it without prefixing
         '.' and folder path.
         e.g.
@@ -47,10 +47,62 @@ For more information, see 'sh dotfiles.sh help'"
 
 load()
 {
-    originalfile=$1
-    basefile=$(basename $1)
-    localefile=${basefile#*.}
-    mv $originalfile $localefile
+    move $1 $PWD/$2
+}
+
+move()
+{
+    if [ ! -e $1 ]
+    then
+        echo "[NotExist]: The file $1 does not exist."
+    elif [ -L $1 -a "$(readlink $1)" = $2 ]
+    then
+        echo "[Skipping]: Exists already: $1 -> $2"
+    elif [ -L $1 -a "$(readlink $1)" != $2 ]
+    then
+        printf "[LinkFile]: $1 is a link to $(readlink $1). "
+        printf "Do you want to"
+
+    elif [ ! -e $2 ]
+    then
+        movefile $1 $2
+    else
+        if [ -L $2 ]
+        then
+            printf "[Conflict]: $2 is a link file, "
+        elif [ -d $2 ]
+        then
+            printf "[Conflict]: The folder $2 exists already, "
+        elif [ -f $2 ]
+        then
+            printf "[Conflict]: The file $2 exists already, "
+        fi
+        printf "do you want to replace it?\n"
+        printf "Backup[b], Replace[R], Skip[s]: "
+        read -r respond
+        [ x$respond = "x" ] && respond=r
+    fi
+     # Backup file
+    if [ x$respond = "xb" ]
+    then
+        echo "[Back up ]: $2 -> $2.bak"
+        rm -rf $2.bak
+        mv $2 $2.bak
+        movefile $1 $2
+    fi
+     # Replace file
+    if [ x$respond = "xr" ]
+    then
+        rm -rf $2
+        movefile $1 $2
+    fi
+}
+
+movefile()
+{
+    mkdir -p $(dirname $2)
+    echo "[Moving  ]: $1 -> $2"
+    cp $1 $2
 }
 
 dump()
@@ -60,51 +112,53 @@ dump()
 
 link()
 {
-    if [ -e $2 ]
+    respond=
+    if [ ! -e $1 ]
     then
-        # check if there is already a symlink to the target, skip
-        if [ -L $2 -a "$(readlink $2)" = $1 ]
-        then
-            printf "[Skipping]: Exists already, $2 -> $1\n"
-        # it is already a symlink but to different target, backup by default
-        elif [ -L $2 -a "$(readlink $2)" != $1 ]
-        then
-            printf "[Conflict]: $2 is a symlink but pointing to `readlink $2`, "
-            printf "do you want to replace it?\n"
-            printf "Backup[B], Replace[r], Skip[s]: "
-            read -r respond
-            [ x$respond = "x" ] && respond=b
-        # it is a normal file or folder, replace by default(treat it as old file, replace with new)
-        else
-            if [ -d $2 ]
-            then
-                printf "[Conflict]: The folder $2 exists already, "
-            elif [ -f $2 ]
-            then
-                printf "The file $2 exists already, "
-            fi
-            printf "do you want to replace it?\n"
-            printf "Backup[b], Replace[R], Skip[s]: "
-            read -r respond
-            [ x$respond = "x" ] && respond=r
-        fi
-
-        # Backup file
-        if [ x$respond = "xb" ]
-        then
-            echo "[Back up ]: $2 -> $2.bak"
-            rm -rf $2.bak
-            mv $2 $2.bak
-            makelink $1 $2
-        fi
-
-        # Replace file
-        if [ x$respond = "xr" ]
-        then
-            rm -rf $2
-            makelink $1 $2
-        fi
+        echo "[NotExist]: $1 does not exist!"
+    elif [ ! -e $2 ]
+    then
+        makelink $1 $2
+    # check if there is already a symlink to the target, skip
+    elif [ -L $2 -a "$(readlink $2)" = $1 ]
+    then
+        printf "[Skipping]: Exists already, $2 -> $1\n"
+    # it is already a symlink but to different target, backup by default
+    elif [ -L $2 -a "$(readlink $2)" != $1 ]
+    then
+        printf "[Conflict]: $2 is a symlink but pointing to `readlink $2`, "
+        printf "do you want to replace it?\n"
+        printf "Backup[B], Replace[r], Skip[s]: "
+        read -r respond
+        [ x$respond = "x" ] && respond=b
+    # it is a normal file or folder, replace by default
     else
+        if [ -d $2 ]
+        then
+            printf "[Conflict]: The folder $2 exists already, "
+        elif [ -f $2 ]
+        then
+            printf "[Conflict]: The file $2 exists already, "
+        fi
+        printf "do you want to replace it?\n"
+        printf "Backup[b], Replace[R], Skip[s]: "
+        read -r respond
+        [ x$respond = "x" ] && respond=r
+    fi
+
+    # Backup file
+    if [ x$respond = "xb" ]
+    then
+        echo "[Back up ]: $2 -> $2.bak"
+        rm -rf $2.bak
+        mv $2 $2.bak
+        makelink $1 $2
+    fi
+
+    # Replace file
+    if [ x$respond = "xr" ]
+    then
+        rm -rf $2
         makelink $1 $2
     fi
 }
@@ -136,17 +190,57 @@ fi
 
 case x$1 in
     "xdump"|"xload")
-        grep -v '^#' $filelist | while read from to
-        do
+        # no <from> argument, scan the file
+        if [ x$2 = "x" ]
+        then
+            # use another unit to read
+            exec 3<> temp.txt
+            grep -v '^#' $filelist >&3
+            while read from to <&3
+            do
+                case x$1 in
+                    "xdump")
+                        dump $from $to
+                        ;;
+                    "xload")
+                        load $HOME/$to $from
+                        ;;
+                esac
+            done 3<temp.txt
+            rm temp.txt
+        # <from> file is given
+        else
             case x$1 in
                 "xdump")
-                    dump $from $to
+                    if [ x$3 = "x" ]
+                    then
+                        # search the filelist
+                        temp=($(grep -v '^#' $filelist | grep "^$2"))
+                        t=${temp[1]}
+                        if [ x$t != "x" ]
+                        then
+                            dump $2 $t
+                        else
+                            echo "[NotExist]: $2 is not in the first column of the file $filelist."
+                            exit 1
+                        fi
+                    else
+                        dump $2 $3
+                    fi
                     ;;
                 "xload")
+                    from=$2
+                    to=$3
+                    if [ x$to = "x" ]
+                    then
+                        basefile=$(basename $2)
+                        to=${basefile#*.}
+                    fi
                     load $from $to
                     ;;
+                *)
             esac
-        done
+        fi
         ;;
     "xhelp")
         help
