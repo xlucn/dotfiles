@@ -2,13 +2,13 @@
 
 help()
 {
-    echo -e "sh dotfiles.sh [test] [-f <file>] dump/load [<from> [<to>]]
-
-test: If given, just treat ./test folder as \$HOME so it won't mess up
-    the home directory. Mainly for testing.
+    echo -e "sh dotfiles.sh [-f <file>] [test] dump/load [<from> [<to>]]
 
 -f filelist: If given, the file <file> will be used instead of default
     'filelist'.
+
+test: If given, just treat ./test folder as \$HOME so it won't mess up
+    the home directory. Mainly for testing.
 
 dump: create link file in target location, used when setting up a new system
     dump:
@@ -40,7 +40,7 @@ load: move a target file to repo directory, used when adding a new file/folder
 usage()
 {
     echo -e "Usage:
-    sh dotfiles.sh [test] dump/load [<from> [<to>]]
+    sh dotfiles.sh [-f <file>] [test] dump/load [<from> [<to>]]
 
 For more information, see 'sh dotfiles.sh help'"
 }
@@ -120,18 +120,18 @@ makelink()
 testdir=./test
 filelist=filelist
 
+if [ x$1 = "x-f" ]
+then
+    filelist=$2
+    shift 2
+fi
+
 if [ x$1 = "xtest" ]
 then
     d=$testdir
     shift
 else
     d=$HOME
-fi
-
-if [ x$1 = "x-f" ]
-then
-    filelist=$2
-    shift 2
 fi
 
 case x$1 in
