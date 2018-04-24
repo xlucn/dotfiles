@@ -2,10 +2,13 @@
 
 help()
 {
-    echo -e "sh dotfiles.sh [test] dump/load [<from> [<to>]]
+    echo -e "sh dotfiles.sh [test] [-f <file>] dump/load [<from> [<to>]]
 
-[test]: If given, just treat ./test folder as \$HOME so it won't mess up
+test: If given, just treat ./test folder as \$HOME so it won't mess up
     the home directory. Mainly for testing.
+
+-f filelist: If given, the file <file> will be used instead of default
+    'filelist'.
 
 dump: create link file in target location, used when setting up a new system
     dump:
@@ -42,12 +45,21 @@ usage()
 For more information, see 'sh dotfiles.sh help'"
 }
 
+testdir=./test
+filelist=filelist
+
 if [ x$1 = "xtest" ]
 then
-    d=./test
+    d=$testdir
     shift
 else
     d=$HOME
+fi
+
+if [ x$1 = "x-f" ]
+then
+    filelist=$2
+    shift 2
 fi
 
 case x$1 in
