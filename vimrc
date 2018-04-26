@@ -191,10 +191,10 @@ let g:NERDTreeIndicatorMapCustom = {
 " }}}
 " Vim Leader Guide {{{
 let g:lmap = {}
-let g:lmap.g = { 'name' : 'git operation' }
+let g:lmap.g = { 'name' : 'Git operation' }
+let g:lmap.c = { 'name' : 'Comments' }
 call leaderGuide#register_prefix_descriptions("<leader>", "g:lmap")
 nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0
-" TODO: change mapping to <leader>[plugin specific key][motion specific key]
