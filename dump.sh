@@ -88,3 +88,4 @@ link vimrc .vimrc
 link Xresources .Xresources
 link termite .config/termite
 link tmux.conf .tmux.conf
+link bash_profile .bash_profile
