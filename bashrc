@@ -3,6 +3,7 @@
 [ -d ~/.local/bin ] && PATH=/home/oliver/.local/bin:$PATH
 
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+[ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
 
 export editor=vim
 
