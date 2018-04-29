@@ -34,6 +34,9 @@ filetype plugin indent on    " required
 syntax on
 " }}}
 " Vim Config {{{
+" set vim folder
+let $VIM='~/.vim/'
+" set encoding
 set encoding=utf-8
 " leader key
 let mapleader = ','
@@ -157,6 +160,8 @@ nnoremap <leader>gl :call GitRepoLogAll()<CR>
 nnoremap <leader>gk :Git checkout<space>
 nnoremap <leader>gu :Gpush<CR>
 nnoremap <leader>gf :Gpull<CR>
+nnoremap <leader>gts :Git stash<CR>
+nnoremap <leader>gtp :Git stash pop<space>
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
