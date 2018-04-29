@@ -202,4 +202,11 @@ call leaderGuide#register_prefix_descriptions("<leader>", "g:lmap")
 nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
 " }}}
+" Asyncrun {{{
+" fugitive related, see official website
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+" vim-airline
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+" }}}
 " vim:foldmethod=marker:foldlevel=0
