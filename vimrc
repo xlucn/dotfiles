@@ -203,6 +203,7 @@ nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
 " }}}
 " Asyncrun {{{
+let g:asyncrun_open = 8
 " fugitive related, see official website
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 " vim-airline
