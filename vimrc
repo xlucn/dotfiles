@@ -116,8 +116,9 @@ set ignorecase
 set smartcase
 " highlight search
 set hlsearch
-"This unsets the *last search pattern* register by hitting return
-nnoremap <silent> <leader><space> :noh<CR>
+" This unsets the *last search pattern* register by hitting return
+" Also redraw the screen. Just do the cleaning stuff at one time.
+nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
 " }}}
 " Navigations {{{
 " go up/down
