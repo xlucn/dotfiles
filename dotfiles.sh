@@ -41,8 +41,7 @@ usage()
 {
     echo -e "Usage:
     sh dotfiles.sh [-f <file>] [test] dump/load [<from> [<to>]]
-
-For more information, see 'sh dotfiles.sh help'"
+    For more information, see 'sh dotfiles.sh help'"
 }
 
 load()
@@ -195,51 +194,47 @@ case x$1 in
         then
             # use another unit to read
             exec 3<> temp.txt
+            # skip comments starting with '#'
             grep -v '^#' $filelist >&3
             while read from to <&3
             do
-                case x$1 in
-                    "xdump")
-                        dump $from $to
-                        ;;
-                    "xload")
-                        load $HOME/$to $from
-                        ;;
-                esac
+                if [ x$1 = "xdump" ]
+                then
+                    dump $from $to
+                elif [ x$1 = "xload" ]
+                then
+                    load $HOME/$to $from
+                fi
             done 3<temp.txt
             rm temp.txt
         # <from> file is given
-        else
-            case x$1 in
-                "xdump")
-                    if [ x$3 = "x" ]
-                    then
-                        # search the filelist
-                        temp=($(grep -v '^#' $filelist | grep "^$2"))
-                        t=${temp[1]}
-                        if [ x$t != "x" ]
-                        then
-                            dump $2 $t
-                        else
-                            echo "[NotExist]: $2 is not in the first column of the file $filelist."
-                            exit 1
-                        fi
-                    else
-                        dump $2 $3
-                    fi
-                    ;;
-                "xload")
-                    from=$2
-                    to=$3
-                    if [ x$to = "x" ]
-                    then
-                        basefile=$(basename $2)
-                        to=${basefile#*.}
-                    fi
-                    load $from $to
-                    ;;
-                *)
-            esac
+        elif [ x$1 = "xdump" ]
+        then
+            if [ x$3 = "x" ]
+            then
+                # search the filelist
+                temp=($(grep -v '^#' $filelist | grep "^$2"))
+                t=${temp[1]}
+                if [ x$t != "x" ]
+                then
+                    dump $2 $t
+                else
+                    echo "[NotExist]: $2 is not in the first column of the file $filelist."
+                    exit 1
+                fi
+            else
+                dump $2 $3
+            fi
+        elif [ x$1 = "xload" ]
+        then
+            from=$2
+            to=$3
+            if [ x$to = "x" ]
+            then
+                basefile=$(basename $2)
+                to=${basefile#*.}
+            fi
+            load $from $to
         fi
         ;;
     "xhelp")
