@@ -54,6 +54,8 @@ set ttimeoutlen=0
 set lazyredraw
 " open diff window vertically
 set diffopt+=vertical
+" search for tags file up to root folder
+set tags=./tags;/
 " }}}
 " UI basic {{{
 " show line number
