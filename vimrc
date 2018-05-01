@@ -29,6 +29,8 @@ Plugin 'hecal3/vim-leader-guide'
 Plugin 'w0rp/ale'
 "  asynchronous run tasks in parallel
 Plugin 'skywind3000/asyncrun.vim'
+" tag bar
+Plugin 'majutsushi/tagbar'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
