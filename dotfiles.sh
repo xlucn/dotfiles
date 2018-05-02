@@ -46,7 +46,21 @@ usage()
 
 load()
 {
-    move $1 $PWD/$2
+    if [ $TEST == 1 ]
+    then
+        f=$testdir
+    else
+        f=$PWD
+    fi
+
+    if [[ $1 == /* ]]
+    then
+        d=
+    else
+        d=$HOME
+    fi
+
+    move $d/$1 $f/$2
 }
 
 move()
@@ -106,6 +120,16 @@ movefile()
 
 dump()
 {
+    if [ $TEST == 1 ]
+    then
+        d=$testdir
+    elif [[ $2 == /* ]]
+    then
+        d=
+    else
+        d=$HOME
+    fi
+
     link $PWD/$1 $d/$2
 }
 
@@ -180,10 +204,10 @@ fi
 
 if [ x$1 = "xtest" ]
 then
-    d=$testdir
+    TEST=1
     shift
 else
-    d=$HOME
+    TEST=0
 fi
 
 case x$1 in
@@ -202,7 +226,7 @@ case x$1 in
                     dump $from $to
                 elif [ x$1 = "xload" ]
                 then
-                    load $HOME/$to $from
+                    load $to $from
                 fi
             done 3<temp.txt
             rm temp.txt
