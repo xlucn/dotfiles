@@ -115,7 +115,7 @@ movefile()
 {
     mkdir -p $(dirname $2)
     echo "[Moving  ]: $1 -> $2"
-    cp $1 $2
+    cp -r $1 $2
 }
 
 dump()
