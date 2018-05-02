@@ -97,20 +97,26 @@ move()
         read -r respond
         [ x$respond = "x" ] && respond=r
     fi
-     # Backup file
-    if [ x$respond = "xb" ]
-    then
-        echo "[Back up ]: $2 -> $2.bak"
-        rm -rf $2.bak
-        mv $2 $2.bak
-        movefile $1 $2
-    fi
-     # Replace file
-    if [ x$respond = "xr" ]
-    then
-        rm -rf $2
-        movefile $1 $2
-    fi
+
+    case x$respond in
+        "xb"|"xB")
+            # Backup file
+            echo "[Back up ]: $2 -> $2.bak"
+            rm -rf $2.bak
+            mv $2 $2.bak
+            movefile $1 $2
+            ;;
+        "xr"|"xR")
+            # Replace file
+            rm -rf $2
+            movefile $1 $2
+            ;;
+        "xt"|"xT")
+            # Load target file
+            movefile $(readlink $1) $2
+            ;;
+        *)
+    esac
 }
 
 movefile()
@@ -170,21 +176,21 @@ link()
         [ x$respond = "x" ] && respond=r
     fi
 
-    # Backup file
-    if [ x$respond = "xb" ]
-    then
-        echo "[Back up ]: $2 -> $2.bak"
-        rm -rf $2.bak
-        mv $2 $2.bak
-        makelink $1 $2
-    fi
-
-    # Replace file
-    if [ x$respond = "xr" ]
-    then
-        rm -rf $2
-        makelink $1 $2
-    fi
+    case x$respond in
+        "xb"|"xB")
+            # Backup file
+            echo "[Back up ]: $2 -> $2.bak"
+            rm -rf $2.bak
+            mv $2 $2.bak
+            makelink $1 $2
+            ;;
+        "xr"|"xR")
+            # Replace file
+            rm -rf $2
+            makelink $1 $2
+            ;;
+        *)
+    esac
 }
 
 makelink()
