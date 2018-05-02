@@ -7,19 +7,21 @@ help()
 -f filelist: If given, the file <file> will be used instead of default
     'filelist'.
 
-test: If given, just treat ./test folder as \$HOME so it won't mess up
-    the home directory. Mainly for testing.
+test: If given, just ./test folder as dumping/loading target so it won't mess up
+    the home/repo directory. Mainly for testing.
 
 dump: create link file in target location, used when setting up a new system
     dump:
-        read from filelist
+        read from filelist, create link file with the name in the second row to
+        the file in the first row.
     dump <from>:
-        <from> should be a local file.
-        The script will scan through filelist looking for the same file and
+        <from> should be a file in the repo.
+        The script will scan through filelist looking for the file name and
         determine the correspounding target location.
     dump <from> <to>:
-        <from> should be a local file, <to> should be a relative path to \$HOME.
-        The script will create a link file to <from> at location <to>.
+        <from> should be a local file, <to> should be a relative path to \$HOME
+        or an absolute path. The script will create a link file to <from> at
+        location (\$HOME)<to>.
 
 load: move a target file to repo directory, used when adding a new file/folder
     load:
@@ -29,6 +31,7 @@ load: move a target file to repo directory, used when adding a new file/folder
         <from> is the file you want to put in repo. The script will move the
         <from> file to current repo directory and rename it without prefixing
         '.' and folder path.
+        <from> should be a relative path to \$HOME or an absolute path.
         e.g.
             <from>: \$HOME/.vimrc       -> vimrc
             <from>: \$HOME/.config/mpv  -> mpv
