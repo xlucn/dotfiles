@@ -5,7 +5,7 @@ Xft.rgba      : rgb
 Xft.hinting   : true
 Xft.hintstyle : hintslight
 
-XTerm*font:xft:Hack:size=11
+XTerm*font:xft:Hack:size=12
 
 ! -- URxvt UI -- !
 URxvt.depth              : 32

@@ -29,6 +29,8 @@ Plugin 'hecal3/vim-leader-guide'
 Plugin 'w0rp/ale'
 "  asynchronous run tasks in parallel
 Plugin 'skywind3000/asyncrun.vim'
+" tag bar
+Plugin 'majutsushi/tagbar'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -116,8 +118,9 @@ set ignorecase
 set smartcase
 " highlight search
 set hlsearch
-"This unsets the *last search pattern* register by hitting return
-nnoremap <silent> <leader><space> :noh<CR>
+" This unsets the *last search pattern* register by hitting return
+" Also redraw the screen. Just do the cleaning stuff at one time.
+nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
 " }}}
 " Navigations {{{
 " go up/down
