@@ -111,7 +111,6 @@ dump()
 
 link()
 {
-    respond=
     if [ ! -e $1 ]
     then
         echo "[NotExist]: $1 does not exist!"
@@ -219,7 +218,8 @@ case x$1 in
                 then
                     dump $2 $t
                 else
-                    echo "[NotExist]: $2 is not in the first column of the file $filelist."
+                    echo "[NotExist]: $2 \
+is not in the first column of the file $filelist."
                     exit 1
                 fi
             else
