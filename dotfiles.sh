@@ -73,9 +73,11 @@ move()
         echo "[Skipping]: Exists already: $1 -> $2"
     elif [ -L $1 -a "$(readlink $1)" != $2 ]
     then
-        printf "[LinkFile]: $1 is a link to $(readlink $1). "
-        printf "Do you want to"
-
+        printf "[LinkFile]: $1 is a link to $(readlink $1). ($2)"
+        printf "Do you want to load the link target file?\n"
+        printf "Load target file[T], Skip[s]: "
+        read -r respond
+        [ x$respond = "x" ] && respond=t
     elif [ ! -e $2 ]
     then
         movefile $1 $2
