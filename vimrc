@@ -31,6 +31,8 @@ Plugin 'w0rp/ale'
 Plugin 'skywind3000/asyncrun.vim'
 " tag bar
 Plugin 'majutsushi/tagbar'
+" supertab
+Plugin 'ervandew/supertab'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
