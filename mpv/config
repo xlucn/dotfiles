@@ -5,7 +5,7 @@
 #subfont-text-scale=4
 
 # no window border
-no-border
+#no-border
 
 # Screenshot
 #screenshot-format=png
