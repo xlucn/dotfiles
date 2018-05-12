@@ -7,3 +7,6 @@
 # no window border
 no-border
 
+# Screenshot
+#screenshot-format=png
+screenshot-directory=~/Pictures
