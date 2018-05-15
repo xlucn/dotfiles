@@ -169,6 +169,7 @@ nnoremap <leader>gu :Gpush<CR>
 nnoremap <leader>gf :Gpull<CR>
 nnoremap <leader>gts :Git stash<CR>
 nnoremap <leader>gtp :Git stash pop<space>
+nnoremap <leader>gtl :Git stash list<CR>
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
