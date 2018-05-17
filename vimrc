@@ -33,6 +33,8 @@ Plugin 'skywind3000/asyncrun.vim'
 Plugin 'majutsushi/tagbar'
 " supertab
 Plugin 'ervandew/supertab'
+" vim session manager
+Plugin 'tpope/vim-obsession'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
