@@ -33,6 +33,8 @@ Plugin 'skywind3000/asyncrun.vim'
 Plugin 'majutsushi/tagbar'
 " supertab
 Plugin 'ervandew/supertab'
+" vim session manager
+Plugin 'tpope/vim-obsession'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -169,6 +171,7 @@ nnoremap <leader>gu :Gpush<CR>
 nnoremap <leader>gf :Gpull<CR>
 nnoremap <leader>gts :Git stash<CR>
 nnoremap <leader>gtp :Git stash pop<space>
+nnoremap <leader>gtl :Git stash list<CR>
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
