@@ -46,6 +46,8 @@ let $VIM='~/.vim/'
 set encoding=utf-8
 " leader key
 let mapleader = ','
+" use x11 normal clipboard
+set clipboard=unnamedplus
 " automatically write a file when leaving a buffer
 set autowrite
 " reload vimrc
