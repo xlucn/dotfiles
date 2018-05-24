@@ -14,3 +14,8 @@ alang=eng
 # Screenshot
 #screenshot-format=png
 screenshot-directory=~/Pictures
+
+# HDR settings
+tone-mapping=reinhard
+tone-mapping-param=0.6
+tone-mapping-desaturate=0.4
