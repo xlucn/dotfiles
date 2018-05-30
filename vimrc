@@ -186,9 +186,11 @@ let g:gitgutter_terminal_reports_focus  = 0
 set signcolumn=yes
 " }}}
 " ALE {{{
-let g:ale_sign_column_always = 1
-let g:ale_sign_error         = '>'
-let g:ale_sign_warning       = '-'
+let g:ale_sign_column_always   = 1
+let g:ale_sign_error           = '>'
+let g:ale_sign_warning         = '-'
+" only lint when leaving insert mode
+let g:ale_lint_on_insert_leave = 1
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
