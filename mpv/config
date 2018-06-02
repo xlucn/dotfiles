@@ -12,7 +12,8 @@ slang=eng
 alang=eng
 
 # Screenshot
-#screenshot-format=png
+screenshot-format=png
+screenshot-png-compression=2
 screenshot-directory=~/Pictures
 
 # HDR settings
