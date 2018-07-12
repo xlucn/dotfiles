@@ -16,6 +16,9 @@ screenshot-format=png
 screenshot-png-compression=2
 screenshot-directory=~/Pictures
 
+# OSD
+osd-font="Noto Sans Regular"
+
 # HDR settings
 tone-mapping=reinhard
 tone-mapping-param=0.6
