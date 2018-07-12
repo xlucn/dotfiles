@@ -10,3 +10,4 @@ termite         .config/termite
 tmux.conf       .tmux.conf
 nvim            .config/nvim
 bash_profile    .bash_profile
+libinput-gestures.conf .config/libinput-gestures.conf
