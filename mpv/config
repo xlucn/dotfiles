@@ -7,10 +7,6 @@
 # no window border
 #no-border
 
-# language choice
-slang=eng
-alang=eng
-
 # Screenshot
 screenshot-format=png
 screenshot-png-compression=2
