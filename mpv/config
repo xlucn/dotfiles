@@ -1,11 +1,6 @@
 # GUI
 # Write your default config options here!
-#subfont-autoscale=3
-#subfont-osd-scale=3
-#subfont-text-scale=4
-
-# no window border
-#no-border
+sub-font-size=40
 
 # Screenshot
 screenshot-format=png
@@ -14,6 +9,9 @@ screenshot-directory=~/Pictures
 
 # OSD
 osd-font="Noto Sans Regular"
+osd-color=1.0/1.0/1.0/0.5
+osd-border-color=0.0/0.0/0.0/0.5
+#osd-on-seek="msg"
 
 # HDR settings
 tone-mapping=reinhard
