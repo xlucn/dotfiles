@@ -11,7 +11,7 @@ screenshot-directory=~/Pictures
 osd-font="Noto Sans Regular"
 osd-color=1.0/1.0/1.0/0.5
 osd-border-color=0.0/0.0/0.0/0.5
-#osd-on-seek="msg"
+osd-on-seek="msg-bar"
 
 # HDR settings
 tone-mapping=reinhard
