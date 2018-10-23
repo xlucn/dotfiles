@@ -7,7 +7,7 @@ help()
 -f filelist: If given, the file <file> will be used instead of default
     'filelist'.
 
-test: If given, just ./test folder as dumping/loading target so it won't mess up
+test: If given, use ./test folder as dumping/loading target so it won't mess up
     the home/repo directory. Mainly for testing.
 
 dump: create link file in target location, used when setting up a new system
