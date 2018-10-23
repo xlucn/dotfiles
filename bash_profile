@@ -6,10 +6,10 @@
 [[ -f ~/.extend.bashrc ]] && . ~/.extend.bashrc
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-command -v powerline &> /dev/null
-powerline_check=$?
-if [ $powerline_check -eq 0 ]
-then
-    powerline-daemon -q
-fi
+#command -v powerline &> /dev/null
+#powerline_check=$?
+#if [ $powerline_check -eq 0 ]
+#then
+    #powerline-daemon -q
+#fi
 
