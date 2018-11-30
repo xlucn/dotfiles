@@ -13,6 +13,10 @@ osd-color=1.0/1.0/1.0/0.5
 osd-border-color=0.0/0.0/0.0/0.5
 osd-on-seek="msg-bar"
 
+# Hardware decoding, for my AMD graphics card and x11 desktop environment.
+hwdec=vaapi
+gpu-context=x11egl
+
 # HDR settings
 tone-mapping=reinhard
 tone-mapping-param=0.6
