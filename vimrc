@@ -189,6 +189,10 @@ let g:ale_sign_warning         = '-'
 " only lint when leaving insert mode
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
+
+" Keymapping
+nnoremap <leader>aj :ALENext<CR>
+nnoremap <leader>ak :ALEPrevious<CR>
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
