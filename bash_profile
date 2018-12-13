@@ -4,3 +4,4 @@
 
 [[ -f ~/.extend.bash_profile ]] && . ~/.extend.bash_profile
 
+. ~/.bashrc
