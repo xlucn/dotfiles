@@ -9,8 +9,8 @@ screenshot-directory=~/Pictures
 
 # OSD
 osd-font="DejaVu Sans"
-osd-color=1.0/1.0/1.0/0.5
-osd-border-color=0.0/0.0/0.0/0.5
+osd-color=1.0/1.0/1.0/0.2
+osd-border-color=0.0/0.0/0.0/0.4
 osd-on-seek="msg-bar"
 
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
