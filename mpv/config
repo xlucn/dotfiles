@@ -3,7 +3,7 @@
 sub-font-size=40
 
 # Screenshot
-screenshot-format=png
+screenshot-format=jpg
 screenshot-png-compression=2
 screenshot-directory=~/Pictures
 
