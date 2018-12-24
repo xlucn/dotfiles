@@ -19,5 +19,5 @@ gpu-context=x11egl
 
 # HDR settings
 tone-mapping=reinhard
-tone-mapping-param=0.6
-tone-mapping-desaturate=0.4
+tone-mapping-param=0.3
+tone-mapping-desaturate=0.9
