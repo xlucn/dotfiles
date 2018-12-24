@@ -191,8 +191,8 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 
 " Keymapping
-nnoremap <leader>aj :ALENext<CR>
-nnoremap <leader>ak :ALEPrevious<CR>
+nnoremap <leader>aj <Plug>(ale_next_wrap)
+nnoremap <leader>ak <Plug>(ale_previous_wrap)
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
