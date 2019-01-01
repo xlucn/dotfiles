@@ -10,6 +10,7 @@ export editor=vim
 # auto color
 alias ls="ls --color=auto"
 alias pacman="pacman --color=auto"
+alias df="df -h -x tmpfs -x devtmpfs"
 
 # my customized du
 function sdu() {
