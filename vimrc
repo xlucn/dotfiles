@@ -83,6 +83,8 @@ endif
 " highlight current line
 set cursorline
 
+" color the 80th column
+set colorcolumn=80
 " shows what you are typing as a command
 set showcmd
 
