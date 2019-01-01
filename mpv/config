@@ -1,5 +1,4 @@
 # GUI
-# Write your default config options here!
 sub-font-size=40
 
 # Screenshot
@@ -14,8 +13,14 @@ osd-border-color=0.0/0.0/0.0/0.4
 osd-on-seek="msg-bar"
 
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
+#
+# I am using default vo=gpu and gpu-context=x11egl because hdr tone mapping
+# can't work if using vo=vaapi, see
+# https://wiki.archlinux.org/index.php/Mpv#Hardware_decoding
 hwdec=vaapi
 gpu-context=x11egl
+# removed mpeg2video(normally dvd) hardware decoding, having some troubles
+hwdec-codecs=h264,vc1,hevc,vp9
 
 # HDR settings
 tone-mapping=reinhard
