@@ -234,8 +234,19 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
 " The vim in archlinux repo is not compiled with clientserver option
-let g:vimtex_compiler_latexmk = {'callback' : 0}
+let g:vimtex_compiler_latexmk = {'callback' : 1}
 " matching delimiters is causing performance issues
 let g:vimtex_matchparen_enabled = 0
+" compiler engine
+let g:vimtex_compiler_latexmk_engines = {
+        \ '_'                : '-xelatex',
+        \ 'pdflatex'         : '-pdf',
+        \ 'dvipdfex'         : '-pdfdvi',
+        \ 'lualatex'         : '-lualatex',
+        \ 'xelatex'          : '-xelatex',
+        \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
+        \ 'context (luatex)' : '-pdf -pdflatex=context',
+        \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+        \}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
