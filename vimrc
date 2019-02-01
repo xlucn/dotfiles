@@ -37,6 +37,8 @@ Plugin 'ervandew/supertab'
 Plugin 'tpope/vim-obsession'
 " vimtex plugin
 Plugin 'lervag/vimtex'
+" mathematica
+Plugin 'rsmenon/vim-mathematica'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -248,5 +250,10 @@ let g:vimtex_compiler_latexmk_engines = {
         \ 'context (luatex)' : '-pdf -pdflatex=context',
         \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
         \}
+" }}}
+" Mathematica {{{
+let g:mma_candy = 1
+autocmd BufNewFile,BufRead *.wl setfiletype mma
+autocmd BufNewFile,BufRead *.wls setfiletype mma
 " }}}
 " vim:foldmethod=marker:foldlevel=0
