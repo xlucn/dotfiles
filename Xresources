@@ -11,7 +11,8 @@ XTerm*font:xft:Hack:size=12
 URxvt.depth              : 32
 URxvt.geometry           : 80x24
 URxvt.transparent        : false
-URxvt.internalBorder     : 1
+URxvt.internalBorder     : 0
+URxvt.externalBorder     : 0
 URxvt.letterSpace        : -1
 URxvt.saveLines          : 10000
 URxvt.scrollBar          : false
@@ -26,13 +27,15 @@ URxvt.url-launcher: firefox
 URxvt.underlineURLs:  True
 
 ! -- Fonts -- !
-URxvt*font:xft:Hack:pixelsize=16
+URxvt*font: xft:Hack:size=12:antialias=true:hinting=true
 ! URxvt.allow_bold: false
 
 ! -- Color scheme -- !
 !!Source http://github.com/altercation/solarized
 XTerm.background: #002b36
 XTerm.foreground: #657b83
+URxvt.background: #002b36
+URxvt.foreground: #657b83
 *fading: 40
 *fadeColor: #002b36
 *cursorColor: #93a1a1
