@@ -1,6 +1,6 @@
 [options]
 # The last font override the previous ones
-font = Hack 11
+font = Hack 12
 audible_bell = false
 browser = /usr/bin/firefox
 clickable_url = true
