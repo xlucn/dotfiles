@@ -37,8 +37,12 @@ Plugin 'ervandew/supertab'
 Plugin 'tpope/vim-obsession'
 " vimtex plugin
 Plugin 'lervag/vimtex'
+" autopair
+"Plugin 'jiangmiao/auto-pairs'
 " mathematica
 Plugin 'rsmenon/vim-mathematica'
+" fcitx
+"Plugin 'lilydjwg/fcitx.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
