@@ -11,6 +11,7 @@ export editor=vim
 alias ls="ls --color=auto"
 alias pacman="pacman --color=auto"
 alias df="df -h -x tmpfs -x devtmpfs"
+alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi-copy --drm-video-plane-id=0"
 
 # my customized du
 function sdu() {
