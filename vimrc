@@ -11,7 +11,6 @@ Plugin 'VundleVim/Vundle.vim'
 " Nerd plugin series
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
-" Plugin 'Xuyuanp/nerdtree-git-plugin'
 " markdown plugins
 Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
 Plugin 'plasticboy/vim-markdown'
