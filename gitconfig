@@ -12,3 +12,5 @@
     s = status
     c = commit
     cm = commit -m
+    l = log
+    b = branch
