@@ -5,24 +5,25 @@
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 [ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
 
+# Environments
 export editor=vim
 
+# Alias
 # auto color
 alias ls="ls --color=auto"
 alias pacman="pacman --color=auto"
+# do not show temp fs
 alias df="df -h -x tmpfs -x devtmpfs"
+# mpv under virtual console using drm
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi-copy --drm-video-plane-id=0"
 
 # my customized du
-function sdu() {
-    du -ahx -d 1 ${*} 2>/dev/null | sort -h;
-}
+function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 
 # ps and grep
-function psg() {
-    ps -ef | grep ${*};
-}
+function psg() { ps -ef | grep ${*}; }
 
+# Console color theme
 # Tomorrow color scheme
 if [ "$TERM" = "linux" ]; then
   /bin/echo -e "
@@ -47,7 +48,7 @@ if [ "$TERM" = "linux" ]; then
   clear
 fi
 
-# powerline
+# powerline setup
 command -v powerline &> /dev/null
 powerline_check=$?
 if [ $powerline_check -eq 0 ]
