@@ -20,6 +20,8 @@ Plugin 'vim-airline/vim-airline-themes'
 " git
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+" surround-vim
+Plugin 'tpope/vim-surround'
 " theme
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 " leader guide like in spacevim
