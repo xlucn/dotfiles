@@ -24,26 +24,24 @@ function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 function psg() { ps -ef | grep ${*}; }
 
 # Console color theme
-# Tomorrow color scheme
+# Solarized color scheme
 if [ "$TERM" = "linux" ]; then
-  /bin/echo -e "
-  \e]P01d1f21
-  \e]P1cc6666
-  \e]P2b5bd68
-  \e]P3cfab64
-  \e]P481a2be
-  \e]P5b294bb
-  \e]P68abeb7
-  \e]P7c5c8c6
-  \e]P8969896
-  \e]P9ff8080
-  \e]PAf4ff8c
-  \e]PBffd27b
-  \e]PCa6d0f4
-  \e]PDe2bced
-  \e]PEb3f7ee
-  \e]PFffffff
-  "
+  /bin/echo -e "\e]P0073642"
+  /bin/echo -e "\e]P1dc322f"
+  /bin/echo -e "\e]P2859900"
+  /bin/echo -e "\e]P3b58900"
+  /bin/echo -e "\e]P4268bd2"
+  /bin/echo -e "\e]P5d33682"
+  /bin/echo -e "\e]P62aa198"
+  /bin/echo -e "\e]P7eee8d5"
+  /bin/echo -e "\e]P8002b36"
+  /bin/echo -e "\e]P9cb4b16"
+  /bin/echo -e "\e]PA586e75"
+  /bin/echo -e "\e]PB657b83"
+  /bin/echo -e "\e]PC839496"
+  /bin/echo -e "\e]PD6c71c4"
+  /bin/echo -e "\e]PE93a1a1"
+  /bin/echo -e "\e]PFfdf6e3"
   # get rid of artifacts
   clear
 fi
