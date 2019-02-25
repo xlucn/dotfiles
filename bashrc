@@ -23,27 +23,14 @@ function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 # ps and grep
 function psg() { ps -ef | grep ${*}; }
 
-# Console color theme
+# Console color theme, reuse .Xresources definitions
 # Solarized color scheme
 if [ "$TERM" = "linux" ]; then
-  /bin/echo -e "\e]P0073642"
-  /bin/echo -e "\e]P1dc322f"
-  /bin/echo -e "\e]P2859900"
-  /bin/echo -e "\e]P3b58900"
-  /bin/echo -e "\e]P4268bd2"
-  /bin/echo -e "\e]P5d33682"
-  /bin/echo -e "\e]P62aa198"
-  /bin/echo -e "\e]P7eee8d5"
-  /bin/echo -e "\e]P8002b36"
-  /bin/echo -e "\e]P9cb4b16"
-  /bin/echo -e "\e]PA586e75"
-  /bin/echo -e "\e]PB657b83"
-  /bin/echo -e "\e]PC839496"
-  /bin/echo -e "\e]PD6c71c4"
-  /bin/echo -e "\e]PE93a1a1"
-  /bin/echo -e "\e]PFfdf6e3"
-  # get rid of artifacts
-  clear
+    _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
+    for i in $(sed -n "$_SEDCMD" $HOME/.Xresources | awk '$1 < 16 {printf "\\e]P%X%s", $1, $2}'); do
+        echo -en "$i"
+    done
+    clear
 fi
 
 # powerline setup
