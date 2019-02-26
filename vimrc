@@ -39,7 +39,9 @@ Plugin 'lervag/vimtex'
 " mathematica
 Plugin 'rsmenon/vim-mathematica'
 " fcitx
-Plugin 'lilydjwg/fcitx.vim'
+"Plugin 'lilydjwg/fcitx.vim'
+" IBus
+Plugin 'h-youhei/vim-ibus'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -256,5 +258,9 @@ let g:vimtex_compiler_latexmk_engines = {
 let g:mma_candy = 1
 autocmd BufNewFile,BufRead *.wl setfiletype mma
 autocmd BufNewFile,BufRead *.wls setfiletype mma
+" }}}
+" ibus-vim {{{
+let g:ibus#layout = "xkb:us::eng"
+let g:ibus#engine = "libpinyin"
 " }}}
 " vim:foldmethod=marker:foldlevel=0
