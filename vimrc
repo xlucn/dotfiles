@@ -24,6 +24,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-surround'
 " theme
 Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plugin 'altercation/vim-colors-solarized'
 " leader guide like in spacevim
 Plugin 'hecal3/vim-leader-guide'
 " linter plugin
@@ -106,7 +107,8 @@ set scrolloff=3
 set splitright
 " }}}
 " Theme {{{
-colorscheme Tomorrow-Night-Eighties
+"colorscheme Tomorrow-Night-Eighties
+colorscheme solarized
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -158,7 +160,7 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:airline#extensions#tabline#enabled   = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled       = 1
-let g:airline_theme                        = 'dark'
+let g:airline_theme                        = 'solarized'
 let g:airline_powerline_fonts              = 1
 let g:airline_highlighting_cache           = 0
 " }}}
@@ -263,4 +265,8 @@ autocmd BufNewFile,BufRead *.wls setfiletype mma
 let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
+" solarized
+let g:solarized_underline = 0
+let g:solarized_termcolors = 16
+set background=dark
 " vim:foldmethod=marker:foldlevel=0
