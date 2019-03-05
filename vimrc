@@ -40,9 +40,7 @@ Plugin 'lervag/vimtex'
 " mathematica
 Plugin 'rsmenon/vim-mathematica'
 " fcitx
-"Plugin 'lilydjwg/fcitx.vim'
-" IBus
-Plugin 'h-youhei/vim-ibus'
+Plugin 'lilydjwg/fcitx.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
@@ -265,8 +263,9 @@ autocmd BufNewFile,BufRead *.wls setfiletype mma
 let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
-" solarized
+" solarized {{{
 let g:solarized_underline = 0
 let g:solarized_termcolors = 16
 set background=dark
+" }}}
 " vim:foldmethod=marker:foldlevel=0
