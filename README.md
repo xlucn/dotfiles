@@ -3,22 +3,25 @@ config files
 
 ## Environment
 
-- OS: [Archlinux][]
-- DE: [Gnome3][]
-- gnome-terminal/termite
+- OS: [Archlinux](https://github.com/powerline/powerline)
+- DE: [Gnome3](https://github.com/powerline/powerline)
+- gnome-terminal/termite/rxvt-unicode
 - vim8 (asynchronous tasks support)
 
 ## Requirement
 
 ### fonts
 
-[Hack][]: for vim-airline (Hack font has better patched powerline glyphs)
+[Hack](https://github.com/powerline/powerline):
+for vim-airline (Hack font has better patched powerline glyphs)
 
-[powerline-console-fonts][pcf]: for linux console
+[powerline-console-fonts](https://github.com/powerline/powerline):
+for linux console
 
 ### Vundle for vim
 
-To install Vundle
+To install Vundle, install from
+[aur](https://aur.archlinux.org/packages/vundle-git/), or
 
 ```sh
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -26,11 +29,8 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 ### Powerline
 
-For tmux status line and shell prompt
-
-```sh
-sudo pacman -S powerline
-```
+[Powerline](https://github.com/powerline/powerline)
+for tmux status line and shell prompt
 
 ### Linters for ALE (optional)
 
@@ -71,9 +71,3 @@ set -g escape-time 0
 set timeoutlen=300
 ```
 this makes the list pop up in 0.3 seconds.
-
-##
-[Archlinux]: https://www.archlinux.org
-[Gnome3]: https://www.gnome.org
-[Hack]: https://github.com/source-foundry/Hack
-[pcf]: https://github.com/powerline/fonts/tree/master/Terminus
