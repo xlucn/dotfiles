@@ -1,4 +1,3 @@
-[ -d ~/maple2017 ] && PATH=~/maple2017/bin:$PATH
 [ -d ~/.gem/ruby/ ] && PATH="~/.gem/ruby/2.6.0/bin":$PATH
 [ -d ~/.local/bin ] && PATH=/home/oliver/.local/bin:$PATH
 
@@ -17,6 +16,7 @@ alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi-copy --drm-video-plane-id=0"
 
+PS1='[\u@\h \W]\$ '
 # my customized du
 function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 
