@@ -1,0 +1,10 @@
+ncmpcpp_directory = ~/.config/ncmpcpp
+mpd_music_dir = /home/oliver/Music/
+lyrics_directory = ~/.lyrics
+
+## music visualizer
+# Available values: spectrum, wave, wave_filled, ellipse.
+visualizer_type = spectrum
+external_editor = vim
+# Note: set to yes if external editor is a console application.
+use_console_editor = yes
