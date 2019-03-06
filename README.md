@@ -2,6 +2,7 @@
 config files
 
 ## Environment
+
 - OS: [Archlinux][]
 - DE: [Gnome3][]
 - gnome-terminal/termite
@@ -26,6 +27,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ### Powerline
 
 For tmux status line and shell prompt
+
 ```sh
 sudo pacman -S powerline
 ```
@@ -35,10 +37,20 @@ sudo pacman -S powerline
 ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
 
 linters:
+
 - C: cppcheck, gcc
 - Python: pylint, autopep8
 - JSON: jq, prettier
 
+## Install
+
+The files can be linked to corresponding places with `stow`
+
+```sh
+stow -v -t ~ <package name>
+```
+
+with `<package name>` being the folder name for a specific program.
 
 ## Problem solving configurations
 

@@ -1,1 +1,0 @@
-mpv-filenavigator/navigator.lua

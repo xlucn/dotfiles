@@ -1,1 +1,0 @@
-autosub-mpv/autosub.lua

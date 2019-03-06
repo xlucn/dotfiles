@@ -1,3 +1,56 @@
+"" vim-packager {{{
+"" Load packager only when you need it
+"function! PackagerInit() abort
+"   packadd vim-packager
+"  call packager#init()
+"  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
+"  " Nerd plugins
+"  call packager#add('scrooloose/nerdtree')
+"  call packager#add('scrooloose/nerdcommenter')
+"  " markdown plugins
+"  call packager#add('godlygeek/tabular') " this must be before vim-markdown
+"  call packager#add('plasticboy/vim-markdown')
+"  " airline
+"  call packager#add('vim-airline/vim-airline')
+"  call packager#add('vim-airline/vim-airline-themes')
+"  " theme
+"  call packager#add('altercation/vim-colors-solarized')
+"  " git
+"  call packager#add('tpope/vim-fugitive')
+"  call packager#add('airblade/vim-gitgutter')
+"  " surround-vim
+"  call packager#add('tpope/vim-surround')
+"  " leader guide like in spacevim
+"  call packager#add('hecal3/vim-leader-guide')
+"  " linter plugin
+"  call packager#add('w0rp/ale')
+"  " asynchronous run tasks in parallel
+"  call packager#add('skywind3000/asyncrun.vim')
+"  " tag bar
+"  call packager#add('majutsushi/tagbar')
+"  " supertab
+"  call packager#add('ervandew/supertab')
+"  " vimtex plugin
+"  call packager#add('lervag/vimtex')
+"  " mathematica
+"  call packager#add('rsmenon/vim-mathematica')
+"  " fcitx
+"  "call packager#add('lilydjwg/fcitx.vim')
+"  " IBus
+"  call packager#add('h-youhei/vim-ibus')
+"endfunction
+"
+"command! PackagerInstall call PackagerInit() | call packager#install()
+"command! -bang PackagerUpdate call PackagerInit() | call packager#update({ 'force_hooks': '<bang>' })
+"command! PackagerClean call PackagerInit() | call packager#clean()
+"command! PackagerStatus call PackagerInit() | call packager#status()
+"
+""Load plugins only for specific filetype
+""augroup packager_filetype
+  "autocmd!
+  "autocmd FileType javascript packadd vim-js-file-import
+"augroup END
+" }}}
 " Vundle {{{
 set nocompatible              " be iMproved, required
 filetype off                  " required, will turn on later
@@ -169,7 +222,7 @@ function! GitRepoLogAll()
     redraw!
 endfunction
 " key bindings
-nnoremap <leader>gb :Git branch -a<CR>
+nnoremap <leader>gb :!git branch -a<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gs :Gstatus<CR>
@@ -190,6 +243,7 @@ let g:gitgutter_terminal_reports_focus  = 0
 set signcolumn=yes
 " }}}
 " ALE {{{
+"let g:ale_completion_enabled = 1
 let g:ale_sign_column_always   = 1
 let g:ale_sign_error           = '>'
 let g:ale_sign_warning         = '-'
