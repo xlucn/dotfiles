@@ -7,12 +7,14 @@
                     "recv_format": "\uf6d9 {value:>8} ",
                     "sent_format": "\ufa51 {value:>8}"
                 },
-                "priority": 90
+                "priority": 90,
+                "display": false
             },
             {
                 "function": "powerline.segments.common.sys.uptime",
                 "priority": 90,
-                "before": "\ufc35 "
+                "before": "\ufc35 ",
+                "display": false
             },
             {
                 "function": "powerline.segments.common.sys.cpu_load_percent",
