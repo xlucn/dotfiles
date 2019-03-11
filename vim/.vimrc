@@ -47,27 +47,32 @@ Plug 'lilydjwg/fcitx.vim'
 call plug#end()
 " }}}
 " Vim Config {{{
-set nocompatible              " be iMproved, required
+" be iMproved
+set nocompatible
+" leader key
+let mapleader = ','
+" syntax
+syntax on
+" filetype
+filetype on
+filetype plugin on
+filetype indent on
+" auto reload files
+set autoread
 " set vim folder
 let $VIM='~/.vim/'
 " set encoding
 set encoding=utf-8
-" leader key
-let mapleader = ','
 " use x11 normal clipboard
 set clipboard=unnamedplus
 " automatically write a file when leaving a buffer
 set autowrite
 " reload vimrc
 nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
-" update time
-set updatetime=100
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
 set ttimeoutlen=0
-" redraw when needed
-set lazyredraw
 " open diff window vertically
 set diffopt+=vertical
 " }}}
@@ -84,12 +89,20 @@ set colorcolumn=80
 set showcmd
 " turn on wild menu on :e <Tab>
 set wildmenu
+" change the terminal's title
+set title
 " show matching characters
 set showmatch
 " minimum lines above and below cursor
 set scrolloff=5
 " split into right by default
 set splitright
+" update time
+set updatetime=100
+" redraw when needed
+set lazyredraw
+" don't beep
+set noerrorbells
 " }}}
 " Theme {{{
 "colorscheme Tomorrow-Night-Eighties
@@ -98,6 +111,7 @@ colorscheme solarized
 " Space Tabs Indentations {{{
 " indentations
 set autoindent
+set smartindent
 set cindent
 " tabs
 set tabstop=4
@@ -105,7 +119,6 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smarttab
-
 " show tabs and trailing whitespace
 set list
 set listchars=tab:>-,trail:.
@@ -122,6 +135,7 @@ set hlsearch
 " This unsets the *last search pattern* register by hitting return
 " Also redraw the screen. Just do the cleaning stuff at one time.
 nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
+nnoremap <silent> ,. :noh <bar> redraw!<CR>
 " }}}
 " Navigations {{{
 " go up/down
@@ -132,6 +146,13 @@ nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
 " toggle fold
 nnoremap <space> za
+" Quickly close the current window
+nnoremap <leader>q :q<CR>
+" Quickly save the current file
+nnoremap <leader>w :w<CR>
+"Reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
 " }}}
 " Markdown {{{
 "set conceallevel=2
@@ -251,8 +272,7 @@ let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
 " solarized {{{
-"let g:solarized_underline = 0
-"let g:solarized_termcolors = 16
-"set background=dark
+let g:solarized_underline = 0
+set background=dark
 " }}}
 " vim:foldmethod=marker:foldlevel=0
