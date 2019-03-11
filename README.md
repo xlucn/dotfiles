@@ -71,3 +71,9 @@ this makes the list pop up in 0.3 seconds.
 Refer to the NOTE on [tmux github wiki FAQ page](https://github.com/tmux/tmux/wiki/FAQ)
 
 The TERM environment varialbe must be "tmux", "screen" or similar.
+
+## Thanks/References
+
+https://dougblack.io/words/a-good-vimrc.html
+https://github.com/wklken/vim-for-server
+https://github.com/r00k/dotfiles
