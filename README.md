@@ -18,14 +18,6 @@ for vim-airline (Hack font has better patched powerline glyphs)
 [powerline-console-fonts](https://github.com/powerline/powerline):
 for linux console
 
-### Vundle for vim
-
-To install Vundle, install from
-[aur](https://aur.archlinux.org/packages/vundle-git/), or
-
-```sh
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-```
 
 ### Powerline
 

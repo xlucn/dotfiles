@@ -1,104 +1,53 @@
-"" vim-packager {{{
-"" Load packager only when you need it
-"function! PackagerInit() abort
-"   packadd vim-packager
-"  call packager#init()
-"  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
-"  " Nerd plugins
-"  call packager#add('scrooloose/nerdtree')
-"  call packager#add('scrooloose/nerdcommenter')
-"  " markdown plugins
-"  call packager#add('godlygeek/tabular') " this must be before vim-markdown
-"  call packager#add('plasticboy/vim-markdown')
-"  " airline
-"  call packager#add('vim-airline/vim-airline')
-"  call packager#add('vim-airline/vim-airline-themes')
-"  " theme
-"  call packager#add('altercation/vim-colors-solarized')
-"  " git
-"  call packager#add('tpope/vim-fugitive')
-"  call packager#add('airblade/vim-gitgutter')
-"  " surround-vim
-"  call packager#add('tpope/vim-surround')
-"  " leader guide like in spacevim
-"  call packager#add('hecal3/vim-leader-guide')
-"  " linter plugin
-"  call packager#add('w0rp/ale')
-"  " asynchronous run tasks in parallel
-"  call packager#add('skywind3000/asyncrun.vim')
-"  " tag bar
-"  call packager#add('majutsushi/tagbar')
-"  " supertab
-"  call packager#add('ervandew/supertab')
-"  " vimtex plugin
-"  call packager#add('lervag/vimtex')
-"  " mathematica
-"  call packager#add('rsmenon/vim-mathematica')
-"  " fcitx
-"  "call packager#add('lilydjwg/fcitx.vim')
-"  " IBus
-"  call packager#add('h-youhei/vim-ibus')
-"endfunction
-"
-"command! PackagerInstall call PackagerInit() | call packager#install()
-"command! -bang PackagerUpdate call PackagerInit() | call packager#update({ 'force_hooks': '<bang>' })
-"command! PackagerClean call PackagerInit() | call packager#clean()
-"command! PackagerStatus call PackagerInit() | call packager#status()
-"
-""Load plugins only for specific filetype
-""augroup packager_filetype
-  "autocmd!
-  "autocmd FileType javascript packadd vim-js-file-import
-"augroup END
-" }}}
-" Vundle {{{
-set nocompatible              " be iMproved, required
-filetype off                  " required, will turn on later
-
-" Vundle settings
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Vim-Plug {{{
+" automatic installation
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+" begin vim-plug
+call plug#begin('~/.vim/bundle')
 " the Vundle plugin it self
-Plugin 'VundleVim/Vundle.vim'
+Plug 'VundleVim/Vundle.vim'
+" CtrlP
+Plug 'ctrlpvim/ctrlp.vim'
 " Nerd plugin series
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
 " markdown plugins
-Plugin 'godlygeek/tabular' " this plugin must be before vim-markdown
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular' " this plugin must be before vim-markdown
+Plug 'plasticboy/vim-markdown'
 " airline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " git
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 " surround-vim
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " theme
-Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plugin 'altercation/vim-colors-solarized'
+Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plug 'altercation/vim-colors-solarized'
 " leader guide like in spacevim
-Plugin 'hecal3/vim-leader-guide'
+Plug 'hecal3/vim-leader-guide'
 " linter plugin
-Plugin 'w0rp/ale'
+Plug 'w0rp/ale'
 "  asynchronous run tasks in parallel
-Plugin 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asyncrun.vim'
 " tag bar
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " supertab
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 " vimtex plugin
-Plugin 'lervag/vimtex'
+Plug 'lervag/vimtex'
 " mathematica
-Plugin 'rsmenon/vim-mathematica'
+Plug 'rsmenon/vim-mathematica'
 " fcitx
-Plugin 'lilydjwg/fcitx.vim'
-call vundle#end()            " required
-filetype plugin indent on    " required
-syntax on
+Plug 'lilydjwg/fcitx.vim'
+call plug#end()
 " }}}
 " Vim Config {{{
+set nocompatible              " be iMproved, required
 " set vim folder
 let $VIM='~/.vim/'
 " set encoding
@@ -121,39 +70,24 @@ set ttimeoutlen=0
 set lazyredraw
 " open diff window vertically
 set diffopt+=vertical
-" search for tags file up to root folder
-set tags=./tags;/
 " }}}
 " UI basic {{{
 " show line number
 set number
-
-" remove toolvar in gvim
-set guioptions-=T
-
 " enable mouse support in console
 set mouse=a
-if !has('nvim')
-    set ttymouse=xterm2
-endif
-
 " highlight current line
 set cursorline
-
 " color the 80th column
 set colorcolumn=80
 " shows what you are typing as a command
 set showcmd
-
 " turn on wild menu on :e <Tab>
 set wildmenu
-
 " show matching characters
 set showmatch
-
 " minimum lines above and below cursor
-set scrolloff=3
-
+set scrolloff=5
 " split into right by default
 set splitright
 " }}}
@@ -165,7 +99,6 @@ colorscheme solarized
 " indentations
 set autoindent
 set cindent
-
 " tabs
 set tabstop=4
 set softtabstop=4
@@ -197,7 +130,6 @@ nnoremap <silent> k gk
 " buffers
 nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
-
 " toggle fold
 nnoremap <space> za
 " }}}
@@ -215,7 +147,7 @@ let g:airline_theme                        = 'solarized'
 let g:airline_powerline_fonts              = 1
 let g:airline_highlighting_cache           = 0
 " }}}
-" fugitive {{{
+" Fugitive {{{
 " wrote this by my own, show the log in a pretty way
 function! GitRepoLogAll()
     silent Git log --all --decorate --oneline --graph --date-order
@@ -257,9 +189,10 @@ nnoremap <leader>ak <Plug>(ale_previous_wrap)
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
 nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
-" nerdtree git plugin {{{
+" Nerdtree git plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "~",
     \ "Staged"    : "+",
@@ -318,8 +251,8 @@ let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
 " solarized {{{
-let g:solarized_underline = 0
-let g:solarized_termcolors = 16
-set background=dark
+"let g:solarized_underline = 0
+"let g:solarized_termcolors = 16
+"set background=dark
 " }}}
 " vim:foldmethod=marker:foldlevel=0
