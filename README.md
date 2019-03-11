@@ -54,20 +54,33 @@ with `<package name>` being the folder name for a specific program.
 
 ## Problem solving configurations
 
-- Fugitive sign column update is slow, in vimrc
+- Fugitive sign column update is slow, in .vimrc
+
 ```vim
 set updatetime=100
 ```
-- Delay when escaping out of insert mode, in vimrc
+
+- Delay when escaping out of insert mode, in .vimrc
+
 ```vim
 set ttimeoutlen=0
 ```
+
 and in tmux.conf(if using it)
+
 ```tmux
 set -g escape-time 0
 ```
-- Leader guide plugin takes a second to pop up, in vimrc
+- Leader guide plugin takes a second to pop up, in .vimrc
+
 ```vim
 set timeoutlen=300
 ```
+
 this makes the list pop up in 0.3 seconds.
+
+- Programs not showing correctly in tmux (tremc in my case), in .tmux.conf
+
+Refer to the NOTE on [tmux github wiki FAQ page](https://github.com/tmux/tmux/wiki/FAQ)
+
+The TERM environment varialbe must be "tmux", "screen" or similar.
