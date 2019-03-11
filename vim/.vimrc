@@ -44,6 +44,8 @@ Plug 'lervag/vimtex'
 Plug 'rsmenon/vim-mathematica'
 " fcitx
 Plug 'lilydjwg/fcitx.vim'
+" vim-slime
+Plug 'jpalardy/vim-slime'
 call plug#end()
 " }}}
 " Vim Config {{{
@@ -274,5 +276,15 @@ let g:ibus#engine = "libpinyin"
 " solarized {{{
 let g:solarized_underline = 0
 set background=dark
+" }}}
+" vim-slime {{{
+let g:slime_target = "tmux"
+let g:slime_paste_file = tempname()
+let g:slime_default_config = {
+    \ "socket_name": "default",
+    \ "target_pane": "{right-of}"
+    \ }
+let g:slime_python_ipython = 1
+let g:slime_dont_ask_default = 1
 " }}}
 " vim:foldmethod=marker:foldlevel=0
