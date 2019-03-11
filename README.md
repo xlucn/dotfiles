@@ -10,29 +10,24 @@ config files
 
 ## Requirement
 
-### fonts
+- fonts
+  - [Hack](https://github.com/powerline/powerline):
+    for vim-airline (Hack font has better patched powerline glyphs)
+  - [powerline-console-fonts](https://github.com/powerline/powerline):
+    for linux console
 
-[Hack](https://github.com/powerline/powerline):
-for vim-airline (Hack font has better patched powerline glyphs)
+- Powerline
+  - [Powerline](https://github.com/powerline/powerline)
+    for tmux status line and shell prompt
 
-[powerline-console-fonts](https://github.com/powerline/powerline):
-for linux console
+- Linters for ALE (optional)
+  ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
 
+  - C: cppcheck, gcc
+  - Python: pylint, autopep8
+  - JSON: jq, prettier
 
-### Powerline
-
-[Powerline](https://github.com/powerline/powerline)
-for tmux status line and shell prompt
-
-### Linters for ALE (optional)
-
-ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
-
-linters:
-
-- C: cppcheck, gcc
-- Python: pylint, autopep8
-- JSON: jq, prettier
+- curl for vim-plug auto install (in .vimrc)
 
 ## Install
 
