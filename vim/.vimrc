@@ -278,13 +278,17 @@ let g:solarized_underline = 0
 set background=dark
 " }}}
 " vim-slime {{{
+" use tmux
 let g:slime_target = "tmux"
-let g:slime_paste_file = tempname()
+" set config
 let g:slime_default_config = {
     \ "socket_name": "default",
     \ "target_pane": "{right-of}"
     \ }
-let g:slime_python_ipython = 1
 let g:slime_dont_ask_default = 1
+" use temp file
+let g:slime_paste_file = tempname()
+" ipython specific setting
+let g:slime_python_ipython = 1
 " }}}
 " vim:foldmethod=marker:foldlevel=0
