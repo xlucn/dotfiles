@@ -1,3 +1,4 @@
+" Plugin Manager {{{
 " Vim-Plug {{{
 " automatic installation
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -48,6 +49,8 @@ Plug 'lilydjwg/fcitx.vim'
 Plug 'jpalardy/vim-slime'
 call plug#end()
 " }}}
+" }}}
+" Vim Settings {{{
 " Vim Config {{{
 " be iMproved
 set nocompatible
@@ -105,9 +108,7 @@ set updatetime=100
 set lazyredraw
 " don't beep
 set noerrorbells
-" }}}
-" Theme {{{
-"colorscheme Tomorrow-Night-Eighties
+" colorscheme (Tomorrow-Night-Eighties)
 colorscheme solarized
 " }}}
 " Space Tabs Indentations {{{
@@ -156,6 +157,8 @@ nnoremap <leader>w :w<CR>
 vnoremap < <gv
 vnoremap > >gv
 " }}}
+" }}}
+" Plugin Settings {{{
 " Markdown {{{
 "set conceallevel=2
 let g:vim_markdown_folding_style_pythonic = 1
@@ -290,5 +293,6 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
+" }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
