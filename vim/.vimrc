@@ -108,7 +108,7 @@ set updatetime=100
 set lazyredraw
 " don't beep
 set noerrorbells
-" colorscheme (Tomorrow-Night-Eighties)
+"colorscheme Tomorrow-Night-Eighties
 colorscheme solarized
 " }}}
 " Space Tabs Indentations {{{
@@ -169,7 +169,7 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:airline#extensions#tabline#enabled   = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled       = 1
-let g:airline_theme                        = 'solarized'
+let g:airline_theme                        = 'aurora'
 let g:airline_powerline_fonts              = 1
 let g:airline_highlighting_cache           = 0
 " }}}
