@@ -153,9 +153,8 @@ nnoremap <space> za
 nnoremap <leader>q :q<CR>
 " Quickly save the current file
 nnoremap <leader>w :w<CR>
-"Reselect visual block after indent/outdent
-vnoremap < <gv
-vnoremap > >gv
+" Quickly reload the current file
+nnoremap <leader>e :e<CR>
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -218,20 +217,6 @@ let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
-" Nerdtree git plugin {{{
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "~",
-    \ "Staged"    : "+",
-    \ "Untracked" : "*",
-    \ "Renamed"   : ">",
-    \ "Unmerged"  : "=",
-    \ "Deleted"   : "x",
-    \ "Dirty"     : "!",
-    \ "Clean"     : "o",
-    \ 'Ignored'   : '#',
-    \ "Unknown"   : "?"
-    \ }
-" }}}
 " Vim Leader Guide {{{
 let g:lmap = {}
 let g:lmap.g = { 'name' : 'Git operation' }
@@ -283,7 +268,7 @@ set background=dark
 " vim-slime {{{
 " use tmux
 let g:slime_target = "tmux"
-" set config
+" set config to use the pane on the right by default
 let g:slime_default_config = {
     \ "socket_name": "default",
     \ "target_pane": "{right-of}"
