@@ -207,7 +207,12 @@ let g:ale_sign_warning         = '-'
 " only lint when leaving insert mode
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
-
+" specify linters
+let g:ale_linters = {
+  \ 'c': ['gcc'],
+  \ 'python': ['flake8', 'pylint']
+  \ }
+let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
 " Keymapping
 nnoremap <leader>aj <Plug>(ale_next_wrap)
 nnoremap <leader>ak <Plug>(ale_previous_wrap)
