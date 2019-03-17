@@ -241,10 +241,16 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " Vim Tex Settings {{{
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
-" The vim in archlinux repo is not compiled with clientserver option
-let g:vimtex_compiler_latexmk = {'callback' : 1}
+" start vim with a server, see ':h vimtex-clientserver'
+if empty(v:servername) && exists('*remote_startserver')
+  call remote_startserver('VIM')
+endif
+" viewer setting
+let g:vimtex_view_method = 'zathura'
 " matching delimiters is causing performance issues
 let g:vimtex_matchparen_enabled = 0
+" compiler
+let g:vimtex_compiler_method = "latexmk"
 " compiler engine
 let g:vimtex_compiler_latexmk_engines = {
         \ '_'                : '-xelatex',
