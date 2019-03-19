@@ -3,10 +3,14 @@ config files
 
 ## Environment
 
-- OS: [Archlinux](https://github.com/powerline/powerline)
-- DE: [Gnome3](https://github.com/powerline/powerline)
-- gnome-terminal/termite/rxvt-unicode
-- vim8 (asynchronous tasks support)
+- OS:
+  - [Archlinux](https://github.com/powerline/powerline)
+- DE:
+  - [Gnome3](https://github.com/powerline/powerline)
+  - [AwesomeWM](https://awesomewm.org/)
+- Software
+  - gnome-terminal/termite/rxvt-unicode
+  - vim8 (asynchronous tasks support)
 
 ## Requirement
 
@@ -28,6 +32,9 @@ config files
   - JSON: jq, prettier
 
 - curl for vim-plug auto install (in .vimrc)
+
+- For Awesome WM:
+ - xinput for configuring trackpad.
 
 ## Install
 

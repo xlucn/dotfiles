@@ -13,7 +13,7 @@ mouse_autohide = true
 # Full screen on F11
 fullscreen = true
 # Lock the resizing to cell size
-size_hints = true
+#size_hints = true
 
 [colors]
 background =                    #002b36
