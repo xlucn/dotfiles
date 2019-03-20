@@ -79,6 +79,17 @@ awful.layout.layouts = {
     --awful.layout.suit.corner.se,
     awful.layout.suit.floating,
 }
+
+-- Tag names
+tag1 = "Browr"
+tag2 = "Term"
+tag3 = "Work"
+tag4 = "Class"
+tag5 = "Note"
+tag6 = "Trnt"
+tag7 = "Media"
+tag8 = "Mail"
+tag9 = "Other"
 -- }}}
 
 -- {{{ Helper functions
@@ -188,15 +199,9 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1 Browser",
-                "2 Terminal",
-                "3 Work",
-                "4 Class",
-                "5 Note",
-                "6 Torrent",
-                "7 Media",
-                "8 Mail",
-                "9 Other" }, s, awful.layout.layouts[1])
+    awful.tag({ tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9},
+              s,
+              awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -508,8 +513,9 @@ awful.rules.rules = {
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
+    { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
+        properties = { tag = tag1 } },
 }
 -- }}}
 
