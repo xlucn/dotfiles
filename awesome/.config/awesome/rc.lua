@@ -1,3 +1,4 @@
+-- Libraries {{{
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -15,6 +16,8 @@ local xrandr = require("xrandr")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+
+-- }}}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -129,10 +132,10 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 --menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
+-- {{{ Wibar
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
@@ -587,3 +590,5 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- vim:foldmethod=marker
