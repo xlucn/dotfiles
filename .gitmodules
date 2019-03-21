@@ -4,3 +4,9 @@
 [submodule "mpv/.config/mpv/mpv-filenavigator"]
 	path = mpv/.config/mpv/mpv-filenavigator
 	url = https://github.com/jonniek/mpv-filenavigator
+[submodule "awesome/.config/awesome/lain"]
+	path = awesome/.config/awesome/lain
+	url = https://github.com/lcpz/lain
+[submodule "awesome/.config/awesome/freedesktop"]
+	path = awesome/.config/awesome/freedesktop
+	url = https://github.com/lcpz/awesome-freedesktop
