@@ -109,6 +109,25 @@ local function client_menu_toggle_fn()
         end
     end
 end
+-- format network speed
+local function format_netspeed(raw_speed)
+    if raw_speed < 1024 then
+        speed = raw_speed
+        speed_unit = "KB/s"
+    elseif raw_speed < 1024 * 1024 then
+        speed = raw_speed / 1024
+        speed_unit = "MB/s"
+    else
+        speed = raw_speed / 1024 / 1024
+        speed_unit = "GB/s"
+    end
+
+    return speed, speed_unit
+end
+-- format time
+local function format_time(seconds)
+    return string.format("%2d:%02d", seconds // 60, seconds % 60)
+end
 -- }}}
 
 -- {{{ Menu
@@ -156,51 +175,78 @@ local larrow = separators.arrow_left()
 
 local mpd = lain.widget.mpd({
     timeout = 5,
+    notify = "off",
     settings = function()
+        mpd_notification_preset = {
+            title   = "Now playing",
+            timeout = 6,
+            text    = string.format("%s\n%s (%s) - %s\n%s",
+                                    mpd_now.file,
+                                    mpd_now.artist,
+                                    mpd_now.album,
+                                    mpd_now.date,
+                                    mpd_now.title)
+        }
         if mpd_now.state == "play" then
-            elapsed = string.format("%d:%02d",
-                                    mpd_now.elapsed // 60,
-                                    mpd_now.elapsed % 60)
-            time = string.format("%d:%02d",
-                                 mpd_now.time // 60,
-                                 mpd_now.time % 60)
+            elapsed = format_time(mpd_now.elapsed)
+            time = format_time(mpd_now.time)
         else
-            elapsed = "-:--"
-            time = "-:--"
+            elapsed = "--:--"
+            time = "--:--"
         end
-        widget:set_markup("MPD: " .. string.format("%5s", mpd_now.state) ..
-                          " [" .. elapsed .. "/" .. time .. "] | ")
+        widget:set_markup(" MPD: " .. string.format("[%5s] ", mpd_now.state) ..
+                          elapsed .. "/" .. time .. " |")
     end
 })
 mpd.update()
 local volume = lain.widget.alsa({
     settings = function()
-        widget:set_markup(string.format("Vol: %3d%% | ", volume_now.level))
+        widget:set_markup(string.format(" Vol: %3d%% |", volume_now.level))
     end
 })
 local mybattery = lain.widget.bat({
     notify = "off",
     settings = function()
-        widget:set_markup(string.format("Bat: %3d%% | ", bat_now.perc))
+        widget:set_markup(string.format(" Bat: %3d%% |", bat_now.perc))
     end
 })
 local mycpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(string.format("Cpu: %3d%% | ", cpu_now.usage))
+        widget:set_markup(string.format(" Cpu: %3d%% |", cpu_now.usage))
     end
 })
 local mymem = lain.widget.mem({
     settings = function()
-        widget:set_markup(string.format("Mem: %3d%% | ", mem_now.perc))
+        widget:set_markup(string.format(" Mem: %3d%% |", mem_now.perc))
     end
 })
 local mysysload = lain.widget.sysload({
     settings = function()
-        widget:set_markup(string.format("Load: %.2f %.2f %.2f | ",
+        widget:set_markup(string.format(" Load: %.2f %.2f %.2f |",
                                         load_1, load_5, load_15))
     end
 })
-
+local mycal = lain.widget.cal({
+    attach_to = { mytextclock },
+    notification_preset = {
+        fg = beautiful.fg_normal,
+        bg = beautiful.bg_normal
+    }
+})
+local mynet = lain.widget.net({
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        sent, sent_unit = format_netspeed(tonumber(net_now.sent))
+        received, received_unit = format_netspeed(tonumber(net_now.received))
+        widget:set_markup(
+            string.format(" %6.2f %s, %6.2f %s |",
+                          sent, sent_unit,
+                          received, received_unit
+            )
+        )
+    end
+})
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -302,6 +348,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mpd.widget,
+            mynet.widget,
             volume.widget,
             mybattery.widget,
             mycpu.widget,
@@ -313,10 +360,10 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create a bottom wibar
-    s.mywibox2 = awful.wibar({ position = "bottom", screen = s, height = 24 })
+    s.mybottomwibox = awful.wibar({ position = "bottom", screen = s, height = 24 })
 
     -- Add widgets to bottom wibar
-    s.mywibox2:setup {
+    s.mybottomwibox:setup {
         layout = wibox.layout.align.horizontal,
         nil,
         s.mytasklist,
