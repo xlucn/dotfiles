@@ -16,7 +16,7 @@ local xrandr = require("xrandr")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
+local lain = require("lain")
 -- }}}
 
 -- {{{ Error handling
@@ -134,10 +134,64 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 
 -- {{{ Wibar
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock()
+
+-- lain widgets
+local separators = lain.util.separators
+local markup = lain.util.markup
+
+local larrow = separators.arrow_left()
+
+local mpd = lain.widget.mpd({
+    timeout = 5,
+    settings = function()
+        if mpd_now.state == "play" then
+            elapsed = string.format("%d:%02d",
+                                    mpd_now.elapsed // 60,
+                                    mpd_now.elapsed % 60)
+            time = string.format("%d:%02d",
+                                 mpd_now.time // 60,
+                                 mpd_now.time % 60)
+        else
+            elapsed = "-:--"
+            time = "-:--"
+        end
+        widget:set_markup("MPD: " .. string.format("%5s", mpd_now.state) ..
+                          " [" .. elapsed .. "/" .. time .. "] | ")
+    end
+})
+mpd.update()
+local volume = lain.widget.alsa({
+    settings = function()
+        widget:set_markup(string.format("Vol: %3d%% | ", volume_now.level))
+    end
+})
+local mybattery = lain.widget.bat({
+    notify = "off",
+    settings = function()
+        widget:set_markup(string.format("Bat: %3d%% | ", bat_now.perc))
+    end
+})
+local mycpu = lain.widget.cpu({
+    settings = function()
+        widget:set_markup(string.format("Cpu: %3d%% | ", cpu_now.usage))
+    end
+})
+local mymem = lain.widget.mem({
+    settings = function()
+        widget:set_markup(string.format("Mem: %3d%% | ", mem_now.perc))
+    end
+})
+local mysysload = lain.widget.sysload({
+    settings = function()
+        widget:set_markup(string.format("Load: %.2f %.2f %.2f | ",
+                                        load_1, load_5, load_15))
+    end
+})
+
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -234,14 +288,30 @@ awful.screen.connect_for_each_screen(function(s)
             s.mytaglist,
             s.mypromptbox,
         },
-        s.mytasklist, -- Middle widget
+        --s.mytasklist, -- Middle widget
+        nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            --mykeyboardlayout,
-            wibox.widget.systray(),
+            mpd.widget,
+            volume.widget,
+            mybattery.widget,
+            mycpu.widget,
+            mymem.widget,
+            mysysload.widget,
             mytextclock,
-            s.mylayoutbox,
+        s.mylayoutbox,
         },
+    }
+
+    -- Create a bottom wibar
+    s.mywibox2 = awful.wibar({ position = "bottom", screen = s, height = 24 })
+
+    -- Add widgets to bottom wibar
+    s.mywibox2:setup {
+        layout = wibox.layout.align.horizontal,
+        nil,
+        s.mytasklist,
+        wibox.widget.systray(),
     }
 end)
 -- }}}
@@ -252,6 +322,44 @@ root.buttons(gears.table.join(
     -- Don't switch views when scrolling on wallpaper
     --awful.button({ }, 4, awful.tag.viewnext),
     --awful.button({ }, 5, awful.tag.viewprev)
+))
+volume.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        awful.spawn(string.format("%s -e alsamixer", terminal))
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("%s set %s 1%%+", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("%s set %s 1%%-", volume.cmd, volume.channel))
+        volume.update()
+    end)
+))
+mpd.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn(terminal .. " -e ncmpcpp")
+    end),
+    awful.button({}, 3, function()
+        awful.spawn.with_shell("mpc toggle")
+        mpd.update()
+    end),
+    awful.button({}, 4, function()
+        awful.spawn.with_shell("mpc seek +10")
+        mpd.update()
+    end),
+    awful.button({}, 5, function()
+        awful.spawn.with_shell("mpc seek -10")
+        mpd.update()
+    end)
 ))
 -- }}}
 
