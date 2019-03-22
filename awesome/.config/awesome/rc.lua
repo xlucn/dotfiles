@@ -213,15 +213,24 @@ local mpd = lain.widget.mpd({
                                     mpd_now.date,
                                     mpd_now.title)
         }
-        if mpd_now.state == "play" then
+        -- time format
+        if mpd_now.state == "play" or mpd_now.state == "pause" then
             elapsed = format_time(mpd_now.elapsed)
             time = format_time(mpd_now.time)
         else
             elapsed = "--:--"
             time = "--:--"
         end
-        widget:set_markup(" MPD: " .. string.format("[%5s] ", mpd_now.state) ..
-                          elapsed .. "/" .. time .. " |")
+        -- state
+        if mpd_now.state == "play" then
+            state = "="
+        elseif mpd_now.state == "pause" then
+            state = ">"
+        else
+            state = "x"
+        end
+        widget:set_markup("MPD: " .. "[" .. state .. "] " ..
+                          elapsed .. "/" .. time)
     end
 })
 mpd.update()
@@ -265,22 +274,22 @@ local volume_down = string.format("%s set %s 2%%-", volume.cmd, volume.channel)
 local mybattery = lain.widget.bat({
     notify = "off",
     settings = function()
-        widget:set_markup(string.format(" Bat: %3d%% |", bat_now.perc))
+        widget:set_markup(string.format("Bat: %3d%%", bat_now.perc))
     end
 })
 local mycpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(string.format(" Cpu: %3d%% |", cpu_now.usage))
+        widget:set_markup(string.format("Cpu: %2d%%", cpu_now.usage))
     end
 })
 local mymem = lain.widget.mem({
     settings = function()
-        widget:set_markup(string.format(" Mem: %3d%% |", mem_now.perc))
+        widget:set_markup(string.format("Mem: %2d%%", mem_now.perc))
     end
 })
 local mysysload = lain.widget.sysload({
     settings = function()
-        widget:set_markup(string.format(" Load: %.2f %.2f %.2f |",
+        widget:set_markup(string.format("Load: %.2f %.2f %.2f",
                                         load_1, load_5, load_15))
     end
 })
@@ -291,6 +300,7 @@ local mycal = lain.widget.cal({
         bg = beautiful.bg_normal
     }
 })
+mytextclock:disconnect_signal("mouse::enter", mycal.hover_on)
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
@@ -298,13 +308,20 @@ local mynet = lain.widget.net({
         sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         received, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            string.format(" %6.2f %s, %6.2f %s |",
+            string.format("U: %5.1f %s, D: %5.1f %s",
                           sent, sent_unit,
                           received, received_unit
             )
         )
     end
 })
+local seperator = {
+    orientation = "vertical",
+    color = beautiful.fg_normal,
+    thickness = 2,
+    widget = wibox.widget.separator,
+}
+
 -- awesome-wm-widgets
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
@@ -418,6 +435,8 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 spacing = 8,
                 layout = wibox.layout.fixed.horizontal,
+                mpd.widget,
+                mynet.widget,
                 cpu_widget,
                 ram_widget,
                 volumearc_widget,
@@ -431,27 +450,6 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 
-    -- Create a bottom wibar
-    s.mybottomwibox = awful.wibar({ position = "bottom", screen = s, height = 24 })
-
-    -- Add widgets to bottom wibar
-    s.mybottomwibox:setup {
-        layout = wibox.layout.align.horizontal,
-        nil,
-        nil,
-        {
-            spacing = 32,
-            spacing_widget = seperator,
-            layout = wibox.layout.fixed.horizontal,
-            mpd.widget,
-            mynet.widget,
-            volume.widget,
-            volume_bar,
-            mybattery.widget,
-            mycpu.widget,
-            mymem.widget,
-        },
-    }
 end)
 -- }}}
 
