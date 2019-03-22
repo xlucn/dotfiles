@@ -29,6 +29,7 @@ Plug 'tpope/vim-surround'
 " theme
 Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 " leader guide like in spacevim
 Plug 'hecal3/vim-leader-guide'
 " linter plugin
@@ -44,117 +45,10 @@ Plug 'lervag/vimtex'
 " mathematica
 Plug 'rsmenon/vim-mathematica'
 " fcitx
-Plug 'lilydjwg/fcitx.vim'
+"Plug 'lilydjwg/fcitx.vim'
 " vim-slime
 Plug 'jpalardy/vim-slime'
 call plug#end()
-" }}}
-" }}}
-" Vim Settings {{{
-" Vim Config {{{
-" be iMproved
-set nocompatible
-" leader key
-let mapleader = ','
-" syntax
-syntax on
-" filetype
-filetype on
-filetype plugin on
-filetype indent on
-" auto reload files
-set autoread
-" set vim folder
-let $VIM='~/.vim/'
-" set encoding
-set encoding=utf-8
-" use x11 normal clipboard
-set clipboard=unnamedplus
-" automatically write a file when leaving a buffer
-set autowrite
-" reload vimrc
-nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
-" time out for key code delays, decide how long to wait for key code
-" sequence and how long leader guide (if installed) will pop up.
-set timeoutlen=300
-set ttimeoutlen=0
-" open diff window vertically
-set diffopt+=vertical
-" }}}
-" UI basic {{{
-" show line number
-set number
-" enable mouse support in console
-set mouse=a
-" highlight current line
-set cursorline
-" color the 80th column
-set colorcolumn=80
-" shows what you are typing as a command
-set showcmd
-" turn on wild menu on :e <Tab>
-set wildmenu
-" change the terminal's title
-set title
-" show matching characters
-set showmatch
-" minimum lines above and below cursor
-set scrolloff=5
-" split into right by default
-set splitright
-" update time
-set updatetime=100
-" redraw when needed
-set lazyredraw
-" don't beep
-set noerrorbells
-"colorscheme Tomorrow-Night-Eighties
-colorscheme solarized
-" }}}
-" Space Tabs Indentations {{{
-" indentations
-set autoindent
-set smartindent
-set cindent
-" tabs
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set smarttab
-" show tabs and trailing whitespace
-set list
-set listchars=tab:>-,trail:.
-" }}}
-" Search {{{
-" incremental search
-set incsearch
-" case-insensitive search
-set ignorecase
-" smart case search(only when search pattern has no capital letters)
-set smartcase
-" highlight search
-set hlsearch
-" This unsets the *last search pattern* register by hitting return
-" Also redraw the screen. Just do the cleaning stuff at one time.
-nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
-nnoremap <silent> ,. :noh <bar> redraw!<CR>
-" }}}
-" Navigations {{{
-" go up/down
-nnoremap <silent> j gj
-nnoremap <silent> k gk
-" buffers
-nnoremap <silent> <C-H> :bprevious<CR>
-nnoremap <silent> <C-L> :bnext<CR>
-" toggle fold
-nnoremap <space> za
-" Quickly close the current window
-nnoremap <leader>q :q<CR>
-" Quickly save the current file
-nnoremap <leader>w :w<CR>
-" Quickly reload the current file
-nnoremap <leader>e :e<CR>
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -168,8 +62,8 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:airline#extensions#tabline#enabled   = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled       = 1
-let g:airline_theme                        = 'aurora'
-let g:airline_powerline_fonts              = 1
+let g:airline_theme                        = 'gruvbox'
+let g:airline_powerline_fonts              = 0
 let g:airline_highlighting_cache           = 0
 " }}}
 " Fugitive {{{
@@ -272,9 +166,12 @@ autocmd BufNewFile,BufRead *.wls setfiletype mma
 let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
-" solarized {{{
+" fcitx {{{
+" }}}
+" Theme solarized, gruvbox {{{
+let g:gruvbox_italic=1
 let g:solarized_underline = 0
-set background=dark
+"set background=dark
 " }}}
 " vim-slime {{{
 " use tmux
@@ -289,6 +186,114 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
+" }}}
+" }}}
+" Vim Settings {{{
+" Vim Config {{{
+" be iMproved
+set nocompatible
+" leader key
+let mapleader = ','
+" syntax
+syntax on
+" filetype
+filetype on
+filetype plugin on
+filetype indent on
+" auto reload files
+set autoread
+" set vim folder
+let $VIM='~/.vim/'
+" set encoding
+set encoding=utf-8
+" use x11 normal clipboard
+set clipboard=unnamedplus
+" automatically write a file when leaving a buffer
+set autowrite
+" reload vimrc
+nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
+" time out for key code delays, decide how long to wait for key code
+" sequence and how long leader guide (if installed) will pop up.
+set timeoutlen=300
+set ttimeoutlen=0
+" open diff window vertically
+set diffopt+=vertical
+" }}}
+" UI basic {{{
+" show line number
+set number
+" enable mouse support in console
+set mouse=a
+" highlight current line
+set cursorline
+" color the 80th column
+set colorcolumn=80
+" shows what you are typing as a command
+set showcmd
+" turn on wild menu on :e <Tab>
+set wildmenu
+" change the terminal's title
+set title
+" show matching characters
+set showmatch
+" minimum lines above and below cursor
+set scrolloff=5
+" split into right by default
+set splitright
+" update time
+set updatetime=100
+" redraw when needed
+set lazyredraw
+" don't beep
+set noerrorbells
+"colorscheme Tomorrow-Night-Eighties
+"colorscheme solarized
+colorscheme gruvbox
+" }}}
+" Space Tabs Indentations {{{
+" indentations
+set autoindent
+set smartindent
+set cindent
+" tabs
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+" show tabs and trailing whitespace
+set list
+set listchars=tab:>-,trail:.
+" }}}
+" Search {{{
+" incremental search
+set incsearch
+" case-insensitive search
+set ignorecase
+" smart case search(only when search pattern has no capital letters)
+set smartcase
+" highlight search
+set hlsearch
+" This unsets the *last search pattern* register by hitting return
+" Also redraw the screen. Just do the cleaning stuff at one time.
+nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
+nnoremap <silent> ,. :noh <bar> redraw!<CR>
+" }}}
+" Navigations {{{
+" go up/down
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+" buffers
+nnoremap <silent> <C-H> :bprevious<CR>
+nnoremap <silent> <C-L> :bnext<CR>
+" toggle fold
+nnoremap <space> za
+" Quickly close the current window
+nnoremap <leader>q :q<CR>
+" Quickly save the current file
+nnoremap <leader>w :w<CR>
+" Quickly reload the current file
+nnoremap <leader>e :e<CR>
 " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
