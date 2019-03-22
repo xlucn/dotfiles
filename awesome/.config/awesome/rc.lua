@@ -48,19 +48,16 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
-local tmp_bg = beautiful.bg_focus
-local tmp_fg = beautiful.fg_focus
-beautiful.bg_focus              = tmp_fg
-beautiful.fg_focus              = tmp_bg
+beautiful.fg_focus              = beautiful.bg_focus
+beautiful.bg_focus              = "#6c7ea7"
+beautiful.taglist_font = "Hack Nerd Font 14"
 beautiful.taglist_squares_sel   = nil
 beautiful.taglist_squares_unsel = nil
 beautiful.taglist_fg_occupied   = beautiful.bg_normal
 beautiful.taglist_bg_occupied   = beautiful.fg_normal
 beautiful.useless_gap = 12
-beautiful.border_width = 4
+beautiful.border_width = 6
 beautiful.font = "Hack Bold 10"
---beautiful.menu_font = "Hack 10"
---beautiful.taglist_font = "Hack Bold 10"
 beautiful.menu_height = 24
 beautiful.menu_width = 192
 beautiful.notification_shape = gears.shape.rounded_rect
@@ -111,15 +108,25 @@ awful.layout.layouts = {
 }
 
 -- Tag names
-tag1 = "Browr"
-tag2 = "Term"
-tag3 = "Work"
-tag4 = "Class"
-tag5 = "Note"
-tag6 = "Trnt"
-tag7 = "Media"
-tag8 = "Mail"
-tag9 = "Other"
+--tag1 = " Browr "
+--tag2 = " Term "
+--tag3 = " Class "
+--tag4 = " Work "
+--tag5 = " Note "
+--tag6 = " Trnt "
+--tag7 = " Media "
+--tag8 = " Mail "
+--tag9 = " Other "
+tag1 = "  "
+tag2 = "  " --  
+tag3 = "  " --   龎
+tag4 = "  "
+tag5 = "  " -- ﴬ
+tag6 = "  "
+tag7 = "  "
+tag8 = "  " -- 
+tag9 = "  "
+
 -- }}}
 
 -- {{{ Helper functions

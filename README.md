@@ -19,6 +19,8 @@ config files
     for vim-airline (Hack font has better patched powerline glyphs)
   - [powerline-console-fonts](https://github.com/powerline/powerline):
     for linux console
+  - [Nerd Font](https://nerdfonts.com):
+    for awesome wm tags
 
 - Powerline
   - [Powerline](https://github.com/powerline/powerline)
@@ -34,7 +36,7 @@ config files
 - curl for vim-plug auto install (in .vimrc)
 
 - For Awesome WM:
- - xinput for configuring trackpad.
+  - xinput for configuring trackpad.
 
 ## Install
 
