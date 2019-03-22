@@ -220,9 +220,35 @@ local mpd = lain.widget.mpd({
     end
 })
 mpd.update()
+local testbar = wibox.widget {
+    forced_height = 1,
+    forced_width = 80,
+    color = beautiful.fg_normal,
+    background_color = beautiful.bg_normal,
+    margins = 1,
+    paddings = 1,
+    ticks = true,
+    ticks_gap = 2,
+    ticks_size = 6,
+    widget = wibox.widget.progressbar,
+}
+volume_bar = wibox.container.margin(
+    wibox.container.background(
+        testbar,
+        beautiful.fg_normal,
+        gears.shape.rectangle
+    ),
+    0, 0, 6, 6
+)
 local volume = lain.widget.alsa({
     settings = function()
-        widget:set_markup(string.format(" Vol: %3d%% |", volume_now.level))
+        if volume_now.status == "on" then
+            volume_level = string.format("%3d%%", volume_now.level)
+            testbar:set_value(volume_now.level / 100)
+        else
+            volume_level = "Mute"
+        end
+        widget:set_markup("Vol: " .. volume_level)
     end
 })
 local volume_toggle = string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel)
