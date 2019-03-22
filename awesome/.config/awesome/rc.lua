@@ -78,6 +78,11 @@ terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
+-- rofi commands
+rofi_basic = "rofi -theme gruvbox-dark-soft"
+rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun -show-icons"
+rofi_run = rofi_basic .. " -show run"
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -155,8 +160,8 @@ end
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
+   { "manual", terminal .. " -e \"man awesome\"" },
+   { "edit config", terminal .. " -e \"" .. editor .. " " .. awesome.conffile .. "\""},
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
@@ -459,32 +464,32 @@ root.buttons(gears.table.join(
 ))
 volume.widget:buttons(awful.util.table.join(
     awful.button({}, 1, function() -- left click
-        awful.spawn(string.format("%s -e alsamixer", terminal))
+        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+        volume.update()
     end),
     awful.button({}, 2, function() -- middle click
         os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
         volume.update()
     end),
     awful.button({}, 3, function() -- right click
-        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
-        volume.update()
+        awful.spawn(string.format("%s -e alsamixer", terminal))
     end),
     awful.button({}, 4, function() -- scroll up
-        os.execute(string.format("%s set %s 1%%+", volume.cmd, volume.channel))
+        os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
         volume.update()
     end),
     awful.button({}, 5, function() -- scroll down
-        os.execute(string.format("%s set %s 1%%-", volume.cmd, volume.channel))
+        os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
         volume.update()
     end)
 ))
 mpd.widget:buttons(awful.util.table.join(
     awful.button({}, 1, function()
-        awful.spawn(terminal .. " -e ncmpcpp")
-    end),
-    awful.button({}, 3, function()
         awful.spawn.with_shell("mpc toggle")
         mpd.update()
+    end),
+    awful.button({}, 3, function()
+        awful.spawn(terminal .. " -e ncmpcpp")
     end),
     awful.button({}, 4, function()
         awful.spawn.with_shell("mpc seek +10")
@@ -581,12 +586,14 @@ globalkeys = gears.table.join(
 
     -- Prompt
     awful.key({ modkey }, "d", function ()
-            os.execute("rofi -modi drun,ssh,window -show drun -show-icons")
+            os.execute(rofi_drun)
         end,
-        {description = "show dmenu", group = "launcher"}),
+        {description = "show rofi in drun modi", group = "launcher"}),
 
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey }, "r", function ()
+            os.execute(rofi_run)
+        end,
+        {description = "run command in rofi", group = "launcher"}),
 
     awful.key({ modkey }, "x",
               function ()
