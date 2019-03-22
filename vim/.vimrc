@@ -63,7 +63,7 @@ let g:airline#extensions#tabline#enabled   = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled       = 1
 let g:airline_theme                        = 'gruvbox'
-let g:airline_powerline_fonts              = 0
+let g:airline_powerline_fonts              = 1
 let g:airline_highlighting_cache           = 0
 " }}}
 " Fugitive {{{
@@ -169,9 +169,10 @@ let g:ibus#engine = "libpinyin"
 " fcitx {{{
 " }}}
 " Theme solarized, gruvbox {{{
-let g:gruvbox_italic=1
+let g:gruvbox_italic      = 1
+let g:gruvbox_sign_column = "bg0"
 let g:solarized_underline = 0
-"set background=dark
+set background=dark
 " }}}
 " vim-slime {{{
 " use tmux
@@ -248,6 +249,7 @@ set lazyredraw
 set noerrorbells
 "colorscheme Tomorrow-Night-Eighties
 "colorscheme solarized
+set termguicolors
 colorscheme gruvbox
 " }}}
 " Space Tabs Indentations {{{
@@ -296,4 +298,4 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>e :e<CR>
 " }}}
 " }}}
-" vim:foldmethod=marker:foldlevel=0
+" vim:foldmethod=marker:foldlevel=1
