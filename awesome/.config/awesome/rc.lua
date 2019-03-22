@@ -47,29 +47,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
-beautiful.fg_focus              = beautiful.bg_focus
-beautiful.bg_focus              = "#6c7ea7"
-beautiful.taglist_font = "Hack Nerd Font 14"
-beautiful.taglist_squares_sel   = nil
-beautiful.taglist_squares_unsel = nil
-beautiful.taglist_fg_occupied   = beautiful.bg_normal
-beautiful.taglist_bg_occupied   = beautiful.fg_normal
-beautiful.useless_gap = 12
-beautiful.border_width = 6
-beautiful.font = "Hack Bold 10"
-beautiful.menu_height = 24
-beautiful.menu_width = 192
-beautiful.notification_shape = gears.shape.rounded_rect
-beautiful.notification_border_width = 4
-beautiful.notification_border_color = beautiful.bg_normal
-
-beautiful.widget_main_color = "#74aeab"
-beautiful.widget_red = "#e53935"
-beautiful.widget_yellow = "#c0ca33"
-beautiful.widget_green = "#43a047"
-beautiful.widget_black = "#000000"
-beautiful.widget_transparent = "#00000000"
+--beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- This is used later as the default terminal and editor to run.
 terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
@@ -117,15 +96,15 @@ awful.layout.layouts = {
 --tag7 = " Media "
 --tag8 = " Mail "
 --tag9 = " Other "
-tag1 = "  "
-tag2 = "  " --  
-tag3 = "  " --   龎
-tag4 = "  "
-tag5 = "  " -- ﴬ
-tag6 = "  "
-tag7 = "  "
-tag8 = "  " -- 
-tag9 = "  "
+tag1 = " " .. beautiful.nerdfont_browser   .. " "
+tag2 = " " .. beautiful.nerdfont_terminal  .. " "
+tag3 = " " .. beautiful.nerdfont_book      .. " "
+tag4 = " " .. beautiful.nerdfont_briefcase .. " "
+tag5 = " " .. beautiful.nerdfont_note      .. " "
+tag6 = " " .. beautiful.nerdfont_download  .. " "
+tag7 = " " .. beautiful.nerdfont_movie     .. " "
+tag8 = " " .. beautiful.nerdfont_email     .. " "
+tag9 = " " .. beautiful.nerdfont_terminal  .. " "
 
 -- }}}
 
@@ -194,6 +173,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- }}}
 
 -- {{{ Wibar
+-- {{{ Widgets
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
@@ -336,6 +316,7 @@ local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc"
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+-- }}}
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -777,9 +758,8 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = false }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
+    -- Set Firefox to always map on the tag 1.
     { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
         properties = { tag = tag1 } },
 }
 -- }}}
@@ -853,4 +833,4 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- vim:foldmethod=marker
+-- vim:foldmethod=marker:foldlevel=0
