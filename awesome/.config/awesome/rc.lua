@@ -67,6 +67,12 @@ beautiful.notification_shape = gears.shape.rounded_rect
 beautiful.notification_border_width = 4
 beautiful.notification_border_color = beautiful.bg_normal
 
+beautiful.widget_main_color = "#74aeab"
+beautiful.widget_red = "#e53935"
+beautiful.widget_yellow = "#c0ca33"
+beautiful.widget_green = "#43a047"
+beautiful.widget_black = "#000000"
+beautiful.widget_transparent = "#00000000"
 -- This is used later as the default terminal and editor to run.
 terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
@@ -262,6 +268,13 @@ local mynet = lain.widget.net({
         )
     end
 })
+-- awesome-wm-widgets
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -360,19 +373,24 @@ awful.screen.connect_for_each_screen(function(s)
             s.mytaglist,
             s.mypromptbox,
         },
-        --s.mytasklist, -- Middle widget
-        nil,
+        s.mytasklist, -- Middle widget
+        --nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mpd.widget,
-            mynet.widget,
-            volume.widget,
-            mybattery.widget,
-            mycpu.widget,
-            mymem.widget,
-            mysysload.widget,
+            wibox.widget.systray(),
+            {
+                spacing = 8,
+                layout = wibox.layout.fixed.horizontal,
+                cpu_widget,
+                ram_widget,
+                volumearc_widget,
+                --batteryarc_widget,
+                brightness_widget,
+                battery_widget,
+            },
+
             mytextclock,
-        s.mylayoutbox,
+            s.mylayoutbox,
         },
     }
 
@@ -383,8 +401,19 @@ awful.screen.connect_for_each_screen(function(s)
     s.mybottomwibox:setup {
         layout = wibox.layout.align.horizontal,
         nil,
-        s.mytasklist,
-        wibox.widget.systray(),
+        nil,
+        {
+            spacing = 32,
+            spacing_widget = seperator,
+            layout = wibox.layout.fixed.horizontal,
+            mpd.widget,
+            mynet.widget,
+            volume.widget,
+            volume_bar,
+            mybattery.widget,
+            mycpu.widget,
+            mymem.widget,
+        },
     }
 end)
 -- }}}
