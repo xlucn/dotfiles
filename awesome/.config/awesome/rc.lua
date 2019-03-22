@@ -225,6 +225,12 @@ local volume = lain.widget.alsa({
         widget:set_markup(string.format(" Vol: %3d%% |", volume_now.level))
     end
 })
+local volume_toggle = string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel)
+local volume_max = string.format("%s set %s 100%%", volume.cmd, volume.channel)
+local volume_mixer = string.format("%s -e alsamixer", terminal)
+local volume_up = string.format("%s set %s 2%%+", volume.cmd, volume.channel)
+local volume_down = string.format("%s set %s 2%%-", volume.cmd, volume.channel)
+
 local mybattery = lain.widget.bat({
     notify = "off",
     settings = function()
@@ -571,7 +577,15 @@ globalkeys = gears.table.join(
               --{description = "show the menubar", group = "launcher"})
     -- Xrandr
     awful.key({ modkey }, "p", function() xrandr.xrandr() end,
-              {description = "swap arrangements of monitors", group = "screen"})
+              {description = "swap arrangements of monitors", group = "screen"}),
+
+    -- XF86 keys
+    awful.key({}, "XF86AudioMute", function() os.execute(volume_toggle) end,
+        {description = "toggle mute", group = "media"}),
+    awful.key({}, "XF86AudioRaiseVolume", function() os.execute(volume_up) end,
+        {description = "volume up", group = "media"}),
+    awful.key({}, "XF86AudioLowerVolume", function() os.execute(volume_down) end,
+        {description = "volume down", group = "media"})
 )
 
 clientkeys = gears.table.join(
