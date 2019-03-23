@@ -115,3 +115,19 @@ URxvt.color250: #d5c4a1
 !*color13:                 #6c71c4
 !*color14:                 #93a1a1
 !*color15:                 #fdf6e3
+
+! -- Rofi -- !
+! "Window width" Set from: Default
+rofi.width:                          30
+! "Number of lines" Set from: Default
+rofi.lines:                          10
+! "Border width" Set from: Default
+rofi.bw:                             4
+! "Padding" Set from: Default
+rofi.padding:                        0
+! "Whether to load and show icons" Set from: Default
+rofi.show-icons:                     true
+! "Theme to use to look for icons" Set from: Default
+rofi.icon-theme:                     Papirus
+! "New style theme file" Set from: Default
+rofi.theme:                          gruvbox-dark
