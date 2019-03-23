@@ -131,43 +131,49 @@ theme.widget_black       = dark0
 theme.widget_transparent = "#00000000"
 -- }}}
 
--- Nerd Fonts {{{
+-- Nerd Fonts Glyphs {{{
 -- For tags {{{
 theme.nerdfont_browser   = ""
 theme.nerdfont_terminal  = "" --  
-theme.nerdfont_book      = "" --   龎
+theme.nerdfont_book      = "龎" --   
 theme.nerdfont_briefcase = ""
 theme.nerdfont_note      = "" -- ﴬ
 theme.nerdfont_download  = ""
 theme.nerdfont_movie     = ""
 theme.nerdfont_email     = "" -- 
 -- }}}
+
 -- For widgets {{{
-theme.nerdfont_music = " "
-theme.nerdfont_music_play = " "
-theme.nerdfont_music_pause = " "
-theme.nerdfont_music_stop = " "
-theme.nerdfont_music_next = " "
-theme.nerdfont_music_prev = " "
-theme.nerdfont_music_shuffle = " "
-theme.nerdfont_music_repeat = " "
-theme.nerdfont_music_single = " "
-theme.nerdfont_upspeed = " "
-theme.nerdfont_downspeed = " "
-theme.nerdfont_brightness = " "
-theme.nerdfont_brightness_low = " "
-theme.nerdfont_brightness_mid = " "
-theme.nerdfont_brightness_high = " "
-theme.nerdfont_bat_empty = " "
-theme.nerdfont_bat_empty_charging = " "
-theme.nerdfont_bat_low = " "
-theme.nerdfont_bat_low_charging = " "
-theme.nerdfont_bat_mid = " "
-theme.nerdfont_bat_mid_charging = " "
-theme.nerdfont_bat_high = " "
-theme.nerdfont_bat_high_charging = " "
-theme.nerdfont_bat_full = " "
-theme.nerdfont_bat_full_charging = " "
+theme.nerdfont_music             = ""
+theme.nerdfont_music_off         = ""
+theme.nerdfont_music_play        = ""
+theme.nerdfont_music_pause       = ""
+theme.nerdfont_music_stop        = ""
+theme.nerdfont_music_next        = ""
+theme.nerdfont_music_prev        = ""
+theme.nerdfont_music_shuffle_on  = "列" -- 咽
+theme.nerdfont_music_shuffle_off = "劣"
+theme.nerdfont_music_repeat_on   = "凌"
+theme.nerdfont_music_repeat_off  = "稜"
+theme.nerdfont_music_repeat_one  = "綾"
+theme.nerdfont_upspeed           = "祝"
+theme.nerdfont_downspeed         = ""
+theme.nerdfont_brightness        = ""
+theme.nerdfont_brightness_low    = ""
+theme.nerdfont_brightness_mid    = ""
+theme.nerdfont_brightness_high   = ""
+theme.nerdfont_bat_empty         = ""
+theme.nerdfont_bat_low           = ""
+theme.nerdfont_bat_mid           = ""
+theme.nerdfont_bat_high          = ""
+theme.nerdfont_bat_full          = ""
+theme.nerdfont_bat_full_charging = ""
+theme.nerdfont_volume_mute       = "ﱝ"
+theme.nerdfont_volume_low        = "奄" -- 
+theme.nerdfont_volume_mid        = "奔" -- 
+theme.nerdfont_volume_high       = "墳" -- 
+theme.nerdfont_memory            = ""
+theme.nerdfont_cpu               = ""
 -- }}}
 -- }}}
 
