@@ -534,6 +534,12 @@ globalkeys = gears.table.join(
         end,
         {description = "go back", group = "client"}),
 
+    -- On the fly useless gaps change
+    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(1) end,
+              {description = "increase useless gap", group = "awesome"}),
+    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
+              {description = "decrease useless gap", group = "awesome"}),
+
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
