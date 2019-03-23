@@ -136,7 +136,7 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
 " start vim with a server, see ':h vimtex-clientserver'
-if empty(v:servername) && exists('*remote_startserver')
+if empty(v:servername) && exists('*remote_startserver') && !empty($DISPLAY)
   call remote_startserver('VIM')
 endif
 " viewer setting
