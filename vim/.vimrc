@@ -259,8 +259,8 @@ set smartindent
 set cindent
 " tabs
 set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set shiftwidth=0  " make it the same as tabstop
+set softtabstop=-1  " make it the same as shiftwidth
 set expandtab
 set smarttab
 " show tabs and trailing whitespace
