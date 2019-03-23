@@ -18,6 +18,8 @@ local xrandr = require("xrandr")
 require("awful.hotkeys_popup.keys")
 local lain = require("lain")
 local freedesktop = require("freedesktop")
+local dpi = require("beautiful.xresources").apply_dpi
+local markup = lain.util.markup
 -- }}}
 
 -- {{{ Error handling
@@ -210,58 +212,104 @@ local mpd = lain.widget.mpd({
         end
         -- state
         if mpd_now.state == "play" then
-            state = "="
+            state = beautiful.nerdfont_music_pause -- "="
         elseif mpd_now.state == "pause" then
-            state = ">"
+            state = beautiful.nerdfont_music_play -- ">"
         else
-            state = "x"
+            state = beautiful.nerdfont_music_stop -- "x"
         end
-        widget:set_markup("MPD: " .. "[" .. state .. "] " ..
-                          elapsed .. "/" .. time)
+        widget:set_markup(
+            markup.font(beautiful.widgets_nerdfont,
+                        beautiful.nerdfont_music .. " " ..
+                        beautiful.nerdfont_music_prev .. " " ..
+                        state .. " " ..
+                        beautiful.nerdfont_music_next)
+        )
     end
 })
+mpd.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("mpc toggle")
+        mpd.update()
+    end),
+    awful.button({}, 3, function()
+        awful.spawn(terminal .. " -e ncmpcpp")
+    end),
+    awful.button({}, 4, function()
+        awful.spawn.with_shell("mpc seek +10")
+        mpd.update()
+    end),
+    awful.button({}, 5, function()
+        awful.spawn.with_shell("mpc seek -10")
+        mpd.update()
+    end)
+))
 mpd.update()
 local testbar = wibox.widget {
-    forced_height = 1,
-    forced_width = 80,
-    color = beautiful.fg_normal,
+    color            = beautiful.fg_normal,
     background_color = beautiful.bg_normal,
-    margins = 1,
-    paddings = 1,
-    ticks = true,
-    ticks_gap = 2,
-    ticks_size = 6,
-    widget = wibox.widget.progressbar,
+    margins          = beautiful.progressbar_margins,
+    paddings         = beautiful.progressbar_paddings,
+    ticks            = true,
+    ticks_gap        = beautiful.progressbar_ticks_gap,
+    ticks_size       = beautiful.progressbar_ticks_size,
+    forced_height    = 1,
+    forced_width     = beautiful.progressbar_width,
+    widget           = wibox.widget.progressbar,
 }
+volume_bar_height = 10
+volume_bar_margin = (beautiful.wibox_height - volume_bar_height) / 2
 volume_bar = wibox.container.margin(
     wibox.container.background(
         testbar,
         beautiful.fg_normal,
         gears.shape.rectangle
     ),
-    0, 0, 6, 6
+    4, 4, volume_bar_margin, volume_bar_margin
 )
 local volume = lain.widget.alsa({
     settings = function()
         if volume_now.status == "on" then
+            state = beautiful.nerdfont_volume_high
             volume_level = string.format("%3d%%", volume_now.level)
-            testbar:set_value(volume_now.level / 100)
         else
-            volume_level = "Mute"
+            state = beautiful.nerdfont_volume_mute
+            volume_level = "Mute" .. volume_now.level
         end
-        widget:set_markup("Vol: " .. volume_level)
+        testbar:set_value(volume_now.level / 100)
+        widget:set_markup(markup.font(beautiful.widgets_nerdfont, state))
     end
 })
-local volume_toggle = string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel)
-local volume_max = string.format("%s set %s 100%%", volume.cmd, volume.channel)
-local volume_mixer = string.format("%s -e alsamixer", terminal)
-local volume_up = string.format("%s set %s 2%%+", volume.cmd, volume.channel)
-local volume_down = string.format("%s set %s 2%%-", volume.cmd, volume.channel)
+volume_bar:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        awful.spawn(string.format("%s -e alsamixer", terminal))
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
+        volume.update()
+    end)
+))
 
 local mybattery = lain.widget.bat({
     notify = "off",
     settings = function()
-        widget:set_markup(string.format("Bat: %3d%%", bat_now.perc))
+        widget:set_markup(
+            string.format("%s %3d%%",
+                markup.font(beautiful.widgets_nerdfont,
+                            beautiful.nerdfont_bat_full),
+                bat_now.perc))
     end
 })
 local mycpu = lain.widget.cpu({
@@ -271,7 +319,11 @@ local mycpu = lain.widget.cpu({
 })
 local mymem = lain.widget.mem({
     settings = function()
-        widget:set_markup(string.format("Mem: %2d%%", mem_now.perc))
+        widget:set_markup(
+            string.format("%s %2d%%",
+                          markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_memory),
+                          mem_now.perc))
     end
 })
 local mysysload = lain.widget.sysload({
@@ -295,8 +347,12 @@ local mynet = lain.widget.net({
         sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         received, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            string.format("U: %5.1f %s, D: %5.1f %s",
+            string.format("%s%5.1f %s %s%5.1f %s",
+                          markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_upspeed),
                           sent, sent_unit,
+                          markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_downspeed),
                           received, received_unit
             )
         )
@@ -404,7 +460,11 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 24 })
+    s.mywibox = awful.wibar({
+        position = "top",
+        screen = s,
+        height = beautiful.wibox_height
+    })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -419,21 +479,29 @@ awful.screen.connect_for_each_screen(function(s)
         --nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
             {
                 spacing = 8,
                 layout = wibox.layout.fixed.horizontal,
                 mpd.widget,
                 mynet.widget,
                 cpu_widget,
+                --mycpu,
                 ram_widget,
+                --mymem,
                 volumearc_widget,
+                --volume,
+                --volume_bar,
                 --batteryarc_widget,
-                brightness_widget,
-                battery_widget,
+                --brightness_widget,
+                --battery_widget,
+                mybattery,
             },
 
             mytextclock,
+            --wibox.container.margin(
+                wibox.widget.systray(),
+                --4, 4, 4, 4
+            --)
             s.mylayoutbox,
         },
     }
@@ -447,44 +515,6 @@ root.buttons(gears.table.join(
     -- Don't switch views when scrolling on wallpaper
     --awful.button({ }, 4, awful.tag.viewnext),
     --awful.button({ }, 5, awful.tag.viewprev)
-))
-volume.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() -- left click
-        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 2, function() -- middle click
-        os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 3, function() -- right click
-        awful.spawn(string.format("%s -e alsamixer", terminal))
-    end),
-    awful.button({}, 4, function() -- scroll up
-        os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 5, function() -- scroll down
-        os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
-        volume.update()
-    end)
-))
-mpd.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc toggle")
-        mpd.update()
-    end),
-    awful.button({}, 3, function()
-        awful.spawn(terminal .. " -e ncmpcpp")
-    end),
-    awful.button({}, 4, function()
-        awful.spawn.with_shell("mpc seek +10")
-        mpd.update()
-    end),
-    awful.button({}, 5, function()
-        awful.spawn.with_shell("mpc seek -10")
-        mpd.update()
-    end)
 ))
 -- }}}
 
