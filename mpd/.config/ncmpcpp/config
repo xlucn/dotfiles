@@ -1,4 +1,4 @@
-ncmpcpp_directory = ~/.config/ncmpcpp
+ncmpcpp_directory = ~/.cache/ncmpcpp
 mpd_music_dir = ~/Music/
 lyrics_directory = ~/.lyrics
 
