@@ -1,3 +1,4 @@
+-- Gruvbox color table {{{
 -- https://github.com/morhetz/gruvbox-contrib/blob/master/color.table
 --    GRUVCOLR         "HEX    " -- RELATV ALIAS   TERMCOLOR      RGB           ITERM RGB     OSX HEX
 -------------------    "-------" -- ------------   ------------   -----------   -----------   -------
@@ -43,37 +44,46 @@ local faded_blue     = "#076678" -- [   ]  [blue]   24 [  ][12]     7-102-120   
 local faded_purple   = "#8f3f71" -- [   ][purple]   96 [  ][13]   143- 63-113   123- 43- 94   #7b2b5e
 local faded_aqua     = "#427b58" -- [   ]  [aqua]   66 [  ][14]    66-123- 88    53-106- 70   #356a46
 local faded_orange   = "#af3a03" -- [   ][orange]  130 [  ][  ]   175- 58- 3    157- 40- 7    #9d2807
+-- }}}
 
+-- Libraries {{{
 local gears = require("gears")
 local themes_path = require("gears.filesystem").get_themes_dir()
 local dpi = require("beautiful.xresources").apply_dpi
 local theme_assets = require("beautiful.theme_assets")
+-- }}}
 
 local theme = {}
 theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 
+-- Basic Colors {{{
 theme.bg_normal     = dark0
-theme.bg_focus      = neutral_blue
+theme.bg_focus      = dark2 -- neutral_blue
 theme.bg_urgent     = bright_purple
-theme.bg_minimize   = theme.bg_focus
+theme.bg_minimize   = theme.bg_normal
 theme.bg_systray    = theme.bg_normal
 theme.hotkeys_bg    = theme.bg_normal
 
 theme.fg_normal     = light0
-theme.fg_focus      = theme.fg_normal
+theme.fg_focus      = bright_green
 theme.fg_urgent     = theme.bg_normal
-theme.fg_minimize   = theme.fg_normal
+theme.fg_minimize   = gray_244
 theme.hotkeys_fg    = theme.fg_normal
 
 theme.border_normal = theme.bg_normal
-theme.border_focus  = theme.bg_focus
+theme.border_focus  = dark1
 theme.border_marked = neutral_red
+-- }}}
 
+-- Taglist {{{
 theme.taglist_font          = "Hack Nerd Font 14"
 theme.taglist_squares_sel   = nil
 theme.taglist_squares_unsel = nil
-theme.taglist_fg_occupied   = theme.fg_normal
-theme.taglist_bg_occupied   = dark3
+theme.taglist_fg_occupied   = theme.fg_focus
+theme.taglist_bg_occupied   = theme.bg_normal
+theme.taglist_fg_focus      = theme.fg_focus
+theme.taglist_bg_focus      = theme.bg_focus
+-- }}}
 
 theme.useless_gap               = dpi(12)
 theme.border_width              = dpi(4)
@@ -81,6 +91,7 @@ theme.font                      = "Hack Bold 10"
 theme.hotkeys_font              = "Hack 9"
 theme.hotkeys_description_font  = "Hack 9"
 
+-- Menu {{{
 theme.menu_font                 = "Hack Bold 12"
 theme.menu_height               = dpi(36)
 theme.menu_width                = dpi(192)
@@ -88,17 +99,22 @@ theme.menu_border_color         = theme.bg_normal
 theme.menu_border_width         = dpi(4)
 theme.menu_fg_focus             = theme.fg_normal
 theme.menu_bg_focus             = theme.bg_focus
+-- }}}
 
+-- Notifications {{{
 theme.notification_shape        = gears.shape.rounded_rect
 theme.notification_border_width = dpi(4)
 theme.notification_border_color = theme.bg_normal
+-- }}}
 
+-- awesome-wm-widgets widgets colors {{{
 theme.widget_main_color  = blue
 theme.widget_red         = red
 theme.widget_yellow      = yellow
 theme.widget_green       = green
 theme.widget_black       = dark0
 theme.widget_transparent = "#00000000"
+-- }}}
 
 -- Nerd Fonts {{{
 -- For tags {{{
@@ -190,9 +206,12 @@ theme.titlebar_maximized_button_normal_inactive = themes_path .. "zenburn/titleb
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, neutral_yellow, theme.bg_normal
+    theme.menu_height, bright_blue, theme.bg_normal
 )
+
+-- Icon theme
 theme.icon_theme = "Papirus"
 -- }}}
 
 return theme
+-- vim:foldmethod=marker
