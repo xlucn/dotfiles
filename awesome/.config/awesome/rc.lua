@@ -369,8 +369,8 @@ local seperator = {
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
-local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+--local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+--local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 -- }}}
 
