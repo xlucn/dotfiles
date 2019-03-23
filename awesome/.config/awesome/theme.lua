@@ -85,11 +85,26 @@ theme.taglist_fg_focus      = theme.fg_focus
 theme.taglist_bg_focus      = theme.bg_focus
 -- }}}
 
+-- Sizes {{{
+theme.wibox_height              = dpi(24)
 theme.useless_gap               = dpi(12)
 theme.border_width              = dpi(4)
 theme.font                      = "Hack Bold 10"
 theme.hotkeys_font              = "Hack 9"
 theme.hotkeys_description_font  = "Hack 9"
+theme.widgets_nerdfont          = "Hack Nerd Font 11"
+theme.systray_icon_spacing      = dpi(8)
+-- example sizes for a progress bar
+theme.progressbar_margins       = dpi(1)
+theme.progressbar_paddings      = dpi(1)
+theme.progressbar_ticks_size    = dpi(4)
+theme.progressbar_ticks_gap     = dpi(1)
+-- make the progress bar have 10 blocks
+theme.progressbar_width         = 10 * (theme.progressbar_ticks_size +
+                                        theme.progressbar_ticks_gap) +
+                                  2 * theme.progressbar_margins +
+                                  theme.progressbar_paddings
+-- }}}
 
 -- Menu {{{
 theme.menu_font                 = "Hack Bold 12"
