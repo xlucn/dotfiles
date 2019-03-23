@@ -176,11 +176,17 @@ set background=dark
 " }}}
 " vim-slime {{{
 " use tmux
-let g:slime_target = "tmux"
+"let g:slime_target = "tmux"
 " set config to use the pane on the right by default
-let g:slime_default_config = {
-    \ "socket_name": "default",
-    \ "target_pane": "{right-of}"
+"let g:slime_default_config = {
+    "\ "socket_name": "default",
+    "\ "target_pane": "{right-of}"
+    "\ }
+" or use vim :terminal
+let g:slime_target = "vimterminal"
+" vim terminal config
+let g:slime_vimterminal_config = {
+    \ "vertical": 1
     \ }
 let g:slime_dont_ask_default = 1
 " use temp file
