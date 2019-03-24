@@ -57,22 +57,23 @@ local theme = {}
 theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 
 -- Basic Colors {{{
-theme.bg_normal     = dark0
-theme.bg_focus      = dark2 -- neutral_blue
-theme.bg_urgent     = bright_purple
-theme.bg_minimize   = theme.bg_normal
-theme.bg_systray    = theme.bg_normal
-theme.hotkeys_bg    = theme.bg_normal
+theme.bg_normal            = dark0
+theme.bg_focus             = dark2 -- neutral_blue
+theme.bg_urgent            = bright_purple
+theme.bg_minimize          = theme.bg_normal
+theme.bg_systray           = theme.bg_normal
+theme.hotkeys_bg           = theme.bg_normal
 
-theme.fg_normal     = light0
-theme.fg_focus      = bright_green
-theme.fg_urgent     = theme.bg_normal
-theme.fg_minimize   = gray_244
-theme.hotkeys_fg    = theme.fg_normal
-
-theme.border_normal = theme.bg_normal
-theme.border_focus  = dark1
-theme.border_marked = neutral_red
+theme.fg_normal            = light0
+theme.fg_focus             = bright_green
+theme.fg_urgent            = theme.bg_normal
+theme.fg_minimize          = gray_244
+theme.hotkeys_fg           = theme.fg_normal
+theme.hotkeys_fg           = theme.fg_normal
+theme.hotkeys_modifiers_fg = gray_244
+theme.border_normal        = theme.bg_normal
+theme.border_focus         = dark1
+theme.border_marked        = neutral_red
 -- }}}
 
 -- Taglist {{{
@@ -93,7 +94,7 @@ theme.font                      = "Hack Bold 10"
 theme.hotkeys_font              = "Hack 9"
 theme.hotkeys_description_font  = "Hack 9"
 theme.widgets_nerdfont          = "Hack Nerd Font 11"
-theme.systray_icon_spacing      = dpi(8)
+theme.systray_icon_spacing      = dpi(0)
 -- example sizes for a progress bar
 theme.progressbar_margins       = dpi(1)
 theme.progressbar_paddings      = dpi(1)

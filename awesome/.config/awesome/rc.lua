@@ -543,13 +543,13 @@ awful.screen.connect_for_each_screen(function(s)
                 --batteryarc_widget,
                 --brightness_widget,
                 mybattery,
+                mytextclock,
             },
 
-            mytextclock,
             --wibox.container.margin(
                 wibox.widget.systray(),
                 --4, 4, 4, 4
-            --)
+            --).widget,
             s.mylayoutbox,
         },
     }
