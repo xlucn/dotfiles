@@ -103,7 +103,7 @@ tag2 = " " .. beautiful.nerdfont_browser   .. " "
 tag3 = " " .. beautiful.nerdfont_book      .. " "
 tag4 = " " .. beautiful.nerdfont_briefcase .. " "
 tag5 = " " .. beautiful.nerdfont_note      .. " "
-tag6 = " " .. beautiful.nerdfont_download  .. " "
+tag6 = " " .. beautiful.nerdfont_files     .. " "
 tag7 = " " .. beautiful.nerdfont_movie     .. " "
 tag8 = " " .. beautiful.nerdfont_email     .. " "
 tag9 = " " .. beautiful.nerdfont_git       .. " "
@@ -280,9 +280,9 @@ volume_bar = wibox.container.margin(
 )
 
 -- audio functions
+tuimixer_command = "alsamixer"
+audio_mixer = terminal .. " -e " .. tuimixer_command
 volume_toggle = function()
-    tuimixer_command = "alsamixer"
-    audio_mixer = terminal .. " -e " .. tuimixer_command
     os.execute(string.format("%s set %s toggle",
                              volume.cmd,
                              volume.togglechannel or volume.channel))
@@ -386,6 +386,10 @@ local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+ram_widget:buttons(awful.util.table.join(
+    ram_widget:buttons(),
+    awful.button({}, 3, function() awful.spawn(terminal .. " -e htop") end)
+))
 -- }}}
 
 -- {{{ Wibar
