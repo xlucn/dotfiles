@@ -141,6 +141,7 @@ theme.nerdfont_note      = "" -- ﴬ
 theme.nerdfont_download  = ""
 theme.nerdfont_movie     = ""
 theme.nerdfont_email     = "" -- 
+theme.nerdfont_git       = "" -- 
 -- }}}
 
 -- For widgets {{{

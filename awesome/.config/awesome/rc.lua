@@ -106,7 +106,7 @@ tag5 = " " .. beautiful.nerdfont_note      .. " "
 tag6 = " " .. beautiful.nerdfont_download  .. " "
 tag7 = " " .. beautiful.nerdfont_movie     .. " "
 tag8 = " " .. beautiful.nerdfont_email     .. " "
-tag9 = " " .. beautiful.nerdfont_terminal  .. " "
+tag9 = " " .. beautiful.nerdfont_git       .. " "
 
 -- }}}
 
@@ -347,7 +347,7 @@ local mynet = lain.widget.net({
         sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         received, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            string.format("%s%5.1f %s %s%5.1f %s",
+            string.format("%s %5.1f %s %s %5.1f %s",
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_upspeed),
                           sent, sent_unit,
