@@ -1,3 +1,5 @@
+local theme = {}
+
 -- Gruvbox color table {{{
 -- https://github.com/morhetz/gruvbox-contrib/blob/master/color.table
 --    GRUVCOLR         "HEX    " -- RELATV ALIAS   TERMCOLOR      RGB           ITERM RGB     OSX HEX
@@ -53,8 +55,9 @@ local dpi = require("beautiful.xresources").apply_dpi
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
-local theme = {}
+-- wallpaper {{{
 theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
+-- }}}
 
 -- Basic Colors {{{
 theme.bg_normal            = dark0
@@ -62,18 +65,35 @@ theme.bg_focus             = dark2 -- neutral_blue
 theme.bg_urgent            = bright_purple
 theme.bg_minimize          = theme.bg_normal
 theme.bg_systray           = theme.bg_normal
-theme.hotkeys_bg           = theme.bg_normal
 
 theme.fg_normal            = light0
 theme.fg_focus             = bright_green
 theme.fg_urgent            = theme.bg_normal
 theme.fg_minimize          = gray_244
-theme.hotkeys_fg           = theme.fg_normal
-theme.hotkeys_fg           = theme.fg_normal
-theme.hotkeys_modifiers_fg = gray_244
 theme.border_normal        = theme.bg_normal
 theme.border_focus         = dark1
 theme.border_marked        = neutral_red
+-- }}}
+
+-- Sizes {{{
+theme.font                      = "Hack Bold 10"
+theme.widgets_nerdfont          = "Hack Nerd Font 12"
+theme.wibox_height              = dpi(26)
+theme.useless_gap               = dpi(12)
+theme.border_width              = dpi(4)
+theme.systray_icon_spacing      = dpi(0)
+-- }}}
+
+-- Hotkey {{{
+theme.hotkeys_fg               = theme.fg_normal
+theme.hotkeys_modifiers_fg     = theme.fg_minimize
+-- next three make it a large padding
+theme.hotkeys_bg               = theme.bg_normal
+theme.hotkeys_border_color     = theme.bg_normal
+theme.hotkeys_border_width     = dpi(16)
+-- fonts
+theme.hotkeys_font             = "Hack 9"
+theme.hotkeys_description_font = "Hack 9"
 -- }}}
 
 -- Taglist {{{
@@ -86,16 +106,7 @@ theme.taglist_fg_focus      = theme.fg_focus
 theme.taglist_bg_focus      = theme.bg_focus
 -- }}}
 
--- Sizes {{{
-theme.font                      = "Hack Bold 10"
-theme.hotkeys_font              = "Hack 9"
-theme.hotkeys_description_font  = "Hack 9"
-theme.widgets_nerdfont          = "Hack Nerd Font 12"
-theme.wibox_height              = dpi(24)
-theme.useless_gap               = dpi(12)
-theme.border_width              = dpi(4)
-theme.systray_icon_spacing      = dpi(0)
--- example sizes for a progress bar
+-- example sizes for a progress bar {{{
 theme.progressbar_margins       = dpi(1)
 theme.progressbar_paddings      = dpi(1)
 theme.progressbar_ticks_size    = dpi(4)
@@ -109,7 +120,7 @@ theme.progressbar_width         = 10 * (theme.progressbar_ticks_size +
 
 -- Menu {{{
 theme.menu_font                 = "Hack Bold 12"
-theme.menu_height               = dpi(36)
+theme.menu_height               = dpi(32)
 theme.menu_width                = dpi(192)
 theme.menu_border_color         = theme.bg_normal
 theme.menu_border_width         = dpi(4)
@@ -133,49 +144,49 @@ theme.widget_transparent = "#00000000"
 -- }}}
 
 -- Nerd Fonts Glyphs For tags {{{
-theme.nerdfont_browser   = ""
-theme.nerdfont_terminal  = "" --  
-theme.nerdfont_book      = "龎" --   
-theme.nerdfont_briefcase = ""
-theme.nerdfont_note      = "" -- ﴬ
-theme.nerdfont_files     = "" -- 
-theme.nerdfont_movie     = ""
-theme.nerdfont_email     = "" -- 
-theme.nerdfont_git       = "" -- 
+theme.nerdfont_browser               = ""
+theme.nerdfont_terminal              = "" --  
+theme.nerdfont_book                  = "龎" --   
+theme.nerdfont_briefcase             = ""
+theme.nerdfont_note                  = "" -- ﴬ
+theme.nerdfont_files                 = "" -- 
+theme.nerdfont_movie                 = ""
+theme.nerdfont_email                 = "" -- 
+theme.nerdfont_git                   = "" -- 
 -- }}}
 
 -- Nerd Fonts Glyphs For widgets {{{
-theme.nerdfont_music             = ""
-theme.nerdfont_music_off         = ""
-theme.nerdfont_music_play        = "契" --  
-theme.nerdfont_music_pause       = "" -- 
-theme.nerdfont_music_stop        = ""
-theme.nerdfont_music_next        = "" --  
-theme.nerdfont_music_prev        = "" --  
-theme.nerdfont_music_shuffle_on  = "列" -- 咽
-theme.nerdfont_music_shuffle_off = "劣"
-theme.nerdfont_music_repeat_on   = "凌"
-theme.nerdfont_music_repeat_off  = "稜"
-theme.nerdfont_music_repeat_one  = "綾"
-theme.nerdfont_upspeed           = "祝"
-theme.nerdfont_downspeed         = ""
-theme.nerdfont_brightness        = ""
-theme.nerdfont_brightness_low    = ""
-theme.nerdfont_brightness_mid    = ""
-theme.nerdfont_brightness_high   = ""
-theme.nerdfont_bat_unknown       = ""
-theme.nerdfont_bat_empty         = ""
-theme.nerdfont_bat_low           = ""
-theme.nerdfont_bat_mid           = ""
-theme.nerdfont_bat_high          = ""
-theme.nerdfont_bat_full          = ""
-theme.nerdfont_bat_full_charging = ""
-theme.nerdfont_volume_mute       = "ﱝ"
-theme.nerdfont_volume_low        = "奄" -- 
-theme.nerdfont_volume_mid        = "奔" -- 
-theme.nerdfont_volume_high       = "墳" -- 
-theme.nerdfont_memory            = "" -- 
-theme.nerdfont_cpu               = "" --  
+theme.nerdfont_music                 = ""
+theme.nerdfont_music_off             = ""
+theme.nerdfont_music_play            = "契" --  
+theme.nerdfont_music_pause           = "" -- 
+theme.nerdfont_music_stop            = ""
+theme.nerdfont_music_next            = "" --  
+theme.nerdfont_music_prev            = "" --  
+theme.nerdfont_music_shuffle_on      = "列" -- 咽
+theme.nerdfont_music_shuffle_off     = "劣"
+theme.nerdfont_music_repeat_on       = "凌"
+theme.nerdfont_music_repeat_off      = "稜"
+theme.nerdfont_music_repeat_one      = "綾"
+theme.nerdfont_upspeed               = "祝"
+theme.nerdfont_downspeed             = ""
+theme.nerdfont_brightness            = ""
+theme.nerdfont_brightness_low        = ""
+theme.nerdfont_brightness_mid        = ""
+theme.nerdfont_brightness_high       = ""
+theme.nerdfont_bat_unknown           = ""
+theme.nerdfont_bat_empty             = ""
+theme.nerdfont_bat_low               = ""
+theme.nerdfont_bat_mid               = ""
+theme.nerdfont_bat_high              = ""
+theme.nerdfont_bat_full              = ""
+theme.nerdfont_bat_full_charging     = ""
+theme.nerdfont_volume_mute           = "ﱝ"
+theme.nerdfont_volume_low            = "奄" -- 
+theme.nerdfont_volume_mid            = "奔" -- 
+theme.nerdfont_volume_high           = "墳" -- 
+theme.nerdfont_memory                = "" -- 
+theme.nerdfont_cpu                   = "" --  
 -- }}}
 
 -- {{{ Icons
@@ -236,4 +247,5 @@ theme.icon_theme = "Papirus"
 -- }}}
 
 return theme
--- vim:foldmethod=marker
+
+-- vim:foldmethod=marker:foldlevel=0
