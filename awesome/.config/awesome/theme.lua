@@ -87,13 +87,13 @@ theme.taglist_bg_focus      = theme.bg_focus
 -- }}}
 
 -- Sizes {{{
-theme.wibox_height              = dpi(24)
-theme.useless_gap               = dpi(12)
-theme.border_width              = dpi(4)
 theme.font                      = "Hack Bold 10"
 theme.hotkeys_font              = "Hack 9"
 theme.hotkeys_description_font  = "Hack 9"
-theme.widgets_nerdfont          = "Hack Nerd Font 11"
+theme.widgets_nerdfont          = "Hack Nerd Font 12"
+theme.wibox_height              = dpi(24)
+theme.useless_gap               = dpi(12)
+theme.border_width              = dpi(4)
 theme.systray_icon_spacing      = dpi(0)
 -- example sizes for a progress bar
 theme.progressbar_margins       = dpi(1)
@@ -132,8 +132,7 @@ theme.widget_black       = dark0
 theme.widget_transparent = "#00000000"
 -- }}}
 
--- Nerd Fonts Glyphs {{{
--- For tags {{{
+-- Nerd Fonts Glyphs For tags {{{
 theme.nerdfont_browser   = ""
 theme.nerdfont_terminal  = "" --  
 theme.nerdfont_book      = "龎" --   
@@ -145,14 +144,14 @@ theme.nerdfont_email     = "" -- 
 theme.nerdfont_git       = "" -- 
 -- }}}
 
--- For widgets {{{
+-- Nerd Fonts Glyphs For widgets {{{
 theme.nerdfont_music             = ""
 theme.nerdfont_music_off         = ""
-theme.nerdfont_music_play        = ""
-theme.nerdfont_music_pause       = ""
+theme.nerdfont_music_play        = "契" --  
+theme.nerdfont_music_pause       = "" -- 
 theme.nerdfont_music_stop        = ""
-theme.nerdfont_music_next        = ""
-theme.nerdfont_music_prev        = ""
+theme.nerdfont_music_next        = "" --  
+theme.nerdfont_music_prev        = "" --  
 theme.nerdfont_music_shuffle_on  = "列" -- 咽
 theme.nerdfont_music_shuffle_off = "劣"
 theme.nerdfont_music_repeat_on   = "凌"
@@ -175,9 +174,8 @@ theme.nerdfont_volume_mute       = "ﱝ"
 theme.nerdfont_volume_low        = "奄" -- 
 theme.nerdfont_volume_mid        = "奔" -- 
 theme.nerdfont_volume_high       = "墳" -- 
-theme.nerdfont_memory            = ""
+theme.nerdfont_memory            = "" -- 
 theme.nerdfont_cpu               = "" --  
--- }}}
 -- }}}
 
 -- {{{ Icons

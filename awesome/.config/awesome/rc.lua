@@ -145,6 +145,7 @@ end
 -- }}}
 
 -- {{{ Menu
+
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
@@ -153,11 +154,7 @@ myawesomemenu = {
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
-
---mymainmenu = awful.menu({ items = {
-    --{ "awesome", myawesomemenu, beautiful.awesome_icon },
-    --{ "open terminal", terminal }
---}})
+-- use lcpz's freedesktop menu
 mymainmenu = freedesktop.menu.build({
     before = {
         { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -169,12 +166,10 @@ mymainmenu = freedesktop.menu.build({
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
-
--- Menubar configuration
---menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Widgets
+
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
@@ -195,8 +190,7 @@ arrow = wibox.widget {
     layout = wibox.layout.fixed.horizontal
 }
 
-local larrow = separators.arrow_left()
-
+-- MPD widget {{{
 local mpd = lain.widget.mpd({
     timeout = 5,
     notify = "off",
@@ -211,6 +205,20 @@ local mpd = lain.widget.mpd({
                                     mpd_now.date,
                                     mpd_now.title)
         }
+        -- random mode
+        if mpd_now.random_mode == true then
+            random_mode = beautiful.nerdfont_music_shuffle_on
+        else
+            random_mode = beautiful.nerdfont_music_shuffle_off
+        end
+        -- repeat mode
+        if mpd_now.repeat_mode == true and mpd_now.single_mode == true then
+            repeat_mode = beautiful.nerdfont_music_repeat_one
+        elseif mpd_now.repeat_mode == true and mpd_now.single_mode == false then
+            repeat_mode = beautiful.nerdfont_music_repeat_on
+        else
+            repeat_mode = beautiful.nerdfont_music_repeat_off
+        end
         -- time format
         if mpd_now.state == "play" or mpd_now.state == "pause" then
             elapsed = format_time(mpd_now.elapsed)
@@ -232,7 +240,8 @@ local mpd = lain.widget.mpd({
                         beautiful.nerdfont_music .. " " ..
                         beautiful.nerdfont_music_prev .. " " ..
                         state .. " " ..
-                        beautiful.nerdfont_music_next)
+                        beautiful.nerdfont_music_next .. " " ..
+                        repeat_mode .. " " .. random_mode)
         )
     end
 })
@@ -254,6 +263,7 @@ mpd.widget:buttons(awful.util.table.join(
     end)
 ))
 mpd.update()
+-- }}}
 
 -- alsa bar widget {{{
 local volume = lain.widget.alsabar({
@@ -278,6 +288,18 @@ volume_bar = wibox.container.margin(
     ),
     4, 4, volume_bar_margin, volume_bar_margin
 )
+local myvolume = wibox.widget {
+    spacing = 8,
+    wibox.widget{
+        markup = markup.font(beautiful.widgets_nerdfont,
+                             beautiful.nerdfont_volume_high),
+        align  = 'center',
+        valign = 'center',
+        widget = wibox.widget.textbox
+    },
+    volume_bar,
+    layout = wibox.layout.fixed.horizontal
+}
 
 -- audio functions
 tuimixer_command = "alsamixer"
@@ -310,9 +332,12 @@ volume_bar:buttons(awful.util.table.join(
 
 -- battery widget {{{
 local mybattery = lain.widget.bat({
-    notify = "off",
+    full_notify = "off",
+    notify = "on",
     settings = function()
-        if bat_now.perc == "N/A" then
+        if bat_now.ac_status == 1 then
+            state = beautiful.nerdfont_bat_full_charging
+        elseif bat_now.status == "N/A" then
             state = beautiful.nerdfont_bat_unknown
         else
             perc = tonumber(bat_now.perc)
@@ -322,7 +347,7 @@ local mybattery = lain.widget.bat({
                 state = beautiful.nerdfont_bat_high
             elseif perc > 40 then
                 state = beautiful.nerdfont_bat_mid
-            elseif perc > 20 then
+            elseif perc > 15 then
                 state = beautiful.nerdfont_bat_low
             else
                 state = beautiful.nerdfont_bat_empty
@@ -335,27 +360,7 @@ local mybattery = lain.widget.bat({
 })
 -- }}}
 
-local mycpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(string.format("Cpu: %2d%%", cpu_now.usage))
-    end
-})
-local mymem = lain.widget.mem({
-    settings = function()
-        widget:set_markup(
-            string.format("%s %2d%%",
-                          markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_memory),
-                          mem_now.perc))
-    end
-})
-local mycal = lain.widget.cal({
-    attach_to = { mytextclock },
-    notification_preset = {
-        fg = beautiful.fg_normal,
-        bg = beautiful.bg_normal
-    }
-})
+-- Network widget {{{
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
@@ -374,22 +379,69 @@ local mynet = lain.widget.net({
         )
     end
 })
-local seperator = {
-    orientation = "vertical",
-    color = beautiful.fg_normal,
-    thickness = 2,
-    widget = wibox.widget.separator,
-}
+-- }}}
 
--- awesome-wm-widgets
+-- CPU {{{
+local laincpu = lain.widget.cpu({
+    settings = function()
+        widget:set_markup(string.format("Cpu: %2d%%", cpu_now.usage))
+    end
+})
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
+local mycpu = wibox.widget {
+    spacing = 8,
+    wibox.widget{
+        markup = markup.font(beautiful.widgets_nerdfont,
+                             beautiful.nerdfont_cpu),
+        align  = 'center',
+        valign = 'center',
+        widget = wibox.widget.textbox
+    },
+    cpu_widget,
+    layout = wibox.layout.fixed.horizontal
+}
+-- }}}
+
+-- Memory {{{
+local lainmem = lain.widget.mem({
+    settings = function()
+        widget:set_markup(
+            string.format("%s %2d%%",
+                          markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_memory),
+                          mem_now.perc))
+    end
+})
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 ram_widget:buttons(awful.util.table.join(
     ram_widget:buttons(),
     awful.button({}, 3, function() awful.spawn(terminal .. " -e htop") end)
 ))
+local myram = wibox.widget {
+    spacing = 8,
+    wibox.widget{
+        markup = markup.font(beautiful.widgets_nerdfont,
+                             beautiful.nerdfont_memory),
+        align  = 'center',
+        valign = 'center',
+        widget = wibox.widget.textbox
+    },
+    ram_widget,
+    layout = wibox.layout.fixed.horizontal
+}
+-- }}}
+
+-- Other widgets {{{
+local mycal = lain.widget.cal({
+    attach_to = { mytextclock },
+    notification_preset = {
+        fg = beautiful.fg_normal,
+        bg = beautiful.bg_normal
+    }
+})
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
+-- }}}
 -- }}}
 
 -- {{{ Wibar
@@ -398,16 +450,16 @@ ram_widget:buttons(awful.util.table.join(
 local taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
-                              if client.focus then
-                                  client.focus:move_to_tag(t)
-                              end
-                          end),
+                                    if client.focus then
+                                        client.focus:move_to_tag(t)
+                                    end
+                                end),
     awful.button({ }, 3, awful.tag.viewtoggle),
     awful.button({ modkey }, 3, function(t)
-                              if client.focus then
-                                  client.focus:toggle_tag(t)
-                              end
-                          end),
+                                    if client.focus then
+                                        client.focus:toggle_tag(t)
+                                    end
+                                end),
     awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
@@ -463,7 +515,7 @@ awful.screen.connect_for_each_screen(function(s)
               awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
+    --s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -493,67 +545,24 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
-            s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        --nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            wibox.widget.textbox(" "),
             {
                 spacing = 36,
                 spacing_widget = arrow,
                 layout = wibox.layout.fixed.horizontal,
-                wibox.widget.textbox(" "),
-                mpd.widget,
                 mynet.widget,
-                wibox.widget {
-                    spacing = 8,
-                    wibox.widget{
-                        markup = markup.font(beautiful.widgets_nerdfont,
-                                             beautiful.nerdfont_cpu),
-                        align  = 'center',
-                        valign = 'center',
-                        widget = wibox.widget.textbox
-                    },
-                    --mycpu,
-                    cpu_widget,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                wibox.widget {
-                    spacing = 8,
-                    wibox.widget{
-                        markup = markup.font(beautiful.widgets_nerdfont,
-                                             beautiful.nerdfont_memory),
-                        align  = 'center',
-                        valign = 'center',
-                        widget = wibox.widget.textbox
-                    },
-                    ram_widget,
-                    --mymem,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                wibox.widget {
-                    spacing = 8,
-                    wibox.widget{
-                        markup = markup.font(beautiful.widgets_nerdfont,
-                                             beautiful.nerdfont_volume_high),
-                        align  = 'center',
-                        valign = 'center',
-                        widget = wibox.widget.textbox
-                    },
-                    volume_bar,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                --batteryarc_widget,
-                --brightness_widget,
+                mpd.widget,
+                mycpu,
+                myram,
+                myvolume,
                 mybattery,
                 mytextclock,
             },
-
-            --wibox.container.margin(
-                wibox.widget.systray(),
-                --4, 4, 4, 4
-            --).widget,
+            wibox.widget.systray(),
             s.mylayoutbox,
         },
     }
