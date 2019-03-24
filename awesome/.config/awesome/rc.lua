@@ -125,10 +125,11 @@ local function client_menu_toggle_fn()
 end
 -- format network speed
 local function format_netspeed(raw_speed)
-    if raw_speed < 1024 then
+    -- use 1000 in condition while 1024 in division
+    if raw_speed < 1000 then
         speed = raw_speed
         speed_unit = "KB/s"
-    elseif raw_speed < 1024 * 1024 then
+    elseif raw_speed < 1000 * 1024 then
         speed = raw_speed / 1024
         speed_unit = "MB/s"
     else
@@ -368,7 +369,7 @@ local mynet = lain.widget.net({
         sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         received, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            string.format("%s %5.1f %s %s %5.1f %s",
+            string.format("%s %3.f %s %s %3.f %s",
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_upspeed),
                           sent, sent_unit,

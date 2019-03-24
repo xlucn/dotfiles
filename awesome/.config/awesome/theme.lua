@@ -67,7 +67,7 @@ theme.bg_minimize          = theme.bg_normal
 theme.bg_systray           = theme.bg_normal
 
 theme.fg_normal            = light0
-theme.fg_focus             = bright_green
+theme.fg_focus             = bright_blue
 theme.fg_urgent            = theme.bg_normal
 theme.fg_minimize          = gray_244
 theme.border_normal        = theme.bg_normal
