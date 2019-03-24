@@ -98,8 +98,8 @@ awful.layout.layouts = {
 --tag7 = " Media "
 --tag8 = " Mail "
 --tag9 = " Other "
-tag1 = " " .. beautiful.nerdfont_browser   .. " "
-tag2 = " " .. beautiful.nerdfont_terminal  .. " "
+tag1 = " " .. beautiful.nerdfont_terminal  .. " "
+tag2 = " " .. beautiful.nerdfont_browser   .. " "
 tag3 = " " .. beautiful.nerdfont_book      .. " "
 tag4 = " " .. beautiful.nerdfont_briefcase .. " "
 tag5 = " " .. beautiful.nerdfont_note      .. " "
@@ -796,7 +796,7 @@ awful.rules.rules = {
 
     -- Set Firefox to always map on the tag 1.
     { rule = { class = "Firefox" },
-        properties = { tag = tag1 } },
+        properties = { tag = tag2 } },
 
     -- No borders
     { rule = { instance = "Popup", class = "Firefox" }, -- e.g. addon installed
