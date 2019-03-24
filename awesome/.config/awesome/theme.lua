@@ -134,7 +134,7 @@ theme.widget_transparent = "#00000000"
 -- Nerd Fonts Glyphs {{{
 -- For tags {{{
 theme.nerdfont_browser   = ""
-theme.nerdfont_terminal  = "" --  
+theme.nerdfont_terminal  = "" --  
 theme.nerdfont_book      = "龎" --   
 theme.nerdfont_briefcase = ""
 theme.nerdfont_note      = "" -- ﴬ
@@ -173,7 +173,7 @@ theme.nerdfont_volume_low        = "奄" -- 
 theme.nerdfont_volume_mid        = "奔" -- 
 theme.nerdfont_volume_high       = "墳" -- 
 theme.nerdfont_memory            = ""
-theme.nerdfont_cpu               = ""
+theme.nerdfont_cpu               = "" --  
 -- }}}
 -- }}}
 
