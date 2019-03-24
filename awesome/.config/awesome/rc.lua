@@ -846,6 +846,7 @@ awful.rules.rules = {
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+          "page-info",    -- Firefox's image info
         }
       }, properties = { floating = true,
                         titlebars_enabled = true }},
