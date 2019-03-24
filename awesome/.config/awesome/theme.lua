@@ -99,7 +99,7 @@ theme.progressbar_margins       = dpi(1)
 theme.progressbar_paddings      = dpi(1)
 theme.progressbar_ticks_size    = dpi(4)
 theme.progressbar_ticks_gap     = dpi(1)
--- make the progress bar have 10 blocks
+-- make the progress bar have 10 blocks (or change the number to what you like)
 theme.progressbar_width         = 10 * (theme.progressbar_ticks_size +
                                         theme.progressbar_ticks_gap) +
                                   2 * theme.progressbar_margins +
@@ -163,6 +163,7 @@ theme.nerdfont_brightness        = ""
 theme.nerdfont_brightness_low    = ""
 theme.nerdfont_brightness_mid    = ""
 theme.nerdfont_brightness_high   = ""
+theme.nerdfont_bat_unknown       = ""
 theme.nerdfont_bat_empty         = ""
 theme.nerdfont_bat_low           = ""
 theme.nerdfont_bat_mid           = ""

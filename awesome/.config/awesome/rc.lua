@@ -174,7 +174,6 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 --menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- {{{ Wibar
 -- {{{ Widgets
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
@@ -183,8 +182,18 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 local mytextclock = wibox.widget.textclock()
 
 -- lain widgets
-local separators = lain.util.separators
+
 local markup = lain.util.markup
+local separators = lain.util.separators
+arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
+arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus)
+arrow = wibox.widget {
+    wibox.widget.textbox(" "),
+    arrl_ld,
+    arrl_dl,
+    wibox.widget.textbox(" "),
+    layout = wibox.layout.fixed.horizontal
+}
 
 local larrow = separators.arrow_left()
 
@@ -245,73 +254,87 @@ mpd.widget:buttons(awful.util.table.join(
     end)
 ))
 mpd.update()
-local testbar = wibox.widget {
-    color            = beautiful.fg_normal,
-    background_color = beautiful.bg_normal,
-    margins          = beautiful.progressbar_margins,
-    paddings         = beautiful.progressbar_paddings,
-    ticks            = true,
-    ticks_gap        = beautiful.progressbar_ticks_gap,
-    ticks_size       = beautiful.progressbar_ticks_size,
-    forced_height    = 1,
-    forced_width     = beautiful.progressbar_width,
-    widget           = wibox.widget.progressbar,
-}
+
+-- alsa bar widget {{{
+local volume = lain.widget.alsabar({
+    ticks           = true,
+    width           = beautiful.progressbar_width,
+    ticks_size      = beautiful.progressbar_ticks_size,
+    colors = {
+        background  = beautiful.bg_normal,
+        mute        = beautiful.bg_urgent,
+        unmute      = beautiful.fg_normal
+    }
+})
+
+-- use a margin container
 volume_bar_height = 10
 volume_bar_margin = (beautiful.wibox_height - volume_bar_height) / 2
 volume_bar = wibox.container.margin(
     wibox.container.background(
-        testbar,
+        volume.bar,
         beautiful.fg_normal,
         gears.shape.rectangle
     ),
     4, 4, volume_bar_margin, volume_bar_margin
 )
-local volume = lain.widget.alsa({
-    settings = function()
-        if volume_now.status == "on" then
-            state = beautiful.nerdfont_volume_high
-            volume_level = string.format("%3d%%", volume_now.level)
-        else
-            state = beautiful.nerdfont_volume_mute
-            volume_level = "Mute" .. volume_now.level
-        end
-        testbar:set_value(volume_now.level / 100)
-        widget:set_markup(markup.font(beautiful.widgets_nerdfont, state))
-    end
-})
-volume_bar:buttons(awful.util.table.join(
-    awful.button({}, 1, function() -- left click
-        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 2, function() -- middle click
-        os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 3, function() -- right click
-        awful.spawn(string.format("%s -e alsamixer", terminal))
-    end),
-    awful.button({}, 4, function() -- scroll up
-        os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
-        volume.update()
-    end),
-    awful.button({}, 5, function() -- scroll down
-        os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
-        volume.update()
-    end)
-))
 
+-- audio functions
+volume_toggle = function()
+    tuimixer_command = "alsamixer"
+    audio_mixer = terminal .. " -e " .. tuimixer_command
+    os.execute(string.format("%s set %s toggle",
+                             volume.cmd,
+                             volume.togglechannel or volume.channel))
+    volume.update()
+end
+volume_up = function()
+    os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
+    volume.update()
+end
+volume_down = function()
+    os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
+    volume.update()
+end
+
+-- button bindings
+volume_bar:buttons(awful.util.table.join(
+    awful.button({}, 1, volume_toggle),     -- left click
+    awful.button({}, 3, function()          -- right click
+        awful.spawn(audio_mixer)
+    end),
+    awful.button({}, 4, volume_up),         -- scroll up
+    awful.button({}, 5, volume_down)        -- scroll down
+))
+-- }}}
+
+-- battery widget {{{
 local mybattery = lain.widget.bat({
     notify = "off",
     settings = function()
-        widget:set_markup(
-            string.format("%s %3d%%",
-                markup.font(beautiful.widgets_nerdfont,
-                            beautiful.nerdfont_bat_full),
-                bat_now.perc))
+        if bat_now.perc == "N/A" then
+            state = beautiful.nerdfont_bat_unknown
+        else
+            perc = tonumber(bat_now.perc)
+            if perc > 80 then
+                state = beautiful.nerdfont_bat_full
+            elseif perc > 60 then
+                state = beautiful.nerdfont_bat_high
+            elseif perc > 40 then
+                state = beautiful.nerdfont_bat_mid
+            elseif perc > 20 then
+                state = beautiful.nerdfont_bat_low
+            else
+                state = beautiful.nerdfont_bat_empty
+            end
+        end
+        widget:set_markup(string.format("%s %3d%%",
+            markup.font(beautiful.widgets_nerdfont, state),
+            bat_now.perc))
     end
 })
+-- }}}
+
 local mycpu = lain.widget.cpu({
     settings = function()
         widget:set_markup(string.format("Cpu: %2d%%", cpu_now.usage))
@@ -326,12 +349,6 @@ local mymem = lain.widget.mem({
                           mem_now.perc))
     end
 })
-local mysysload = lain.widget.sysload({
-    settings = function()
-        widget:set_markup(string.format("Load: %.2f %.2f %.2f",
-                                        load_1, load_5, load_15))
-    end
-})
 local mycal = lain.widget.cal({
     attach_to = { mytextclock },
     notification_preset = {
@@ -339,7 +356,6 @@ local mycal = lain.widget.cal({
         bg = beautiful.bg_normal
     }
 })
-mytextclock:disconnect_signal("mouse::enter", mycal.hover_on)
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
@@ -369,10 +385,10 @@ local seperator = {
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
---local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
---local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 -- }}}
+
+-- {{{ Wibar
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -480,20 +496,52 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             {
-                spacing = 8,
+                spacing = 36,
+                spacing_widget = arrow,
                 layout = wibox.layout.fixed.horizontal,
+                wibox.widget.textbox(" "),
                 mpd.widget,
                 mynet.widget,
-                cpu_widget,
-                --mycpu,
-                ram_widget,
-                --mymem,
-                volumearc_widget,
-                --volume,
-                --volume_bar,
+                wibox.widget {
+                    spacing = 8,
+                    wibox.widget{
+                        markup = markup.font(beautiful.widgets_nerdfont,
+                                             beautiful.nerdfont_cpu),
+                        align  = 'center',
+                        valign = 'center',
+                        widget = wibox.widget.textbox
+                    },
+                    --mycpu,
+                    cpu_widget,
+                    layout = wibox.layout.fixed.horizontal
+                },
+                wibox.widget {
+                    spacing = 8,
+                    wibox.widget{
+                        markup = markup.font(beautiful.widgets_nerdfont,
+                                             beautiful.nerdfont_memory),
+                        align  = 'center',
+                        valign = 'center',
+                        widget = wibox.widget.textbox
+                    },
+                    ram_widget,
+                    --mymem,
+                    layout = wibox.layout.fixed.horizontal
+                },
+                wibox.widget {
+                    spacing = 8,
+                    wibox.widget{
+                        markup = markup.font(beautiful.widgets_nerdfont,
+                                             beautiful.nerdfont_volume_high),
+                        align  = 'center',
+                        valign = 'center',
+                        widget = wibox.widget.textbox
+                    },
+                    volume_bar,
+                    layout = wibox.layout.fixed.horizontal
+                },
                 --batteryarc_widget,
                 --brightness_widget,
-                --battery_widget,
                 mybattery,
             },
 
@@ -635,11 +683,11 @@ globalkeys = gears.table.join(
               {description = "swap arrangements of monitors", group = "screen"}),
 
     -- XF86 keys
-    awful.key({}, "XF86AudioMute", function() os.execute(volume_toggle) end,
+    awful.key({}, "XF86AudioMute", volume_toggle,
         {description = "toggle mute", group = "media"}),
-    awful.key({}, "XF86AudioRaiseVolume", function() os.execute(volume_up) end,
+    awful.key({}, "XF86AudioRaiseVolume", volume_up,
         {description = "volume up", group = "media"}),
-    awful.key({}, "XF86AudioLowerVolume", function() os.execute(volume_down) end,
+    awful.key({}, "XF86AudioLowerVolume", volume_down,
         {description = "volume down", group = "media"})
 )
 
