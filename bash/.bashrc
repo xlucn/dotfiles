@@ -43,3 +43,6 @@ then
     POWERLINE_BASH_SELECT=1
     . $powerline_root/powerline/bindings/bash/powerline.sh
 fi
+
+# set vi mode keybinding
+set -o vi
