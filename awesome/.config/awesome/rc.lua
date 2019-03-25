@@ -57,8 +57,8 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- rofi commands
-rofi_basic = "rofi -theme gruvbox-dark-soft"
-rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun -show-icons"
+rofi_basic = "rofi"
+rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
 
 -- Default modkey.
