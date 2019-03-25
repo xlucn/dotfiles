@@ -582,6 +582,11 @@ root.buttons(gears.table.join(
     --awful.button({ }, 4, awful.tag.viewnext),
     --awful.button({ }, 5, awful.tag.viewprev)
 ))
+mylauncher:buttons(awful.util.table.join(
+    mylauncher:buttons(),
+    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+))
 -- }}}
 
 -- {{{ Key bindings
