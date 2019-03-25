@@ -45,7 +45,7 @@ Plug 'lervag/vimtex'
 " mathematica
 Plug 'rsmenon/vim-mathematica'
 " fcitx
-"Plug 'lilydjwg/fcitx.vim'
+Plug 'lilydjwg/fcitx.vim'
 " vim-slime
 Plug 'jpalardy/vim-slime'
 call plug#end()
