@@ -637,8 +637,16 @@ globalkeys = gears.table.join(
               {description = "decrease useless gap", group = "awesome"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+    awful.key({ modkey,           }, "Return",  function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ modkey, "Shift"   }, "Return",  function ()
+                                                    awful.spawn(terminal, {
+                                                        ontop = true,
+                                                        floating = true,
+                                                        placement = awful.placement.centered,
+                                                    })
+                                                end,
+              {description = "open a centered floating terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
