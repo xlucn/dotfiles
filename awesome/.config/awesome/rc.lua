@@ -170,15 +170,9 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- }}}
 
 -- {{{ Widgets
-
--- Keyboard map indicator and switcher
-local mykeyboardlayout = awful.widget.keyboardlayout()
-
--- Create a textclock widget
-local mytextclock = wibox.widget.textclock()
-
 -- lain widgets
 
+-- seperator {{{
 local markup = lain.util.markup
 local separators = lain.util.separators
 arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
@@ -190,6 +184,7 @@ arrow = wibox.widget {
     wibox.widget.textbox(" "),
     layout = wibox.layout.fixed.horizontal
 }
+-- }}}
 
 -- MPD widget {{{
 local mpd = lain.widget.mpd({
@@ -354,9 +349,11 @@ local mybattery = lain.widget.bat({
                 state = beautiful.nerdfont_bat_empty
             end
         end
-        widget:set_markup(string.format("%s %3d%%",
-            markup.font(beautiful.widgets_nerdfont, state),
-            bat_now.perc))
+        widget:set_markup(string.format("%s",
+            markup.font(beautiful.widgets_nerdfont, state)))
+        --widget:set_markup(string.format("%s %3d%%",
+            --markup.font(beautiful.widgets_nerdfont, state),
+            --bat_now.perc))
     end
 })
 -- }}}
@@ -369,7 +366,7 @@ local mynet = lain.widget.net({
         sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         received, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            string.format("%s %3.f %s %s %3.f %s",
+            string.format("%s %4.1f %s %s %4.1f %s",
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_upspeed),
                           sent, sent_unit,
@@ -433,6 +430,13 @@ local myram = wibox.widget {
 -- }}}
 
 -- Other widgets {{{
+
+-- Keyboard map indicator and switcher
+local mykeyboardlayout = awful.widget.keyboardlayout()
+
+-- Create a textclock widget
+local mytextclock = wibox.widget.textclock()
+
 local mycal = lain.widget.cal({
     attach_to = { mytextclock },
     notification_preset = {
@@ -850,7 +854,7 @@ awful.rules.rules = {
           "page-info",    -- Firefox's image info
         }
       }, properties = { floating = true,
-                        titlebars_enabled = true }},
+                        titlebars_enabled = true}},
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
