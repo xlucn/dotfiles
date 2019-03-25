@@ -852,6 +852,7 @@ awful.rules.rules = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
           "page-info",    -- Firefox's image info
+          "About",        -- Firefox's about page
         }
       }, properties = { floating = true,
                         titlebars_enabled = true}},
