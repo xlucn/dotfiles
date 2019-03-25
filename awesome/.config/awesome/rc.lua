@@ -386,6 +386,12 @@ local laincpu = lain.widget.cpu({
     end
 })
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+cpu_widget:buttons(awful.util.table.join(
+    cpu_widget:buttons(),
+    awful.button({}, 3, function()
+        awful.spawn(terminal .. " -e \"htop -s PERCENT_CPU\"")
+    end)
+))
 local mycpu = wibox.widget {
     spacing = 8,
     wibox.widget{
@@ -413,7 +419,9 @@ local lainmem = lain.widget.mem({
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 ram_widget:buttons(awful.util.table.join(
     ram_widget:buttons(),
-    awful.button({}, 3, function() awful.spawn(terminal .. " -e htop") end)
+    awful.button({}, 3, function()
+        awful.spawn(terminal .. " -e \"htop -s PERCENT_MEM\"")
+    end)
 ))
 local myram = wibox.widget {
     spacing = 8,
