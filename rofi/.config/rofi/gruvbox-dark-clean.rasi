@@ -1,0 +1,17 @@
+@import "/usr/share/rofi/themes/gruvbox-dark.rasi"
+
+window {
+    border: 0px;
+}
+
+inputbar {
+    padding: 30px;
+}
+
+listview {
+    scrollbar: false;
+}
+
+element {
+    padding: 16px;
+}
