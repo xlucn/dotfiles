@@ -16,6 +16,6 @@ export XMODIFIERS=@im=fcitx
 # lininput-gestures
 libinput-gestures-setup start
 # enable natural scrolling
-xinput set-prop 14 --type=atom "lininput Tapping Enabled" 1
+xinput set-prop 14 "lininput Tapping Enabled" 1
 # enable tapping
-xinput set-prop 14 --type=atom "lininput Natural Scrolling Enabled" 1
+xinput set-prop 14 "lininput Natural Scrolling Enabled" 1

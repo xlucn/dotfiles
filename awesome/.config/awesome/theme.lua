@@ -70,9 +70,13 @@ theme.fg_normal            = light0
 theme.fg_focus             = bright_blue
 theme.fg_urgent            = theme.bg_normal
 theme.fg_minimize          = gray_244
+-- }}}
+
+-- Colors {{{
 theme.border_normal        = theme.bg_normal
 theme.border_focus         = dark1
 theme.border_marked        = neutral_red
+theme.titlebar_bg_focus    = theme.bg_normal
 -- }}}
 
 -- Sizes {{{
