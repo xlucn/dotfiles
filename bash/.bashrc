@@ -15,6 +15,8 @@ alias pacman="pacman --color=auto"
 alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi-copy --drm-video-plane-id=0"
+# stow default to $HOME and turn on visual
+alias stow="stow -t ~ -v"
 
 PS1='[\u@\h \W]\$ '
 # my customized du
@@ -34,14 +36,21 @@ if [ "$TERM" = "linux" ]; then
 fi
 
 # powerline setup
-command -v powerline &> /dev/null
-powerline_check=$?
-if [ $powerline_check -eq 0 ]
-then
-    powerline_root=/usr/lib/python3.7/site-packages
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
-    . $powerline_root/powerline/bindings/bash/powerline.sh
+#command -v powerline &> /dev/null
+#powerline_check=$?
+#if [ $powerline_check -eq 0 ]
+#then
+    #powerline_root=/usr/lib/python3.7/site-packages
+    #POWERLINE_BASH_CONTINUATION=1
+    #POWERLINE_BASH_SELECT=1
+    #. $powerline_root/powerline/bindings/bash/powerline.sh
+#fi
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
 
 # set vi mode keybinding
