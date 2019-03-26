@@ -56,7 +56,8 @@ local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
 -- wallpaper {{{
-theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
+--theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
+gears.wallpaper.set("#282828")
 -- }}}
 
 -- Basic Colors {{{
