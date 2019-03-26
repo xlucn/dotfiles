@@ -857,31 +857,24 @@ awful.rules.rules = {
           "copyq",  -- Includes session name in class.
         },
         class = {
-          "Arandr",
-          "Gpick",
-          "Kruler",
-          "MessageWin",  -- kalarm.
-          "Sxiv",
-          "Wpa_gui",
-          "pinentry",
-          "veromix",
-          "xtightvncviewer"},
+          },
 
         name = {
           "Event Tester",  -- xev.
         },
         role = {
-          "AlarmWindow",  -- Thunderbird's calendar.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
           "page-info",    -- Firefox's image info
           "About",        -- Firefox's about page
+          "GtkFileChooserDialog"
         }
       }, properties = { floating = true,
+                        placement = awful.placement.centered,
                         titlebars_enabled = true}},
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+      }, properties = { titlebars_enabled = true }
     },
 
     -- Set Firefox to always map on the tag 1.
