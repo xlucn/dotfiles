@@ -1,8 +1,21 @@
+# ENV VARIABLES
 # QT theme
 export QT_QPA_PLATFORMTHEME=gtk2
 # chinese input method
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+
+# LOAD FILES
+# modify keymapping
+[[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
+# load xresources
+[[ -f $HOME/.Xresources ]] && xrdb -load $HOME/.Xresources
+
+# INPUT DEVICES
 # lininput-gestures
 libinput-gestures-setup start
+# enable natural scrolling
+xinput set-prop 14 --type=atom "lininput Tapping Enabled" 1
+# enable tapping
+xinput set-prop 14 --type=atom "lininput Natural Scrolling Enabled" 1

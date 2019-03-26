@@ -1,4 +1,0 @@
-# enable natural scrolling
-xinput set-prop 14 --type=atom "lininput Tapping Enabled" 1
-# enable tapping
-xinput set-prop 14 --type=atom "lininput Natural Scrolling Enabled" 1
