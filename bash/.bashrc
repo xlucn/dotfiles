@@ -35,16 +35,6 @@ if [ "$TERM" = "linux" ]; then
     clear
 fi
 
-# powerline setup
-#command -v powerline &> /dev/null
-#powerline_check=$?
-#if [ $powerline_check -eq 0 ]
-#then
-    #powerline_root=/usr/lib/python3.7/site-packages
-    #POWERLINE_BASH_CONTINUATION=1
-    #POWERLINE_BASH_SELECT=1
-    #. $powerline_root/powerline/bindings/bash/powerline.sh
-#fi
 function _update_ps1() {
     PS1=$(powerline-shell $?)
 }
