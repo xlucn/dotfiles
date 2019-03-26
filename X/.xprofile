@@ -1,0 +1,8 @@
+# QT theme
+export QT_QPA_PLATFORMTHEME=gtk2
+# chinese input method
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+# lininput-gestures
+libinput-gestures-setup start
