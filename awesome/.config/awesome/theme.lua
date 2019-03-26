@@ -74,10 +74,14 @@ theme.fg_minimize          = gray_244
 -- }}}
 
 -- Colors {{{
-theme.border_normal        = theme.bg_normal
-theme.border_focus         = dark1
-theme.border_marked        = neutral_red
-theme.titlebar_bg_focus    = theme.bg_normal
+theme.border_normal         = theme.bg_normal
+theme.border_focus          = dark1
+theme.border_marked         = neutral_red
+theme.titlebar_bg_focus     = theme.bg_normal
+theme.tasklist_fg_focus     = theme.fg_focus
+theme.tasklist_bg_focus     = theme.bg_normal
+theme.tasklist_disable_icon = true
+theme.tasklist_spacing      = dpi(8)
 -- }}}
 
 -- Sizes {{{
