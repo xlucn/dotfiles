@@ -80,14 +80,16 @@ theme.border_marked         = neutral_red
 theme.titlebar_bg_focus     = theme.bg_normal
 theme.tasklist_fg_focus     = theme.fg_focus
 theme.tasklist_bg_focus     = theme.bg_normal
-theme.tasklist_disable_icon = true
+--theme.tasklist_disable_icon = true
 theme.tasklist_spacing      = dpi(8)
 -- }}}
 
 -- Sizes {{{
+-- choose the largest icon size below this size
+awesome.set_preferred_icon_size(48)
 theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
-theme.wibox_height              = dpi(26)
+theme.wibox_height              = dpi(28)
 theme.useless_gap               = dpi(12)
 theme.border_width              = dpi(4)
 theme.systray_icon_spacing      = dpi(0)

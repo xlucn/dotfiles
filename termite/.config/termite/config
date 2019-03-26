@@ -14,6 +14,7 @@ mouse_autohide = true
 fullscreen = true
 # Lock the resizing to cell size
 #size_hints = true
+icon_name = terminal
 
 [colors]
 # gruvbox dark: https://github.com/morhetz/gruvbox-contrib/blob/master/termite
