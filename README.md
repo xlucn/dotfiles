@@ -4,9 +4,9 @@ config files
 ## Environment
 
 - OS:
-  - [Archlinux](https://github.com/powerline/powerline)
+  - [Archlinux](http://www.archlinux.org/)
 - DE:
-  - [Gnome3](https://github.com/powerline/powerline)
+  - [Gnome3](https://www.gnome.org)
   - [AwesomeWM](https://awesomewm.org/)
 - Software
   - gnome-terminal/termite/rxvt-unicode
@@ -15,9 +15,9 @@ config files
 ## Requirement
 
 - fonts
-  - [Hack](https://github.com/powerline/powerline):
+  - [Hack](https://github.com/source-foundry/Hack):
     for vim-airline (Hack font has better patched powerline glyphs)
-  - [powerline-console-fonts](https://github.com/powerline/powerline):
+  - [powerline-console-fonts](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
     for linux console
   - [Nerd Font](https://nerdfonts.com):
     for awesome wm tags
@@ -77,12 +77,14 @@ this makes the list pop up in 0.3 seconds.
 
 - Programs not showing correctly in tmux (tremc in my case), in .tmux.conf
 
-Refer to the NOTE on [tmux github wiki FAQ page](https://github.com/tmux/tmux/wiki/FAQ)
+  Refer to the NOTE on [tmux github wiki FAQ page](https://github.com/tmux/tmux/wiki/FAQ)
 
-The TERM environment varialbe must be "tmux", "screen" or similar.
+  The TERM environment varialbe must be "tmux", "screen" or similar.
 
 ## Thanks/References
 
 https://dougblack.io/words/a-good-vimrc.html
+
 https://github.com/wklken/vim-for-server
+
 https://github.com/r00k/dotfiles
