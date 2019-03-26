@@ -542,8 +542,8 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
     -- Create a tasklist widget
-    --s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.focused, tasklist_buttons)
+    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+    --s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.focused, tasklist_buttons)
 
     -- Create the wibox
     s.mywibox = awful.wibar({
@@ -869,12 +869,11 @@ awful.rules.rules = {
           "GtkFileChooserDialog"
         }
       }, properties = { floating = true,
-                        placement = awful.placement.centered,
-                        titlebars_enabled = true}},
+                        placement = awful.placement.centered}},
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
+      }, properties = { titlebars_enabled = false }
     },
 
     -- Set Firefox to always map on the tag 1.
