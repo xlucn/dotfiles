@@ -61,11 +61,21 @@ rofi_basic = "rofi"
 rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
 
+-- maim commands
+maim_basic = "maim"
+-- target
+maim_selection = " -s"
+maim_current = " -i $(xdotool getactivewindow)"
+-- location
+maim_savefile = " ~/Pictures/Screenshot_$(date +%F_%H-%M-%S).png"
+maim_clipboard = " | xclip -selection clipboard -t image/png"
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
+altkey = "Mod1"
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -693,6 +703,32 @@ globalkeys = gears.table.join(
                   end
               end,
               {description = "restore minimized", group = "client"}),
+
+    -- screen shot with maim
+    awful.key({                            }, "Print", function () 
+            awful.spawn.with_shell(maim_basic                   .. maim_savefile)
+        end,
+        {description = "screenshot to file", group = "screenshot"}),
+    awful.key({            "Shift",        }, "Print", function () 
+            awful.spawn.with_shell(maim_basic .. maim_selection .. maim_savefile)
+        end,
+        {description = "screenshot selection to file", group = "screenshot"}),
+    awful.key({                     altkey }, "Print", function () 
+            awful.spawn.with_shell(maim_basic .. maim_current   .. maim_savefile)
+        end,
+        {description = "screenshot current to file", group = "screenshot"}),
+    awful.key({ "Control"                  }, "Print", function () 
+            awful.spawn.with_shell(maim_basic                   .. maim_clipboard)
+        end,
+        {description = "screenshot to clipboard", group = "screenshot"}),
+    awful.key({ "Control", "Shift"         }, "Print", function () 
+            awful.spawn.with_shell(maim_basic .. maim_selection .. maim_clipboard)
+        end,
+        {description = "screenshot selection to clipboard", group = "screenshot"}),
+    awful.key({ "Control",          altkey }, "Print", function () 
+            awful.spawn.with_shell(maim_basic .. maim_current   .. maim_clipboard)
+        end,
+        {description = "screenshot current to clipboard", group = "screenshot"}),
 
     -- Prompt
     awful.key({ modkey }, "d", function ()
