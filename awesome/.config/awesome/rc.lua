@@ -885,10 +885,12 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
+          "soffice", -- libreoffice template choose, overwrite warning
           "DTA",  -- Firefox addon DownThemAll.
           "copyq",  -- Includes session name in class.
         },
         class = {
+            "Soffice"
           },
 
         name = {
@@ -902,6 +904,14 @@ awful.rules.rules = {
         }
       }, properties = { floating = true,
                         placement = awful.placement.centered}},
+
+    -- Fullscreen clients
+    { rule_any = {
+        class = {
+            "Pdfpc",
+        }
+    },
+    properties = { fullscreen = true }},
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
