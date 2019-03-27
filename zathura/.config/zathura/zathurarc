@@ -12,3 +12,4 @@ set recolor-keephue true
 set recolor-reverse-video true
 set recolor-darkcolor "#ebdbb2"
 set recolor-lightcolor "#282828"
+set selection-clipboard "clipboard"
