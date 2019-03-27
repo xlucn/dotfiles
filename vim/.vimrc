@@ -303,5 +303,8 @@ nnoremap <leader>w :w<CR>
 " Quickly reload the current file
 nnoremap <leader>e :e<CR>
 " }}}
+" Autocmd {{{
+autocmd BufWritePost *Xresources :!xrdb %
+" }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=1
