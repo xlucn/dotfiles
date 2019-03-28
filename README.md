@@ -1,6 +1,10 @@
 # dotfiles
 Config files for everything
 
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome1.png?raw=true)
+
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome2.png?raw=true)
+
 ## Environment
 
 - OS:
