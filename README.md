@@ -1,5 +1,5 @@
 # dotfiles
-config files
+Config files for everything
 
 ## Environment
 
@@ -25,6 +25,8 @@ config files
 - Powerline
   - [Powerline](https://github.com/powerline/powerline)
     for tmux status line and shell prompt
+  - [powerline-shell](https://github.com/b-ryan/powerline-shell)
+    powerline replacement
 
 - Linters for ALE (optional)
   ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
@@ -36,9 +38,18 @@ config files
 - curl for vim-plug auto install (in .vimrc)
 
 - For Awesome WM:
+  - rofi for launcher
+  - compton for compositing
   - xinput for configuring trackpad.
 
 ## Install
+
+Clone the repo with submodules
+
+```
+git clone https://github.com/OliverLew/dotfiles
+git submodule update --init --recursive
+```
 
 The files can be linked to corresponding places with `stow`
 
