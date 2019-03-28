@@ -12,6 +12,9 @@ Config files for everything
 - DE:
   - [Gnome3](https://www.gnome.org)
   - [AwesomeWM](https://awesomewm.org/)
+- Colorscheme:
+  - [gruvbox](https://github.com/morhetz/gruvbox)
+    everywhere: awesome, terminal, vim, rofi, zathura(pdf)
 - Software
   - gnome-terminal/termite/rxvt-unicode
   - vim8 (asynchronous tasks support)
