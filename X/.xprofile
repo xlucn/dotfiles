@@ -7,6 +7,8 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
 # LOAD FILES
+# .profile
+[[ -f $HOME/.profile ]] && . $HOME/.profile
 # modify keymapping
 [[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
 # load xresources
@@ -19,3 +21,9 @@ libinput-gestures-setup start
 xinput set-prop 14 "lininput Tapping Enabled" 1
 # enable tapping
 xinput set-prop 14 "lininput Natural Scrolling Enabled" 1
+
+# start Chinese input method
+fcitx
+
+# start compton
+compton -b
