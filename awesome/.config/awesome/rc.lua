@@ -996,5 +996,15 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-
+local t = timer({ timeout = 60 })
+t:connect_signal("timeout", function()
+  collectgarbage("collect")
+  print(os.date(), "Lua memory usage:", collectgarbage("count"))
+  print("Objects alive:")
+  for name, obj in pairs{ button = button, client = client, drawable = drawable, drawin = drawin, key = key, screen = screen, tag = tag } do
+    print(name, obj.instances())
+  end
+end)
+t:start()
+t:emit_signal("timeout")
 -- vim:foldmethod=marker:foldlevel=0
