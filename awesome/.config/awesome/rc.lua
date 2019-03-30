@@ -109,11 +109,11 @@ tag1 = " " .. beautiful.nerdfont_terminal  .. " "
 tag2 = " " .. beautiful.nerdfont_browser   .. " "
 tag3 = " " .. beautiful.nerdfont_book      .. " "
 tag4 = " " .. beautiful.nerdfont_briefcase .. " "
-tag5 = " " .. beautiful.nerdfont_note      .. " "
-tag6 = " " .. beautiful.nerdfont_files     .. " "
-tag7 = " " .. beautiful.nerdfont_movie     .. " "
-tag8 = " " .. beautiful.nerdfont_email     .. " "
-tag9 = " " .. beautiful.nerdfont_git       .. " "
+tag5 = " " .. beautiful.nerdfont_files     .. " "
+tag6 = " " .. beautiful.nerdfont_movie     .. " "
+tag7 = " " .. beautiful.nerdfont_email     .. " "
+tag8 = " " .. beautiful.nerdfont_git       .. " "
+tag9 = " " .. beautiful.nerdfont_terminal  .. " "
 
 -- }}}
 
