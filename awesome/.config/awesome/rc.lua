@@ -701,27 +701,27 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- screen shot with maim
-    awful.key({                            }, "Print", function () 
+    awful.key({                            }, "Print", function ()
             awful.spawn.with_shell(maim_basic                   .. maim_savefile)
         end,
         {description = "screenshot to file", group = "screenshot"}),
-    awful.key({            "Shift",        }, "Print", function () 
+    awful.key({            "Shift",        }, "Print", function ()
             awful.spawn.with_shell(maim_basic .. maim_selection .. maim_savefile)
         end,
         {description = "screenshot selection to file", group = "screenshot"}),
-    awful.key({                     altkey }, "Print", function () 
+    awful.key({                     altkey }, "Print", function ()
             awful.spawn.with_shell(maim_basic .. maim_current   .. maim_savefile)
         end,
         {description = "screenshot current to file", group = "screenshot"}),
-    awful.key({ "Control"                  }, "Print", function () 
+    awful.key({ "Control"                  }, "Print", function ()
             awful.spawn.with_shell(maim_basic                   .. maim_clipboard)
         end,
         {description = "screenshot to clipboard", group = "screenshot"}),
-    awful.key({ "Control", "Shift"         }, "Print", function () 
+    awful.key({ "Control", "Shift"         }, "Print", function ()
             awful.spawn.with_shell(maim_basic .. maim_selection .. maim_clipboard)
         end,
         {description = "screenshot selection to clipboard", group = "screenshot"}),
-    awful.key({ "Control",          altkey }, "Print", function () 
+    awful.key({ "Control",          altkey }, "Print", function ()
             awful.spawn.with_shell(maim_basic .. maim_current   .. maim_clipboard)
         end,
         {description = "screenshot current to clipboard", group = "screenshot"}),
