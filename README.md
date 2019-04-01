@@ -45,9 +45,10 @@ Config files for everything
 - curl for vim-plug auto install (in .vimrc)
 
 - For Awesome WM:
-  - rofi for launcher
-  - compton for compositing
-  - xinput for configuring trackpad.
+  - [pcmanfm][https://wiki.lxde.org/en/PCManFM] for lightweight file manager and volume manager
+  - [rofi][https://github.com/davatorium/rofi] for launcher
+  - [compton][https://github.com/chjj/compton] for compositing
+  - [xinput][https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml] for configuring trackpad.
 
 ## Install
 

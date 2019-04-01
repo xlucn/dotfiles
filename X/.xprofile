@@ -22,6 +22,9 @@ xinput set-prop 14 "lininput Tapping Enabled" 1
 # enable tapping
 xinput set-prop 14 "lininput Natural Scrolling Enabled" 1
 
+# pcmanfm daemon, for automount drives
+pcmanfm -d &
+
 # start Chinese input method
 fcitx
 
