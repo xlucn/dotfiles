@@ -20,10 +20,14 @@ export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 # INPUT DEVICES
 # lininput-gestures
 libinput-gestures-setup start
+# set the target device
+hp735g5_trackpad="AlpsPS/2 ALPS GlidePoint"
 # enable natural scrolling
-xinput set-prop 14 "lininput Tapping Enabled" 1
+xinput set-prop "$hp735g5_trackpad" "libinput Tapping Enabled" 1
 # enable tapping
-xinput set-prop 14 "lininput Natural Scrolling Enabled" 1
+xinput set-prop "$hp735g5_trackpad" "libinput Natural Scrolling Enabled" 1
+# set acceleration
+xinput set-prop "$hp735g5_trackpad" "libinput Accel Speed" 0.5
 
 # pcmanfm daemon, for automount drives
 pcmanfm -d &
