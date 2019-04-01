@@ -5,6 +5,9 @@ export QT_QPA_PLATFORMTHEME=gtk2
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+# nocsd hack
+export GTK_CSD=0
+export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 
 # LOAD FILES
 # .profile
