@@ -915,7 +915,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+      }, properties = { titlebars_enabled = true }
     },
 
     -- Set Firefox to always map on the tag 1.
