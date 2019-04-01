@@ -132,7 +132,7 @@ theme.progressbar_width         = 10 * (theme.progressbar_ticks_size +
 -- Menu {{{
 theme.menu_font                 = "Hack Bold 12"
 theme.menu_height               = dpi(32)
-theme.menu_width                = dpi(192)
+theme.menu_width                = dpi(320)
 theme.menu_border_color         = theme.bg_normal
 theme.menu_border_width         = dpi(4)
 theme.menu_fg_focus             = theme.fg_normal
