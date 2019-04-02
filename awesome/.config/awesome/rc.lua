@@ -192,26 +192,34 @@ arrow = wibox.widget {
 -- }}}
 
 -- MPD widget {{{
-local mpd = lain.widget.mpd({
+local mpd_arc = wibox.widget {
+    bg = beautiful.bg_normal,
+    thickness = 2,
+    max_value = 1,
+    forced_width = 24,
+    forced_height = 24,
+    start_angle = 3.1415926 * 3 / 2,
+    widget = wibox.container.arcchart
+}
+mpd_arc.tooltip = awful.tooltip({ objects = { mpd_arc } })
+local mpd_upd = lain.widget.mpd({
     timeout = 5,
     notify = "off",
     settings = function()
+        current_summary = string.format(
+            "File:\t%s\nArtist:\t%s\nAlbum:\t(%s) - %s\nTitle:\t%s",
+            mpd_now.file,
+            mpd_now.artist,
+            mpd_now.album,
+            mpd_now.date,
+            mpd_now.title
+        )
         mpd_notification_preset = {
             title   = "Now playing",
             timeout = 6,
-            text    = string.format("%s\n%s (%s) - %s\n%s",
-                                    mpd_now.file,
-                                    mpd_now.artist,
-                                    mpd_now.album,
-                                    mpd_now.date,
-                                    mpd_now.title)
+            text    = current_summary
         }
-        -- random mode
-        if mpd_now.random_mode == true then
-            random_mode = beautiful.nerdfont_music_shuffle_on
-        else
-            random_mode = beautiful.nerdfont_music_shuffle_off
-        end
+        mpd_arc.tooltip:set_text(current_summary)
         -- repeat mode
         if mpd_now.repeat_mode == true and mpd_now.single_mode == true then
             repeat_mode = beautiful.nerdfont_music_repeat_one
@@ -220,13 +228,11 @@ local mpd = lain.widget.mpd({
         else
             repeat_mode = beautiful.nerdfont_music_repeat_off
         end
-        -- time format
+        -- time arc
         if mpd_now.state == "play" or mpd_now.state == "pause" then
-            elapsed = format_time(mpd_now.elapsed)
-            time = format_time(mpd_now.time)
+            mpd_arc.value = mpd_now.elapsed / mpd_now.time
         else
-            elapsed = "--:--"
-            time = "--:--"
+            mpd_arc.value = 0
         end
         -- state
         if mpd_now.state == "play" then
@@ -238,32 +244,45 @@ local mpd = lain.widget.mpd({
         end
         widget:set_markup(
             markup.font(beautiful.widgets_nerdfont,
-                        beautiful.nerdfont_music .. " " ..
                         beautiful.nerdfont_music_prev .. " " ..
                         state .. " " ..
                         beautiful.nerdfont_music_next .. " " ..
-                        repeat_mode .. " " .. random_mode)
+                        repeat_mode)
         )
     end
 })
-mpd.widget:buttons(awful.util.table.join(
+local mpd = wibox.widget { {
+        wibox.widget {
+            wibox.widget.textbox(
+                markup.font(beautiful.widgets_nerdfont,
+                            beautiful.nerdfont_music)),
+            margins = 8,
+            layout = wibox.container.margin
+        },
+        mpd_arc,
+        layout = wibox.layout.stack
+    },
+    mpd_upd.widget,
+    layout = wibox.layout.fixed.horizontal
+}
+mpd:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         awful.spawn.with_shell("mpc toggle")
-        mpd.update()
+        mpd_upd.update()
     end),
     awful.button({}, 3, function()
         awful.spawn(terminal .. " -e ncmpcpp")
     end),
     awful.button({}, 4, function()
         awful.spawn.with_shell("mpc seek +10")
-        mpd.update()
+        mpd_upd.update()
     end),
     awful.button({}, 5, function()
         awful.spawn.with_shell("mpc seek -10")
-        mpd.update()
+        mpd_upd.update()
     end)
 ))
-mpd.update()
+mpd_upd.update()
 -- }}}
 
 -- alsa widget {{{
@@ -384,11 +403,26 @@ local mybattery = {
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
+    notify = "off",
     settings = function()
-        sent, sent_unit = format_netspeed(tonumber(net_now.sent))
-        received, received_unit = format_netspeed(tonumber(net_now.received))
+        local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
+        local received, received_unit = format_netspeed(tonumber(net_now.received))
+        local eth0 = net_now.devices.eno1
+        if eth0 then
+            eth_icon = beautiful.nerdfont_ethernet
+        else
+            eth_icon = " "
+        end
+        local wlan0 = net_now.devices.wlp0s20u6
+        if wlan0 and wlan0.wifi then
+            wlan_icon = beautiful.nerdfont_wifi_on
+        else
+            wlan_icon = beautiful.nerdfont_wifi_off
+        end
         widget:set_markup(
-            string.format("%s %4.1f %s %s %4.1f %s",
+            string.format("%s %s %s %4.1f %s %s %4.1f %s",
+                          markup.font(beautiful.widgets_nerdfont, eth_icon),
+                          markup.font(beautiful.widgets_nerdfont, wlan_icon),
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_upspeed),
                           sent, sent_unit,
@@ -445,9 +479,7 @@ local lainmem = lain.widget.mem({
         widget:set_markup(string.format("%s",
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_memory)))
-        mem_arc.tooltip:set_text(string.format("%.1f GB/%.1f GB",
-                                 mem_now.used / 1000,
-                                 mem_now.used / 1000 / (mem_now.perc / 100) ))
+        mem_arc.tooltip:set_text(string.format("%.1f GB", mem_now.used / 1000.0))
         mem_arc.value = mem_now.perc / 100
     end
 })
@@ -538,8 +570,6 @@ local mycal = lain.widget.cal({
         bg = beautiful.bg_normal
     }
 })
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
 -- }}}
 -- }}}
 
@@ -653,9 +683,9 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 spacing = 16,
                 layout = wibox.layout.fixed.horizontal,
-                mynet,
-                mpd.widget,
                 cpu_widget,
+                mynet,
+                mpd,
                 ram_widget,
                 myram,
                 myvolume,

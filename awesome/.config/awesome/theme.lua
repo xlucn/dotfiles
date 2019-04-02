@@ -173,7 +173,7 @@ theme.nerdfont_music                 = ""
 theme.nerdfont_music_off             = ""
 theme.nerdfont_music_play            = "契" --  
 theme.nerdfont_music_pause           = "" -- 
-theme.nerdfont_music_stop            = ""
+theme.nerdfont_music_stop            = "栗" -- 
 theme.nerdfont_music_next            = "" --  
 theme.nerdfont_music_prev            = "" --  
 theme.nerdfont_music_shuffle_on      = "列" -- 咽
@@ -194,12 +194,15 @@ theme.nerdfont_bat_mid               = ""
 theme.nerdfont_bat_high              = ""
 theme.nerdfont_bat_full              = ""
 theme.nerdfont_bat_full_charging     = ""
-theme.nerdfont_volume_mute           = "ﱝ"
+theme.nerdfont_volume_mute           = "婢" -- ﱝ
 theme.nerdfont_volume_low            = "奄" -- 
 theme.nerdfont_volume_mid            = "奔" -- 
 theme.nerdfont_volume_high           = "墳" -- 
-theme.nerdfont_memory                = "" -- 
+theme.nerdfont_memory                = ""
 theme.nerdfont_cpu                   = "" --  
+theme.nerdfont_wifi_on               = "直"
+theme.nerdfont_wifi_off              = "睊"
+theme.nerdfont_ethernet              = ""
 -- }}}
 
 -- {{{ Icons
