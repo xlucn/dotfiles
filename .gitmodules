@@ -10,6 +10,3 @@
 [submodule "awesome/.config/awesome/freedesktop"]
 	path = awesome/.config/awesome/freedesktop
 	url = https://github.com/lcpz/awesome-freedesktop
-[submodule "awesome/.config/awesome/awesome-wm-widgets"]
-	path = awesome/.config/awesome/awesome-wm-widgets
-	url = https://github.com/streetturtle/awesome-wm-widgets
