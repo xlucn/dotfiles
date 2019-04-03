@@ -405,23 +405,42 @@ local mynet = lain.widget.net({
     eth_state = "on",
     notify = "off",
     settings = function()
-        local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
-        local received, received_unit = format_netspeed(tonumber(net_now.received))
-        local eth0 = net_now.devices.eno1
+        -- get first wlan and ethernet interface name
+        cmd_ip = "ip a | grep -E '^[1-9].*' | awk -F: '{ print $2 }'"
+        awful.spawn.easy_async_with_shell(cmd_ip, function (stdout,_,_,_)
+            for name in string.gmatch(stdout, " (%w+)") do
+                if string.sub(name, 1, 1) == "e" then
+                    ethernet_name = name
+                elseif string.sub(name, 1, 1) == "w" then
+                    wlan_name = name
+                end
+            end
+        end)
+        -- set ethernet status
+        local eth0 = net_now.devices[ethernet_name]
         if eth0 then
-            eth_icon = beautiful.nerdfont_ethernet
+            eth_icon = markup.fontfg(beautiful.widgets_nerdfont,
+                                     beautiful.fg_normal,
+                                     beautiful.nerdfont_ethernet)
         else
-            eth_icon = " "
+            eth_icon = markup.fontfg(beautiful.widgets_nerdfont,
+                                     beautiful.bg_focus,
+                                     beautiful.nerdfont_ethernet)
         end
-        local wlan0 = net_now.devices.wlp0s20u6
+        -- set wlan status
+        local wlan0 = net_now.devices[wlan_name]
         if wlan0 and wlan0.wifi then
             wlan_icon = beautiful.nerdfont_wifi_on
         else
             wlan_icon = beautiful.nerdfont_wifi_off
         end
+        -- send and receive speed
+        local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
+        local received, received_unit = format_netspeed(tonumber(net_now.received))
+
         widget:set_markup(
             string.format("%s %s %s %4.1f %s %s %4.1f %s",
-                          markup.font(beautiful.widgets_nerdfont, eth_icon),
+                          eth_icon,
                           markup.font(beautiful.widgets_nerdfont, wlan_icon),
                           markup.font(beautiful.widgets_nerdfont,
                                       beautiful.nerdfont_upspeed),
