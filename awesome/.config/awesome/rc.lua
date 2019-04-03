@@ -457,28 +457,17 @@ local mynet = lain.widget.net({
 -- CPU {{{
 local laincpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(string.format("Cpu: %2d%%", cpu_now.usage))
+        widget:set_markup(string.format("%s %2d%%", 
+            markup.font(beautiful.widgets_nerdfont,
+                        beautiful.nerdfont_cpu), cpu_now.usage))
     end
 })
-local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-cpu_widget:buttons(awful.util.table.join(
-    cpu_widget:buttons(),
+laincpu.widget:buttons(awful.util.table.join(
+    laincpu.widget:buttons(),
     awful.button({}, 3, function()
         awful.spawn(terminal .. " -e \"htop -s PERCENT_CPU\"")
     end)
 ))
-local mycpu = wibox.widget{
-    spacing = 8,
-    wibox.widget{
-        markup = markup.font(beautiful.widgets_nerdfont,
-                             beautiful.nerdfont_cpu),
-        align  = 'center',
-        valign = 'center',
-        widget = wibox.widget.textbox
-    },
-    cpu_widget,
-    layout = wibox.layout.fixed.horizontal
-}
 -- }}}
 
 -- Memory {{{
@@ -702,9 +691,9 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 spacing = 16,
                 layout = wibox.layout.fixed.horizontal,
-                cpu_widget,
                 mynet,
                 mpd,
+                laincpu.widget,
                 ram_widget,
                 myram,
                 myvolume,
