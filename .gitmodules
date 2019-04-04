@@ -1,6 +1,3 @@
-[submodule "mpv/.config/mpv/autosub-mpv"]
-	path = mpv/.config/mpv/autosub-mpv
-	url = https://github.com/vayan/autosub-mpv
 [submodule "awesome/.config/awesome/lain"]
 	path = awesome/.config/awesome/lain
 	url = https://github.com/lcpz/lain
