@@ -62,6 +62,8 @@ gears.wallpaper.set("#282828")
 -- }}}
 
 -- Basic Colors {{{
+theme.blue                  = bright_blue
+theme.red                   = bright_red
 theme.bg_normal            = dark0
 theme.bg_focus             = dark2 -- neutral_blue
 theme.bg_urgent            = bright_purple

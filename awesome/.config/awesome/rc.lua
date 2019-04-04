@@ -132,22 +132,6 @@ local function client_menu_toggle_fn()
         end
     end
 end
--- format network speed
-local function format_netspeed(raw_speed)
-    -- use 1000 in condition while 1024 in division
-    if raw_speed < 1000 then
-        speed = raw_speed
-        speed_unit = "KB/s"
-    elseif raw_speed < 1000 * 1024 then
-        speed = raw_speed / 1024
-        speed_unit = "MB/s"
-    else
-        speed = raw_speed / 1024 / 1024
-        speed_unit = "GB/s"
-    end
-
-    return speed, speed_unit
-end
 -- format time
 local function format_time(seconds)
     return string.format("%2d:%02d", seconds // 60, seconds % 60)
@@ -405,6 +389,22 @@ local mybattery = {
 -- }}}
 
 -- Network widget {{{
+-- format network speed
+local function format_netspeed(raw_speed)
+    -- use 1000 here to keep under 3-digits
+    if raw_speed < 1000 then
+        speed = raw_speed
+        speed_unit = "KB/s"
+    elseif raw_speed < 1000 * 1024 then
+        speed = raw_speed / 1024
+        speed_unit = "MB/s"
+    else
+        speed = raw_speed / 1024 / 1024
+        speed_unit = "GB/s"
+    end
+
+    return speed, speed_unit
+end
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
@@ -445,30 +445,50 @@ local mynet = lain.widget.net({
         local received, received_unit = format_netspeed(tonumber(net_now.received))
 
         widget:set_markup(
-            string.format("%s %s %s %4.1f %s %s %4.1f %s",
-                          eth_icon,
-                          markup.font(beautiful.widgets_nerdfont, wlan_icon),
-                          markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_upspeed),
-                          sent, sent_unit,
-                          markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_downspeed),
-                          received, received_unit
-            )
+            --markup.font(beautiful.widgets_nerdfont,
+                        --beautiful.nerdfont_upspeed) .. " " ..
+            markup.fg.color(beautiful.blue,
+                         string.format("%3.0f %s", sent, sent_unit)) .. " " ..
+            --markup.font(beautiful.widgets_nerdfont,
+                        --beautiful.nerdfont_downspeed) .. " " ..
+            markup.fg.color(beautiful.red,
+                         string.format("%3.0f %s", received, received_unit)) .. "  " ..
+            eth_icon .. " " ..
+            markup.font(beautiful.widgets_nerdfont, wlan_icon)
         )
     end
 }).widget
 -- }}}
 
 -- CPU {{{
+local cpu_arc = wibox.widget {
+    bg = beautiful.bg_normal,
+    thickness = 2,
+    max_value = 1,
+    forced_width = 24,
+    forced_height = 24,
+    start_angle = 3.1415926 * 3 / 2,
+    widget = wibox.container.arcchart
+}
+cpu_arc.tooltip = awful.tooltip({ objects = { cpu_arc } })
 local laincpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(string.format("%s %2d%%", 
-            markup.font(beautiful.widgets_nerdfont,
-                        beautiful.nerdfont_cpu), cpu_now.usage))
+        widget:set_markup(markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_cpu))
+        cpu_arc.tooltip:set_text(cpu_now.usage .. "%")
+        cpu_arc.value = cpu_now.usage / 100
     end
 })
-laincpu.widget:buttons(awful.util.table.join(
+local mycpu = wibox.widget {
+    wibox.widget {
+        layout = wibox.container.margin,
+        margins = 8,
+        laincpu.widget
+    },
+    cpu_arc,
+    layout = wibox.layout.stack
+}
+mycpu:buttons(awful.util.table.join(
     laincpu.widget:buttons(),
     awful.button({}, 3, function()
         awful.spawn(terminal .. " -e \"htop -s PERCENT_CPU\"")
@@ -490,9 +510,8 @@ mem_arc.tooltip = awful.tooltip({ objects = { mem_arc } })
 
 local lainmem = lain.widget.mem({
     settings = function()
-        widget:set_markup(string.format("%s",
-                          markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_memory)))
+        widget:set_markup(markup.font(beautiful.widgets_nerdfont,
+                                      beautiful.nerdfont_memory))
         mem_arc.tooltip:set_text(string.format("%.1f GB", mem_now.used / 1000.0))
         mem_arc.value = mem_now.perc / 100
     end
@@ -679,9 +698,8 @@ awful.screen.connect_for_each_screen(function(s)
               id = 'icon_role',
               widget = wibox.widget.imagebox,
             },
-            --margins = 2,
-            left = 10,
-            right = 10,
+            left = 12,
+            right = 12,
             top = 2,
             bottom = 2,
             widget = wibox.container.margin,
@@ -691,15 +709,10 @@ awful.screen.connect_for_each_screen(function(s)
           create_callback = function(self, c, index, objects)
             local tooltip = awful.tooltip({
               objects = { self },
-              timeout = 9999,
-              timer_function = function()
-                return c.name
-              end,
+              timer_function = function() return c.name end,
             })
-            -- Then you can set tooltip props if required (should work as is)
             tooltip.mode = "outside"
-            tooltip.preferred_positions = {"bottom", "top", "left", "right"}
-            tooltip.preferred_alignments = {"middle", "front", "back"}
+            tooltip.preferred_alignments = {"middle"}
           end,
         },
     })
@@ -727,7 +740,7 @@ awful.screen.connect_for_each_screen(function(s)
             spacing = 8,
             mynet,
             mpd,
-            laincpu.widget,
+            mycpu,
             ram_widget,
             myram,
             myvolume,
