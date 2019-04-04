@@ -2,6 +2,11 @@
 
 window {
     border: 0px;
+    padding: 0px;
+}
+
+mainbox {
+    spacing: 0;
 }
 
 inputbar {
@@ -9,6 +14,8 @@ inputbar {
 }
 
 listview {
+    padding: 0;
+    spacing: 0;
     scrollbar: false;
 }
 
