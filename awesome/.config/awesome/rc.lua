@@ -56,12 +56,14 @@ terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
--- rofi commands
+-- rofi (launcher tool) commands
 rofi_basic = "rofi"
 rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
+rofi_window = rofi_basic .. " -show window"
+rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,window -show drun"
 
--- maim commands
+-- maim (screenshot tool) commands
 maim_basic = "maim"
 -- target
 maim_selection = " -s"
@@ -155,7 +157,7 @@ end
 -- {{{ Menu
 
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
    { "manual", terminal .. " -e \"man awesome\"" },
    { "edit config", terminal .. " -e \"" .. editor .. " " .. awesome.conffile .. "\""},
@@ -163,7 +165,7 @@ myawesomemenu = {
    { "quit", function() awesome.quit() end}
 }
 -- use lcpz's freedesktop menu
-mymainmenu = freedesktop.menu.build({
+local mymainmenu = freedesktop.menu.build({
     before = {
         { "awesome", myawesomemenu, beautiful.awesome_icon },
     },
@@ -172,7 +174,7 @@ mymainmenu = freedesktop.menu.build({
     }
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 -- }}}
 
@@ -182,9 +184,9 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- seperator {{{
 local markup = lain.util.markup
 local separators = lain.util.separators
-arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
-arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus)
-arrow = wibox.widget {
+local arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
+local arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus)
+local arrow = wibox.widget {
     arrl_ld,
     arrl_dl,
     layout = wibox.layout.fixed.horizontal
@@ -206,7 +208,7 @@ local mpd_upd = lain.widget.mpd({
     timeout = 5,
     notify = "off",
     settings = function()
-        current_summary = string.format(
+        local current_summary = string.format(
             "File:\t%s\nArtist:\t%s\nAlbum:\t(%s) - %s\nTitle:\t%s",
             mpd_now.file,
             mpd_now.artist,
@@ -220,6 +222,7 @@ local mpd_upd = lain.widget.mpd({
             text    = current_summary
         }
         mpd_arc.tooltip:set_text(current_summary)
+        local repeat_mode, state
         -- repeat mode
         if mpd_now.repeat_mode == true and mpd_now.single_mode == true then
             repeat_mode = beautiful.nerdfont_music_repeat_one
@@ -298,6 +301,7 @@ local volume_arc = wibox.widget {
 volume_arc.tooltip = awful.tooltip({ objects = { volume_arc } })
 local volume = lain.widget.alsa({
     settings = function ()
+        local state
         if volume_now.status == "off" then
             state = beautiful.nerdfont_volume_mute
         else
@@ -363,7 +367,8 @@ local lain_bat = lain.widget.bat({
     full_notify = "off",
     notify = "on",
     settings = function()
-        perc = tonumber(bat_now.perc)
+        local state
+        local perc = tonumber(bat_now.perc)
         bat_arc.tooltip:set_text(perc .. "%")
         bat_arc.value = perc / 100
         if bat_now.ac_status == 1 then
@@ -405,6 +410,7 @@ local mynet = lain.widget.net({
     eth_state = "on",
     notify = "off",
     settings = function()
+        local eth_icon, wlan_icon
         -- get first wlan and ethernet interface name
         cmd_ip = "ip a | grep -E '^[1-9].*' | awk -F: '{ print $2 }'"
         awful.spawn.easy_async_with_shell(cmd_ip, function (stdout,_,_,_)
@@ -571,13 +577,13 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock()
 
-local mycal = lain.widget.cal({
-    attach_to = { mytextclock },
-    notification_preset = {
-        fg = beautiful.fg_normal,
-        bg = beautiful.bg_normal
-    }
-})
+--local mycal = lain.widget.cal({
+    --attach_to = { mytextclock },
+    --notification_preset = {
+        --fg = beautiful.fg_normal,
+        --bg = beautiful.bg_normal
+    --}
+--})
 -- }}}
 -- }}}
 
@@ -717,7 +723,8 @@ root.buttons(gears.table.join(
     --awful.button({ }, 5, awful.tag.viewprev)
 ))
 mylauncher:buttons(awful.util.table.join(
-    mylauncher:buttons(),
+    awful.button({ }, 1, function() os.execute(rofi_sidetab) end),
+    --mylauncher:buttons(),
     awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 ))
@@ -1119,14 +1126,16 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-local t = timer({ timeout = 60 })
+local logfile = io.open("/home/luxu/awesomelog", "a")
+local t = timer({ timeout = 2 })
 t:connect_signal("timeout", function()
-  collectgarbage("collect")
-  print(os.date(), "Lua memory usage:", collectgarbage("count"))
-  print("Objects alive:")
+  --collectgarbage("collect")
+  --logfile:write(os.date(), "\nLua memory usage:", collectgarbage("count"), "\n")
+  logfile:write("Objects alive:\n")
   for name, obj in pairs{ button = button, client = client, drawable = drawable, drawin = drawin, key = key, screen = screen, tag = tag } do
-    print(name, obj.instances())
+    logfile:write(name, ": ", obj.instances(), "\n")
   end
+  logfile:flush()
 end)
 t:start()
 t:emit_signal("timeout")
