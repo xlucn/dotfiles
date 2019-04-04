@@ -91,7 +91,7 @@ theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
 theme.useless_gap               = dpi(12)
-theme.border_width              = dpi(4)
+theme.border_width              = dpi(0)
 theme.systray_icon_spacing      = dpi(0)
 -- }}}
 
