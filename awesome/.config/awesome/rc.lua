@@ -442,17 +442,25 @@ local mynet = lain.widget.net({
         end
         -- send and receive speed
         local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
+        if sent < 10 then
+            sent_str = string.format("%3.1f", sent)
+        else
+            sent_str = string.format("%3.0f", sent)
+        end
         local received, received_unit = format_netspeed(tonumber(net_now.received))
+        if received < 10 then
+            received_str = string.format("%3.1f", received)
+        else
+            received_str = string.format("%3.0f", received)
+        end
 
         widget:set_markup(
             --markup.font(beautiful.widgets_nerdfont,
                         --beautiful.nerdfont_upspeed) .. " " ..
-            markup.fg.color(beautiful.blue,
-                         string.format("%3.0f %s", sent, sent_unit)) .. " " ..
+            markup.fg.color(beautiful.blue, sent_str .. " " .. sent_unit) .. " " ..
             --markup.font(beautiful.widgets_nerdfont,
                         --beautiful.nerdfont_downspeed) .. " " ..
-            markup.fg.color(beautiful.red,
-                         string.format("%3.0f %s", received, received_unit)) .. "  " ..
+            markup.fg.color(beautiful.red, received_str .. " " .. received_unit) .. "  " ..
             eth_icon .. " " ..
             markup.font(beautiful.widgets_nerdfont, wlan_icon)
         )
