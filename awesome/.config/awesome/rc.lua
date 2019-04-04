@@ -654,11 +654,8 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9},
-              s,
-              awful.layout.layouts[1])
+              s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
-    --s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -672,8 +669,40 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
     -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
-    --s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.focused, tasklist_buttons)
+    s.mytasklist = awful.widget.tasklist({
+        screen = s,
+        filter = awful.widget.tasklist.filter.currenttags, -- filter.focused,
+        buttons = tasklist_buttons,
+        widget_template = {
+          {
+            {
+              id = 'icon_role',
+              widget = wibox.widget.imagebox,
+            },
+            --margins = 2,
+            left = 10,
+            right = 10,
+            top = 2,
+            bottom = 2,
+            widget = wibox.container.margin,
+          },
+          id = 'background_role',
+          widget = wibox.container.background,
+          create_callback = function(self, c, index, objects)
+            local tooltip = awful.tooltip({
+              objects = { self },
+              timeout = 9999,
+              timer_function = function()
+                return c.name
+              end,
+            })
+            -- Then you can set tooltip props if required (should work as is)
+            tooltip.mode = "outside"
+            tooltip.preferred_positions = {"bottom", "top", "left", "right"}
+            tooltip.preferred_alignments = {"middle", "front", "back"}
+          end,
+        },
+    })
 
     -- Create the wibox
     s.mywibox = awful.wibar({
@@ -689,25 +718,23 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
+            s.mytasklist,
         },
-        s.mytasklist, -- Middle widget
+        -- Middle widget
+        nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.textbox(" "),
-            {
-                spacing = 16,
-                layout = wibox.layout.fixed.horizontal,
-                mynet,
-                mpd,
-                laincpu.widget,
-                ram_widget,
-                myram,
-                myvolume,
-                volume_upd,
-                backlight_stack,
-                mybattery,
-                mytextclock,
-            },
+            spacing = 8,
+            mynet,
+            mpd,
+            laincpu.widget,
+            ram_widget,
+            myram,
+            myvolume,
+            volume_upd,
+            backlight_stack,
+            mybattery,
+            mytextclock,
             wibox.widget.systray(),
             s.mylayoutbox,
         },
