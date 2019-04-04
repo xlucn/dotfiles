@@ -50,7 +50,8 @@ local faded_orange   = "#af3a03" -- [   ][orange]  130 [  ][  ]   175- 58- 3    
 
 -- Libraries {{{
 local gears = require("gears")
-local themes_path = require("gears.filesystem").get_themes_dir()
+local themes_path = gears.filesystem.get_themes_dir()
+local config_path = gears.filesystem.get_configuration_dir()
 local dpi = require("beautiful.xresources").apply_dpi
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
@@ -251,6 +252,9 @@ theme.titlebar_maximized_button_focus_active  = themes_path .. "zenburn/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path .. "zenburn/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_inactive  = themes_path .. "zenburn/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = themes_path .. "zenburn/titlebar/maximized_normal_inactive.png"
+
+theme.titlebar_minimize_button_focus  = config_path .. "icons/titlebar/minimize_focus.png"
+theme.titlebar_minimize_button_normal = config_path .. "icons/titlebar/minimize_normal.png"
 -- }}}
 
 -- Generate Awesome icon:
