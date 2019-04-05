@@ -62,18 +62,17 @@ gears.wallpaper.set("#282828")
 -- }}}
 
 -- Basic Colors {{{
-theme.blue                  = bright_blue
-theme.red                   = bright_red
-theme.bg_normal            = dark0
-theme.bg_focus             = dark2 -- neutral_blue
-theme.bg_urgent            = bright_purple
-theme.bg_minimize          = theme.bg_normal
-theme.bg_systray           = theme.bg_normal
+theme.blue                  = neutral_blue
+theme.red                   = neutral_red
+theme.bg_normal             = dark0
+theme.bg_focus              = dark2 -- neutral_blue
+theme.bg_urgent             = bright_purple
+theme.bg_minimize           = theme.bg_normal
 
-theme.fg_normal            = light0
-theme.fg_focus             = bright_blue
-theme.fg_urgent            = theme.bg_normal
-theme.fg_minimize          = gray_244
+theme.fg_normal             = light0
+theme.fg_focus              = neutral_blue
+theme.fg_urgent             = theme.bg_normal
+theme.fg_minimize           = gray_244
 -- }}}
 
 -- Colors {{{
@@ -81,8 +80,23 @@ theme.border_normal         = theme.bg_normal
 theme.border_focus          = dark1
 theme.border_marked         = neutral_red
 theme.titlebar_bg_focus     = theme.bg_normal
+-- }}}
+
+-- Taglist {{{
+theme.taglist_font          = "Hack Nerd Font 14"
+theme.taglist_squares_sel   = nil
+theme.taglist_squares_unsel = nil
+theme.taglist_fg_empty      = theme.fg_normal
+theme.taglist_bg_empty      = dark1
+theme.taglist_fg_occupied   = neutral_orange -- theme.fg_focus
+theme.taglist_bg_occupied   = dark1
+theme.taglist_fg_focus      = neutral_orange -- theme.fg_focus
+theme.taglist_bg_focus      = faded_blue
+-- }}}
+
+-- Tasklist {{{
 theme.tasklist_fg_focus     = theme.fg_focus
-theme.tasklist_bg_focus     = theme.border_focus
+theme.tasklist_bg_focus     = neutral_aqua
 theme.tasklist_bg_minimize  = dark0_hard
 theme.tasklist_spacing      = dpi(0)
 -- }}}
@@ -108,16 +122,6 @@ theme.hotkeys_border_width     = dpi(16)
 -- fonts
 theme.hotkeys_font             = "Hack 9"
 theme.hotkeys_description_font = "Hack 9"
--- }}}
-
--- Taglist {{{
-theme.taglist_font          = "Hack Nerd Font 14"
-theme.taglist_squares_sel   = nil
-theme.taglist_squares_unsel = nil
-theme.taglist_fg_occupied   = theme.fg_focus
-theme.taglist_bg_occupied   = theme.bg_normal
-theme.taglist_fg_focus      = theme.fg_focus
-theme.taglist_bg_focus      = theme.bg_focus
 -- }}}
 
 -- example sizes for a progress bar {{{
