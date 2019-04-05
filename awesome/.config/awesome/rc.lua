@@ -17,7 +17,6 @@ local xrandr = require("xrandr")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 local lain = require("lain")
-local freedesktop = require("freedesktop")
 local dpi = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
 -- }}}
@@ -148,18 +147,9 @@ local myawesomemenu = {
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
--- use lcpz's freedesktop menu
-local mymainmenu = freedesktop.menu.build({
-    before = {
-        { "awesome", myawesomemenu, beautiful.awesome_icon },
-    },
-    after = {
-        { "open terminal", terminal }
-    }
-})
 
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+                                     menu = myawesomemenu })
 -- }}}
 
 -- {{{ Widgets
@@ -1175,7 +1165,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-local logfile = io.open("/home/luxu/awesomelog", "a")
+local logfile = io.open("/tmp/awesomelog", "a")
 local t = timer({ timeout = 2 })
 t:connect_signal("timeout", function()
   --collectgarbage("collect")
