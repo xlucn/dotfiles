@@ -3,8 +3,6 @@ Config files for everything
 
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome1.png?raw=true)
 
-![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome2.png?raw=true)
-
 ## Environment
 
 - OS:
@@ -45,10 +43,10 @@ Config files for everything
 - curl for vim-plug auto install (in .vimrc)
 
 - For Awesome WM:
-  - [pcmanfm][https://wiki.lxde.org/en/PCManFM] for lightweight file manager and volume manager
-  - [rofi][https://github.com/davatorium/rofi] for launcher
-  - [compton][https://github.com/chjj/compton] for compositing
-  - [xinput][https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml] for configuring trackpad.
+  - [pcmanfm](https://wiki.lxde.org/en/PCManFM) for lightweight file manager and volume manager
+  - [rofi](https://github.com/davatorium/rofi) for launcher
+  - [compton](https://github.com/chjj/compton) for compositing
+  - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
 ## Install
 
@@ -100,10 +98,3 @@ this makes the list pop up in 0.3 seconds.
 
   The TERM environment varialbe must be "tmux", "screen" or similar.
 
-## Thanks/References
-
-https://dougblack.io/words/a-good-vimrc.html
-
-https://github.com/wklken/vim-for-server
-
-https://github.com/r00k/dotfiles
