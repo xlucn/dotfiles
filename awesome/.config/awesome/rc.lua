@@ -1165,6 +1165,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- Log {{{
 local logfile = io.open("/tmp/awesomelog", "a")
 local t = timer({ timeout = 2 })
 t:connect_signal("timeout", function()
@@ -1178,4 +1180,6 @@ t:connect_signal("timeout", function()
 end)
 t:start()
 t:emit_signal("timeout")
+-- }}}
+
 -- vim:foldmethod=marker:foldlevel=0
