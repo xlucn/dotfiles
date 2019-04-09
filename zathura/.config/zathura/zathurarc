@@ -10,6 +10,6 @@ set statusbar-fg default-bg
 set recolor true
 set recolor-keephue true
 set recolor-reverse-video true
-set recolor-darkcolor "#ebdbb2"
+set recolor-darkcolor "#f9f5d7"
 set recolor-lightcolor "#282828"
 set selection-clipboard "clipboard"
