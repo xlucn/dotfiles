@@ -83,6 +83,9 @@ set ttimeoutlen=0
 set diffopt+=vertical
 " }}}
 " UI basic {{{
+" gui options
+set guioptions=
+set guifont=Hack\ 12
 " show line number
 set number
 " enable mouse support in console
