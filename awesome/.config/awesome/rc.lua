@@ -153,20 +153,6 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- }}}
 
 -- {{{ Widgets
--- lain widgets
-
--- seperator {{{
-local markup = lain.util.markup
-local separators = lain.util.separators
-local arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
-local arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus)
-local arrow = wibox.widget {
-    arrl_ld,
-    arrl_dl,
-    layout = wibox.layout.fixed.horizontal
-}
--- }}}
-
 -- MPD widget {{{
 local mpd_arc = wibox.widget {
     bg = beautiful.bg_normal,
@@ -307,11 +293,11 @@ volume_toggle = function()
     volume.update()
 end
 volume_up = function()
-    os.execute(string.format("%s set %s 4%%+", volume.cmd, volume.channel))
+    os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
     volume.update()
 end
 volume_down = function()
-    os.execute(string.format("%s set %s 4%%-", volume.cmd, volume.channel))
+    os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
     volume.update()
 end
 
@@ -587,20 +573,8 @@ backlight_stack:buttons(awful.util.table.join(
 -- }}}
 
 -- Other widgets {{{
-
--- Keyboard map indicator and switcher
-local mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock()
-
---local mycal = lain.widget.cal({
-    --attach_to = { mytextclock },
-    --notification_preset = {
-        --fg = beautiful.fg_normal,
-        --bg = beautiful.bg_normal
-    --}
---})
 -- }}}
 -- }}}
 
