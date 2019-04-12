@@ -59,7 +59,7 @@ editor_cmd = terminal .. " -e " .. editor
 rofi_basic = "rofi"
 rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
-rofi_window = rofi_basic .. " -show window"
+rofi_window = rofi_basic .. " -show window -cycle true -width 1440 -lines 15 -scroll-method 0"
 rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,window -show drun"
 
 -- maim (screenshot tool) commands
@@ -381,6 +381,8 @@ local function format_netspeed(raw_speed)
 
     return speed, speed_unit
 end
+-- command to show active wifi SSID
+-- nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2
 local mynet = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
@@ -779,7 +781,7 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
+    awful.key({ altkey,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
             if client.focus then
@@ -789,9 +791,9 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- On the fly useless gaps change
-    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(1) end,
+    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(2) end,
               {description = "increase useless gap", group = "awesome"}),
-    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
+    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-2) end,
               {description = "decrease useless gap", group = "awesome"}),
 
     -- Standard program
@@ -865,17 +867,13 @@ globalkeys = gears.table.join(
         {description = "screenshot current to clipboard", group = "screenshot"}),
 
     -- Prompt
-    awful.key({ modkey }, "d", function ()
-            os.execute(rofi_drun)
-        end,
+    awful.key({ modkey,           }, "d", function () awful.spawn(rofi_drun) end,
         {description = "show rofi in drun modi", group = "launcher"}),
-
-    awful.key({ modkey }, "r", function ()
-            os.execute(rofi_run)
-        end,
+    awful.key({ modkey,           }, "r", function () awful.spawn(rofi_run) end,
         {description = "run command in rofi", group = "launcher"}),
-
-    awful.key({ modkey }, "x",
+    awful.key({ modkey,           }, "Tab", function () awful.spawn(rofi_window) end,
+        {description = "switch window", group = "client"}),
+    awful.key({ modkey,           }, "x",
               function ()
                   awful.prompt.run {
                     prompt       = "Run Lua code: ",
@@ -1048,17 +1046,12 @@ awful.rules.rules = {
                         placement = awful.placement.centered}},
 
     -- Fullscreen clients
-    { rule_any = {
-        class = {
-            "Pdfpc",
-        }
-    },
+    { rule_any = { class = { "Pdfpc", } },
     properties = { fullscreen = true }},
 
     -- Add titlebars to normal clients and dialogs, or not
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
-    },
+      }, properties = { titlebars_enabled = true } },
 
     -- Set Firefox to always map on the tag 1.
     { rule = { class = "Firefox" },
