@@ -37,3 +37,6 @@ fcitx
 
 # start compton
 compton -b
+
+# polkit agent
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
