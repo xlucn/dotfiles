@@ -1,15 +1,15 @@
-set adjust-open width
-set guioptions sv
+set guioptions "sv"
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 set highlight-transparency 0.15
 set default-fg "#f9f5d7"
 set default-bg "#282828"
-set statusbar-bg default-fg
-set statusbar-fg default-bg
-set recolor true
+set statusbar-bg "#282828"
+set statusbar-fg "#f9f5d7"
+set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
 set recolor-darkcolor "#f9f5d7"
 set recolor-lightcolor "#282828"
 set selection-clipboard "clipboard"
+set adjust-open "width"
