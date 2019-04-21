@@ -390,16 +390,17 @@ local mynet = lain.widget.net({
     settings = function()
         local eth_icon, wlan_icon
         -- get first wlan and ethernet interface name
-        cmd_ip = "ip a | grep -E '^[1-9].*' | awk -F: '{ print $2 }'"
-        awful.spawn.easy_async_with_shell(cmd_ip, function (stdout,_,_,_)
-            for name in string.gmatch(stdout, " (%w+)") do
-                if string.sub(name, 1, 1) == "e" then
-                    ethernet_name = name
-                elseif string.sub(name, 1, 1) == "w" then
-                    wlan_name = name
+        awful.spawn.easy_async_with_shell(
+            "ip a | grep -E '^[1-9].*' | grep -v 'DOWN' | awk -F: '{ print $2 }'",
+            function (stdout,_,_,_)
+                for name in string.gmatch(stdout, " (%w+)") do
+                    if string.sub(name, 1, 1) == "e" then
+                        ethernet_name = name
+                    elseif string.sub(name, 1, 1) == "w" then
+                        wlan_name = name
+                    end
                 end
-            end
-        end)
+            end)
         -- set ethernet status
         local eth0 = net_now.devices[ethernet_name]
         if eth0 then
@@ -647,7 +648,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9},
-              s, awful.layout.layouts[1])
+              s, awful.layout.layouts[-1])
 
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
