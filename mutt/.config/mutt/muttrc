@@ -1,0 +1,96 @@
+# my_* variables
+# name
+set my_name = "Lu Xu"
+# email address
+set my_email = "oliver_lew@outlook.com"
+#set my_email = "2869761396@qq.com"
+#set my_email = "2609851103@qq.com"
+# password
+# put the following content and encrypt with gpg:
+#   set my_pass = "the password string here"
+source "gpg -d ~/.config/mutt/$my_email.pass.gpg 2> /dev/null|"
+
+# information
+set realname = $my_name
+set from = $my_email
+# Receive email: IMAP
+#set folder = "imaps://$my_email@imap.qq.com:993/"
+set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
+# Send email: SMTP
+#set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
+set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
+
+# passwords
+set imap_pass = $my_pass
+set smtp_pass = $my_pass
+
+# Mailboxes
+set spoolfile = "+Inbox"
+set record = "+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+
+# do not save sent email
+set copy = no
+
+# editor, use vanilla vim
+set editor = "vim"
+set signature = "~/.config/mutt/signature-work"
+set sig_on_top = yes
+# disable '+' markers at the beginning of every line
+unset markers
+
+# show sidebar
+set sidebar_visible = yes
+set sidebar_width = 20
+# sidebar format: Boxname [New messages]  Total size
+set sidebar_format = "%B %?N?[%N]?%* %S"
+
+#mailboxes =INBOX =Sent =Trash =Drafts =Junk =Archive
+
+# cache folder
+set message_cachedir = ~/.cache/mutt
+set header_cache = ~/.cache/mutt
+# interval of mail checking
+set mail_check = 120
+# stop at the bottom of a message instead of go to next message
+set pager_stop = yes
+# suppress pause when switching mail boxes
+set sleep_time = 0
+# default recipient and subject when reply
+set fast_reply = yes
+# include original message when reply
+set include = yes
+# check all mailboxes
+set imap_check_subscribed
+# sort by threads
+set sort = "threads"
+set sort_aux = "last-date-received"
+# scroll inside the message rather than the index
+bind pager <up> previous-line
+bind pager <down> next-line
+bind pager k previous-line
+bind pager j next-line
+
+# fetch new emails
+bind index G imap-fetch-mail
+
+# aliases
+set alias_file = "~/.config/mutt/aliases.muttrc"
+set reverse_alias = yes
+source $alias_file
+
+# header
+# show only those headers
+ignore *
+unignore Subject: From: To: CC: BCC: Date:
+# show by this order
+unhdr_order *
+hdr_order Subject: From: To: CC: BCC: Date:
+
+# show index on top and pager below
+#set pager_index_lines = 10
+
+#source ~/.config/mutt/colors.linux
+#source ~/.config/mutt/mutt_colors-gruvbox.muttrc
+source ~/.config/mutt/colors.muttrc
