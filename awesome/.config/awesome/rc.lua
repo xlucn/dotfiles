@@ -648,7 +648,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9},
-              s, awful.layout.layouts[-1])
+              s, awful.layout.layouts[1])
 
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -901,11 +901,17 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86MonBrightnessDown", brightness_down,
         {description = "brightness down", group = "XF86"}),
     awful.key({}, "XF86MonBrightnessUp", brightness_up,
-        {description = "brightness up", group = "XF86"})
+        {description = "brightness up", group = "XF86"}),
+
+    -- Application launching
+    awful.key({ modkey }, "f", function () awful.spawn("termite -e ranger") end,
+        {description = "launch file manager", group = "launcher"}),
+    awful.key({ modkey }, "e", function () awful.spawn("termite -e neomutt") end,
+        {description = "launch email client", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
+    awful.key({ modkey, "Shift"   }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
