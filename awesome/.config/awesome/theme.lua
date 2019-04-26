@@ -236,9 +236,6 @@ theme.layout_cornerse   = themes_path .. "zenburn/layouts/cornerse.png"
 theme.titlebar_close_button_focus  = themes_path .. "zenburn/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = themes_path .. "zenburn/titlebar/close_normal.png"
 
-theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
-theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
-
 theme.titlebar_ontop_button_focus_active  = themes_path .. "zenburn/titlebar/ontop_focus_active.png"
 theme.titlebar_ontop_button_normal_active = themes_path .. "zenburn/titlebar/ontop_normal_active.png"
 theme.titlebar_ontop_button_focus_inactive  = themes_path .. "zenburn/titlebar/ontop_focus_inactive.png"
