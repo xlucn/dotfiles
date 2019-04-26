@@ -1,4 +1,3 @@
-# my_* variables
 # name
 set my_name = "Lu Xu"
 # email address
@@ -7,18 +6,17 @@ set my_email = "oliver_lew@outlook.com"
 #set my_email = "2609851103@qq.com"
 # password
 # put the following content and encrypt with gpg:
-#   set my_pass = "the password string here"
-source "gpg -d ~/.config/mutt/$my_email.pass.gpg 2> /dev/null|"
+# set my_pass = "the password string here"
+source "pass show Mail/$my_email|"
 
 # information
 set realname = $my_name
 set from = $my_email
-# Receive email: IMAP
+# IMAP and SMTP servers
 #set folder = "imaps://$my_email@imap.qq.com:993/"
-set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
-# Send email: SMTP
 #set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
-set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
+set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
+set smtp_url= "smtps://$my_email@smtp-mail.outlook.com:587/"
 
 # passwords
 set imap_pass = $my_pass
@@ -32,6 +30,7 @@ set postponed = "+Drafts"
 
 # do not save sent email
 set copy = no
+unset record
 
 # editor, use vanilla vim
 set editor = "vim"
@@ -49,8 +48,8 @@ set sidebar_format = "%B %?N?[%N]?%* %S"
 #mailboxes =INBOX =Sent =Trash =Drafts =Junk =Archive
 
 # cache folder
-set message_cachedir = ~/.cache/mutt
-set header_cache = ~/.cache/mutt
+set message_cachedir = ~/.cache/mutt/bodies
+set header_cache = ~/.cache/mutt/headers
 # interval of mail checking
 set mail_check = 120
 # stop at the bottom of a message instead of go to next message
@@ -66,14 +65,16 @@ set imap_check_subscribed
 # sort by threads
 set sort = "threads"
 set sort_aux = "last-date-received"
+# index scroll
+set menu_scroll
+
+# fetch new emails
+bind index G imap-fetch-mail
 # scroll inside the message rather than the index
 bind pager <up> previous-line
 bind pager <down> next-line
 bind pager k previous-line
 bind pager j next-line
-
-# fetch new emails
-bind index G imap-fetch-mail
 
 # aliases
 set alias_file = "~/.config/mutt/aliases.muttrc"
@@ -91,6 +92,4 @@ hdr_order Subject: From: To: CC: BCC: Date:
 # show index on top and pager below
 #set pager_index_lines = 10
 
-#source ~/.config/mutt/colors.linux
-#source ~/.config/mutt/mutt_colors-gruvbox.muttrc
 source ~/.config/mutt/colors.muttrc
