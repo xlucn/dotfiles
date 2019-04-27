@@ -92,4 +92,8 @@ hdr_order Subject: From: To: CC: BCC: Date:
 # show index on top and pager below
 #set pager_index_lines = 10
 
+auto_view text/html                                      # view html automatically
+alternative_order text/plain text/enriched text/html     # save html for last
+
+
 source ~/.config/mutt/colors.muttrc
