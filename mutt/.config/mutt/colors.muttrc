@@ -44,6 +44,7 @@ color quoted5 brightred default
 color signature brightgreen default
 color bold black default
 color underline black default
+color progress brightyellow blue
 color normal default default
 
 color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
