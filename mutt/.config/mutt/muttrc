@@ -77,7 +77,7 @@ bind pager k previous-line
 bind pager j next-line
 
 # aliases
-set alias_file = "~/.config/mutt/aliases.muttrc"
+set alias_file = "~/.config/mutt/muttrc.aliases"
 set reverse_alias = yes
 source $alias_file
 
@@ -96,4 +96,4 @@ auto_view text/html                                      # view html automatical
 alternative_order text/plain text/enriched text/html     # save html for last
 
 
-source ~/.config/mutt/colors.muttrc
+source ~/.config/mutt/muttrc.colors
