@@ -1100,7 +1100,8 @@ awful.rules.rules = {
 
     -- Set Firefox to always map on the tag 1.
     { rule = { class = "Firefox" },
-        properties = { tag = tag2 } },
+        properties = { tag = tag2,
+                       titlebars_enabled = false} },
 
     -- No borders
     { rule = { instance = "Popup", class = "Firefox" }, -- e.g. addon installed
