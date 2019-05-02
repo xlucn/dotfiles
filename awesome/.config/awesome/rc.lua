@@ -154,6 +154,7 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 
 -- {{{ Widgets
 -- MPD widget {{{
+local mpd_tooltip = awful.tooltip {}
 local mpd_arc = wibox.widget {
     bg = beautiful.bg_normal,
     thickness = 2,
@@ -163,7 +164,18 @@ local mpd_arc = wibox.widget {
     start_angle = 3.1415926 * 3 / 2,
     widget = wibox.container.arcchart
 }
-mpd_arc.tooltip = awful.tooltip({ objects = { mpd_arc } })
+local mpd_prev = wibox.widget.textbox(
+    markup.font(beautiful.widgets_nerdfont,
+                beautiful.nerdfont_music_prev)
+)
+local mpd_next = wibox.widget.textbox(
+    markup.font(beautiful.widgets_nerdfont,
+                beautiful.nerdfont_music_next)
+)
+local mpd_repeat = wibox.widget.textbox(
+    markup.font(beautiful.widgets_nerdfont,
+                beautiful.nerdfont_music_repeat_on)
+)
 local mpd_upd = lain.widget.mpd({
     timeout = 5,
     notify = "off",
@@ -181,54 +193,62 @@ local mpd_upd = lain.widget.mpd({
             timeout = 6,
             text    = current_summary
         }
-        mpd_arc.tooltip:set_text(current_summary)
+        mpd_tooltip:set_text(current_summary)
         local repeat_mode, state
-        -- repeat mode
-        if mpd_now.repeat_mode == true and mpd_now.single_mode == true then
-            repeat_mode = beautiful.nerdfont_music_repeat_one
-        elseif mpd_now.repeat_mode == true and mpd_now.single_mode == false then
-            repeat_mode = beautiful.nerdfont_music_repeat_on
+        -- state
+        if mpd_now.state == "play" then
+            state = beautiful.nerdfont_music_pause
+        elseif mpd_now.state == "pause" then
+            state = beautiful.nerdfont_music_play
         else
-            repeat_mode = beautiful.nerdfont_music_repeat_off
+            state = beautiful.nerdfont_music_stop
         end
+        widget:set_markup(markup.font(beautiful.widgets_nerdfont, state))
         -- time arc
         if mpd_now.state == "play" or mpd_now.state == "pause" then
             mpd_arc.value = mpd_now.elapsed / mpd_now.time
         else
             mpd_arc.value = 0
         end
-        -- state
-        if mpd_now.state == "play" then
-            state = beautiful.nerdfont_music_pause -- "="
-        elseif mpd_now.state == "pause" then
-            state = beautiful.nerdfont_music_play -- ">"
+        -- repeat mode
+        if mpd_now.single_mode == true then
+            repeat_mode = beautiful.nerdfont_music_repeat_one
         else
-            state = beautiful.nerdfont_music_stop -- "x"
+            repeat_mode = beautiful.nerdfont_music_repeat_on
         end
-        widget:set_markup(
-            markup.font(beautiful.widgets_nerdfont,
-                        beautiful.nerdfont_music_prev .. " " ..
-                        state .. " " ..
-                        beautiful.nerdfont_music_next .. " " ..
-                        repeat_mode)
-        )
+        mpd_repeat.markup = markup.font(beautiful.widgets_nerdfont, repeat_mode)
     end
 })
-local mpd = wibox.widget { {
+local mpd = wibox.widget {
+    wibox.widget {
+        mpd_prev,
+        margins = 8,
+        layout = wibox.container.margin
+    },
+    {
         wibox.widget {
-            wibox.widget.textbox(
-                markup.font(beautiful.widgets_nerdfont,
-                            beautiful.nerdfont_music)),
+            mpd_upd.widget,
             margins = 8,
             layout = wibox.container.margin
         },
         mpd_arc,
         layout = wibox.layout.stack
     },
-    mpd_upd.widget,
+    wibox.widget {
+        mpd_next,
+        margins = 8,
+        layout = wibox.container.margin
+    },
+    wibox.widget {
+        mpd_repeat,
+        margins = 8,
+        left = 0,
+        layout = wibox.container.margin
+    },
     layout = wibox.layout.fixed.horizontal
 }
-mpd:buttons(awful.util.table.join(
+mpd_tooltip:add_to_object(mpd)
+mpd_arc:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         awful.spawn.with_shell("mpc toggle")
         mpd_upd.update()
@@ -242,6 +262,24 @@ mpd:buttons(awful.util.table.join(
     end),
     awful.button({}, 5, function()
         awful.spawn.with_shell("mpc seek -10")
+        mpd_upd.update()
+    end)
+))
+mpd_prev:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("mpc prev")
+        mpd_upd.update()
+    end)
+))
+mpd_next:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("mpc next")
+        mpd_upd.update()
+    end)
+))
+mpd_repeat:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("mpc single")
         mpd_upd.update()
     end)
 ))
