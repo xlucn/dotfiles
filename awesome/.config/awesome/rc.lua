@@ -156,7 +156,8 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- MPD widget {{{
 local mpd_tooltip = awful.tooltip {}
 local mpd_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
+    colors = { beautiful.widget_music },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -165,16 +166,19 @@ local mpd_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 local mpd_prev = wibox.widget.textbox(
-    markup.font(beautiful.widgets_nerdfont,
-                beautiful.nerdfont_music_prev)
+    markup.fontfg(beautiful.widgets_nerdfont,
+                  beautiful.widget_music,
+                  beautiful.nerdfont_music_prev)
 )
 local mpd_next = wibox.widget.textbox(
-    markup.font(beautiful.widgets_nerdfont,
-                beautiful.nerdfont_music_next)
+    markup.fontfg(beautiful.widgets_nerdfont,
+                  beautiful.widget_music,
+                  beautiful.nerdfont_music_next)
 )
 local mpd_repeat = wibox.widget.textbox(
-    markup.font(beautiful.widgets_nerdfont,
-                beautiful.nerdfont_music_repeat_on)
+    markup.fontfg(beautiful.widgets_nerdfont,
+                  beautiful.widget_music,
+                  beautiful.nerdfont_music_repeat_on)
 )
 local mpd_upd = lain.widget.mpd({
     timeout = 5,
@@ -203,7 +207,9 @@ local mpd_upd = lain.widget.mpd({
         else
             state = beautiful.nerdfont_music_stop
         end
-        widget:set_markup(markup.font(beautiful.widgets_nerdfont, state))
+        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
+                                        beautiful.widget_music,
+                                        state))
         -- time arc
         if mpd_now.state == "play" or mpd_now.state == "pause" then
             mpd_arc.value = mpd_now.elapsed / mpd_now.time
@@ -216,7 +222,9 @@ local mpd_upd = lain.widget.mpd({
         else
             repeat_mode = beautiful.nerdfont_music_repeat_on
         end
-        mpd_repeat.markup = markup.font(beautiful.widgets_nerdfont, repeat_mode)
+        mpd_repeat.markup = markup.fontfg(beautiful.widgets_nerdfont,
+                                          beautiful.widget_music,
+                                          repeat_mode)
     end
 })
 local mpd = wibox.widget {
@@ -288,7 +296,7 @@ mpd_upd.update()
 
 -- alsa widget {{{
 local volume_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -352,7 +360,7 @@ volume_arc:buttons(awful.util.table.join(
 
 -- battery widget {{{
 local bat_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -487,7 +495,7 @@ local mynet = lain.widget.net({
 
 -- CPU {{{
 local cpu_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -523,7 +531,7 @@ mycpu:buttons(awful.util.table.join(
 
 -- Memory {{{
 local mem_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -560,7 +568,7 @@ myram:buttons(awful.util.table.join(
 -- Brightness widget {{{
 -- progressbar
 local light_arc = wibox.widget {
-    bg = beautiful.bg_normal,
+    bg = beautiful.bg_focus,
     thickness = 2,
     max_value = 1,
     forced_width = 24,
