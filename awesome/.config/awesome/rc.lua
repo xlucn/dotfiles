@@ -87,25 +87,9 @@ awful.layout.layouts = {
     awful.layout.suit.fair,
     awful.layout.suit.corner.nw,
     awful.layout.suit.floating,
-    --awful.layout.suit.max.fullscreen,
-    --awful.layout.suit.corner.ne,
-    --awful.layout.suit.corner.sw,
-    --awful.layout.suit.corner.se,
-    --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
 }
 
 -- Tag names
---tag1 = " Browr "
---tag2 = " Term "
---tag3 = " Class "
---tag4 = " Work "
---tag5 = " Note "
---tag6 = " Trnt "
---tag7 = " Media "
---tag8 = " Mail "
---tag9 = " Other "
 tag1 = " " .. beautiful.nerdfont_terminal  .. " "
 tag2 = " " .. beautiful.nerdfont_browser   .. " "
 tag3 = " " .. beautiful.nerdfont_book      .. " "
@@ -478,7 +462,7 @@ local mynet = lain.widget.net({
             wlan_icon = beautiful.nerdfont_wifi_off
         end
         -- set widget content
-        net_status.markup = eth_icon .. " " ..
+        net_status.markup = " " .. eth_icon .. " " ..
                             markup.font(beautiful.widgets_nerdfont,wlan_icon)
         -- send and receive speed
         local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
@@ -637,6 +621,26 @@ backlight_stack:buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ mail
+local myimap = lain.widget.imap({
+    server = "imap-mail.outlook.com",
+    mail = "oliver_lew@outlook.com",
+    password = function()
+        awful.spawn.easy_async_with_shell(
+            "pass show Mail/" .. mail,
+            function(stdout, stderr, reason, exit_code)
+                naughty.notify({text = exit_code})
+                widget:set_text("test")
+            end
+        )
+        naughty.notify(result)
+        return result
+    end,
+    settings = function()
+        widget:set_text("test")
+        naughty.notify({text = "test"})
+    end
+})
+myimap.update()
 -- }}}
 -- }}}
 
@@ -772,6 +776,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             spacing = 8,
+            myimap.widget,
             mynet,
             mpd,
             mycpu,
