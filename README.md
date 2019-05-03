@@ -1,7 +1,7 @@
 # dotfiles
 Config files for everything
 
-![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome1.png?raw=true)
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome.png?raw=true)
 
 ## Environment
 
