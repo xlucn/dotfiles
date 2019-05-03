@@ -1,0 +1,37 @@
+# fetch new emails
+bind index G imap-fetch-mail
+# scroll inside the message rather than the index
+bind pager <up> previous-line
+bind pager <down> next-line
+bind pager k previous-line
+bind pager j next-line
+
+bind    alias,attach,browser,index,query,pager              g     noop
+
+bind    alias,index,browser,query         G     last-entry
+bind    alias,index,browser,query         gg    first-entry
+bind    pager                             gg    top
+bind    pager                             G     bottom
+
+bind    alias,attach,index,pager,browser,query   \Cd   next-page
+bind    alias,attach,index,pager,browser,query   \Cu   previous-page
+
+bind    index                             n     search-next
+bind    index                             N     search-opposite
+#N      toggle                            new   flag
+
+bind    index                             {     previous-thread
+bind    index                             }     next-thread
+
+bind    pager                             {     half-up
+bind    pager                             }     half-down
+
+bind    index                             zA    collapse-all
+bind    index                             za    collapse-thread
+
+bind    index,pager                       A     create-alias
+bind    index,pager                       a     group-reply
+
+#       Toggle                            the   mailbox                                list    with       "y".
+macro   index,pager                       y     "<change-folder>?<toggle-mailboxes>"   "show   incoming   mailboxes   list"
+bind    browser                           y     exit

@@ -51,7 +51,8 @@ set sidebar_format = "%B %?N?[%N]?%* %S"
 set message_cachedir = ~/.cache/mutt/bodies
 set header_cache = ~/.cache/mutt/headers
 # interval of mail checking
-set mail_check = 120
+set mail_check = 60
+set timeout = 120
 # stop at the bottom of a message instead of go to next message
 set pager_stop = yes
 # suppress pause when switching mail boxes
@@ -67,14 +68,6 @@ set sort = "threads"
 set sort_aux = "last-date-received"
 # index scroll
 set menu_scroll
-
-# fetch new emails
-bind index G imap-fetch-mail
-# scroll inside the message rather than the index
-bind pager <up> previous-line
-bind pager <down> next-line
-bind pager k previous-line
-bind pager j next-line
 
 # aliases
 set alias_file = "~/.config/mutt/muttrc.aliases"
@@ -97,3 +90,4 @@ alternative_order text/plain text/enriched text/html     # save html for last
 
 
 source ~/.config/mutt/muttrc.colors
+source ~/.config/mutt/muttrc.keybindings
