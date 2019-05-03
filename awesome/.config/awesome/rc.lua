@@ -299,6 +299,7 @@ mpd_upd.update()
 -- alsa widget {{{
 local volume_arc = wibox.widget {
     bg = beautiful.bg_focus,
+    colors = { beautiful.widget_alsa },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -315,7 +316,9 @@ local volume = lain.widget.alsa({
         else
             state = beautiful.nerdfont_volume_high
         end
-        widget:set_markup(markup.font(beautiful.widgets_nerdfont, state))
+        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
+                                        beautiful.widget_alsa,
+                                        state))
         volume_arc.tooltip:set_text(volume_now.level .. "%")
         volume_arc.value = volume_now.level / 100
     end
@@ -363,6 +366,7 @@ volume_arc:buttons(awful.util.table.join(
 -- battery widget {{{
 local bat_arc = wibox.widget {
     bg = beautiful.bg_focus,
+    colors = { beautiful.widget_bat_normal },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -375,13 +379,13 @@ local lain_bat = lain.widget.bat({
     full_notify = "off",
     notify = "on",
     settings = function()
-        local state
+        local state, color
+        color = beautiful.widget_bat_normal
         local perc = tonumber(bat_now.perc)
         bat_arc.tooltip:set_text(perc .. "%")
         bat_arc.value = perc / 100
         if bat_now.ac_status == 1 then
             state = beautiful.nerdfont_bat_full_charging
-            bat_arc.color = beautiful.fg_urgent
         elseif bat_now.status == "N/A" then
             state = beautiful.nerdfont_bat_unknown
         else
@@ -391,14 +395,19 @@ local lain_bat = lain.widget.bat({
                 state = beautiful.nerdfont_bat_high
             elseif perc > 40 then
                 state = beautiful.nerdfont_bat_mid
+                color = beautiful.widget_bat_mid
             elseif perc > 15 then
                 state = beautiful.nerdfont_bat_low
+                color = beautiful.widget_bat_low
             else
                 state = beautiful.nerdfont_bat_empty
             end
         end
-        widget:set_markup(string.format("%s",
-            markup.font(beautiful.widgets_nerdfont, state)))
+        widget:set_markup(
+            string.format("%s",
+                markup.fontfg(beautiful.widgets_nerdfont, color, state)
+            )
+        )
     end
 })
 local mybattery = {
@@ -498,6 +507,7 @@ local mynet = lain.widget.net({
 -- CPU {{{
 local cpu_arc = wibox.widget {
     bg = beautiful.bg_focus,
+    colors = { beautiful.widget_cpu },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -508,8 +518,9 @@ local cpu_arc = wibox.widget {
 cpu_arc.tooltip = awful.tooltip({ objects = { cpu_arc } })
 local laincpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_cpu))
+        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
+                                        beautiful.widget_cpu,
+                                        beautiful.nerdfont_cpu))
         cpu_arc.tooltip:set_text(cpu_now.usage .. "%")
         cpu_arc.value = cpu_now.usage / 100
     end
@@ -534,6 +545,7 @@ mycpu:buttons(awful.util.table.join(
 -- Memory {{{
 local mem_arc = wibox.widget {
     bg = beautiful.bg_focus,
+    colors = { beautiful.widget_ram },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -545,8 +557,9 @@ mem_arc.tooltip = awful.tooltip({ objects = { mem_arc } })
 
 local lainmem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(beautiful.widgets_nerdfont,
-                                      beautiful.nerdfont_memory))
+        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
+                                        beautiful.widget_ram,
+                                        beautiful.nerdfont_memory))
         mem_arc.tooltip:set_text(string.format("%.1f GB", mem_now.used / 1000.0))
         mem_arc.value = mem_now.perc / 100
     end
@@ -571,6 +584,7 @@ myram:buttons(awful.util.table.join(
 -- progressbar
 local light_arc = wibox.widget {
     bg = beautiful.bg_focus,
+    colors = { beautiful.widget_light },
     thickness = 2,
     max_value = 1,
     forced_width = 24,
@@ -595,8 +609,9 @@ local backlight = gears.timer {
 local backlight_stack = wibox.widget {
     wibox.widget {
         wibox.widget{
-            markup = markup.font(beautiful.widgets_nerdfont,
-                                 beautiful.nerdfont_brightness_high),
+            markup = markup.fontfg(beautiful.widgets_nerdfont,
+                                   beautiful.widget_light,
+                                   beautiful.nerdfont_brightness_high),
             widget = wibox.widget.textbox
         },
         margins = 6,

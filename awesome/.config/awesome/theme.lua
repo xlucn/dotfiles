@@ -82,6 +82,19 @@ theme.border_marked         = neutral_red
 theme.titlebar_bg_focus     = theme.bg_normal
 -- }}}
 
+-- Widget colors {{{
+theme.widget_music          = bright_purple
+theme.widget_light          = bright_yellow
+theme.widget_ram            = bright_blue
+theme.widget_ram_high       = birght_red
+theme.widget_cpu            = bright_blue
+theme.widget_cpu_high       = birght_red
+theme.widget_alsa           = bright_yellow
+theme.widget_bat_normal     = bright_green
+theme.widget_bat_mid        = bright_orange
+theme.widget_bat_low        = bright_red
+-- }}}
+
 -- Taglist {{{
 theme.taglist_font          = "Hack Nerd Font 14"
 theme.taglist_squares_sel   = nil
