@@ -155,6 +155,8 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- {{{ Widgets
 -- MPD widget {{{
 local mpd_tooltip = awful.tooltip {}
+mpd_tooltip.mode = "outside"
+mpd_tooltip.preferred_alignments = {"middle"}
 local mpd_arc = wibox.widget {
     bg = beautiful.bg_focus,
     colors = { beautiful.widget_music },
@@ -162,7 +164,7 @@ local mpd_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 local mpd_prev = wibox.widget.textbox(
@@ -301,7 +303,7 @@ local volume_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 volume_arc.tooltip = awful.tooltip({ objects = { volume_arc } })
@@ -365,7 +367,7 @@ local bat_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 bat_arc.tooltip = awful.tooltip({ objects = { bat_arc } })
@@ -500,7 +502,7 @@ local cpu_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 cpu_arc.tooltip = awful.tooltip({ objects = { cpu_arc } })
@@ -536,7 +538,7 @@ local mem_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 mem_arc.tooltip = awful.tooltip({ objects = { mem_arc } })
@@ -573,7 +575,7 @@ local light_arc = wibox.widget {
     max_value = 1,
     forced_width = 24,
     forced_height = 24,
-    start_angle = 3.1415926 * 3 / 2,
+    start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
 light_arc.tooltip = awful.tooltip({ objects = { light_arc } })
@@ -621,9 +623,6 @@ backlight_stack:buttons(awful.util.table.join(
 
 -- }}}
 
--- Other widgets {{{
--- Create a textclock widget
-local mytextclock = wibox.widget.textclock()
 -- }}}
 -- }}}
 
@@ -768,7 +767,7 @@ awful.screen.connect_for_each_screen(function(s)
             volume_upd,
             backlight_stack,
             mybattery,
-            mytextclock,
+            wibox.widget.textclock(),
             wibox.widget.systray(),
             s.mylayoutbox,
         },
