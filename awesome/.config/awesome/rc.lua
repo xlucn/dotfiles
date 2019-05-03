@@ -422,6 +422,7 @@ local mybattery = {
 -- }}}
 
 -- Network widget {{{
+local net_status = wibox.widget.textbox()
 -- format network speed
 local function format_netspeed(raw_speed)
     -- use 1000 here to keep under 3-digits
@@ -449,7 +450,7 @@ local mynet = lain.widget.net({
         -- get first wlan and ethernet interface name
         awful.spawn.easy_async_with_shell(
             "ip a | grep -E '^[1-9].*' | grep -v 'DOWN' | awk -F: '{ print $2 }'",
-            function (stdout,_,_,_)
+            function (stdout, _, _, _)
                 for name in string.gmatch(stdout, " (%w+)") do
                     if string.sub(name, 1, 1) == "e" then
                         ethernet_name = name
@@ -476,6 +477,9 @@ local mynet = lain.widget.net({
         else
             wlan_icon = beautiful.nerdfont_wifi_off
         end
+        -- set widget content
+        net_status.markup = eth_icon .. " " ..
+                            markup.font(beautiful.widgets_nerdfont,wlan_icon)
         -- send and receive speed
         local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
         if sent < 10 then
@@ -491,14 +495,8 @@ local mynet = lain.widget.net({
         end
 
         widget:set_markup(
-            --markup.font(beautiful.widgets_nerdfont,
-                        --beautiful.nerdfont_upspeed) .. " " ..
             markup.fg.color(beautiful.blue, sent_str .. " " .. sent_unit) .. " " ..
-            --markup.font(beautiful.widgets_nerdfont,
-                        --beautiful.nerdfont_downspeed) .. " " ..
-            markup.fg.color(beautiful.red, received_str .. " " .. received_unit) .. "  " ..
-            eth_icon .. " " ..
-            markup.font(beautiful.widgets_nerdfont, wlan_icon)
+            markup.fg.color(beautiful.red, received_str .. " " .. received_unit)
         )
     end
 }).widget
@@ -638,6 +636,7 @@ backlight_stack:buttons(awful.util.table.join(
 
 -- }}}
 
+-- {{{ mail
 -- }}}
 -- }}}
 
@@ -782,6 +781,7 @@ awful.screen.connect_for_each_screen(function(s)
             volume_upd,
             backlight_stack,
             mybattery,
+            net_status,
             wibox.widget.textclock(),
             wibox.widget.systray(),
             s.mylayoutbox,
