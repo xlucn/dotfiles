@@ -34,7 +34,7 @@ unset record
 
 # editor, use vanilla vim
 set editor = "vim"
-set signature = "~/.config/mutt/signature-work"
+set signature = "~/.config/mutt/signature_work"
 set sig_on_top = yes
 # disable '+' markers at the beginning of every line
 unset markers
