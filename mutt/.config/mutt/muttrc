@@ -4,10 +4,8 @@ set my_name = "Lu Xu"
 set my_email = "oliver_lew@outlook.com"
 #set my_email = "2869761396@qq.com"
 #set my_email = "2609851103@qq.com"
-# password
-# put the following content and encrypt with gpg:
-# set my_pass = "the password string here"
-source "pass show Mail/$my_email|"
+# password, using the program passwordstore
+set my_pass = `pass show Mail/$my_email`
 
 # information
 set realname = $my_name
