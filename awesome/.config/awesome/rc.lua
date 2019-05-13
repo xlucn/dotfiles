@@ -484,6 +484,15 @@ local mynet = lain.widget.net({
         )
     end
 }).widget
+mynet.visible = false  -- default to invisible
+net_status:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        mynet.visible = not mynet.visible
+    end),     -- left click
+    awful.button({}, 3, function()          -- right click
+        awful.spawn(terminal .. " -e nmtui-connect")
+    end)
+))
 -- }}}
 
 -- CPU {{{
