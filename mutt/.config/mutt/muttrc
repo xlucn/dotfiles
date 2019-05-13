@@ -14,7 +14,7 @@ set from = $my_email
 #set folder = "imaps://$my_email@imap.qq.com:993/"
 #set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
 set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
-set smtp_url= "smtps://$my_email@smtp-mail.outlook.com:587/"
+set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
 
 # passwords
 set imap_pass = $my_pass
