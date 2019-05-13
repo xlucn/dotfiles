@@ -43,7 +43,8 @@ set sidebar_width = 20
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
 
-#mailboxes =INBOX =Sent =Trash =Drafts =Junk =Archive
+# forward subject formats
+set forward_format = "Fwd: %s"
 
 # cache folder
 set message_cachedir = ~/.cache/mutt/bodies
