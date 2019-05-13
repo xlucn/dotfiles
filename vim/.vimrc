@@ -112,9 +112,6 @@ set updatetime=100
 set lazyredraw
 " don't beep
 set noerrorbells
-"colorscheme Tomorrow-Night-Eighties
-"colorscheme solarized
-set termguicolors
 " }}}
 " Space Tabs Indentations {{{
 " indentations
