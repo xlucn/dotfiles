@@ -48,6 +48,8 @@ Plug 'rsmenon/vim-mathematica'
 Plug 'lilydjwg/fcitx.vim'
 " vim-slime
 Plug 'jpalardy/vim-slime'
+" gpg plugin
+Plug 'jamessan/vim-gnupg'
 call plug#end()
 " }}}
 " }}}
