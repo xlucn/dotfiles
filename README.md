@@ -42,7 +42,9 @@ Config files for everything
 
 - curl for vim-plug auto install (in .vimrc)
 
-- [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
+- For [mutt](http://www.mutt.org/)/[neomutt](https://neomutt.org/):
+  - [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
+  - [pass](https://www.passwordstore.org/) for store email passwords
 
 - For Awesome WM:
   - [pcmanfm](https://wiki.lxde.org/en/PCManFM) for lightweight file manager and volume manager
