@@ -42,6 +42,8 @@ Config files for everything
 
 - curl for vim-plug auto install (in .vimrc)
 
+- [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
+
 - For Awesome WM:
   - [pcmanfm](https://wiki.lxde.org/en/PCManFM) for lightweight file manager and volume manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
