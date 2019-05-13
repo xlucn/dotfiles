@@ -30,7 +30,7 @@ bind index,pager \co sidebar-open
 
 macro index,pager  y     "<change-folder>?<toggle-mailboxes>"   "show   incoming   mailboxes   list"
 # Reload configuration
-macro generic,index,browser R ":source ~/.configg/mutt/muttrc\n" "Reload mutt's configuration file"
+macro generic,index,browser R ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
 macro index,pager  \cb  "|urlscan\n"  "call urlscan to extract URLs out of a message"
 
 # index bindings

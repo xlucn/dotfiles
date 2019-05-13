@@ -89,5 +89,5 @@ alternative_order text/plain text/enriched text/html     # save html for last
 
 
 source ~/.config/mutt/muttrc.colors
-source ~/.config/mutt/muttrc.unbindall
+#source ~/.config/mutt/muttrc.unbindall
 source ~/.config/mutt/muttrc.keybindings
