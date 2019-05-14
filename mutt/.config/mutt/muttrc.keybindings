@@ -1,97 +1,96 @@
-# scroll inside the message rather than the index
-bind generic,pager <up> previous-line
-bind generic,pager <down> next-line
-bind generic,pager k previous-line
-bind generic,pager j next-line
-bind generic,index,pager,browser,attach q exit
-bind alias,index,browser         G     last-entry
-bind alias,index,browser         g    first-entry
-
-bind alias,attach,index,pager,browser,query   \Cd   next-page
-bind alias,attach,index,pager,browser,query   \Cu   previous-page
+# search
 bind generic,pager,index / search
+bind generic,index,pager n search-next
+bind generic,index,pager N search-opposite
 
-bind generic,index,browser 0 first-entry
-bind generic,index,browser $ last-entry
-bind generic,browser <return> select-entry
-bind generic,browser <right>  select-entry
-bind generic,browser l select-entry
+# navigation with j/k up/down etc.
+bind   generic,pager          <up>     previous-line
+bind   generic,pager          k        previous-line
+bind   generic,pager          <down>   next-line
+bind   generic,pager          j        next-line
+bind   index,attach,browser   <up>     previous-entry
+bind   index,attach,browser   k        previous-entry
+bind   index,attach,browser   <down>   next-entry
+bind   index,attach,browser   j        next-entry
+bind   pager                  K        previous-entry
+bind   pager                  J        next-entry
+bind   generic,alias,attach,index,pager,browser   <pageup>     previous-page
+bind   generic,alias,attach,index,pager,browser   <pagedown>   next-page
+bind   generic,alias,attach,index,pager,browser   \Cd          next-page
+bind   generic,alias,attach,index,pager,browser   \Cu          previous-page
+bind   generic,alias,index,browser   g        first-entry
+bind   generic,alias,index,browser   <end>    first-entry
+bind   generic,alias,index,browser   G        last-entry
+bind   generic,alias,index,browser   <home>   last-entry
+bind   pager                         g        top
+bind   pager                         <end>    top
+bind   pager                         G        bottom
+bind   pager                         <home>   bottom
 
-bind generic,index,attach,browser <Up>   previous-entry
-bind generic,index,attach,browser <Down> next-entry
-bind generic,index,attach,browser k previous-entry
-bind generic,index,attach,browser j next-entry
-bind generic,index,pager <PageUp> previous-page
-bind generic,index,pager <PageDown> next-page
+# enter and exit with left/right h/l enter/q
+macro index <left> "c?\t" "Go back to the list of mailboxes"
+macro index h      "c?\t" "Go back to the list of mailboxes"
+bind generic,index,pager,browser,attach q      exit
+bind generic,pager,browser,attach       <left> exit
+bind generic,pager,browser,attach       h      exit
+bind   generic,browser,alias  l          select-entry
+bind   generic,browser,alias  <return>   select-entry
+bind   generic,browser,alias  <enter>    select-entry
+bind   generic,browser,alias  <right>    select-entry
+bind   index             l          display-message
+bind   index             <return>   display-message
+bind   index             <enter>    display-message
+bind   index             <right>    display-message
+bind   pager             l          view-attachments
+bind   pager             <right>    view-attachments
+bind   pager             <return>   view-attachments
+bind   pager             <enter>    view-attachments
+bind   attach            l          view-attach
+bind   attach            <right>    view-attach
+bind   attach            <return>   view-attach
+bind   attach            <enter>    view-attach
 
-bind index,pager \cp sidebar-prev
-bind index,pager \cn sidebar-next
-bind index,pager \co sidebar-open
+# sidebar
+bind generic,index,pager \cp sidebar-prev
+bind generic,index,pager \cn sidebar-next
+bind generic,index,pager \co sidebar-open
 
-macro index,pager  y     "<change-folder>?<toggle-mailboxes>"   "show   incoming   mailboxes   list"
-# Reload configuration
-macro generic,index,browser R ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
-macro index,pager  \cb  "|urlscan\n"  "call urlscan to extract URLs out of a message"
+macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
+macro generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
+macro pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
 
-# index bindings
-bind index \cd next-page
-bind index \cu previous-page
+# index navigation
 bind index \t next-new-then-unread
 bind index \e\t next-new-then-unread
-bind index <return> display-message
-bind index <enter> display-message
-macro index <left> "c?\t" "Go back to the list of mailboxes"
-bind index <right> display-message
-bind index l display-message
 bind index { previous-thread
 bind index } next-thread
-bind index,browser <up> previous-entry
-bind index,browser <down> next-entry
-bind index,browser k previous-entry
-bind index,browser j next-entry
-bind index K previous-line
-bind index J next-line
-bind index \cg imap-fetch-mail
-bind index n search-next
-bind index N search-opposite
+bind index "^" imap-fetch-mail
 bind index zA collapse-all
 bind index za collapse-thread
 bind index <space> collapse-thread
 bind index c change-folder
-macro index h "c?\t" "Go back to the list of mailboxes"
+
+# email operations
 bind index,pager m mail
 bind index,pager r reply
+bind index,pager R group-reply
 bind index,pager b bounce-message
 bind index,pager f forward-message
 bind index,pager d delete-message
 bind index,pager u undelete-message
+bind index,pager p print-message
+bind index,pager s save-message
+bind index,pager | pipe-message
+bind index,pager a create-alias
 bind index D delete-thread
 bind index U undelete-thread
 bind index @ display-address
 bind index x toggle-new
-bind index,pager p print-message
-bind index,pager s save-message
-bind index,pager | pipe-message
-bind index,pager A create-alias
+bind pager x mark-as-new
 
 # pager bindings
-bind pager g top
-bind pager G bottom
-bind pager K previous-entry
-bind pager J next-entry
 bind pager { half-up
 bind pager } half-down
-bind pager n search-next
-bind pager N search-opposite
-bind pager R group-reply
-bind pager <right> view-attachments
-bind pager l view-attachments
-bind pager,attach <left> exit
-bind pager,attach h exit
 
 # attach bindings
-bind attach l view-attach
-bind attach <right> view-attach
-bind attach <return> view-attach
-bind attach <enter> view-attach
 bind attach T view-text
