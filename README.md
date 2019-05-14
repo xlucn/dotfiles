@@ -45,21 +45,16 @@ Config files for everything
 - For [mutt](http://www.mutt.org/)/[neomutt](https://neomutt.org/):
   - [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
   - [pass](https://www.passwordstore.org/) for store email passwords
+  - gpg for passwordstore and other encryptions
 
 - For Awesome WM:
+  - [lain](https://github.com/lcpz/lain) for wigdets library
   - [pcmanfm](https://wiki.lxde.org/en/PCManFM) for lightweight file manager and volume manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
 ## Install
-
-Clone the repo with submodules
-
-```
-git clone https://github.com/OliverLew/dotfiles
-git submodule update --init --recursive
-```
 
 The files can be linked to corresponding places with `stow`
 
