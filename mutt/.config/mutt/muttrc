@@ -65,10 +65,10 @@ set sort_aux = "last-date-received"
 # index scroll
 set menu_scroll
 
-# aliases
-set alias_file = "~/.config/mutt/muttrc.aliases"
+# aliases stored in gpg encrypted file
+set alias_file = "~/.config/mutt/muttrc.aliases.gpg"
 set reverse_alias = yes
-source $alias_file
+source "gpg -q -d $alias_file |"
 
 # header
 # show only those headers
