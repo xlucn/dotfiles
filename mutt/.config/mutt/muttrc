@@ -1,22 +1,19 @@
 # name
 set my_name = "Lu Xu"
-# email address
-set my_email = "oliver_lew@outlook.com"
-#set my_email = "2869761396@qq.com"
-#set my_email = "2609851103@qq.com"
-# password, using the program passwordstore
-set my_pass = `pass show Mail/$my_email`
 
-# information
+# email address and other infomation
+set my_email = "oliver_lew@outlook.com"
 set realname = $my_name
 set from = $my_email
-# IMAP and SMTP servers
-#set folder = "imaps://$my_email@imap.qq.com:993/"
-#set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
 set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
 set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
 
-# passwords
+#set my_email = "2869761396@qq.com"
+#set folder = "imaps://$my_email@imap.qq.com:993/"
+#set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
+
+# password, using the program passwordstore
+set my_pass = `pass show Mail/$my_email`
 set imap_pass = $my_pass
 set smtp_pass = $my_pass
 
@@ -30,7 +27,7 @@ set postponed = "+Drafts"
 set copy = no
 unset record
 
-# editor, use vanilla vim
+# editor, use vim
 set editor = "vim"
 set signature = "~/.config/mutt/signature_work"
 set sig_on_top = yes
@@ -84,10 +81,12 @@ hdr_order Subject: From: To: CC: BCC: Date:
 # show index on top and pager below
 set pager_index_lines = 10
 
-auto_view text/html                                      # view html automatically
-alternative_order text/plain text/enriched text/html     # save html for last
+# email content
+auto_view text/html                                   # view html automatically
+alternative_order text/plain text/enriched text/html  # save html for last
 
-
+# color configuration
 source ~/.config/mutt/muttrc.colors
+# keybindings
 #source ~/.config/mutt/muttrc.unbindall
 source ~/.config/mutt/muttrc.keybindings
