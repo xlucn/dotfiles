@@ -19,13 +19,13 @@ bind   generic,alias,attach,index,pager,browser   <pagedown>   next-page
 bind   generic,alias,attach,index,pager,browser   \Cd          next-page
 bind   generic,alias,attach,index,pager,browser   \Cu          previous-page
 bind   generic,alias,index,browser   g        first-entry
-bind   generic,alias,index,browser   <end>    first-entry
+bind   generic,alias,index,browser   <home>    first-entry
 bind   generic,alias,index,browser   G        last-entry
-bind   generic,alias,index,browser   <home>   last-entry
+bind   generic,alias,index,browser   <end>   last-entry
 bind   pager                         g        top
-bind   pager                         <end>    top
+bind   pager                         <home>   top
 bind   pager                         G        bottom
-bind   pager                         <home>   bottom
+bind   pager                         <end>    bottom
 
 # enter and exit with left/right h/l enter/q
 macro index <left> "c?\t" "Go back to the list of mailboxes"
