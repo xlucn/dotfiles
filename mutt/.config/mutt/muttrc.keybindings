@@ -8,10 +8,10 @@ bind   generic,pager          <up>     previous-line
 bind   generic,pager          k        previous-line
 bind   generic,pager          <down>   next-line
 bind   generic,pager          j        next-line
-bind   index,attach,browser   <up>     previous-entry
-bind   index,attach,browser   k        previous-entry
-bind   index,attach,browser   <down>   next-entry
-bind   index,attach,browser   j        next-entry
+bind   alias,index,attach,browser   <up>     previous-entry
+bind   alias,index,attach,browser   k        previous-entry
+bind   alias,index,attach,browser   <down>   next-entry
+bind   alias,index,attach,browser   j        next-entry
 bind   pager                  K        previous-entry
 bind   pager                  J        next-entry
 bind   generic,alias,attach,index,pager,browser   <pageup>     previous-page
