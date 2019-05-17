@@ -1,16 +1,16 @@
 # name
-set my_name = "Lu Xu"
+set my_name = "Xu Lu"
 
 # email address and other infomation
 set my_email = "oliver_lew@outlook.com"
-set realname = $my_name
-set from = $my_email
 set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
 set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
-
 #set my_email = "2869761396@qq.com"
 #set folder = "imaps://$my_email@imap.qq.com:993/"
 #set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
+
+set realname = $my_name
+set from = $my_email
 
 # password, using the program passwordstore
 set my_pass = `pass show Mail/$my_email`
@@ -47,8 +47,12 @@ set forward_format = "Fwd: %s"
 set message_cachedir = ~/.cache/mutt/bodies
 set header_cache = ~/.cache/mutt/headers
 # interval of mail checking
-set mail_check = 60
-set timeout = 120
+set mail_check = 30
+set timeout = 30
+# Allow Mutt to open a new IMAP connection automatically.
+unset imap_passive
+# keep the IMAP connection alive
+set imap_keepalive = 30
 # stop at the bottom of a message instead of go to next message
 set pager_stop = yes
 # suppress pause when switching mail boxes
