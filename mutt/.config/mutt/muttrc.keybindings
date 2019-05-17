@@ -54,17 +54,19 @@ bind   attach            <enter>    view-attach
 bind generic,index,pager \cp sidebar-prev
 bind generic,index,pager \cn sidebar-next
 bind generic,index,pager \co sidebar-open
+# Toggle the visibility of the Sidebar.
+bind generic,index,pager B sidebar-toggle-visible
 
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 macro generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
 macro pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
+macro generic,index,browser,pager "^" "<imap-fetch-mail><check-stats>"
 
 # index navigation
 bind index \t next-new-then-unread
 bind index \e\t next-new-then-unread
 bind index { previous-thread
 bind index } next-thread
-bind index "^" imap-fetch-mail
 bind index zA collapse-all
 bind index za collapse-thread
 bind index <space> collapse-thread
@@ -77,11 +79,13 @@ bind index,pager R group-reply
 bind index,pager b bounce-message
 bind index,pager f forward-message
 bind index,pager d delete-message
+bind index,pager <delete> delete-message
 bind index,pager u undelete-message
 bind index,pager p print-message
 bind index,pager s save-message
 bind index,pager | pipe-message
 bind index,pager a create-alias
+bind index,pager $ sync-mailbox
 bind index D delete-thread
 bind index U undelete-thread
 bind index @ display-address
@@ -94,3 +98,5 @@ bind pager } half-down
 
 # attach bindings
 bind attach T view-text
+
+# vim: ft=neomuttrc
