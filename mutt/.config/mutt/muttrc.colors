@@ -22,10 +22,11 @@ mono indicator reverse
 mono error bold
 color normal default default
 color indicator black white
-color sidebar_highlight red default
+color sidebar_highlight brightred default
 color sidebar_divider brightblack black
-color sidebar_flagged red black
+color sidebar_flagged cyan default
 color sidebar_new green black
+color sidebar_indicator black brightblack
 color normal brightyellow default
 color error red default
 color tilde black default
