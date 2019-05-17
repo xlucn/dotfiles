@@ -54,6 +54,10 @@ Config files for everything
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
+- mpv scripts source (scripts already in the repo)
+  - [autosub](https://github.com/vayan/autosub-mpv)
+  - [autoloop](https://github.com/zc62/mpv-scripts/blob/master/autoloop.lua)
+  - [autoload](https://github.com/mpv-player/mpv/blob/master/TOOLS/lua/autoload.lua)
 ## Install
 
 The files can be linked to corresponding places with `stow`
