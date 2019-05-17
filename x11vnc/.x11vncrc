@@ -1,0 +1,8 @@
+# only one connection a time
+nevershared
+# keep alive after first client disconnect
+forever
+# use unix username and password
+unixpw_nis
+# use recommended client-side pixel caching
+ncache 10
