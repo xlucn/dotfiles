@@ -30,7 +30,9 @@ xinput set-prop "$hp735g5_trackpad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "$hp735g5_trackpad" "libinput Accel Speed" 0.5
 
 # pcmanfm daemon, for automount drives
-pcmanfm -d &
+#pcmanfm -d &
+# thunar daemon
+thunar --daemon &
 
 # start Chinese input method
 fcitx
