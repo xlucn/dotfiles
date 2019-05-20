@@ -29,6 +29,9 @@ xinput set-prop "$hp735g5_trackpad" "libinput Natural Scrolling Enabled" 1
 # set acceleration
 xinput set-prop "$hp735g5_trackpad" "libinput Accel Speed" 0.5
 
+# disable bell
+xset -b
+
 # pcmanfm daemon, for automount drives
 #pcmanfm -d &
 # thunar daemon
