@@ -150,6 +150,11 @@ local mpd_arc = wibox.widget {
     start_angle = math.pi * 3 / 2,
     widget = wibox.container.arcchart
 }
+local mpd_stop = wibox.widget.textbox(
+    markup.fontfg(beautiful.widgets_nerdfont,
+                  beautiful.widget_music,
+                  beautiful.nerdfont_music_stop)
+)
 local mpd_prev = wibox.widget.textbox(
     markup.fontfg(beautiful.widgets_nerdfont,
                   beautiful.widget_music,
@@ -214,6 +219,12 @@ local mpd_upd = lain.widget.mpd({
 })
 local mpd = wibox.widget {
     wibox.widget {
+        mpd_stop,
+        margins = 8,
+        right = 0,
+        layout = wibox.container.margin
+    },
+    wibox.widget {
         mpd_prev,
         margins = 8,
         layout = wibox.container.margin
@@ -255,6 +266,12 @@ mpd_arc:buttons(awful.util.table.join(
     end),
     awful.button({}, 5, function()
         awful.spawn.with_shell("mpc seek -10")
+        mpd_upd.update()
+    end)
+))
+mpd_stop:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("mpc stop")
         mpd_upd.update()
     end)
 ))
