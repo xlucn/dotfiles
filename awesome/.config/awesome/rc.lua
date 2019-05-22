@@ -567,7 +567,7 @@ local lainmem = lain.widget.mem({
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
                                         beautiful.widget_ram,
                                         beautiful.nerdfont_memory))
-        mem_arc.tooltip:set_text(string.format("%.1f GB", mem_now.used / 1000.0))
+        mem_arc.tooltip:set_text(string.format("%.2f GB", mem_now.used / 1000.0))
         mem_arc.value = mem_now.perc / 100
     end
 })
