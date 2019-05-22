@@ -1,0 +1,10 @@
+# use vi mode
+set editing-mode vi
+
+# kill the lag, do not wait after ESC
+set keyseq-timeout 0
+
+# use block cursor to indicate command mode and pipe cursor insert mode
+set show-mode-in-prompt on
+set vi-cmd-mode-string "\1\e[2 q\2"
+set vi-ins-mode-string "\1\e[6 q\2"
