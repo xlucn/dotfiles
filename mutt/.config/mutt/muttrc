@@ -1,35 +1,7 @@
-# name
-set my_name = "Xu Lu"
-
-# email address and other infomation
-set my_email = "oliver_lew@outlook.com"
-set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
-set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
-#set my_email = "2869761396@qq.com"
-#set folder = "imaps://$my_email@imap.qq.com:993/"
-#set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
-
-set realname = $my_name
-set from = $my_email
-
-# password, using the program passwordstore
-set my_pass = `pass show Mail/$my_email`
-set imap_pass = $my_pass
-set smtp_pass = $my_pass
-
-# Mailboxes
-set spoolfile = "+Inbox"
-set record = "+Sent"
-set trash = "+Trash"
-set postponed = "+Drafts"
-
-# do not save sent email
-set copy = no
-unset record
+source ~/.config/mutt/muttrc.accounts.work
 
 # editor, use vim
 set editor = "vim"
-set signature = "~/.config/mutt/signature_work"
 set sig_on_top = yes
 # disable '+' markers at the beginning of every line
 unset markers
@@ -53,8 +25,6 @@ set timeout = 30
 unset imap_passive
 # keep the IMAP connection alive
 set imap_keepalive = 30
-# stop at the bottom of a message instead of go to next message
-set pager_stop = yes
 # suppress pause when switching mail boxes
 set sleep_time = 0
 # default recipient and subject when reply
@@ -62,7 +32,8 @@ set fast_reply = yes
 # include original message when reply
 set include = yes
 # check all mailboxes
-set imap_check_subscribed
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
 # sort by threads
 set sort = "threads"
 set sort_aux = "last-date-received"
@@ -83,7 +54,10 @@ unhdr_order *
 hdr_order Subject: From: To: CC: BCC: Date:
 
 # show index on top and pager below
+set pager_context = 3
 set pager_index_lines = 10
+# stop at the bottom of a message instead of go to next message
+set pager_stop = yes
 
 # email content
 auto_view text/html                                   # view html automatically

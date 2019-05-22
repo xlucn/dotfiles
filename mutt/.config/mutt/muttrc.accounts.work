@@ -1,0 +1,28 @@
+# name
+set my_name = "Xu Lu"
+
+# email address and other infomation
+set my_email = "oliver_lew@outlook.com"
+set folder = "imaps://$my_email@imap-mail.outlook.com:993/"
+set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
+
+set realname = $my_name
+set from = $my_email
+
+# password, using the program passwordstore
+set my_pass = `pass show Mail/$my_email`
+set imap_pass = $my_pass
+set smtp_pass = $my_pass
+
+# Mailboxes
+set spoolfile = "+Inbox"
+set record = "+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+
+# do not save sent email
+set copy = no
+unset record
+
+# signature file
+set signature = "~/.config/mutt/signature_work"
