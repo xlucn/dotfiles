@@ -5,7 +5,8 @@
 [ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
 
 # Environments
-export editor=vim
+export EDITOR=vim
+export VISUAL=vim
 
 # Alias
 # auto color
