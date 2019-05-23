@@ -159,6 +159,8 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
 " Quickly reload the current file
 nnoremap <leader>e :e<CR>
+" Quickly save and quit the current file
+nnoremap <leader>x :x<CR>
 " }}}
 " Autocmd {{{
 autocmd BufWritePost *Xresources :!xrdb %
