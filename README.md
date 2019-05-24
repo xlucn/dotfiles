@@ -8,7 +8,6 @@ Config files for everything
 - OS:
   - [Archlinux](http://www.archlinux.org/)
 - DE:
-  - [Gnome3](https://www.gnome.org)
   - [AwesomeWM](https://awesomewm.org/)
 - Colorscheme:
   - [gruvbox](https://github.com/morhetz/gruvbox)
@@ -28,8 +27,6 @@ Config files for everything
     for awesome wm tags
 
 - Powerline
-  - [Powerline](https://github.com/powerline/powerline)
-    for tmux status line and shell prompt
   - [powerline-shell](https://github.com/b-ryan/powerline-shell)
     powerline replacement
 
@@ -49,7 +46,7 @@ Config files for everything
 
 - For Awesome WM:
   - [lain](https://github.com/lcpz/lain) for wigdets library
-  - [pcmanfm](https://wiki.lxde.org/en/PCManFM) for lightweight file manager and volume manager
+  - [thunar](https://wiki.archlinux.org/index.php/Thunar) for lightweight file manager and volume manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
@@ -72,28 +69,28 @@ with `<package name>` being the folder name for a specific program.
 
 - Fugitive sign column update is slow, in .vimrc
 
-```vim
-set updatetime=100
-```
+  ```vim
+  set updatetime=100
+  ```
 
 - Delay when escaping out of insert mode, in .vimrc
 
-```vim
-set ttimeoutlen=0
-```
+  ```vim
+  set ttimeoutlen=0
+  ```
 
-and in tmux.conf(if using it)
+  and in tmux.conf(if using it)
 
-```tmux
-set -g escape-time 0
-```
+  ```tmux
+  set -g escape-time 0
+  ```
 - Leader guide plugin takes a second to pop up, in .vimrc
 
-```vim
-set timeoutlen=300
-```
+  ```vim
+  set timeoutlen=300
+  ```
 
-this makes the list pop up in 0.3 seconds.
+  this makes the list pop up in 0.3 seconds.
 
 - Programs not showing correctly in tmux (tremc in my case), in .tmux.conf
 
