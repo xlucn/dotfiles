@@ -114,6 +114,10 @@ theme.tasklist_bg_minimize  = dark0_hard
 theme.tasklist_spacing      = dpi(0)
 -- }}}
 
+-- Tooltip {{{
+theme.tooltip_align = "top_left"
+-- }}}
+
 -- Sizes {{{
 -- choose the largest icon size below this size
 awesome.set_preferred_icon_size(48)
