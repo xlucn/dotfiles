@@ -86,7 +86,7 @@ set diffopt+=vertical
 " }}}
 " UI basic {{{
 " gui options
-set guioptions=ri
+set guioptions=ci
 set guifont=Hack\ 12
 " show line number
 set number
