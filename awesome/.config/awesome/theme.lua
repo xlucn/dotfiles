@@ -56,11 +56,6 @@ local dpi = require("beautiful.xresources").apply_dpi
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
--- wallpaper {{{
---theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
-gears.wallpaper.set("#282828")
--- }}}
-
 -- Basic Colors {{{
 theme.blue                  = neutral_blue
 theme.red                   = neutral_red
@@ -73,6 +68,11 @@ theme.fg_normal             = light0
 theme.fg_focus              = neutral_blue
 theme.fg_urgent             = theme.bg_normal
 theme.fg_minimize           = gray_244
+-- }}}
+
+-- wallpaper {{{
+--theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
+gears.wallpaper.set(dark2)
 -- }}}
 
 -- Colors {{{
