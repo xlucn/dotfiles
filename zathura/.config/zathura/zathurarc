@@ -1,7 +1,7 @@
-set guioptions "sv"
+set guioptions "hv"
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
-set highlight-transparency 0.15
+set highlight-transparency 0.25
 set default-fg "#f9f5d7"
 set default-bg "#282828"
 set statusbar-bg "#282828"
