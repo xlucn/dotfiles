@@ -1,4 +1,4 @@
-set guioptions "hv"
+set guioptions "sv"
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 set highlight-transparency 0.25
