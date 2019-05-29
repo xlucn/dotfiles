@@ -27,11 +27,9 @@ Plug 'airblade/vim-gitgutter'
 " surround-vim
 Plug 'tpope/vim-surround'
 " theme
-Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 " leader guide like in spacevim
-Plug 'hecal3/vim-leader-guide'
+Plug 'liuchengxu/vim-which-key'
 " linter plugin
 Plug 'w0rp/ale'
 "  asynchronous run tasks in parallel
@@ -59,6 +57,7 @@ call plug#end()
 set nocompatible
 " leader key
 let mapleader = ','
+let maplocalleader = '\'
 " syntax
 syntax on
 " filetype
@@ -75,8 +74,6 @@ set encoding=utf-8
 set clipboard=unnamedplus
 " automatically write a file when leaving a buffer
 set autowrite
-" reload vimrc
-nnoremap <silent> <Leader>r :so $MYVIMRC<CR>
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
@@ -139,10 +136,6 @@ set ignorecase
 set smartcase
 " highlight search
 set hlsearch
-" This unsets the *last search pattern* register by hitting return
-" Also redraw the screen. Just do the cleaning stuff at one time.
-nnoremap <silent> <leader><space> :noh <bar> redraw!<CR>
-nnoremap <silent> ,. :noh <bar> redraw!<CR>
 " }}}
 " Navigations {{{
 " go up/down
@@ -153,20 +146,36 @@ nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
 " toggle fold
 nnoremap <space> za
-" Quickly close the current window
-nnoremap <leader>q :q<CR>
-" Quickly save the current file
-nnoremap <leader>w :w<CR>
-" Quickly reload the current file
-nnoremap <leader>e :e<CR>
-" Quickly save and quit the current file
-nnoremap <leader>x :x<CR>
 " }}}
 " Autocmd {{{
 autocmd BufWritePost *Xresources :!xrdb %
+" Automatically deletes all trailing whitespace on save. (Thanks Luke!)
+autocmd BufWritePre * %s/\s\+$//e
 " }}}
 " }}}
 " Plugin Settings {{{
+" Vim Which Key {{{
+let g:which_key_use_floating_win = 0
+let g:which_key_map = {
+  \ 'c' : { 'name' : '+commenting' },
+  \ 'q' : [ 'qa', 'quit (all)'],
+  \ 'Q' : [ 'q!', 'quit without saving'],
+  \ 'w' : [ 'w',  'save'],
+  \ 'e' : [ 'e',  'edit (reload)'],
+  \ 'x' : [ 'x',  'save and quit'],
+  \ '.' : [ 'noh <bar> redraw!<CR>', 'clear search hl'],
+  \ 'r' : [ 'so $MYVIMRC<CR>', 'reload vimrc']
+  \ }
+let g:which_key_map_local = {
+  \ 'l' : { 'name' : '+vimtex' }
+  \ }
+nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+call which_key#register(mapleader, "g:which_key_map")
+call which_key#register(maplocalleader, "g:which_key_map_local")
+" }}}
 " Markdown {{{
 "set conceallevel=2
 let g:vim_markdown_folding_style_pythonic = 1
@@ -188,17 +197,23 @@ function! GitRepoLogAll()
     redraw!
 endfunction
 " key bindings
-nnoremap <leader>gb :!git branch -a<CR>
-nnoremap <leader>gd :Gvdiff<CR>
-nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gl :call GitRepoLogAll()<CR>
-nnoremap <leader>gk :Git checkout<space>
-nnoremap <leader>gu :Gpush<CR>
-nnoremap <leader>gf :Gpull<CR>
-nnoremap <leader>gts :Git stash<CR>
-nnoremap <leader>gtp :Git stash pop<space>
-nnoremap <leader>gtl :Git stash list<CR>
+let g:which_key_map.g = {
+  \ 'name' : '+git-operation',
+  \ 'b' : [ '!git branch -a<CR>', 'git show branch' ],
+  \ 'd' : [ 'Gvdiff<CR>', 'git diff' ],
+  \ 'c' : [ 'Gcommit -v<CR>', 'git commit' ],
+  \ 's' : [ 'Gstatus<CR>', 'git status' ],
+  \ 'l' : [ 'call GitRepoLogAll()<CR>', 'git show log' ],
+  \ 'k' : [ 'Git checkout<space>', 'git checkout' ],
+  \ 'u' : [ 'Gpush<CR>', 'git push' ],
+  \ 'f' : [ 'Gpull<CR>', 'git pull' ],
+  \ 't' : {
+    \ 'name' : '+stash',
+    \ 's' : [ 'Git stash<CR>', 'git stash' ],
+    \ 'p' : [ 'Git stash pop<space>', 'git stash pop' ],
+    \ 'l' : [ 'Git stash list<CR>', 'git stash list' ]
+    \ }
+  \ }
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
@@ -223,6 +238,7 @@ let g:ale_linters = {
   \ }
 let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
 " Keymapping
+let g:which_key_map.a = { 'name' : '+ale' }
 nnoremap <leader>aj <Plug>(ale_next_wrap)
 nnoremap <leader>ak <Plug>(ale_previous_wrap)
 " }}}
@@ -230,18 +246,6 @@ nnoremap <leader>ak <Plug>(ale_previous_wrap)
 let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 nnoremap <C-N> :NERDTreeToggle<CR>
-" }}}
-" Vim Leader Guide {{{
-let g:lmap = {}
-let g:lmap.g = { 'name' : 'Git operation' }
-let g:lmap.c = { 'name' : 'Comments' }
-call leaderGuide#register_prefix_descriptions("<leader>", "g:lmap")
-nnoremap <silent> <leader> :<c-u>LeaderGuide '<leader>'<CR>
-vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<leader>'<CR>
-let g:llmap = {}
-autocmd FileType tex let g:llmap.l = { 'name' : 'vimtex' }
-call leaderGuide#register_prefix_descriptions("<localleader>", "g:llmap")
-nnoremap <silent> <localleader> :<c-u>LeaderGuide '<localleader>'<CR>
 " }}}
 " Asyncrun {{{
 let g:asyncrun_open = 8
