@@ -46,5 +46,9 @@ if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
 
+# Disable ctrl-s and ctrl-q
+stty -ixon
 # set vi mode keybinding
 set -o vi
+#Allows you to cd into directory merely by typing the directory name.
+shopt -s autocd
