@@ -164,7 +164,7 @@ let g:which_key_map = {
   \ 'e' : [ 'e',  'edit (reload)'],
   \ 'x' : [ 'x',  'save and quit'],
   \ '.' : [ 'noh <bar> redraw!<CR>', 'clear search hl'],
-  \ 'r' : [ 'so $MYVIMRC<CR>', 'reload vimrc']
+  \ 'r' : [ ':so $MYVIMRC<CR>', 'reload vimrc']
   \ }
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' }
