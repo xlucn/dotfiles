@@ -238,9 +238,11 @@ let g:ale_linters = {
   \ }
 let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
 " Keymapping
-let g:which_key_map.a = { 'name' : '+ale' }
-nnoremap <leader>aj <Plug>(ale_next_wrap)
-nnoremap <leader>ak <Plug>(ale_previous_wrap)
+let g:which_key_map.a = {
+  \ 'name' : '+ale',
+  \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
+  \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
+  \ }
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
