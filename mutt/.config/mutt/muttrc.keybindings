@@ -57,10 +57,11 @@ bind generic,index,pager \co sidebar-open
 # Toggle the visibility of the Sidebar.
 bind generic,index,pager B sidebar-toggle-visible
 
+# macros
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 macro generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
 macro pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
-macro generic,index,browser,pager "^" "<imap-fetch-mail><check-stats>"
+macro generic,index,browser,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
 
 # index navigation
 bind index \t next-new-then-unread
@@ -85,7 +86,6 @@ bind index,pager p print-message
 bind index,pager s save-message
 bind index,pager | pipe-message
 bind index,pager a create-alias
-bind index,pager $ sync-mailbox
 bind index D delete-thread
 bind index U undelete-thread
 bind index @ display-address
