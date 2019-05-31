@@ -122,7 +122,7 @@ bind generic,pager,editor,index,attach \cc noop
 bind generic,pager,editor,index,attach \cd noop
 bind generic,pager,editor,index,attach \ce noop
 bind generic,pager,editor,index,attach \cf noop
-bind generic,pager,editor,index,attach \cg noop
+#bind generic,pager,editor,index,attach \cg noop
 bind generic,pager,editor,index,attach \ch noop
 bind generic,pager,editor,index,attach \ci noop
 bind generic,pager,editor,index,attach \cj noop
