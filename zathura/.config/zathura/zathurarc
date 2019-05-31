@@ -1,15 +1,28 @@
+map h navigate previous
+map l navigate next
+map fullscreen k navigate previous
+map fullscreen j navigate next
+map fullscreen <Up> navigate previous
+map fullscreen <Down> navigate next
+
 set guioptions "sv"
+
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
-set highlight-transparency 0.25
+
+set highlight-transparency 0.2
+
 set default-fg "#f9f5d7"
 set default-bg "#282828"
 set statusbar-bg "#282828"
 set statusbar-fg "#f9f5d7"
+
 set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
 set recolor-darkcolor "#f9f5d7"
 set recolor-lightcolor "#282828"
+
 set selection-clipboard "clipboard"
+
 set adjust-open "width"
