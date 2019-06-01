@@ -18,16 +18,16 @@ export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 [[ -f $HOME/.Xresources ]] && xrdb -load $HOME/.Xresources
 
 # INPUT DEVICES
+# set the target device here, it can be found by `xinput` command
+trackpad="AlpsPS/2 ALPS GlidePoint"
 # lininput-gestures
 libinput-gestures-setup start
-# set the target device
-hp735g5_trackpad="AlpsPS/2 ALPS GlidePoint"
 # enable natural scrolling
-xinput set-prop "$hp735g5_trackpad" "libinput Tapping Enabled" 1
+xinput set-prop "$trackpad" "libinput Tapping Enabled" 1
 # enable tapping
-xinput set-prop "$hp735g5_trackpad" "libinput Natural Scrolling Enabled" 1
+xinput set-prop "$trackpad" "libinput Natural Scrolling Enabled" 1
 # set acceleration
-xinput set-prop "$hp735g5_trackpad" "libinput Accel Speed" 0.5
+xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
 
 # disable bell
 xset -b
@@ -35,13 +35,16 @@ xset -b
 # pcmanfm daemon, for automount drives
 #pcmanfm -d &
 # thunar daemon
-thunar --daemon &
+if [[ ! `pgrep thunar` ]]; then thunar --daemon; fi &
 
 # start Chinese input method
-fcitx
+if [[ ! `pgrep fcitx` ]]; then fcitx; fi
 
 # start compton
-compton -b
+if [[ ! `pgrep thunar` ]]; then compton -b; fi
 
 # polkit agent
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+if [[ ! `pgrep polkit-gnome` ]]
+then
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+fi
