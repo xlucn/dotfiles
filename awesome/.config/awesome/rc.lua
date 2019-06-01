@@ -1116,16 +1116,13 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
-          "soffice", -- libreoffice template choose, overwrite warning
           "DTA",  -- Firefox addon DownThemAll.
           "copyq",  -- Includes session name in class.
         },
-        class = {
-            "Soffice"
-          },
 
         name = {
           "Event Tester",  -- xev.
+          "Select a Template",  -- LibreOffice
         },
         role = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
