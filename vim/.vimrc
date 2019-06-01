@@ -158,13 +158,13 @@ autocmd BufWritePre * %s/\s\+$//e
 let g:which_key_use_floating_win = 0
 let g:which_key_map = {
   \ 'c' : { 'name' : '+commenting' },
-  \ 'q' : [ 'qa', 'quit (all)'],
-  \ 'Q' : [ 'q!', 'quit without saving'],
-  \ 'w' : [ 'w',  'save'],
-  \ 'e' : [ 'e',  'edit (reload)'],
-  \ 'x' : [ 'x',  'save and quit'],
-  \ '.' : [ 'noh <bar> redraw!<CR>', 'clear search hl'],
-  \ 'r' : [ ':so $MYVIMRC<CR>', 'reload vimrc']
+  \ 'q' : [ ':q', 'quit (all)'],
+  \ 'Q' : [ ':q!', 'quit without saving'],
+  \ 'w' : [ ':w',  'save'],
+  \ 'e' : [ ':e',  'edit (reload)'],
+  \ 'x' : [ ':x',  'save and quit'],
+  \ '.' : [ ':let @/=""', 'clear search hl'],
+  \ 'r' : [ ':so $MYVIMRC', 'reload vimrc'],
   \ }
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' }
