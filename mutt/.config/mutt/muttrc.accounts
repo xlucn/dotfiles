@@ -1,0 +1,18 @@
+set realname = $my_name
+set from = $my_email
+
+# password, using the program passwordstore
+set my_pass = `pass show mail/$my_email`
+set imap_pass = $my_pass
+set smtp_pass = $my_pass
+
+# Mailboxes
+set spoolfile = "+Inbox"
+set record = "+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+
+# do not save sent email
+set copy = no
+unset record
+
