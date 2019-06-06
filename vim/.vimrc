@@ -199,19 +199,18 @@ endfunction
 " key bindings
 let g:which_key_map.g = {
   \ 'name' : '+git-operation',
-  \ 'b' : [ '!git branch -a<CR>', 'git show branch' ],
-  \ 'd' : [ 'Gvdiff<CR>', 'git diff' ],
-  \ 'c' : [ 'Gcommit -v<CR>', 'git commit' ],
-  \ 's' : [ 'Gstatus<CR>', 'git status' ],
-  \ 'l' : [ 'call GitRepoLogAll()<CR>', 'git show log' ],
-  \ 'k' : [ 'Git checkout<space>', 'git checkout' ],
-  \ 'u' : [ 'Gpush<CR>', 'git push' ],
-  \ 'f' : [ 'Gpull<CR>', 'git pull' ],
+  \ 'b' : [ '!git branch -a', 'git show branch' ],
+  \ 'd' : [ ':Gvdiff', 'git diff' ],
+  \ 'c' : [ ':Gcommit -v', 'git commit' ],
+  \ 's' : [ ':Gstatus', 'git status' ],
+  \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
+  \ 'u' : [ ':Gpush', 'git push' ],
+  \ 'f' : [ ':Gpull', 'git pull' ],
   \ 't' : {
     \ 'name' : '+stash',
-    \ 's' : [ 'Git stash<CR>', 'git stash' ],
-    \ 'p' : [ 'Git stash pop<space>', 'git stash pop' ],
-    \ 'l' : [ 'Git stash list<CR>', 'git stash list' ]
+    \ 's' : [ ':Git stash', 'git stash' ],
+    \ 'p' : [ ':Git stash pop', 'git stash pop' ],
+    \ 'l' : [ ':Git stash list', 'git stash list' ]
     \ }
   \ }
 " }}}
