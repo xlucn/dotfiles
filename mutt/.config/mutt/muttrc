@@ -1,4 +1,5 @@
 source ~/.config/mutt/muttrc.accounts.work
+source ~/.config/mutt/muttrc.accounts
 
 # editor, use vim
 set editor = "vim"

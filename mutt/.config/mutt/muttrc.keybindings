@@ -8,24 +8,24 @@ bind   generic,pager          <up>     previous-line
 bind   generic,pager          k        previous-line
 bind   generic,pager          <down>   next-line
 bind   generic,pager          j        next-line
-bind   alias,index,attach,browser   <up>     previous-entry
-bind   alias,index,attach,browser   k        previous-entry
-bind   alias,index,attach,browser   <down>   next-entry
-bind   alias,index,attach,browser   j        next-entry
+bind   alias,index,attach,browser,compose   <up>     previous-entry
+bind   alias,index,attach,browser,compose   k        previous-entry
+bind   alias,index,attach,browser,compose   <down>   next-entry
+bind   alias,index,attach,browser,compose   j        next-entry
 bind   pager                  K        previous-entry
 bind   pager                  J        next-entry
 bind   generic,alias,attach,index,pager,browser   <pageup>     previous-page
 bind   generic,alias,attach,index,pager,browser   <pagedown>   next-page
 bind   generic,alias,attach,index,pager,browser   \Cd          next-page
 bind   generic,alias,attach,index,pager,browser   \Cu          previous-page
-bind   generic,alias,index,browser   g        first-entry
-bind   generic,alias,index,browser   <home>    first-entry
-bind   generic,alias,index,browser   G        last-entry
-bind   generic,alias,index,browser   <end>   last-entry
-bind   pager                         g        top
-bind   pager                         <home>   top
-bind   pager                         G        bottom
-bind   pager                         <end>    bottom
+bind   alias,index,attach,browser,compose   g        first-entry
+bind   alias,index,attach,browser,compose   <home>    first-entry
+bind   alias,index,attach,browser,compose   G        last-entry
+bind   alias,index,attach,browser,compose   <end>   last-entry
+bind   generic,pager                         g        top
+bind   generic,pager                         <home>   top
+bind   generic,pager                         G        bottom
+bind   generic,pager                         <end>    bottom
 
 # enter and exit with left/right h/l enter/q
 macro index <left> "c?\t" "Go back to the list of mailboxes"
