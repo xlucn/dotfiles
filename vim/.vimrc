@@ -8,46 +8,28 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
-" the Vundle plugin it self
-Plug 'VundleVim/Vundle.vim'
-" CtrlP
-Plug 'ctrlpvim/ctrlp.vim'
-" Nerd plugin series
-Plug 'scrooloose/nerdtree'
+Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
+Plug 'ctrlpvim/ctrlp.vim'             " CtrlP
+Plug 'scrooloose/nerdtree'            " Nerd plugin series
 Plug 'scrooloose/nerdcommenter'
-" markdown plugins
-Plug 'godlygeek/tabular' " this plugin must be before vim-markdown
-Plug 'plasticboy/vim-markdown'
-" airline
-Plug 'vim-airline/vim-airline'
+Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
+Plug 'plasticboy/vim-markdown'        " markdown plugins
+Plug 'vim-airline/vim-airline'        " airline
 Plug 'vim-airline/vim-airline-themes'
-" git
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'             " git
 Plug 'airblade/vim-gitgutter'
-" surround-vim
-Plug 'tpope/vim-surround'
-" theme
-Plug 'morhetz/gruvbox'
-" leader guide like in spacevim
-Plug 'liuchengxu/vim-which-key'
-" linter plugin
-Plug 'w0rp/ale'
-"  asynchronous run tasks in parallel
-Plug 'skywind3000/asyncrun.vim'
-" tag bar
-Plug 'majutsushi/tagbar'
-" supertab
-Plug 'ervandew/supertab'
-" vimtex plugin
-Plug 'lervag/vimtex'
-" mathematica
-Plug 'rsmenon/vim-mathematica'
-" fcitx
-Plug 'lilydjwg/fcitx.vim'
-" vim-slime
-Plug 'jpalardy/vim-slime'
-" gpg plugin
-Plug 'jamessan/vim-gnupg'
+Plug 'tpope/vim-surround'             " surround-vim
+Plug 'morhetz/gruvbox'                " theme
+Plug 'liuchengxu/vim-which-key'       " leader guide like in spacevim
+Plug 'w0rp/ale'                       " linter plugin
+Plug 'skywind3000/asyncrun.vim'       " asynchronous run tasks in parallel
+Plug 'majutsushi/tagbar'              " tag bar
+Plug 'ervandew/supertab'              " supertab
+Plug 'lervag/vimtex'                  " vimtex plugin
+Plug 'rsmenon/vim-mathematica'        " mathematica
+Plug 'lilydjwg/fcitx.vim'             " fcitx
+Plug 'jpalardy/vim-slime'             " vim-slime
+Plug 'jamessan/vim-gnupg'             " gpg plugin
 call plug#end()
 " }}}
 " }}}
@@ -258,7 +240,7 @@ command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 let g:asyncrun_status = ''
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 " }}}
-" Vim Tex Settings {{{
+" Vim Tex {{{
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
 " start vim with a server, see ':h vimtex-clientserver'
@@ -294,11 +276,10 @@ let g:ibus#engine = "libpinyin"
 " }}}
 " fcitx {{{
 " }}}
-" Theme solarized, gruvbox {{{
+" Theme gruvbox {{{
 colorscheme gruvbox
 let g:gruvbox_italic      = 1
 let g:gruvbox_sign_column = "bg0"
-let g:solarized_underline = 0
 set background=dark
 " }}}
 " vim-slime {{{
