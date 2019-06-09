@@ -41,7 +41,7 @@ if [[ ! `pgrep thunar` ]]; then thunar --daemon; fi &
 if [[ ! `pgrep fcitx` ]]; then fcitx; fi
 
 # start compton
-if [[ ! `pgrep thunar` ]]; then compton -b; fi
+if [[ ! `pgrep compton` ]]; then compton -b; fi
 
 # polkit agent
 if [[ ! `pgrep polkit-gnome` ]]
