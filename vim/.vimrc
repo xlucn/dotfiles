@@ -111,6 +111,8 @@ set updatetime=100
 set lazyredraw
 " don't beep
 set noerrorbells
+" don't show welcome scren
+set shortmess+=I
 " }}}
 " Space Tabs Indentations {{{
 " indentations
