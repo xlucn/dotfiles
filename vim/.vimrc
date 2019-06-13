@@ -9,16 +9,16 @@ endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
-Plug 'ctrlpvim/ctrlp.vim'             " CtrlP
-Plug 'scrooloose/nerdtree'            " Nerd plugin series
-Plug 'scrooloose/nerdcommenter'
+Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzy search everything
+Plug 'scrooloose/nerdtree'            " File tree
+Plug 'scrooloose/nerdcommenter'       " commenting code
 Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
 Plug 'plasticboy/vim-markdown'        " markdown plugins
-Plug 'vim-airline/vim-airline'        " airline
+Plug 'vim-airline/vim-airline'        " airline status line
 Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'             " git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-surround'             " surround-vim
+Plug 'tpope/vim-fugitive'             " git status and commands
+Plug 'airblade/vim-gitgutter'         " sign column indicator
+Plug 'tpope/vim-surround'             " surround parentheses change
 Plug 'morhetz/gruvbox'                " theme
 Plug 'liuchengxu/vim-which-key'       " leader guide like in spacevim
 Plug 'w0rp/ale'                       " linter plugin
@@ -29,7 +29,7 @@ Plug 'lervag/vimtex'                  " vimtex plugin
 Plug 'rsmenon/vim-mathematica'        " mathematica
 Plug 'lilydjwg/fcitx.vim'             " fcitx
 Plug 'jpalardy/vim-slime'             " vim-slime
-Plug 'jamessan/vim-gnupg'             " gpg plugin
+Plug 'jamessan/vim-gnupg'             " gpg file edit plugin
 call plug#end()
 " }}}
 " }}}
@@ -134,8 +134,6 @@ nnoremap <space> za
 " }}}
 " Autocmd {{{
 autocmd BufWritePost *Xresources :!xrdb %
-" Automatically deletes all trailing whitespace on save. (Thanks Luke!)
-autocmd BufWritePre * %s/\s\+$//e
 " }}}
 " }}}
 " Plugin Settings {{{
