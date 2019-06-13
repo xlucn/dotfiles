@@ -100,9 +100,9 @@ theme.taglist_font          = "Hack Nerd Font 14"
 theme.taglist_squares_sel   = nil
 theme.taglist_squares_unsel = nil
 theme.taglist_fg_empty      = theme.fg_normal
-theme.taglist_bg_empty      = dark1
+theme.taglist_bg_empty      = theme.bg_normal -- dark1
 theme.taglist_fg_occupied   = neutral_orange -- theme.fg_focus
-theme.taglist_bg_occupied   = dark1
+theme.taglist_bg_occupied   = theme.bg_normal -- dark1
 theme.taglist_fg_focus      = neutral_orange -- theme.fg_focus
 theme.taglist_bg_focus      = faded_blue
 -- }}}
@@ -110,7 +110,7 @@ theme.taglist_bg_focus      = faded_blue
 -- Tasklist {{{
 theme.tasklist_fg_focus     = theme.fg_focus
 theme.tasklist_bg_focus     = neutral_aqua
-theme.tasklist_bg_minimize  = dark0_hard
+theme.tasklist_bg_minimize  = dark1
 theme.tasklist_spacing      = dpi(0)
 -- }}}
 
@@ -124,7 +124,7 @@ awesome.set_preferred_icon_size(48)
 theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
-theme.useless_gap               = dpi(16)
+--theme.useless_gap               = dpi(16)
 theme.border_width              = dpi(0)
 theme.systray_icon_spacing      = dpi(0)
 -- }}}
