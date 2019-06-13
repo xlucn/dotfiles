@@ -91,6 +91,7 @@ modkey = "Mod4"
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.magnifier,
+    awful.layout.suit.max,
     awful.layout.suit.fair,
     awful.layout.suit.corner.nw,
     awful.layout.suit.floating,
