@@ -1,5 +1,5 @@
-[ -d ~/.gem/ruby/ ] && export PATH="${PATH}:~/.gem/ruby/2.6.0/bin"
-[ -d ~/.local/bin ] && export PATH="${PATH}:~/.local/bin"
+[ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
+[ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
 
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 [ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
