@@ -14,8 +14,10 @@ Plug 'scrooloose/nerdtree'            " File tree
 Plug 'scrooloose/nerdcommenter'       " commenting code
 Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
 Plug 'plasticboy/vim-markdown'        " markdown plugins
-Plug 'vim-airline/vim-airline'        " airline status line
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'        " airline status line
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'taohexxx/lightline-buffer'
 Plug 'tpope/vim-fugitive'             " git status and commands
 Plug 'airblade/vim-gitgutter'         " sign column indicator
 Plug 'tpope/vim-surround'             " surround parentheses change
@@ -57,6 +59,8 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set clipboard=unnamedplus
 " automatically write a file when leaving a buffer
 set autowrite
+set hidden
+set laststatus=2
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
@@ -96,6 +100,8 @@ set lazyredraw
 set noerrorbells
 " don't show welcome scren
 set shortmess+=I
+set showtabline=2
+set noshowmode
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -141,7 +147,7 @@ autocmd BufWritePost *Xresources :!xrdb %
 let g:which_key_use_floating_win = 0
 let g:which_key_map = {
   \ 'c' : { 'name' : '+commenting' },
-  \ 'q' : [ ':q', 'quit (all)'],
+  \ 'q' : [ ':qa', 'quit (all)'],
   \ 'Q' : [ ':q!', 'quit without saving'],
   \ 'w' : [ ':w',  'save'],
   \ 'e' : [ ':e',  'edit (reload)'],
@@ -166,12 +172,42 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
 " }}}
 " Airline {{{
-let g:airline#extensions#tabline#enabled   = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#ale#enabled       = 1
-let g:airline_theme                        = 'gruvbox'
-let g:airline_powerline_fonts              = 1
-let g:airline_highlighting_cache           = 0
+"let g:airline#extensions#tabline#enabled   = 1
+"let g:airline#extensions#tabline#formatter = 'unique_tail'
+"let g:airline#extensions#ale#enabled       = 1
+"let g:airline_theme                        = 'gruvbox'
+"let g:airline_powerline_fonts              = 1
+"let g:airline_highlighting_cache           = 0
+" async run
+"let g:asyncrun_status = ''
+"let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+" }}}
+" Lightline {{{
+let g:lightline = {
+    \ 'colorscheme': 'Tomorrow_Night_Eighties',
+    \ 'tabline': {
+    \   'left': [ [ 'bufferinfo' ],
+    \             [ 'separator' ],
+    \             [ 'bufferbefore', 'buffercurrent', 'bufferafter' ], ],
+    \   'right': [ [ 'close' ], ],
+    \ },
+    \ 'component_expand': {
+    \   'buffercurrent': 'lightline#buffer#buffercurrent',
+    \   'bufferbefore': 'lightline#buffer#bufferbefore',
+    \   'bufferafter': 'lightline#buffer#bufferafter',
+    \ },
+    \ 'component_type': {
+    \   'buffercurrent': 'tabsel',
+    \   'bufferbefore': 'raw',
+    \   'bufferafter': 'raw',
+    \ },
+    \ 'component_function': {
+    \   'bufferinfo': 'lightline#buffer#bufferinfo',
+    \ },
+    \ 'component': {
+    \   'separator': '',
+    \ },
+    \ }
 " }}}
 " Fugitive {{{
 " wrote this by my own, show the log in a pretty way
@@ -235,9 +271,6 @@ nnoremap <C-N> :NERDTreeToggle<CR>
 let g:asyncrun_open = 8
 " fugitive related, see official website
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
-" vim-airline
-let g:asyncrun_status = ''
-let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 " }}}
 " Vim Tex {{{
 " enable vimtex fold
