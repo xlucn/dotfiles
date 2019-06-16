@@ -1133,6 +1133,7 @@ awful.rules.rules = {
         name = {
           "Event Tester",  -- xev.
           "Select a Template",  -- LibreOffice
+          "Screen Layout Editor" -- arandr
         },
         role = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
