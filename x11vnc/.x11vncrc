@@ -1,5 +1,5 @@
 # only one connection a time
-nevershared
+#nevershared
 # keep alive after first client disconnect
 forever
 # use unix username and password
