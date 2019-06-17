@@ -17,7 +17,9 @@ Plug 'plasticboy/vim-markdown'        " markdown plugins
 "Plug 'vim-airline/vim-airline'        " airline status line
 "Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
-Plug 'taohexxx/lightline-buffer'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'maximbaz/lightline-ale'
 Plug 'tpope/vim-fugitive'             " git status and commands
 Plug 'airblade/vim-gitgutter'         " sign column indicator
 Plug 'tpope/vim-surround'             " surround parentheses change
@@ -140,6 +142,7 @@ nnoremap <space> za
 " }}}
 " Autocmd {{{
 autocmd BufWritePost *Xresources :!xrdb %
+autocmd BufRead,BufNewFile *.plt set filetype=gnuplot
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -178,34 +181,43 @@ let g:vim_markdown_new_list_item_indent = 2
 "let g:airline_theme                        = 'gruvbox'
 "let g:airline_powerline_fonts              = 1
 "let g:airline_highlighting_cache           = 0
-" async run
+"" async run
 "let g:asyncrun_status = ''
 "let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 " }}}
 " Lightline {{{
 let g:lightline = {
     \ 'colorscheme': 'Tomorrow_Night_Eighties',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+    \   'right': [ [ 'linter_checking',
+    \               'linter_errors',
+    \               'linter_warnings',
+    \               'linter_ok' ],
+    \              [ 'percent', 'lineinfo', 'syntastic' ],
+    \              [ 'fileformat', 'fileencoding', 'filetype' ] ],
+    \ },
     \ 'tabline': {
-    \   'left': [ [ 'bufferinfo' ],
-    \             [ 'separator' ],
-    \             [ 'bufferbefore', 'buffercurrent', 'bufferafter' ], ],
-    \   'right': [ [ 'close' ], ],
+    \   'left': [['buffers']],
+    \   'right' : [[]]
     \ },
     \ 'component_expand': {
-    \   'buffercurrent': 'lightline#buffer#buffercurrent',
-    \   'bufferbefore': 'lightline#buffer#bufferbefore',
-    \   'bufferafter': 'lightline#buffer#bufferafter',
+    \   'buffers': 'lightline#bufferline#buffers',
+    \   'linter_checking': 'lightline#ale#checking',
+    \   'linter_warnings': 'lightline#ale#warnings',
+    \   'linter_errors': 'lightline#ale#errors',
+    \   'linter_ok': 'lightline#ale#ok',
     \ },
     \ 'component_type': {
-    \   'buffercurrent': 'tabsel',
-    \   'bufferbefore': 'raw',
-    \   'bufferafter': 'raw',
+    \   'buffers': 'tabsel',
+    \   'linter_checking': 'left',
+    \   'linter_warnings': 'warning',
+    \   'linter_errors': 'error',
+    \   'linter_ok': 'left',
     \ },
     \ 'component_function': {
-    \   'bufferinfo': 'lightline#buffer#bufferinfo',
-    \ },
-    \ 'component': {
-    \   'separator': '',
+    \   'gitbranch': 'fugitive#head'
     \ },
     \ }
 " }}}
