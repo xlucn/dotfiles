@@ -91,7 +91,7 @@ set title
 " show matching characters
 set showmatch
 " minimum lines above and below cursor
-set scrolloff=5
+set scrolloff=2
 " split into right by default
 set splitright
 " update time
