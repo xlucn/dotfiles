@@ -14,8 +14,10 @@ export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 [[ -f $HOME/.profile ]] && . $HOME/.profile
 # modify keymapping
 [[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
+[[ -f /etc/X11/xinit/.Xmodmap ]] && xmodmap /etc/X11/xinit/.Xmodmap
 # load xresources
-[[ -f $HOME/.Xresources ]] && xrdb -load $HOME/.Xresources
+[[ -f $HOME/.Xresources ]] && xrdb -merge $HOME/.Xresources
+[[ -f /etc/X11/xinit/.Xresources ]] && xrdb -merge /etc/X11/xinit/.Xresources
 
 # INPUT DEVICES
 # set the target device here, it can be found by `xinput` command
