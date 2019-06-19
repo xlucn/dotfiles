@@ -150,8 +150,8 @@ autocmd BufRead,BufNewFile *.plt set filetype=gnuplot
 let g:which_key_use_floating_win = 0
 let g:which_key_map = {
   \ 'c' : { 'name' : '+commenting' },
-  \ 'q' : [ ':qa', 'quit (all)'],
-  \ 'Q' : [ ':q!', 'quit without saving'],
+  \ 'q' : [ ':q', 'quit'],
+  \ 'Q' : [ ':qa', 'quit all'],
   \ 'w' : [ ':w',  'save'],
   \ 'e' : [ ':e',  'edit (reload)'],
   \ 'x' : [ ':x',  'save and quit'],
