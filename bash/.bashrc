@@ -52,3 +52,6 @@ stty -ixon
 set -o vi
 #Allows you to cd into directory merely by typing the directory name.
 shopt -s autocd
+
+# vcsi alias with template
+alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
