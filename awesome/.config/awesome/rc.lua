@@ -847,21 +847,17 @@ globalkeys = gears.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
+    awful.key({ modkey,           }, ",",      awful.tag.viewprev,
+              {description = "view previous", group = "tag"}),
+    awful.key({ modkey,           }, ".",      awful.tag.viewnext,
+              {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
+    awful.key({ modkey,           }, "j", function () awful.client.focus.byidx( 1) end,
+              {description = "focus next by index", group = "client"}),
+    awful.key({ modkey,           }, "k", function () awful.client.focus.byidx(-1) end,
+              {description = "focus previous by index", group = "client"}),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
@@ -877,14 +873,16 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ altkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
+              function ()
+                  awful.client.focus.history.previous()
+                  if client.focus then
+                      client.focus:raise()
+                  end
+              end,
+              {description = "go back", group = "client"}),
 
+    awful.key({ modkey,           }, "z", function() end,
+              {description = "zen mode", group = "awesome"}),
     -- On the fly useless gaps change
     awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(2) end,
               {description = "increase useless gap", group = "awesome"}),
@@ -936,38 +934,34 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- screen shot with maim
-    awful.key({                            }, "Print", function ()
-            awful.spawn.with_shell(maim_basic                   .. maim_savefile)
-        end,
-        {description = "screenshot to file", group = "screenshot"}),
-    awful.key({            "Shift",        }, "Print", function ()
-            awful.spawn.with_shell(maim_basic .. maim_selection .. maim_savefile)
-        end,
-        {description = "screenshot selection to file", group = "screenshot"}),
-    awful.key({                     altkey }, "Print", function ()
-            awful.spawn.with_shell(maim_basic .. maim_current   .. maim_savefile)
-        end,
-        {description = "screenshot current to file", group = "screenshot"}),
-    awful.key({ "Control"                  }, "Print", function ()
-            awful.spawn.with_shell(maim_basic                   .. maim_clipboard)
-        end,
-        {description = "screenshot to clipboard", group = "screenshot"}),
-    awful.key({ "Control", "Shift"         }, "Print", function ()
-            awful.spawn.with_shell(maim_basic .. maim_selection .. maim_clipboard)
-        end,
-        {description = "screenshot selection to clipboard", group = "screenshot"}),
-    awful.key({ "Control",          altkey }, "Print", function ()
-            awful.spawn.with_shell(maim_basic .. maim_current   .. maim_clipboard)
-        end,
-        {description = "screenshot current to clipboard", group = "screenshot"}),
+    awful.key({                    }, "Print",
+              function ()
+                  awful.spawn(maim_basic                   .. maim_savefile)
+              end,
+              {description = "screenshot to file",                group = "screenshot"}),
+    awful.key({            "Shift" }, "Print",
+              function ()
+                  awful.spawn(maim_basic .. maim_selection .. maim_savefile)
+              end,
+              {description = "screenshot selection to file",      group = "screenshot"}),
+    awful.key({ "Control"          }, "Print",
+              function ()
+                  awful.spawn(maim_basic                   .. maim_clipboard)
+              end,
+              {description = "screenshot to clipboard",           group = "screenshot"}),
+    awful.key({ "Control", "Shift" }, "Print",
+              function ()
+                  awful.spawn(maim_basic .. maim_selection .. maim_clipboard)
+              end,
+              {description = "screenshot selection to clipboard", group = "screenshot"}),
 
     -- Prompt
     awful.key({ modkey,           }, "d", function () awful.spawn(rofi_drun) end,
-        {description = "show rofi in drun modi", group = "launcher"}),
+              {description = "show rofi in drun modi", group = "launcher"}),
     awful.key({ modkey,           }, "r", function () awful.spawn(rofi_run) end,
-        {description = "run command in rofi", group = "launcher"}),
+              {description = "run command in rofi", group = "launcher"}),
     awful.key({ modkey,           }, "Tab", function () awful.spawn(rofi_window) end,
-        {description = "switch window", group = "client"}),
+              {description = "switch window", group = "client"}),
     awful.key({ modkey,           }, "x",
               function ()
                   awful.prompt.run {
@@ -987,65 +981,84 @@ globalkeys = gears.table.join(
 
     -- XF86 keys
     awful.key({}, "XF86AudioMute", volume_toggle,
-        {description = "toggle mute", group = "XF86"}),
+              {description = "toggle mute", group = "XF86"}),
     awful.key({}, "XF86AudioRaiseVolume", volume_up,
-        {description = "volume up", group = "XF86"}),
+              {description = "volume up", group = "XF86"}),
     awful.key({}, "XF86AudioLowerVolume", volume_down,
-        {description = "volume down", group = "XF86"}),
+              {description = "volume down", group = "XF86"}),
+    awful.key({ modkey }, "\\", volume_toggle,
+              {description = "toggle mute", group = "XF86"}),
+    awful.key({ modkey }, "]", volume_up,
+              {description = "volume up", group = "XF86"}),
+    awful.key({ modkey }, "[", volume_down,
+              {description = "volume down", group = "XF86"}),
     awful.key({}, "XF86MonBrightnessDown", brightness_down,
-        {description = "brightness down", group = "XF86"}),
+              {description = "brightness down", group = "XF86"}),
     awful.key({}, "XF86MonBrightnessUp", brightness_up,
-        {description = "brightness up", group = "XF86"}),
+              {description = "brightness up", group = "XF86"}),
 
     -- Application launching
     awful.key({ modkey }, "f", function () awful.spawn("termite -e ranger") end,
-        {description = "launch file manager", group = "launcher"}),
+              {description = "launch file manager", group = "launcher"}),
     awful.key({ modkey }, "e", function () awful.spawn("termite -e neomutt") end,
-        {description = "launch email client", group = "launcher"})
+              {description = "launch email client", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "f",
-        function (c)
-            c.fullscreen = not c.fullscreen
-            c:raise()
-        end,
-        {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
+              function (c)
+                  c.fullscreen = not c.fullscreen
+                  c:raise()
+              end,
+              {description = "toggle fullscreen", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "c",
+              function (c)
+                  c:kill()
+              end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Control" }, "space",
+              awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey, "Control" }, "Return",
+              function (c)
+                  c:swap(awful.client.getmaster())
+              end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
+    awful.key({ modkey,           }, "o",
+              function (c)
+                  c:move_to_screen()
+              end,
               {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
+    awful.key({ modkey,           }, "t",
+              function (c)
+                  c.ontop = not c.ontop
+              end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "n",
-        function (c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
-        end ,
-        {description = "minimize", group = "client"}),
+              function (c)
+                  -- The client currently has the input focus, so it cannot be
+                  -- minimized, since minimized clients can't have the focus.
+                  c.minimized = true
+              end ,
+              {description = "minimize", group = "client"}),
     awful.key({ modkey,           }, "m",
-        function (c)
-            c.maximized = not c.maximized
-            c:raise()
-        end ,
-        {description = "(un)maximize", group = "client"}),
+              function (c)
+                  c.maximized = not c.maximized
+                  c:raise()
+              end ,
+              {description = "(un)maximize", group = "client"}),
     awful.key({ modkey, "Control" }, "m",
-        function (c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end ,
-        {description = "(un)maximize vertically", group = "client"}),
+              function (c)
+                  c.maximized_vertical = not c.maximized_vertical
+                  c:raise()
+              end ,
+              {description = "(un)maximize vertically", group = "client"}),
     awful.key({ modkey, "Shift"   }, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end ,
-        {description = "(un)maximize horizontally", group = "client"})
+              function (c)
+                  c.maximized_horizontal = not c.maximized_horizontal
+                  c:raise()
+              end ,
+              {description = "(un)maximize horizontally", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -1148,14 +1161,13 @@ awful.rules.rules = {
     { rule_any = { class = { "Pdfpc", } },
     properties = { fullscreen = true }},
 
-    -- Add titlebars to normal clients and dialogs, or not
+    -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true } },
 
-    -- Set Firefox to always map on the tag 1.
+    -- Set Firefox to always map on the tag 2.
     { rule = { class = "Firefox" },
-        properties = { tag = tag2,
-                       titlebars_enabled = false} },
+        properties = { tag = tag2, titlebars_enabled = false} },
 
     -- No borders
     { rule = { instance = "Popup", class = "Firefox" }, -- e.g. addon installed
