@@ -1,0 +1,4 @@
+{{ filename }}
+Size: {{ size_bytes }} ({{ size }}), Duration: {{ duration }}
+Video: {{ video_codec_long }}, {{ sample_width }}x{{ sample_height }}{% if video_bit_rate %}, {{ (video_bit_rate/1000)|int }} kb/s{% endif %}{% if frame_rate %}, {{ frame_rate }} fps{% endif %}
+Audio: {{ audio_codec_long }}, {{ audio_sample_rate }} Hz{% if audio_bit_rate %}, {{ audio_bit_rate/1000 }} kb/s{% endif %}
