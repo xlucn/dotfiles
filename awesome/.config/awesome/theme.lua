@@ -137,8 +137,9 @@ theme.hotkeys_bg               = theme.bg_normal
 theme.hotkeys_border_color     = theme.bg_normal
 theme.hotkeys_border_width     = dpi(16)
 -- fonts
-theme.hotkeys_font             = "Hack 9"
+theme.hotkeys_font             = "Hack Bold 11"
 theme.hotkeys_description_font = "Hack 9"
+theme.hotkeys_group_margin     = dpi(24)
 -- }}}
 
 -- example sizes for a progress bar {{{
@@ -147,12 +148,13 @@ theme.progressbar_paddings      = dpi(1)
 theme.progressbar_ticks_size    = dpi(4)
 theme.progressbar_ticks_gap     = dpi(1)
 -- make the progress bar have 10 blocks (or change the number to what you like)
-theme.progressbar_width         = 5 * (theme.progressbar_ticks_size +
-                                        theme.progressbar_ticks_gap) +
-                                  2 * theme.progressbar_margins +
-                                  theme.progressbar_paddings
-theme.progressbar_height        = 8
-theme.progressbar_outer_margin  = (theme.wibox_height - theme.progressbar_height) / 2
+theme.progressbar_width         = dpi(5 * (theme.progressbar_ticks_size +
+                                           theme.progressbar_ticks_gap) +
+                                      2 * theme.progressbar_margins +
+                                      theme.progressbar_paddings)
+theme.progressbar_height        = dpi(8)
+theme.progressbar_outer_margin  = dpi((theme.wibox_height - 
+                                       theme.progressbar_height) / 2)
 -- }}}
 
 -- Menu {{{
