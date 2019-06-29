@@ -67,7 +67,7 @@ editor_cmd = terminal .. " -e " .. editor
 rofi_basic = "rofi"
 rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
-rofi_window = rofi_basic .. " -show window -cycle true -width 1440 -lines 15 -scroll-method 0"
+rofi_window = rofi_basic .. " -show window -width 1440 -lines 15 -scroll-method 0"
 rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,window -show drun"
 
 -- maim (screenshot tool) commands
@@ -1157,9 +1157,12 @@ awful.rules.rules = {
       }, properties = { floating = true,
                         placement = awful.placement.centered}},
 
-    -- Fullscreen clients
-    { rule_any = { class = { "Pdfpc", } },
-    properties = { fullscreen = true }},
+    -- Fullscreen and screen management for pdfpc
+    { rule = { class = "Pdfpc" },
+    properties = { fullscreen = true },
+    -- This callback will *magically* put presentation to the secondary screen
+    -- and leave the presenter console on the current screen.
+    callback = function(c) c:move_to_screen() end },
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
