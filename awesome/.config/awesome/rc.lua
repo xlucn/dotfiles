@@ -936,22 +936,22 @@ globalkeys = gears.table.join(
     -- screen shot with maim
     awful.key({                    }, "Print",
               function ()
-                  awful.spawn(maim_basic                   .. maim_savefile)
+                  awful.spawn.with_shell(maim_basic                   .. maim_savefile)
               end,
               {description = "screenshot to file",                group = "screenshot"}),
     awful.key({            "Shift" }, "Print",
               function ()
-                  awful.spawn(maim_basic .. maim_selection .. maim_savefile)
+                  awful.spawn.with_shell(maim_basic .. maim_selection .. maim_savefile)
               end,
               {description = "screenshot selection to file",      group = "screenshot"}),
     awful.key({ "Control"          }, "Print",
               function ()
-                  awful.spawn(maim_basic                   .. maim_clipboard)
+                  awful.spawn.with_shell(maim_basic                   .. maim_clipboard)
               end,
               {description = "screenshot to clipboard",           group = "screenshot"}),
     awful.key({ "Control", "Shift" }, "Print",
               function ()
-                  awful.spawn(maim_basic .. maim_selection .. maim_clipboard)
+                  awful.spawn.with_shell(maim_basic .. maim_selection .. maim_clipboard)
               end,
               {description = "screenshot selection to clipboard", group = "screenshot"}),
 
@@ -1139,13 +1139,13 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
-          "DTA",  -- Firefox addon DownThemAll.
-          "copyq",  -- Includes session name in class.
+          "DTA",                  -- Firefox addon DownThemAll.
+          "copyq",                -- Includes session name in class.
         },
 
         name = {
-          "Event Tester",  -- xev.
-          "Select a Template",  -- LibreOffice
+          "Event Tester",        -- xev.
+          "Select a Template",   -- LibreOffice
           "Screen Layout Editor" -- arandr
         },
         role = {
