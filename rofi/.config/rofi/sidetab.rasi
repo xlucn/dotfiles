@@ -35,20 +35,16 @@ window {
     margin          : 0 0 28px 0;
 }
 
-mainbox {
-    children        : [ entry,listview,sidebar ];
-}
-
 button {
     padding         : 12px 6px;
 }
 
 inputbar {
-    padding         : 16px;
+    children        : [entry];
+    padding         : 0px;
 }
 
 entry {
-    expand          : false;
     padding         : 24px;
 }
 
