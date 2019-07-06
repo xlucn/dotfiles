@@ -7,14 +7,15 @@ Config files for everything
 
 - OS:
   - [Archlinux](http://www.archlinux.org/)
-- DE:
+- WM:
   - [AwesomeWM](https://awesomewm.org/)
 - Colorscheme:
   - [gruvbox](https://github.com/morhetz/gruvbox)
     everywhere: awesome, terminal, vim, rofi, zathura(pdf)
-- Software
-  - gnome-terminal/termite/rxvt-unicode
-  - vim8 (asynchronous tasks support)
+- Terminal Emulator
+  - [termite](https://github.com/thestinger/termite)
+- Text Editor
+  - [vim](https://www.vim.org/)
 
 ## Requirement
 
@@ -24,7 +25,7 @@ Config files for everything
   - [powerline-console-fonts](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
     for linux console
   - [Nerd Font](https://nerdfonts.com):
-    for awesome wm tags
+    for awesome wm
 
 - Powerline
   - [powerline-shell](https://github.com/b-ryan/powerline-shell)
@@ -51,13 +52,11 @@ Config files for everything
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
-- mpv scripts source (scripts already in the repo)
-  - [autosub](https://github.com/vayan/autosub-mpv)
-  - [autoloop](https://github.com/zc62/mpv-scripts/blob/master/autoloop.lua)
-  - [autoload](https://github.com/mpv-player/mpv/blob/master/TOOLS/lua/autoload.lua)
 ## Install
 
-The files can be linked to corresponding places with `stow`
+Under every folder there are the files related to one program.
+The files can be linked to corresponding places relative to home directory
+with [stow](https://www.gnu.org/software/stow/)
 
 ```sh
 stow -v -t ~ <package name>
