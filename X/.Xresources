@@ -5,6 +5,9 @@ Xft.rgba      : rgb
 Xft.hinting   : true
 Xft.hintstyle : hintslight
 
+! -- Cursor -- !
+Xcursor.theme: Breeze-Adapta-Cursor
+
 ! -- URxvt UI -- !
 URxvt.depth              : 32
 URxvt.geometry           : 80x24
