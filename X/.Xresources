@@ -28,7 +28,7 @@ URxvt.url-launcher: firefox
 URxvt.underlineURLs: True
 
 ! -- Fonts -- !
-URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12, xft:Source Han Sans CN:size=12
+URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12, xft:Noto Sans CJK SC:size=12
 
 ! -- URxvt extra colors from gruvbox -- !
 URxvt.color24:  #076678
