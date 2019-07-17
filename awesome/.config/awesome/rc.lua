@@ -19,6 +19,7 @@ require("awful.hotkeys_popup.keys")
 local lain = require("lain")
 local dpi = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
+local xdg_menu = require("archmenu")
 -- }}}
 
 -- {{{ Error handling
@@ -54,8 +55,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 seperator = wibox.widget {
     widget = wibox.widget.separator,
     orientation = "vertical",
-    forced_width = 8,
-    color = beautiful.bg_focus
+    forced_width = 64,
+    color = beautiful.bg_normal
 }
 
 -- This is used later as the default terminal and editor to run.
@@ -90,7 +91,7 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.magnifier,
+    --awful.layout.suit.magnifier,
     awful.layout.suit.max,
     awful.layout.suit.fair,
     awful.layout.suit.corner.nw,
@@ -140,8 +141,13 @@ local myawesomemenu = {
    { "quit", function() awesome.quit() end}
 }
 
+table.insert(xdgmenu, 1, { "open terminal", terminal })
+table.insert(xdgmenu, 1, { "awesome", myawesomemenu, beautiful.awesome_icon, })
+
+local mymainmenu = awful.menu({ items = xdgmenu })
+
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = myawesomemenu })
+                                           menu = mymainmenu })
 -- }}}
 
 -- {{{ Widgets
@@ -834,6 +840,7 @@ end)
 -- {{{ Mouse bindings
 mylauncher:buttons(awful.util.table.join(
     awful.button({ }, 1, function() os.execute(rofi_sidetab) end),
+    awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 ))
