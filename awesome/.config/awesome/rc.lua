@@ -462,11 +462,11 @@ local mynet = lain.widget.net({
     notify = "off",
     settings = function()
         local eth_icon, wlan_icon
-        -- get first wlan and ethernet interface name
+        -- get wlan and ethernet interface name
         awful.spawn.easy_async_with_shell(
-            "ip a | grep -E '^[1-9].*' | grep -v 'DOWN' | awk -F: '{ print $2 }'",
+            "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
             function (stdout, _, _, _)
-                for name in string.gmatch(stdout, " (%w+)") do
+                for name in string.gmatch(stdout, "(%w+)") do
                     if string.sub(name, 1, 1) == "e" then
                         ethernet_name = name
                     elseif string.sub(name, 1, 1) == "w" then
