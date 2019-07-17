@@ -1,3 +1,5 @@
+#! /bin/bash
+
 # ENV VARIABLES
 # QT theme
 export QT_QPA_PLATFORMTHEME=gtk2
@@ -13,11 +15,11 @@ export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 # .profile
 [[ -f $HOME/.profile ]] && . $HOME/.profile
 # modify keymapping
-[[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
 [[ -f /etc/X11/xinit/.Xmodmap ]] && xmodmap /etc/X11/xinit/.Xmodmap
+[[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
 # load xresources
-[[ -f $HOME/.Xresources ]] && xrdb -merge $HOME/.Xresources
 [[ -f /etc/X11/xinit/.Xresources ]] && xrdb -merge /etc/X11/xinit/.Xresources
+[[ -f $HOME/.Xresources ]] && xrdb -merge $HOME/.Xresources
 
 # INPUT DEVICES
 # set the target device here, it can be found by `xinput` command
