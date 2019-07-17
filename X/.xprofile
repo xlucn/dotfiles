@@ -45,6 +45,9 @@ if [[ ! `pgrep fcitx` ]]; then fcitx; fi
 # start compton
 #if [[ ! `pgrep compton` ]]; then compton -b; fi
 
+# lantern
+if [[ ! `pgrep lantern` ]]; then lantern -headless; fi &
+
 # polkit agent
 if [[ ! `pgrep polkit-gnome` ]]
 then
