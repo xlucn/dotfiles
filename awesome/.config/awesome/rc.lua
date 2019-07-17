@@ -68,7 +68,7 @@ rofi_basic = "rofi"
 rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
 rofi_run = rofi_basic .. " -show run"
 rofi_window = rofi_basic .. " -show window -width 1440 -lines 15 -scroll-method 0"
-rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,window -show drun"
+rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,run,window -show drun"
 
 -- maim (screenshot tool) commands
 maim_basic = "maim"
