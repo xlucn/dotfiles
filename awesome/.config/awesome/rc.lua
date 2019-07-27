@@ -655,11 +655,11 @@ local backlight_stack = wibox.widget {
 backlight:emit_signal("timeout")
 -- light commands
 brightness_down = function ()
-    awful.spawn("light -U 5")
+    awful.spawn("light -U 10")
     backlight:emit_signal("timeout")
 end
 brightness_up = function ()
-    awful.spawn("light -A 5")
+    awful.spawn("light -A 10")
     backlight:emit_signal("timeout")
 end
 -- bindings
@@ -995,24 +995,30 @@ globalkeys = gears.table.join(
     -- Xrandr
     awful.key({ modkey }, "p", function() xrandr.xrandr() end,
               {description = "swap arrangements of monitors", group = "screen"}),
+    awful.key({ }, "XF86Display", function() xrandr.xrandr() end,
+              {description = "swap arrangements of monitors", group = "screen"}),
 
     -- XF86 keys
     awful.key({}, "XF86AudioMute", volume_toggle,
-              {description = "toggle mute", group = "XF86"}),
+              {description = "toggle mute", group = "Media"}),
     awful.key({}, "XF86AudioRaiseVolume", volume_up,
-              {description = "volume up", group = "XF86"}),
+              {description = "volume up", group = "Media"}),
     awful.key({}, "XF86AudioLowerVolume", volume_down,
-              {description = "volume down", group = "XF86"}),
+              {description = "volume down", group = "Media"}),
     awful.key({ modkey }, "\\", volume_toggle,
-              {description = "toggle mute", group = "XF86"}),
+              {description = "toggle mute", group = "Media"}),
     awful.key({ modkey }, "]", volume_up,
-              {description = "volume up", group = "XF86"}),
+              {description = "volume up", group = "Media"}),
     awful.key({ modkey }, "[", volume_down,
-              {description = "volume down", group = "XF86"}),
+              {description = "volume down", group = "Media"}),
     awful.key({}, "XF86MonBrightnessDown", brightness_down,
-              {description = "brightness down", group = "XF86"}),
+              {description = "brightness down", group = "Media"}),
     awful.key({}, "XF86MonBrightnessUp", brightness_up,
-              {description = "brightness up", group = "XF86"}),
+              {description = "brightness up", group = "Media"}),
+    awful.key({ modkey }, ";", brightness_down,
+              {description = "brightness down", group = "Media"}),
+    awful.key({ modkey }, "'", brightness_up,
+              {description = "brightness up", group = "Media"}),
 
     -- Application launching
     awful.key({ modkey }, "f", function () awful.spawn("termite -e ranger") end,
