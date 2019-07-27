@@ -138,9 +138,9 @@ theme.hotkeys_bg               = theme.bg_normal
 theme.hotkeys_border_color     = theme.bg_normal
 theme.hotkeys_border_width     = dpi(16)
 -- fonts
-theme.hotkeys_font             = "Hack Bold 11"
+theme.hotkeys_font             = "Hack Bold 12"
 theme.hotkeys_description_font = "Hack 9"
-theme.hotkeys_group_margin     = dpi(24)
+theme.hotkeys_group_margin     = dpi(16)
 -- }}}
 
 -- example sizes for a progress bar {{{
