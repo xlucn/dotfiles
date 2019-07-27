@@ -323,6 +323,8 @@ local volume_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 volume_arc.tooltip = awful.tooltip({ objects = { volume_arc } })
+volume_arc.tooltip.mode = "outside"
+volume_arc.tooltip.preferred_alignments = {"middle"}
 local volume = lain.widget.alsa({
     settings = function ()
         local state
@@ -390,6 +392,8 @@ local bat_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 bat_arc.tooltip = awful.tooltip({ objects = { bat_arc } })
+bat_arc.tooltip.mode = "outside"
+bat_arc.tooltip.preferred_alignments = {"middle"}
 local lain_bat = lain.widget.bat({
     full_notify = "off",
     notify = "on",
@@ -538,6 +542,8 @@ local cpu_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 cpu_arc.tooltip = awful.tooltip({ objects = { cpu_arc } })
+cpu_arc.tooltip.mode = "outside"
+cpu_arc.tooltip.preferred_alignments = {"middle"}
 local laincpu = lain.widget.cpu({
     settings = function()
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
@@ -576,6 +582,8 @@ local mem_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 mem_arc.tooltip = awful.tooltip({ objects = { mem_arc } })
+mem_arc.tooltip.mode = "outside"
+mem_arc.tooltip.preferred_alignments = {"middle"}
 
 local lainmem = lain.widget.mem({
     settings = function()
@@ -615,6 +623,8 @@ local light_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 light_arc.tooltip = awful.tooltip({ objects = { light_arc } })
+light_arc.tooltip.mode = "outside"
+light_arc.tooltip.preferred_alignments = {"middle"}
 local backlight = gears.timer {
     timeout   = 60,
     autostart = true,
