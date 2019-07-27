@@ -1153,6 +1153,10 @@ awful.rules.rules = {
      }
     },
 
+    -- Add titlebars to normal clients and dialogs
+    { rule_any = { type = { "normal", "dialog" } },
+        properties = { titlebars_enabled = true } },
+
     -- Floating clients.
     { rule_any = {
         instance = {
@@ -1161,9 +1165,10 @@ awful.rules.rules = {
         },
 
         name = {
-          "Event Tester",        -- xev.
-          "Select a Template",   -- LibreOffice
-          "Screen Layout Editor" -- arandr
+          "Event Tester",           -- xev.
+          "Select a Template",      -- LibreOffice
+          "Screen Layout Editor",   -- arandr
+          "File Operation Progress" -- thunar file operation
         },
         role = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
@@ -1172,24 +1177,18 @@ awful.rules.rules = {
           "GtkFileChooserDialog"
         }
       }, properties = { floating = true,
+                        ontop = true,
                         placement = awful.placement.centered}},
 
     -- Fullscreen and screen management for pdfpc
     { rule = { class = "Pdfpc" },
-    properties = { fullscreen = true },
-    -- This callback will *magically* put presentation to the secondary screen
-    -- and leave the presenter console on the current screen.
-    callback = function(c) c:move_to_screen() end },
-
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true } },
+        properties = { fullscreen = true },
+        -- This callback will *magically* put presentation to the secondary
+        -- screen and leave the presenter console on the current screen.
+        callback = function(c) c:move_to_screen() end },
 
     -- Set Firefox to always map on the tag 2.
-    { rule_any = { class = {
-            "Firefox",
-            "qutebrowser"
-        }},
+    { rule = { class = "firefox", role = "browser", instance = "Navigator" },
         properties = { tag = tag2,
                        titlebars_enabled = false,
                        maximized = true} },
