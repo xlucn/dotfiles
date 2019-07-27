@@ -456,7 +456,13 @@ local function format_netspeed(raw_speed)
         speed_unit = "GB/s"
     end
 
-    return speed, speed_unit
+    if speed < 10 then
+        speed_str = string.format("%3.1f", speed)
+    else
+        speed_str = string.format("%3.0f", speed)
+    end
+
+    return speed_str, speed_unit
 end
 -- command to show active wifi SSID
 -- nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2
@@ -465,7 +471,6 @@ local mynet = lain.widget.net({
     eth_state = "on",
     notify = "off",
     settings = function()
-        local eth_icon, wlan_icon
         -- get wlan and ethernet interface name
         awful.spawn.easy_async_with_shell(
             "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
@@ -477,10 +482,12 @@ local mynet = lain.widget.net({
                         wlan_name = name
                     end
                 end
+                --naughty.notify({ text = ethernet_name .. ' ' .. wlan_name })
             end)
+
         -- set ethernet status
-        local eth0 = net_now.devices[ethernet_name]
-        if eth0 then
+        local eth = net_now.devices[ethernet_name]
+        if eth and eth.ethernet then
             eth_icon = markup.fontfg(beautiful.widgets_nerdfont,
                                      beautiful.fg_normal,
                                      beautiful.nerdfont_ethernet)
@@ -489,32 +496,28 @@ local mynet = lain.widget.net({
                                      beautiful.bg_focus,
                                      beautiful.nerdfont_ethernet)
         end
+
         -- set wlan status
-        local wlan0 = net_now.devices[wlan_name]
-        if wlan0 and wlan0.wifi then
-            wlan_icon = beautiful.nerdfont_wifi_on
+        local wifi = net_now.devices[wlan_name]
+        if wifi and wifi.wifi then
+            wlan_icon = markup.fontfg(beautiful.widgets_nerdfont,
+                                     beautiful.fg_normal,
+                                     beautiful.nerdfont_wifi_on)
         else
-            wlan_icon = beautiful.nerdfont_wifi_off
-        end
-        -- set widget content
-        net_status.markup = " " .. eth_icon .. " " ..
-                            markup.font(beautiful.widgets_nerdfont,wlan_icon)
-        -- send and receive speed
-        local sent, sent_unit = format_netspeed(tonumber(net_now.sent))
-        if sent < 10 then
-            sent_str = string.format("%3.1f", sent)
-        else
-            sent_str = string.format("%3.0f", sent)
-        end
-        local received, received_unit = format_netspeed(tonumber(net_now.received))
-        if received < 10 then
-            received_str = string.format("%3.1f", received)
-        else
-            received_str = string.format("%3.0f", received)
+            wlan_icon = markup.fontfg(beautiful.widgets_nerdfont,
+                                     beautiful.bg_focus,
+                                     beautiful.nerdfont_wifi_on)
         end
 
+        -- set widget content
+        net_status.markup = " " .. eth_icon .. " " .. wlan_icon
+
+        -- send and receive speed
+        local sent_str, sent_unit = format_netspeed(tonumber(net_now.sent))
+        local received_str, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            markup.fg.color(beautiful.blue, sent_str .. " " .. sent_unit) .. " " ..
+            markup.fg.color(beautiful.blue, sent_str .. " " .. sent_unit)
+            .. " " ..
             markup.fg.color(beautiful.red, received_str .. " " .. received_unit)
         )
     end
