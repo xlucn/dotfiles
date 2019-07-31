@@ -420,6 +420,7 @@ local lain_bat = lain.widget.bat({
                 color = beautiful.widget_bat_low
             else
                 state = beautiful.nerdfont_bat_empty
+                color = beautiful.widget_bat_empty
             end
         end
         widget:set_markup(

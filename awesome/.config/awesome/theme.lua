@@ -92,8 +92,9 @@ theme.widget_cpu            = bright_blue
 theme.widget_cpu_high       = birght_red
 theme.widget_alsa           = bright_yellow
 theme.widget_bat_normal     = bright_green
-theme.widget_bat_mid        = bright_orange
-theme.widget_bat_low        = bright_red
+theme.widget_bat_mid        = bright_green
+theme.widget_bat_low        = bright_orange
+theme.widget_bat_empty      = bright_red
 -- }}}
 
 -- Taglist {{{
