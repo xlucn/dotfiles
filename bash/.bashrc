@@ -21,6 +21,11 @@ alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-id=0"
 # stow default to $HOME and turn on visual
 alias stow="stow -t ~ -v"
 
+# History, https://unix.stackexchange.com/questions/18212
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+
 PS1='[\u@\h \W]\$ '
 # my customized du
 function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
