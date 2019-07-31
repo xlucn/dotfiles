@@ -674,25 +674,29 @@ backlight_stack:buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ mail
+local mymail = "oliver_lew@outlook.com"
+local myserver =  "imap-mail.outlook.com"
 local myimap = lain.widget.imap({
-    server = "imap-mail.outlook.com",
-    mail = "oliver_lew@outlook.com",
-    password = function()
-        awful.spawn.easy_async_with_shell(
-            "pass show Mail/" .. mail,
-            function(stdout, stderr, reason, exit_code)
-                naughty.notify({text = exit_code})
-                widget:set_text("test")
-            end
-        )
-        naughty.notify(result)
-        return result
-    end,
+    notify = "off",
+    server = myserver,
+    mail = mymail,
+    password = "pass show mail/" .. mymail,
     settings = function()
-        widget:set_text("test")
-        naughty.notify({text = "test"})
+        if imap_now["MESSAGES"] > 0 then
+            widget:set_markup(
+                markup.font(beautiful.widgets_nerdfont, "") ..
+                " " .. imap_now["UNSEEN"] ..
+                --"(" .. imap_now["RECENT"] .. ")" ..
+                "/" .. imap_now["MESSAGES"]
+            )
+        end
     end
 })
+myimap.widget:buttons(awful.util.table.join(
+    awful.button({}, 3, function()
+        awful.spawn("termite -e neomutt")
+    end)
+))
 myimap.update()
 -- }}}
 -- }}}
