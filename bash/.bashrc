@@ -17,7 +17,7 @@ alias pacman="pacman --color=auto"
 # do not show temp fs
 alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
-alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi-copy --drm-video-plane-id=0"
+alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-id=0"
 # stow default to $HOME and turn on visual
 alias stow="stow -t ~ -v"
 
