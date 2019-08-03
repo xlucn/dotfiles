@@ -9,6 +9,9 @@ set keymap vi-insert
 Control-l: clear-screen 
 $endif
 
+# Make Tab autocomplete regardless of filename case
+set completion-ignore-case on
+
 # kill the lag, do not wait after ESC
 set keyseq-timeout 0
 
