@@ -41,11 +41,11 @@ rofi.show-icons:                     true
 ! "Theme to use to look for icons" Set from: Default
 rofi.icon-theme:                     Papirus
 ! "Desktop entry fields to match in drun" Set from: Default
-! rofi.drun-match-fields:              name,generic,exec,categories
+rofi.drun-match-fields:              name,generic,exec,categories,comment
 ! "Desktop entry show actions." Set from: Default
 ! rofi.drun-show-actions:              false
 ! "DRUN format string. (Supports: generic,name,comment,exec,categories)" Set from: Default
-! rofi.drun-display-format:            {name} [<span weight='light' size='small'><i>({generic})</i></span>]
+rofi.drun-display-format:            {name} [<span weight='light' size='small'><i>({generic})</i></span>] <span weight='ultralight' size='x-small'><i>{comment}</i></span>
 ! "Disable history in run/ssh" Set from: Default
 ! rofi.disable-history:                false
 ! "Use sorting" Set from: Default
