@@ -6,12 +6,6 @@
  */
 
 configuration {
-    modi           : "run, drun, window";
-    display-drun   : "Applications";
-    display-run    : "Execute";
-    display-window : "Window";
-    show-icons     : true;
-    sidebar-mode   : true;
     scroll-method  : 0;
 }
 
@@ -33,10 +27,6 @@ window {
     width           : 25%;
     y-offset        : 28px;
     margin          : 0 0 28px 0;
-}
-
-button {
-    padding         : 12px 6px;
 }
 
 inputbar {

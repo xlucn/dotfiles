@@ -1,12 +1,26 @@
+configuration {
+    sidebar-mode   : true;
+    modi           : "run, drun, window";
+    display-drun   : "Applications";
+    display-run    : "Execute";
+    display-window : "Window";
+    show-icons     : true;
+}
+
 @import "/usr/share/rofi/themes/gruvbox-dark.rasi"
 
 window {
+    width: 50%;
     border: 0px;
     padding: 0px;
 }
 
 mainbox {
     spacing: 0;
+}
+
+button {
+    padding         : 12px 6px;
 }
 
 inputbar {
