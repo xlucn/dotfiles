@@ -375,8 +375,8 @@ volume_arc:buttons(awful.util.table.join(
     awful.button({}, 3, function()          -- right click
         awful.spawn(audio_mixer)
     end),
-    awful.button({}, 4, volume_up),         -- scroll up
-    awful.button({}, 5, volume_down)        -- scroll down
+    awful.button({}, 4, volume_down),       -- scroll down
+    awful.button({}, 5, volume_up)          -- scroll up
 ))
 -- }}}
 
@@ -668,8 +668,8 @@ brightness_up = function ()
 end
 -- bindings
 backlight_stack:buttons(awful.util.table.join(
-    awful.button({}, 4, brightness_up),
-    awful.button({}, 5, brightness_down)
+    awful.button({}, 4, brightness_down),
+    awful.button({}, 5, brightness_up)
 ))
 
 -- }}}
