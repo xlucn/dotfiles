@@ -13,7 +13,8 @@ export PYTHONSTARTUP=~/.pythonrc.py
 # Alias
 # auto color
 alias ls="ls --color=auto"
-alias pacman="pacman --color=auto"
+alias mv="mv -i"
+alias yay="yay --color=auto"
 # do not show temp fs
 alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
@@ -27,6 +28,7 @@ shopt -s histappend
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 
 PS1='[\u@\h \W]\$ '
+
 # my customized du
 function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 
