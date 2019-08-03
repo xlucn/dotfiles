@@ -89,12 +89,14 @@ theme.widget_light          = bright_yellow
 theme.widget_ram            = bright_blue
 theme.widget_ram_high       = birght_red
 theme.widget_cpu            = bright_blue
-theme.widget_cpu_high       = birght_red
+theme.widget_cpu_high       = bright_red
 theme.widget_alsa           = bright_yellow
 theme.widget_bat_normal     = bright_green
 theme.widget_bat_mid        = bright_green
 theme.widget_bat_low        = bright_orange
 theme.widget_bat_empty      = bright_red
+theme.widget_mail_online    = bright_green
+theme.widget_mail_offline   = bright_red
 -- }}}
 
 -- Taglist {{{

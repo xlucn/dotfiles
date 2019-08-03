@@ -683,14 +683,16 @@ local myimap = lain.widget.imap({
     mail = mymail,
     password = "pass show mail/" .. mymail,
     settings = function()
+        local msg = imap_now["UNSEEN"] .. "/" .. imap_now["MESSAGES"]
         if imap_now["MESSAGES"] > 0 then
-            widget:set_markup(
-                markup.font(beautiful.widgets_nerdfont, "") ..
-                " " .. imap_now["UNSEEN"] ..
-                --"(" .. imap_now["RECENT"] .. ")" ..
-                "/" .. imap_now["MESSAGES"]
-            )
+            icon_color = beautiful.widget_mail_online
+        else
+            icon_color = beautiful.widget_mail_offline
         end
+        widget:set_markup(
+            markup.fontfg(beautiful.widgets_nerdfont, icon_color, "") ..
+            " " .. msg
+        )
     end
 })
 myimap.widget:buttons(awful.util.table.join(
