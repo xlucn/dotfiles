@@ -65,11 +65,11 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- rofi (launcher tool) commands
-rofi_basic = "rofi"
-rofi_drun = rofi_basic .. " -modi drun,ssh,window -show drun"
+rofi_basic = "rofi -modi drun,window,run"
+rofi_drun = rofi_basic .. " -show drun"
 rofi_run = rofi_basic .. " -show run"
-rofi_window = rofi_basic .. " -show window -width 1440 -lines 15 -scroll-method 0"
-rofi_sidetab = rofi_basic .. " -theme sidetab -modi drun,run,window -show drun"
+rofi_window = rofi_basic .. " -show window"
+rofi_sidetab = rofi_basic .. " -theme sidetab -show drun"
 
 -- maim (screenshot tool) commands
 maim_basic = "maim"
