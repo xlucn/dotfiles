@@ -35,6 +35,12 @@ function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
 # ps and grep
 function psg() { ps -ef | grep ${*}; }
 
+# count journal sources
+function journalcount()
+{
+    journalctl -b | cut -d\  -f 5 | cut -d\[ -f 1 | sort | uniq -c | sort -h
+}
+
 # Console color theme, reuse .Xresources definitions
 # Solarized color scheme
 if [ "$TERM" = "linux" ]; then
