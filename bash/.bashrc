@@ -45,7 +45,7 @@ function vim() {
   args=()
   for i in $@; do
     if [[ -h $i ]]; then
-      args+=`readlink $i`
+      args+=$(dirname $i)/`readlink $i`
     else
       args+=$i
     fi
