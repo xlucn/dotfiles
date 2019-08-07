@@ -14,7 +14,6 @@ export PYTHONSTARTUP=~/.pythonrc.py
 # auto color
 alias ls="ls --color=auto"
 alias mv="mv -i"
-alias yay="yay --color=auto"
 # do not show temp fs
 alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
