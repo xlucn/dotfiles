@@ -1191,6 +1191,9 @@ awful.rules.rules = {
           "page-info",    -- Firefox's image info
           "About",        -- Firefox's about page
           "GtkFileChooserDialog"
+        },
+        class = {
+            "Galculator",
         }
       }, properties = { floating = true,
                         ontop = true,
