@@ -1,43 +1,9 @@
-/**
- * User: deadguy
- * Copyright: deadguy
- *
- * modified to use the gruvbox color scheme
- */
-
-configuration {
-    scroll-method  : 0;
-}
-
 @import "./gruvbox-dark-clean.rasi"
-
-* {
-    line-margin     : 0;
-    line-padding    : 0;
-    separator-style : "none";
-    margin          : 0;
-    padding         : 0;
-    border          : 0;
-}
 
 window {
     location        : west;
     anchor          : west;
     height          : 100%;
-    width           : 25%;
     y-offset        : 28px;
     margin          : 0 0 28px 0;
-}
-
-inputbar {
-    children        : [entry];
-    padding         : 0px;
-}
-
-entry {
-    padding         : 24px;
-}
-
-listview {
-    scrollbar       : true;
 }
