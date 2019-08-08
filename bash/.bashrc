@@ -40,20 +40,6 @@ function journalcount()
     journalctl -b | cut -d\  -f 5 | cut -d\[ -f 1 | sort | uniq -c | sort -h
 }
 
-# let vim to follow sym links
-function vim() {
-  args=()
-  for i in $@; do
-    if [[ -h $i ]]; then
-      args+=$(dirname $i)/`readlink $i`
-    else
-      args+=$i
-    fi
-  done
-
-  /usr/bin/vim "${args[@]}"
-}
-
 # Console color theme, reuse .Xresources definitions
 # Solarized color scheme
 if [ "$TERM" = "linux" ]; then
