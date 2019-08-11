@@ -1,0 +1,31 @@
+#!/bin/bash
+name=transmission-move
+
+match=Portable
+from=$PWD
+dest=/run/media/oliver/Portable/transmission
+
+if [[ $# == 3 ]]
+then
+    from=$1
+    dest=$2
+    match=$3
+elif [[ $# == 2 ]]
+then
+    dest=$1
+    match=$2
+else
+    echo usage: transmission-move from to pattern
+    exit
+fi
+
+for i in resume/*.resume
+do
+    grep "$match" "$i" > /dev/null
+    if [[ $? == 0 ]]
+    then
+        echo moving ${i//resume/}
+        mv "$i" "$dest/resume/"
+        mv "torrents${i//resume/}torrent" "$dest/torrents/"
+    fi
+done
