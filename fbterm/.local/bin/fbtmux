@@ -1,0 +1,29 @@
+#! /bin/bash
+image="$HOME/.local/share/backgrounds/fbterm.jpg"
+
+# only start in tty
+tty | grep tty > /dev/null 2>&1
+if [[ $? != 0 ]]
+then
+    echo "not in tty"
+    exit
+fi
+
+# start with tmux and name the session as "fbterm"
+if [[ -e /usr/bin/tmux ]]
+then
+    TMUX_ARGS=" -- tmux new -A -s fbterm"
+fi
+
+# start fbterm with background
+echo -ne "\e[?25l" # hide cursor
+if [[ -e $image ]]
+then
+    fbv -ciuker "$image" << EOF
+    q
+EOF
+    shift
+    export FBTERM_BACKGROUND_IMAGE=1
+fi
+
+exec fbterm "$@" $TMUX_ARGS
