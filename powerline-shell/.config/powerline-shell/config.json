@@ -17,5 +17,6 @@
   },
   "vcs": {
       "show_symbol": true
-  }
+  },
+  "mode": "flat"
 }
