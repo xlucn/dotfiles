@@ -11,6 +11,9 @@ osd-font="DejaVu Sans"
 osd-color=1.0/1.0/1.0/0.2
 osd-border-color=0.0/0.0/0.0/0.4
 osd-on-seek="msg-bar"
+# osd in terminal
+term-osd-bar=yes
+term-osd-bar-chars="[=>-]"
 
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
 #
