@@ -322,7 +322,8 @@ let g:ibus#engine = "libpinyin"
 " }}}
 " Theme gruvbox {{{
 colorscheme gruvbox
-let g:gruvbox_italic      = 1
+" some terminal not supporting italic would replace with reverse, so disable it
+let g:gruvbox_italic      = 0
 let g:gruvbox_sign_column = "bg0"
 set background=dark
 " }}}
