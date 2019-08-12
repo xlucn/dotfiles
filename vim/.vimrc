@@ -71,6 +71,8 @@ set ttimeoutlen=0
 set diffopt+=vertical
 " }}}
 " UI basic {{{
+" clear sign column highlight
+highlight clear SignColumn
 " gui options
 set guioptions=ci
 set guifont=Hack\ 12
@@ -78,10 +80,6 @@ set guifont=Hack\ 12
 set number
 " enable mouse support in console
 set mouse=a
-" highlight current line
-set cursorline
-" color the 80th column
-set colorcolumn=80
 " shows what you are typing as a command
 set showcmd
 " turn on wild menu on :e <Tab>
@@ -187,7 +185,7 @@ let g:vim_markdown_new_list_item_indent = 2
 " }}}
 " Lightline {{{
 let g:lightline = {
-    \ 'colorscheme': 'Tomorrow_Night_Eighties',
+    \ 'colorscheme': 'seoul256',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
@@ -321,7 +319,11 @@ let g:ibus#engine = "libpinyin"
 " fcitx {{{
 " }}}
 " Theme gruvbox {{{
-colorscheme gruvbox
+if has("gui_running")
+    colorscheme gruvbox
+else
+    colorscheme desert
+endif
 " some terminal not supporting italic would replace with reverse, so disable it
 let g:gruvbox_italic      = 0
 let g:gruvbox_sign_column = "bg0"
