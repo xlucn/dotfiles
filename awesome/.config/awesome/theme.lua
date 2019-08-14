@@ -71,7 +71,7 @@ theme.fg_minimize           = gray_244
 -- }}}
 
 -- wallpaper {{{
-theme.wallpaper = config_path .. "wallpaper.jpg"
+theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 --theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 --gears.wallpaper.set(dark2)
 -- }}}
