@@ -23,6 +23,8 @@ alias cmpv="mpv --vo=drm"
 alias stow="stow -t ~ -v"
 
 # History, https://unix.stackexchange.com/questions/18212
+HISTSIZE=-1
+HISTFILESIZE=-1
 HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
