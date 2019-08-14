@@ -36,22 +36,17 @@ xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
 # disable bell
 xset -b
 
-# pcmanfm daemon, for automount drives
-#pcmanfm -d &
-# thunar daemon
-if [[ ! `pgrep thunar` ]]; then thunar --daemon; fi &
-
 # start Chinese input method
 if [[ ! `pgrep fcitx` ]]; then fcitx; fi
+
+# start network manager applet
+if [[ ! `pgrep nm-applet` ]]; then nm-applet; fi
 
 # start compton
 #if [[ ! `pgrep compton` ]]; then compton -b; fi
 
-# lantern
-if [[ ! `pgrep lantern` ]]; then lantern -headless; fi &
-
 # polkit agent
-if [[ ! `pgrep polkit-gnome` ]]
-then
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-fi
+#if [[ ! `pgrep polkit-gnome` ]]
+#then
+    #/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+#fi
