@@ -1,6 +1,5 @@
-#! /bin/bash
+#! /bin/sh
 
-# ENV VARIABLES
 # QT theme
 export QT_QPA_PLATFORMTHEME=gtk2
 # chinese input method
@@ -12,41 +11,21 @@ export GTK_CSD=0
 export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 
 # LOAD FILES
-# .profile
 [[ -f $HOME/.profile ]] && . $HOME/.profile
-# modify keymapping
-[[ -f /etc/X11/xinit/.Xmodmap ]] && xmodmap /etc/X11/xinit/.Xmodmap
 [[ -f $HOME/.Xmodmap ]] && xmodmap $HOME/.Xmodmap
-# load xresources
-[[ -f /etc/X11/xinit/.Xresources ]] && xrdb -merge /etc/X11/xinit/.Xresources
 [[ -f $HOME/.Xresources ]] && xrdb -merge $HOME/.Xresources
 
-# INPUT DEVICES
-# set the target device here, it can be found by `xinput` command
+# configure trackpad, it can be found by `xinput` command
 trackpad="AlpsPS/2 ALPS GlidePoint"
-# lininput-gestures
-libinput-gestures-setup start
-# enable natural scrolling
 xinput set-prop "$trackpad" "libinput Tapping Enabled" 1
-# enable tapping
 xinput set-prop "$trackpad" "libinput Natural Scrolling Enabled" 1
-# set acceleration
 xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
 
 # disable bell
 xset -b
 
-# start Chinese input method
-if [[ ! `pgrep fcitx` ]]; then fcitx; fi
-
-# start network manager applet
-if [[ ! `pgrep nm-applet` ]]; then nm-applet; fi
-
-# start compton
-#if [[ ! `pgrep compton` ]]; then compton -b; fi
-
-# polkit agent
-#if [[ ! `pgrep polkit-gnome` ]]
-#then
-    #/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-#fi
+# start up applications
+fcitx -d
+nm-applet &
+compton -b
+libinput-gestures-setup start
