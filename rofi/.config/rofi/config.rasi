@@ -1,0 +1,58 @@
+configuration {
+    font               : "Hack 14";
+    sidebar-mode       : true;
+    modi               : "run, drun, window";
+    display-drun       : "Applications";
+    display-run        : "Execute";
+    display-window     : "Window";
+    show-icons         : true;
+    icon-theme         : "Papirus";
+    scroll-method      : 1;
+    columns            : 2;
+    lines              : 10;
+    cycle              : false;
+    terminal           : "termite";
+    ssh-command        : "{terminal} -e \"{ssh-client} {host}\"";
+    run-shell-command  : "{terminal} -e \"{cmd}\"";
+}
+
+@import "/usr/share/rofi/themes/gruvbox-dark.rasi"
+/*@import "~/.cache/wal/colors-rofi-light.rasi"*/
+
+* {
+    line-margin     : 0;
+    line-padding    : 0;
+    separator-style : "none";
+    margin          : 0;
+    padding         : 0;
+    border          : 0;
+}
+
+window {
+    width           : 60%;
+    border          : 0px;
+    padding         : 0px;
+}
+
+mainbox {
+    spacing         : 0;
+}
+
+button {
+    padding         : 12px 6px;
+}
+
+inputbar {
+    children        : [entry];
+    padding         : 24px;
+}
+
+listview {
+    padding         : 0;
+    spacing         : 0;
+    scrollbar       : true;
+}
+
+element {
+    padding         : 16px;
+}
