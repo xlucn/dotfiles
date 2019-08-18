@@ -22,11 +22,19 @@ URxvt.scrollBar_floating : false
 URxvt.scrollstyle        : rxvt
 
 ! -- Perl extensions -- !
-URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font
-URxvt.matcher.button: 1
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font,vtwheel
+! Right click to open url
+URxvt.matcher.button: 3
 URxvt.url-launcher: firefox
 URxvt.underlineURLs: True
 
+! disable ctrl-shift keybinding
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+
+URxvt.clipboard.autocopy: true
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 ! -- Fonts -- !
 URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12, xft:Noto Sans CJK SC:size=12
 
