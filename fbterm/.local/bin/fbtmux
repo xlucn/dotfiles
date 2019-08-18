@@ -1,5 +1,4 @@
 #! /bin/bash
-image="$HOME/.local/share/backgrounds/fbterm.jpg"
 
 # only start in tty
 tty | grep tty > /dev/null 2>&1
@@ -9,21 +8,34 @@ then
     exit
 fi
 
-# start with tmux and name the session as "fbterm"
-if [[ -e /usr/bin/tmux ]]
-then
-    TMUX_ARGS=" -- tmux new -A -s fbterm"
-fi
+bg_dir="$HOME/.local/share/backgrounds/"
+bg_fbterm=$bg_dir/fbterm.jpg
+bg_wallpaper=$bg_dir/wallpaper.jpg
 
-# start fbterm with background
-echo -ne "\e[?25l" # hide cursor
-if [[ -e $image ]]
+if [[ -e $bg_wallpaper ]]
 then
-    fbv -ciuker "$image" << EOF
+    # regenerate darkened image for fbterm
+    # use stat instead of test -nt/-ot command, test will dereference links
+    bg_fbterm_time=`stat -c %Y $bg_fbterm`
+    bg_wallpaper_time=`stat -c %Y $bg_wallpaper`
+    if [[ ! -e $bg_fbterm || $bg_fbterm_time -lt $bg_wallpaper_time ]]
+    then
+        convert $bg_wallpaper -modulate 35,20 $bg_fbterm
+    fi
+
+    # start fbterm with background
+    echo -ne "\e[?25l" # hide cursor
+    fbv -ciuker "$bg_fbterm" << EOF
     q
 EOF
     shift
     export FBTERM_BACKGROUND_IMAGE=1
+fi
+
+# start with tmux and name the session as "fbterm"
+if [[ -e /usr/bin/tmux ]]
+then
+    TMUX_ARGS=" -- tmux new -A -s fbterm"
 fi
 
 exec fbterm "$@" $TMUX_ARGS
