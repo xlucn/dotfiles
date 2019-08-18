@@ -6,7 +6,7 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=Hack,Hack Bold,Source Han Sans CN Bold
+font-names=Hack,Source Han Sans CN
 font-size=16
 
 # force font width (and/or height), usually for non-fixed width fonts
