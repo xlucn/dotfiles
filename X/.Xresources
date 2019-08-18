@@ -11,15 +11,18 @@ Xcursor.theme: Breeze-Adapta-Cursor
 ! -- URxvt UI -- !
 URxvt.depth              : 32
 URxvt.geometry           : 80x24
-URxvt.transparent        : false
 URxvt.internalBorder     : 0
 URxvt.externalBorder     : 0
 URxvt.letterSpace        : 0
 URxvt.saveLines          : 10000
 URxvt.scrollBar          : false
-URxvt.scrollBar_right    : false
-URxvt.scrollBar_floating : false
 URxvt.scrollstyle        : rxvt
+
+! transparent
+!URxvt.transparent        : false
+!URxvt*inheritPixmap: false
+! URxvt*shading: 0 to 99 darkens, 101 to 200 lightens
+!URxvt*shading: 30
 
 ! -- Perl extensions -- !
 URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font,vtwheel
@@ -36,39 +39,11 @@ URxvt.clipboard.autocopy: true
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 ! -- Fonts -- !
-URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12, xft:Noto Sans CJK SC:size=12
+URxvt.font: xft:Hack:size=12, xft:Hack Nerd Font Mono:size=12, xft: Noto Sans CJK SC:size=12, xft: WenQuanYi Micro Hei:size=12, xft: Source Han Sans CN:size=13, xft: HanaMinB:size=12
+URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
+URxvt.italicFont: xft:Hack:style=Italic:size=12, xft: WenQuanYi Micro Hei:size=12
+URxvt.boldItalicFont: xft:Hack:style=Bold Italic:size=12, xft: WenQuanYi Micro Hei:size=12
 
-! -- URxvt extra colors from gruvbox -- !
-URxvt.color24:  #076678
-URxvt.color66:  #427b58
-URxvt.color88:  #9d0006
-URxvt.color96:  #8f3f71
-URxvt.color100: #79740e
-URxvt.color108: #8ec07c
-URxvt.color109: #83a598
-URxvt.color130: #af3a03
-URxvt.color136: #b57614
-URxvt.color142: #b8bb26
-URxvt.color167: #fb4934
-URxvt.color175: #d3869b
-URxvt.color208: #fe8019
-URxvt.color214: #fabd2f
-URxvt.color223: #ebdbb2
-URxvt.color228: #f2e5bc
-URxvt.color229: #fbf1c7
-URxvt.color230: #f9f5d7
-URxvt.color234: #1d2021
-URxvt.color235: #282828
-URxvt.color236: #32302f
-URxvt.color237: #3c3836
-URxvt.color239: #504945
-URxvt.color241: #665c54
-URxvt.color243: #7c6f64
-URxvt.color244: #928374
-URxvt.color245: #928374
-URxvt.color246: #a89984
-URxvt.color248: #bdae93
-URxvt.color250: #d5c4a1
 
 ! -- Color scheme -- !
 ! gruvbox
