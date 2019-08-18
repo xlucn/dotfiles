@@ -795,34 +795,44 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
     -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist({
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags, -- filter.focused,
-        buttons = tasklist_buttons,
+    s.mytasklist = awful.widget.tasklist {
+        screen   = s,
+        filter   = awful.widget.tasklist.filter.currenttags,
+        buttons  = tasklist_buttons,
+        -- Notice that there is *NO* wibox.wibox prefix, it is a template,
+        -- not a widget instance.
         widget_template = {
-          {
             {
-              id = 'icon_role',
-              widget = wibox.widget.imagebox,
+                {
+                    {
+                        id     = 'icon_role',
+                        widget = wibox.widget.imagebox,
+                    },
+                    forced_height = 28,
+                    forced_width = 40,
+                    left = 8,
+                    right = 8,
+                    top = 2,
+                    bottom = 2,
+                    widget  = wibox.container.margin
+                },
+                wibox.widget.base.make_widget(),
+                id            = 'background_role',
+                widget        = wibox.container.background,
             },
-            left = 12,
-            right = 12,
-            top = 2,
-            bottom = 2,
-            widget = wibox.container.margin,
-          },
-          id = 'background_role',
-          widget = wibox.container.background,
-          create_callback = function(self, c, index, objects)
-            local tooltip = awful.tooltip({
-              objects = { self },
-              timer_function = function() return c.name end,
-            })
-            tooltip.mode = "outside"
-            tooltip.preferred_alignments = {"middle"}
-          end,
+            layout = wibox.layout.align.vertical,
+            create_callback = function(self, c, index, objects) --luacheck: no unused args
+                local icon = self:get_children_by_id('icon_role')[1]
+
+                local tooltip = awful.tooltip({
+                  objects = { self },
+                  timer_function = function() return c.name end,
+                })
+                tooltip.mode = "outside"
+                tooltip.preferred_alignments = {"middle"}
+            end,
         },
-    })
+    }
 
     -- Create the wibox
     s.mywibox = awful.wibar({
@@ -1174,19 +1184,21 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
+                     size_hints_honor = false,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
      }
     },
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = true } },
+        properties = { titlebars_enabled = false } },
 
     -- Floating clients.
     { rule_any = {
         instance = {
           "DTA",                  -- Firefox addon DownThemAll.
           "copyq",                -- Includes session name in class.
+          "Popup",
         },
 
         name = {
@@ -1216,14 +1228,18 @@ awful.rules.rules = {
         callback = function(c) c:move_to_screen() end },
 
     -- Set Firefox to always map on the tag 2.
-    { rule = { class = "firefox", role = "browser", instance = "Navigator" },
-        properties = { tag = tag2,
-                       titlebars_enabled = false,
-                       maximized = true} },
-
-    -- No borders
-    { rule = { instance = "Popup", class = "Firefox" }, -- e.g. addon installed
-        properties = { border_width = 0 } },
+    {
+        rule = {
+            class = "firefox",
+            role = "browser",
+            instance = "Navigator"
+        },
+        properties = {
+            tag = tag2,
+            titlebars_enabled = false,
+            maximized = false
+        }
+    },
 }
 -- }}}
 
