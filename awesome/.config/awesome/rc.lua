@@ -887,6 +887,9 @@ mylauncher:buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey }, "b", function ()
+        mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible
+    end),
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
