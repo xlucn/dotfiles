@@ -1,3 +1,5 @@
+#! /bin/sh
+
 [ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
 [ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
 
@@ -21,6 +23,8 @@ alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-i
 alias cmpv="mpv --vo=drm"
 # stow default to $HOME and turn on visual
 alias stow="stow -t ~ -v"
+# vcsi alias with template
+alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
 
 # History, https://unix.stackexchange.com/questions/18212
 HISTSIZE=-1
@@ -44,7 +48,6 @@ function journalcount()
 }
 
 # Console color theme, reuse .Xresources definitions
-# Solarized color scheme
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
     for i in $(sed -n "$_SEDCMD" $HOME/.Xresources | awk '$1 < 16 {printf "\\e]P%X%s", $1, $2}'); do
@@ -109,6 +112,3 @@ stty -ixon
 set -o vi
 #Allows you to cd into directory merely by typing the directory name.
 shopt -s autocd
-
-# vcsi alias with template
-alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
