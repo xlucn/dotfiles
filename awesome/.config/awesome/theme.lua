@@ -77,8 +77,8 @@ theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 -- }}}
 
 -- Colors {{{
-theme.border_normal         = theme.bg_normal
-theme.border_focus          = dark1
+theme.border_normal         = gray_244
+theme.border_focus          = neutral_yellow
 theme.border_marked         = neutral_red
 theme.titlebar_bg_focus     = theme.bg_normal
 -- }}}
@@ -96,7 +96,7 @@ theme.widget_bat_mid        = bright_green
 theme.widget_bat_low        = bright_orange
 theme.widget_bat_empty      = bright_red
 theme.widget_mail_online    = bright_green
-theme.widget_mail_offline   = bright_red
+theme.widget_mail_offline   = theme.fg_normal
 -- }}}
 
 -- Taglist {{{
@@ -128,8 +128,8 @@ awesome.set_preferred_icon_size(48)
 theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
-theme.useless_gap               = dpi(16)
-theme.border_width              = dpi(0)
+theme.useless_gap               = dpi(8)
+theme.border_width              = dpi(4)
 theme.systray_icon_spacing      = dpi(0)
 -- }}}
 
