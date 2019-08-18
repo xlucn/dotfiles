@@ -38,5 +38,7 @@ set menu-complete-display-prefix on
 
 # show mode indicators
 set show-mode-in-prompt on
-set vi-cmd-mode-string "\1\e[1;48;5;246;38;5;237m\2 CMD \1\e[48;5;239;38;5;246m\2"
-set vi-ins-mode-string "\1\e[1;48;5;109;38;5;237m\2 INS \1\e[48;5;239;38;5;109m\2"
+set vi-ins-mode-string "\1\e[1;34m\2(ins)\1\e[0m\2 "
+set vi-cmd-mode-string "\1\e[1;31m\2(cmd)\1\e[0m\2 "
+#set vi-cmd-mode-string "\1\e[1;48;5;246;38;5;237m\2 CMD \1\e[0m\2"
+#set vi-ins-mode-string "\1\e[1;48;5;109;38;5;237m\2 INS \1\e[0m\2"

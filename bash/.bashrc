@@ -53,13 +53,55 @@ if [ "$TERM" = "linux" ]; then
     clear
 fi
 
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
+function __cwd_trim() {
+    limit=24
+    cwd=$(basename $PWD)
+    if [[ ${#cwd} -gt $limit ]]
+    then
+        printf "\[\e[1;33m\]${cwd:0:$limit}...\[\e[0m\]"
+    else
+        printf "\[\e[1;33m\]$cwd\[\e[0m\]"
+    fi
 }
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-fi
+function __jobs_count() {
+    jobs_info=`jobs`
+    count_stop=`echo $jobs_info | grep -E "Stopped|Suspended" | wc -l`
+    count_run=`echo $jobs_info | grep -E "Running" | wc -l`
+    count_done=`echo $jobs_info | grep -E "Done" | wc -l`
+    count_kill=`echo $jobs_info | grep -E "Killed|Terminated" | wc -l`
+    count=`expr $count_stop + $count_run + $count_done + $count_kill`
+    if [[ $count > 0 ]]
+    then
+        printf " "
+        if [[ $count_stop > 0 ]]; then printf "\[\e[33mT$count_stop\[\e[0m\]"; fi
+        if [[ $count_run > 0 ]]; then printf "\[\e[32mR$count_run\[\e[0m\]"; fi
+        if [[ $count_done > 0 ]]; then printf "\[\e[34mD$count_done\[\e[0m\]"; fi
+        if [[ $count_kill > 0 ]]; then printf "\[\e[31mK$count_kill\[\e[0m\]"; fi
+    fi
+}
+
+function __before_git() {
+    printf "\[\e[35m\]$(whoami)@$(hostname)\[\e[0m\] `__cwd_trim``__jobs_count`"
+}
+function __after_git() {
+    printf " \[\e[1;33m\]\$\[\e[0m\] "
+}
+
+# use the prompt script somes with git
+source /usr/share/git/completion/git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM="verbose"
+GIT_PS1_SHOWCOLORHINTS=1
+PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
+
+#function _update_ps1() {
+    #PS1=$(powerline-shell $?)
+#}
+#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    #PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#fi
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
