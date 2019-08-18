@@ -60,9 +60,18 @@ seperator = wibox.widget {
 }
 
 -- This is used later as the default terminal and editor to run.
-terminal = "termite"
+terminal = "urxvtc"
 editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
+local function terminal_cmd(cmd)
+    if terminal == "termite" then
+        return terminal .. " -e \"" .. cmd .. "\""
+    else
+        return terminal .. " -e " .. cmd
+    end
+end
+local function editor_cmd(file)
+    return terminal_cmd(editor .. " " .. file)
+end
 
 -- rofi (launcher tool) commands
 rofi_basic = "rofi -modi drun,window,run"
@@ -135,8 +144,8 @@ end
 -- Create a launcher widget and a main menu
 local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", terminal .. " -e \"man awesome\"" },
-   { "edit config", terminal .. " -e \"" .. editor .. " " .. awesome.conffile .. "\""},
+   { "manual", "xdg-open /usr/share/doc/awesome/doc/index.html"},
+   { "edit config", terminal_cmd(editor_cmd(awesome.conffile)) },
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
@@ -273,7 +282,7 @@ mpd_arc:buttons(awful.util.table.join(
         mpd_upd.update()
     end),
     awful.button({}, 3, function()
-        awful.spawn(terminal .. " -e ncmpcpp")
+        awful.spawn(terminal_cmd("ncmpcpp"))
     end),
     awful.button({}, 4, function()
         awful.spawn.with_shell("mpc seek +10")
@@ -353,7 +362,7 @@ local myvolume = {
 
 -- audio functions
 tuimixer_command = "alsamixer"
-audio_mixer = terminal .. " -e " .. tuimixer_command
+audio_mixer = terminal_cmd(tuimixer_command)
 volume_toggle = function()
     os.execute(string.format("%s set %s toggle",
                              volume.cmd,
@@ -529,7 +538,7 @@ net_status:buttons(awful.util.table.join(
         mynet.visible = not mynet.visible
     end),     -- left click
     awful.button({}, 3, function()          -- right click
-        awful.spawn(terminal .. " -e nmtui-connect")
+        awful.spawn(terminal_cmd("nmtui-connect"))
     end)
 ))
 -- }}}
@@ -569,7 +578,7 @@ local mycpu = wibox.widget {
 mycpu:buttons(awful.util.table.join(
     laincpu.widget:buttons(),
     awful.button({}, 3, function()
-        awful.spawn(terminal .. " -e \"htop -s PERCENT_CPU\"")
+        awful.spawn(terminal_cmd("htop -s PERCENT_CPU"))
     end)
 ))
 -- }}}
@@ -609,7 +618,7 @@ local myram = wibox.widget {
 }
 myram:buttons(awful.util.table.join(
     awful.button({}, 3, function()
-        awful.spawn(terminal .. " -e \"htop -s PERCENT_MEM\"")
+        awful.spawn(terminal_cmd("htop -s PERCENT_MEM"))
     end)
 ))
 -- }}}
