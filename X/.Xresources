@@ -18,60 +18,45 @@ URxvt.saveLines          : 10000
 URxvt.scrollBar          : false
 URxvt.scrollstyle        : rxvt
 
-! transparent
-!URxvt.transparent        : false
-!URxvt*inheritPixmap: false
-! URxvt*shading: 0 to 99 darkens, 101 to 200 lightens
-!URxvt*shading: 30
-
 ! -- Perl extensions -- !
-URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font,vtwheel
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font
 ! Right click to open url
 URxvt.matcher.button: 3
 URxvt.url-launcher: firefox
 URxvt.underlineURLs: True
 
-! disable ctrl-shift keybinding
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-
+! disable ctrl-shift keybinding
 URxvt.clipboard.autocopy: true
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+
 ! -- Fonts -- !
 URxvt.font: xft:Hack:size=12, xft:Hack Nerd Font Mono:size=12, xft: Noto Sans CJK SC:size=12, xft: WenQuanYi Micro Hei:size=12, xft: Source Han Sans CN:size=13, xft: HanaMinB:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.italicFont: xft:Hack:style=Italic:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldItalicFont: xft:Hack:style=Bold Italic:size=12, xft: WenQuanYi Micro Hei:size=12
 
-
 ! -- Color scheme -- !
-! gruvbox
-! hard contrast: *background: #1d2021
 *background: #282828
-! soft contrast: *background: #32302f
 *foreground: #ebdbb2
-! Black + DarkGrey
 *color0:  #282828
-*color8:  #928374
-! DarkRed + Red
 *color1:  #cc241d
-*color9:  #fb4934
-! DarkGreen + Green
 *color2:  #98971a
-*color10: #b8bb26
-! DarkYellow + Yellow
 *color3:  #d79921
-*color11: #fabd2f
-! DarkBlue + Blue
 *color4:  #458588
-*color12: #83a598
-! DarkMagenta + Magenta
 *color5:  #b16286
-*color13: #d3869b
-! DarkCyan + Cyan
 *color6:  #689d6a
-*color14: #8ec07c
-! LightGrey + White
 *color7:  #a89984
+*color8:  #928374
+*color9:  #fb4934
+*color10: #b8bb26
+*color11: #fabd2f
+*color12: #83a598
+*color13: #d3869b
+*color14: #8ec07c
 *color15: #ebdbb2
