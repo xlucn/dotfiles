@@ -1,7 +1,7 @@
 # search
-bind generic,pager,index / search
-bind generic,index,pager n search-next
-bind generic,index,pager N search-opposite
+bind   generic,index,pager / search
+bind   generic,index,pager n search-next
+bind   generic,index,pager N search-opposite
 
 # navigation with j/k up/down etc.
 bind   generic,pager          <up>     previous-line
@@ -28,11 +28,14 @@ bind   generic,pager                         G        bottom
 bind   generic,pager                         <end>    bottom
 
 # enter and exit with left/right h/l enter/q
-macro index <left> "c?\t" "Go back to the list of mailboxes"
-macro index h      "c?\t" "Go back to the list of mailboxes"
-bind generic,index,pager,browser,attach q      exit
-bind generic,pager,browser,attach       <left> exit
-bind generic,pager,browser,attach       h      exit
+macro  index <left> "c?\t" "Go back to the list of mailboxes"
+macro  index h      "c?\t" "Go back to the list of mailboxes"
+bind   generic,index,pager,attach q      exit
+bind   generic,pager,attach       <left> exit
+bind   generic,pager,attach       h      exit
+bind   browser     <left> goto-parent
+bind   browser     q      goto-parent
+bind   browser     h      goto-parent
 bind   generic,browser,alias  l          select-entry
 bind   generic,browser,alias  <return>   select-entry
 bind   generic,browser,alias  <enter>    select-entry
@@ -51,52 +54,52 @@ bind   attach            <return>   view-attach
 bind   attach            <enter>    view-attach
 
 # sidebar
-bind generic,index,pager \cp sidebar-prev
-bind generic,index,pager \cn sidebar-next
-bind generic,index,pager \co sidebar-open
+bind   generic,index,pager \cp sidebar-prev
+bind   generic,index,pager \cn sidebar-next
+bind   generic,index,pager \co sidebar-open
 # Toggle the visibility of the Sidebar.
-bind generic,index,pager B sidebar-toggle-visible
+bind   generic,index,pager B sidebar-toggle-visible
 
 # macros
-macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
-macro generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
-macro pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
-macro generic,index,browser,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
+macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
+macro  generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
+macro  pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
+macro  generic,index,browser,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
 
 # index navigation
-bind index \t next-new-then-unread
-bind index \e\t next-new-then-unread
-bind index { previous-thread
-bind index } next-thread
-bind index zA collapse-all
-bind index za collapse-thread
-bind index <space> collapse-thread
-bind index c change-folder
+bind   index \t next-new-then-unread
+bind   index \e\t next-new-then-unread
+bind   index { previous-thread
+bind   index } next-thread
+bind   index zA collapse-all
+bind   index za collapse-thread
+bind   index <space> collapse-thread
+bind   index c change-folder
 
 # email operations
-bind index,pager m mail
-bind index,pager r reply
-bind index,pager R group-reply
-bind index,pager b bounce-message
-bind index,pager f forward-message
-bind index,pager d delete-message
-bind index,pager <delete> delete-message
-bind index,pager u undelete-message
-bind index,pager p print-message
-bind index,pager s save-message
-bind index,pager | pipe-message
-bind index,pager a create-alias
-bind index D delete-thread
-bind index U undelete-thread
-bind index @ display-address
-bind index x toggle-new
-bind pager x mark-as-new
+bind   index,pager m mail
+bind   index,pager r reply
+bind   index,pager R group-reply
+bind   index,pager b bounce-message
+bind   index,pager f forward-message
+bind   index,pager d delete-message
+bind   index,pager <delete> delete-message
+bind   index,pager u undelete-message
+bind   index,pager p print-message
+bind   index,pager s save-message
+bind   index,pager | pipe-message
+bind   index,pager a create-alias
+bind   index D delete-thread
+bind   index U undelete-thread
+bind   index @ display-address
+bind   index x toggle-new
+bind   pager x mark-as-new
 
 # pager bindings
-bind pager { half-up
-bind pager } half-down
+bind   pager { half-up
+bind   pager } half-down
 
 # attach bindings
-bind attach T view-text
+bind   attach T view-text
 
 # vim: ft=neomuttrc
