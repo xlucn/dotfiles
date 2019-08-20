@@ -34,6 +34,7 @@ Plug 'rsmenon/vim-mathematica'        " mathematica
 Plug 'lilydjwg/fcitx.vim'             " fcitx
 Plug 'jpalardy/vim-slime'             " vim-slime
 Plug 'jamessan/vim-gnupg'             " gpg file edit plugin
+Plug 'ap/vim-css-color'               " preview colors
 call plug#end()
 " }}}
 " }}}
