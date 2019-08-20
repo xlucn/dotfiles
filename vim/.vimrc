@@ -330,19 +330,22 @@ let g:gruvbox_sign_column = "bg0"
 set background=dark
 " }}}
 " vim-slime {{{
-" use tmux
-"let g:slime_target = "tmux"
-" set config to use the pane on the right by default
-"let g:slime_default_config = {
-    "\ "socket_name": "default",
-    "\ "target_pane": "{right-of}"
-    "\ }
-" or use vim :terminal
-let g:slime_target = "vimterminal"
-" vim terminal config
-let g:slime_vimterminal_config = {
-    \ "vertical": 1
-    \ }
+if $TERM == "screen-256color"
+    " use tmux
+    let g:slime_target = "tmux"
+    " set config to use the pane on the right by default
+    let g:slime_default_config = {
+        \ "socket_name": "default",
+        \ "target_pane": "{right-of}"
+        \ }
+else
+    " or use vim :terminal
+    let g:slime_target = "vimterminal"
+    " vim terminal config
+    let g:slime_vimterminal_config = {
+        \ "vertical": 1
+        \ }
+endif
 let g:slime_dont_ask_default = 1
 " use temp file
 let g:slime_paste_file = tempname()
