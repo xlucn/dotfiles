@@ -1259,6 +1259,22 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+
+    -- set fallback icon
+    -- https://www.reddit.com/r/awesomewm/comments/b5rmeo/how_to_add_fallback_icon_to_the_tasklist/
+    local t = {}
+    t["URxvt"] = "/usr/share/icons/Papirus/64x64/apps/terminal.svg"
+    -- fallback of fallback icon
+    t["Others"] = "/usr/share/icons/Papirus/64x64/apps/application-default-icon.svg"
+
+    if c.icon == nil then
+        local icon = t[c.class]
+        if not icon then
+            icon = t["Others"]
+        end
+        icon = gears.surface(icon)
+        c.icon = icon and icon._native or nil
+    end
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
