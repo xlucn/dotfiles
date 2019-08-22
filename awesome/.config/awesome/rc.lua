@@ -1196,6 +1196,12 @@ awful.rules.rules = {
     { rule_any = { type = { "normal", "dialog" } },
         properties = { titlebars_enabled = false } },
 
+    -- borderless
+    {
+        rule = { class = "Plank", instance = "plank" },
+        properties = { border_width = 0, ontop = true }
+    },
+
     -- Floating clients.
     { rule_any = {
         instance = {
