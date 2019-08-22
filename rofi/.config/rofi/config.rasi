@@ -3,11 +3,11 @@ configuration {
     sidebar-mode       : true;
     modi               : "run, drun, window";
     display-drun       : "Applications";
-    display-run        : "Execute";
+    display-run        : "Command";
     display-window     : "Window";
     show-icons         : true;
     icon-theme         : "Papirus";
-    scroll-method      : 1;
+    scroll-method      : 0;
     columns            : 2;
     lines              : 10;
     cycle              : false;
@@ -16,8 +16,8 @@ configuration {
     run-shell-command  : "{terminal} -e \"{cmd}\"";
 }
 
-@import "/usr/share/rofi/themes/gruvbox-dark.rasi"
-/*@import "~/.cache/wal/colors-rofi-light.rasi"*/
+/*@import "/usr/share/rofi/themes/gruvbox-dark.rasi"*/
+@import "~/.cache/wal/colors-rofi-dark.rasi"
 
 * {
     line-margin     : 0;
