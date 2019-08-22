@@ -18,16 +18,22 @@ URxvt.saveLines          : 10000
 URxvt.scrollBar          : false
 URxvt.scrollstyle        : rxvt
 
+! Do not scroll in less, etc (do not seem to be working?)
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+! do not scroll with output
+URxvt.scrollTtyOutput: false
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt.scrollWithBuffer: true
+! scroll back to the bottom on keypress
+URxvt.scrollTtyKeypress: true
+
 ! -- Perl extensions -- !
 URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font
 ! Right click to open url
 URxvt.matcher.button: 3
 URxvt.url-launcher: firefox
 URxvt.underlineURLs: True
-
-URxvt.secondaryScreen: 1
-URxvt.secondaryScroll: 0
-
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 ! disable ctrl-shift keybinding
