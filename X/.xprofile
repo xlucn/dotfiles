@@ -29,6 +29,6 @@ fcitx -d
 udiskie -s &
 nm-applet &
 redshift-gtk &
-compton -b
+compton &
 urxvtd -q -f -o
 libinput-gestures-setup start
