@@ -29,7 +29,7 @@ URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 
 ! -- Perl extensions -- !
-URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard,resize-font,vtwheel
 ! Right click to open url
 URxvt.matcher.button: 3
 URxvt.url-launcher: /usr/bin/xdg-open
