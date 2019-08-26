@@ -128,7 +128,7 @@ awesome.set_preferred_icon_size(48)
 theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
-theme.useless_gap               = dpi(8)
+theme.useless_gap               = dpi(16)
 theme.border_width              = dpi(4)
 theme.systray_icon_spacing      = dpi(0)
 -- }}}
@@ -167,6 +167,8 @@ theme.menu_height               = dpi(32)
 theme.menu_width                = dpi(320)
 theme.menu_border_color         = theme.bg_normal
 theme.menu_border_width         = dpi(4)
+theme.menu_fg_normal            = theme.fg_normal
+theme.menu_bg_normal            = theme.bg_normal
 theme.menu_fg_focus             = theme.fg_normal
 theme.menu_bg_focus             = theme.bg_focus
 -- }}}
