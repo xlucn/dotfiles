@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [[ `which urxvtc` ]]
+then
+    TERMINAL=urxvtc
+elif [[ `which termite` ]]
+then
+    TERMINAL=termite
+elif [[ `which xterm` ]]
+then
+    TERMINAL=xterm
+else
+    notify-send "no available terminal emulator, please modify the script"
+fi
+
+if [[ `which neomutt` ]]
+then
+    MUTT=neomutt
+else
+    MUTT=mutt
+fi
+
+notify-send "$@"
+exec $TERMINAL -e $MUTT "$@"
