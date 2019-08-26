@@ -19,7 +19,6 @@ require("awful.hotkeys_popup.keys")
 local lain = require("lain")
 local dpi = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
-local xdg_menu = require("archmenu")
 -- }}}
 
 -- {{{ Error handling
@@ -150,10 +149,60 @@ local myawesomemenu = {
    { "quit", function() awesome.quit() end}
 }
 
-table.insert(xdgmenu, 1, { "open terminal", terminal })
-table.insert(xdgmenu, 1, { "awesome", myawesomemenu, beautiful.awesome_icon, })
+local menu_utils = require("menubar.utils")
+local menu_gen = require("menubar.menu_gen")
 
-local mymainmenu = awful.menu({ items = xdgmenu })
+-- some configurations
+menu_utils.terminal = "urxvtc"
+menu_gen.all_menu_dirs = {'/usr/share/applications/', '/usr/local/share/applications/', '~/.local/share/applications'}
+
+-- icon for applications without one
+default_icon = menu_utils.lookup_icon("application-default-icon")
+-- icons for terminal applications
+terminal_icon = menu_utils.lookup_icon("terminal")
+
+local result = {}
+local mymainmenu      = awful.menu()
+mymainmenu:add({ "awesome", myawesomemenu, beautiful.awesome_icon, })
+mymainmenu:add({ "open terminal", terminal, terminal_icon })
+
+-- Modified from https://github.com/lcpz/awesome-freedesktop/blob/master/menu.lua
+menu_gen.generate(function(entries)
+    -- Add categories
+    for k, v in pairs(menu_gen.all_categories) do
+        table.insert(result, { k, {}, v.icon })
+    end
+
+    -- Add applications
+    for k, v in pairs(entries) do
+        -- Use fallback icon
+        v.icon = v.icon or default_icon
+        for _, cat in pairs(result) do
+            if cat[1] == v.category then
+                table.insert(cat[2], { v.name, v.cmdline, v.icon })
+                break
+            end
+        end
+    end
+
+    -- Cleanup things a bit
+    for _, v in pairs(result) do
+        --Sort entries alphabetically (by name)
+        table.sort(v[2], function (a, b) return string.byte(a[1]) < string.byte(b[1]) end)
+        -- Replace category name with nice name
+        v[1] = menu_gen.all_categories[v[1]].name
+    end
+
+    -- Sort categories alphabetically also
+    table.sort(result, function(a, b) return string.byte(a[1]) < string.byte(b[1]) end)
+
+    for _, v in pairs(result) do
+        -- Only add non-empty categories
+        if #v[2] > 0 then
+            mymainmenu:add(v)
+        end
+    end
+end)
 
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                            menu = mymainmenu })
