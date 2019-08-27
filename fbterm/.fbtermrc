@@ -6,7 +6,7 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=Hack,Source Han Sans CN
+font-names=Hack,Hack Nerd Font,Source Han Sans CN
 font-size=16
 
 # force font width (and/or height), usually for non-fixed width fonts
@@ -52,7 +52,7 @@ color-14=8ec07c
 color-15=ebdbb2
 
 # max scroll-back history lines of every window, value must be [0 - 65535], 0 means disable it
-history-lines=10000
+history-lines=0
 
 # up to 5 additional text encodings, multiple encodings must be seperated by ','
 # run 'iconv --list' to get available encodings.
@@ -74,4 +74,5 @@ screen-rotate=0
 input-method=fcitx-fbterm
 
 # treat ambiguous width characters as wide
+## do not turn on this, tmux will have display problems
 #ambiguous-wide=yes
