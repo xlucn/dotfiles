@@ -99,10 +99,10 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    --awful.layout.suit.magnifier,
     awful.layout.suit.max,
     awful.layout.suit.fair,
-    awful.layout.suit.corner.nw,
+    --awful.layout.suit.corner.nw,
+    awful.layout.suit.magnifier,
     awful.layout.suit.floating,
 }
 
@@ -1000,9 +1000,6 @@ globalkeys = gears.table.join(
               {description = "open a centered floating terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
-
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
@@ -1096,9 +1093,9 @@ globalkeys = gears.table.join(
               {description = "brightness down", group = "Media"}),
     awful.key({}, "XF86MonBrightnessUp", brightness_up,
               {description = "brightness up", group = "Media"}),
-    awful.key({ modkey }, ";", brightness_down,
+    awful.key({ modkey }, "-", brightness_down,
               {description = "brightness down", group = "Media"}),
-    awful.key({ modkey }, "'", brightness_up,
+    awful.key({ modkey }, "=", brightness_up,
               {description = "brightness up", group = "Media"}),
 
     -- Application launching
@@ -1115,7 +1112,7 @@ clientkeys = gears.table.join(
                   c:raise()
               end,
               {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",
+    awful.key({ modkey, "Shift"   }, "q",
               function (c)
                   c:kill()
               end,
