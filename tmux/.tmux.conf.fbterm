@@ -1,0 +1,42 @@
+# Change brightness
+bind -n M-- run-shell -b "light -U 5"\; refresh-client
+bind -n M-= run-shell -b "light -A 5"\; refresh-client
+# Change volume
+bind -n M-[ run-shell -b "amixer -q set Master 5%-"\; refresh-client
+bind -n M-] run-shell -b "amixer -q set Master 5%+"\; refresh-client
+bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
+
+# Change windows
+bind -n M-. next-window
+bind -n M-, previous-window
+bind -n M-Escape last-window
+
+# Manage panes
+# Next pane
+bind -n M-j select-pane -t +
+# Prev pane
+bind -n M-k select-pane -t -
+# Focus selected pane
+bind -n M-Space swap-pane -d -t 0
+# Resize panes
+bind -n M-h resize-pane -L 4
+bind -n M-l resize-pane -R 4
+
+# Create new pane in current directory
+bind -n M-Enter split-window -t :.0 \; swap-pane -s :.0 -t :.1
+
+# Kill pane
+bind -n M-q kill-pane \; select-layout main-vertical
+
+# Toggle status line
+bind -n M-b set-option status
+bind -n M-r select-layout main-vertical
+
+set -g remain-on-exit
+# Hooks for reload(keep) layout
+set-hook -g pane-exited "select-layout main-vertical"
+set-hook -g after-split-window "select-layout main-vertical"
+set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout main-vertical'
+set-hook -g pane-died "respawn-pane"
+
+# vim: ft=tmux
