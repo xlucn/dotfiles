@@ -1,0 +1,12 @@
+#!/bin/sh
+
+for battery in /sys/class/power_supply/BAT*
+do
+    b=`cat $battery/capacity`
+    if [[ $b -gt 100 ]]
+    then
+        echo 100
+    else
+        echo $b
+    fi
+done

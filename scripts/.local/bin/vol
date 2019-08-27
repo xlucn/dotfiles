@@ -1,0 +1,15 @@
+#!/bin/sh
+
+voll=$(amixer get Master | grep Left: | awk -F'[][]' '{ print $2 }' | tr -d %)
+volr=$(amixer get Master | grep Right: | awk -F'[][]' '{ print $2 }' | tr -d %)
+vol=$(expr $(expr $volr + $voll ) / 2)
+
+stat_raw=$(amixer get Master | grep Right: | awk -F'[][]' '{ print $4 }')
+if [[ $stat_raw == "on" ]]
+then
+    stat=1
+else
+    stat=0
+fi
+
+echo $vol $stat
