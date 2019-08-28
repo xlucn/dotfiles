@@ -1,3 +1,7 @@
+# The configs in this file is trying to make tmux behave more like a WM
+# including using root keybindings, emulate a "tiled" layout and keep every
+# window alive by not exit its last window(see the hack below)
+
 # Change brightness
 bind -n M-- run-shell -b "light -U 5"\; refresh-client
 bind -n M-= run-shell -b "light -A 5"\; refresh-client
@@ -22,21 +26,43 @@ bind -n M-Space swap-pane -d -t 0
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
 
+# Choose tree
+bind -n M-s choose-tree -Zw
+
 # Create new pane in current directory
 bind -n M-Enter split-window -t :.0 -c "#{pane_current_path}" \; swap-pane -s :.0 -t :.1
 
+# Customization: layout
+default_layout=main-vertical
+
 # Kill pane
-bind -n M-q kill-pane \; select-layout main-vertical
+bind -n M-q kill-pane \; select-layout $default_layout
 
 # Toggle status line
 bind -n M-b set-option status
-bind -n M-r select-layout main-vertical
+bind -n M-r select-layout $default_layout
 
-set -g remain-on-exit
+# Go directly to windows
+bind -n M-1 select-window -t :1
+bind -n M-2 select-window -t :2
+bind -n M-3 select-window -t :3
+bind -n M-4 select-window -t :4
+bind -n M-5 select-window -t :5
+bind -n M-6 select-window -t :6
+bind -n M-7 select-window -t :7
+bind -n M-8 select-window -t :8
+bind -n M-9 select-window -t :9
+
 # Hooks for reload(keep) layout
-set-hook -g pane-exited "select-layout main-vertical"
-set-hook -g after-split-window "select-layout main-vertical"
-set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout main-vertical'
-set-hook -g pane-died "respawn-pane"
+set-hook -g pane-exited "select-layout $default_layout"
+set-hook -g after-split-window "select-layout $default_layout"
+set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
+
+# A hack to keep the last pane of a window alive
+set -g remain-on-exit on
+set-hook -g pane-died 'if "test #{window_panes} == 1" "respawn-pane" "kill-pane \; select-layout $default_layout"'
+
+set -g automatic-rename on
+set -g automatic-rename-format "謹"
 
 # vim: ft=tmux
