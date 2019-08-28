@@ -22,13 +22,18 @@ if [[ -e $bg_wallpaper && `which fbv` ]]
 then
     # regenerate darkened image for fbterm
     # use stat instead of test -nt/-ot command, test will dereference links
-    bg_fbterm_time=`stat -c %Y $bg_fbterm`
     bg_wallpaper_time=`stat -c %Y $bg_wallpaper`
+    if [[ -e $bg_fbterm ]]
+    then
+        bg_fbterm_time=`stat -c %Y $bg_fbterm`
+    fi
     if [[ ! -e $bg_fbterm || $bg_fbterm_time -lt $bg_wallpaper_time ]]
     then
         if [[ `which convert` ]]
         then
             convert $bg_wallpaper -modulate 35,20 $bg_fbterm
+        else
+            bg_fbterm=$bg_wallpaper
         fi
     fi
 
