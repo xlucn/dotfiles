@@ -8,12 +8,17 @@ then
     exit
 fi
 
+# Check commands
+if [[ ! `which fbterm` ]]; then echo please install fbterm; exit; fi
+if [[ ! `which fbv` ]]; then echo no fbv installed, won\'t be using wallpaper; fi
+if [[ ! `which convert` ]]; then echo no convert\(from pachage imagemagick\), won\'t be darkening wallpaper; fi
+
 # Configure wallpaper
 bg_dir="$HOME/.local/share/backgrounds/"
 bg_fbterm=$bg_dir/fbterm.jpg
 bg_wallpaper=$bg_dir/wallpaper.jpg
 
-if [[ -e $bg_wallpaper ]]
+if [[ -e $bg_wallpaper && `which fbv` ]]
 then
     # regenerate darkened image for fbterm
     # use stat instead of test -nt/-ot command, test will dereference links
@@ -21,7 +26,10 @@ then
     bg_wallpaper_time=`stat -c %Y $bg_wallpaper`
     if [[ ! -e $bg_fbterm || $bg_fbterm_time -lt $bg_wallpaper_time ]]
     then
-        convert $bg_wallpaper -modulate 35,20 $bg_fbterm
+        if [[ `which convert` ]]
+        then
+            convert $bg_wallpaper -modulate 35,20 $bg_fbterm
+        fi
     fi
 
     # start fbterm with background using fbv
