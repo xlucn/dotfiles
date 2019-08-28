@@ -5,6 +5,7 @@
     email = oliver_lew@outlook.com
 [core]
     editor = vim
+    filemode = true
 [gui]
     spellingdictionary = none
 [alias]

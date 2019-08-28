@@ -2,19 +2,16 @@
 
 session="fbterm"
 
-if tmux has -t $session
+if ! tmux has -t $session
 then
-    tmux attach -t $session
-else
     # create some windows (equiv to tags/workspaces in WM/DE)
     tmux new -d -n 謹 -s $session
     tmux neww -d -n 謹 -t $session
     tmux neww -d -n 漣 -t $session
     tmux neww -d -n  -t $session
+    tmux neww -d -n 﫯 -t $session
     tmux neww -d -n 爵 -t $session
     tmux neww -d -n 輸 -t $session
-    # attach to the session
-    tmux attach -t $session
-    # apply some keybinding, etc. specifically for console
-    tmux source .tmux.conf.fbterm
 fi
+# attach to the session
+tmux attach -t $session
