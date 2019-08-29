@@ -37,8 +37,8 @@ bind -n M-Enter split-window -t :.0 -c "#{pane_current_path}" \; swap-pane -s :.
 # Customization: layout
 default_layout=main-vertical
 
-# Kill pane
-bind -n M-q kill-pane \; select-layout $default_layout
+# Kill pane except the last one in the window
+bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
 
 # Toggle status line
 bind -n M-b set-option status
