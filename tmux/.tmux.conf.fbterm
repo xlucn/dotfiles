@@ -25,6 +25,8 @@ bind -n M-Space swap-pane -d -t 0
 # Resize panes
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
+# Zoom(maximize) pane
+bind -n M-m resize-pane -Z
 
 # Choose tree
 bind -n M-s choose-tree -Zw
