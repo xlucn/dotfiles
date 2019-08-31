@@ -7,9 +7,9 @@ then
     # create some windows (equiv to tags/workspaces in WM/DE)
     tmux new -d -n 謹 -s $session
     tmux neww -d -n 謹 -t $session
+    tmux neww -d -n 謹 -t $session
+    tmux neww -d -n 拾 -t $session
     tmux neww -d -n 漣 -t $session
-    tmux neww -d -n  -t $session
-    tmux neww -d -n 﫯 -t $session
     tmux neww -d -n 爵 -t $session
     tmux neww -d -n 輸 -t $session
 fi
