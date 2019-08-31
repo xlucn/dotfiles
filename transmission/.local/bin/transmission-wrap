@@ -1,14 +1,10 @@
 #!/bin/bash
-killall transmission-daemon 2> /dev/null
-
 if [[ $# == 1 ]]
 then
-    dir=$1
-else
-    dir=$HOME/.local/transmission-daemon
+    dir_arg="-g $1"
 fi
 
-transmission-daemon -g $dir --foreground --log-info 2>&1 | while read line; do
+transmission-daemon $dir_arg --foreground --log-info 2>&1 | while read line; do
     echo $line |
         grep -v "announcer.c:\|platform.c:\|announce done (tr-dht.c:" |
         grep -v "Saved.*variant.c:" |
