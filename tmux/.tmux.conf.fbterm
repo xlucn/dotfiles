@@ -2,6 +2,10 @@
 # including using root keybindings, emulate a "tiled" layout and keep every
 # window alive by not exit its last window(see the hack below)
 
+set -g lock-command "echo hahaha"
+#"tmux set status off; tmux resize-pane -Z; tmux clock-mode; clear; read -p blah; tmux set status on; tmux resize-pane -Z"
+bind -n M-L lock-client
+
 # Change brightness
 bind -n M-- run-shell -b "light -U 5"\; refresh-client
 bind -n M-= run-shell -b "light -A 5"\; refresh-client
@@ -16,15 +20,20 @@ bind -n M-, previous-window
 bind -n M-Escape last-window
 
 # Manage panes
-# Next pane
+# Select pane
 bind -n M-j select-pane -t +
-# Prev pane
 bind -n M-k select-pane -t -
-# Focus selected pane
+# Move pane
+bind -n M-J swap-pane -t + \; select-pane -t +
+bind -n M-K swap-pane -t - \; select-pane -t -
+# Focus selected pane (move to master)
 bind -n M-Space swap-pane -d -t 0
-# Resize panes
+# Resize master pane
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
+# Resize stack panes
+bind -n M-H resize-pane -U 2
+bind -n M-L resize-pane -D 2
 # Zoom(maximize) pane
 bind -n M-m resize-pane -Z
 
@@ -59,6 +68,7 @@ bind -n M-9 select-window -t :9
 set-hook -g pane-exited "select-layout $default_layout"
 set-hook -g after-split-window "select-layout $default_layout"
 set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
+set-hook -g after-clock-mode "display jkjkjkjkjk"
 
 # A hack to keep the last pane of a window alive
 set -g remain-on-exit on
