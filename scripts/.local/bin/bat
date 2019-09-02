@@ -1,6 +1,6 @@
 #!/bin/sh
 
-batteries=`ls /sys/class/power_supply/BAT* 2> /dev/null`
+batteries=`ls -d /sys/class/power_supply/BAT* 2> /dev/null`
 if [[ -z $batteries ]]
 then
     # probably laptop
