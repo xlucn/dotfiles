@@ -14,9 +14,9 @@ if [[ ! `which fbv` ]]; then echo no fbv installed, won\'t be using wallpaper; f
 if [[ ! `which convert` ]]; then echo no convert\(from pachage imagemagick\), won\'t be darkening wallpaper; fi
 
 # Configure wallpaper
-bg_dir="$HOME/.local/share/backgrounds/"
-bg_fbterm=$bg_dir/fbterm.jpg
-bg_wallpaper=$bg_dir/wallpaper.jpg
+bg_dir="$HOME/.local/share/backgrounds"
+bg_wallpaper=`ls $bg_dir/wallpaper.* | head -1`
+bg_fbterm=${bg_wallpaper/wallpaper/fbterm}
 
 if [[ -e $bg_wallpaper && `which fbv` ]]
 then
