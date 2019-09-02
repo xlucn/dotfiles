@@ -102,13 +102,6 @@ GIT_PS1_SHOWUPSTREAM="verbose"
 GIT_PS1_SHOWCOLORHINTS=1
 PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
 
-#function _update_ps1() {
-    #PS1=$(powerline-shell $?)
-#}
-#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    #PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-#fi
-
 # Disable ctrl-s and ctrl-q
 stty -ixon
 # set vi mode keybinding
