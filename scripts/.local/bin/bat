@@ -1,12 +1,19 @@
 #!/bin/sh
 
-for battery in /sys/class/power_supply/BAT*
-do
-    b=`cat $battery/capacity`
-    if [[ $b -gt 100 ]]
-    then
-        echo 100
-    else
-        echo $b
-    fi
-done
+batteries=`ls /sys/class/power_supply/BAT* 2> /dev/null`
+if [[ -z $batteries ]]
+then
+    # probably laptop
+    echo 100
+else
+    for battery in $batteries
+    do
+        b=`cat $battery/capacity`
+        if [[ $b -gt 100 ]]
+        then
+            echo 100
+        else
+            echo $b
+        fi
+    done
+fi
