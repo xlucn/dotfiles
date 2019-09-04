@@ -755,7 +755,7 @@ local myimap = lain.widget.imap({
 })
 myimap.widget:buttons(awful.util.table.join(
     awful.button({}, 3, function()
-        awful.spawn("termite -e neomutt")
+        awful.spawn(terminal_cmd("neomutt"))
     end)
 ))
 myimap.update()
@@ -1099,9 +1099,9 @@ globalkeys = gears.table.join(
               {description = "brightness up", group = "Media"}),
 
     -- Application launching
-    awful.key({ modkey }, "f", function () awful.spawn("termite -e ranger") end,
+    awful.key({ modkey }, "f", function () awful.spawn(terminal_cmd("ranger")) end,
               {description = "launch file manager", group = "launcher"}),
-    awful.key({ modkey }, "e", function () awful.spawn("termite -e neomutt") end,
+    awful.key({ modkey }, "e", function () awful.spawn(terminal_cmd("neomutt")) end,
               {description = "launch email client", group = "launcher"})
 )
 
