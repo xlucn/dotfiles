@@ -26,17 +26,14 @@ bind -n M-Escape last-window
 # Select pane
 bind -n M-j select-pane -t +
 bind -n M-k select-pane -t -
-# Move pane
-bind -n M-J swap-pane -t + \; select-pane -t +
-bind -n M-K swap-pane -t - \; select-pane -t -
-# Focus selected pane (move to master)
-bind -n M-Space swap-pane -d -t 0
 # Resize master pane
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
-# Resize stack panes
-bind -n M-H resize-pane -U 2
-bind -n M-L resize-pane -D 2
+# Focus selected pane (move to master)
+bind -n M-Space swap-pane -d -t 0
+# Move pane
+bind -n M-] swap-pane -t + \; select-pane -t +
+bind -n M-[ swap-pane -t - \; select-pane -t -
 # Zoom(maximize) pane
 bind -n M-m resize-pane -Z
 
