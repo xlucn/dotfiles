@@ -130,7 +130,8 @@ theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
 theme.useless_gap               = dpi(16)
 theme.border_width              = dpi(4)
-theme.systray_icon_spacing      = dpi(0)
+theme.systray_icon_spacing      = dpi(2)
+theme.systray_height            = dpi(24)
 -- }}}
 
 -- Hotkey {{{
