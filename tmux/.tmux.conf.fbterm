@@ -2,9 +2,12 @@
 # including using root keybindings, emulate a "tiled" layout and keep every
 # window alive by not exit its last window(see the hack below)
 
-set -g lock-command "echo hahaha"
-#"tmux set status off; tmux resize-pane -Z; tmux clock-mode; clear; read -p blah; tmux set status on; tmux resize-pane -Z"
-bind -n M-L lock-client
+# Lock screen
+bind -n M-C-l lock-session
+# Lock(start screensaver) after 10 minutes
+set -g lock-after-time 600
+# Set tty-clock as screensaver, make it fullscreen
+set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -cstSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
 
 # Change brightness
 bind -n M-- run-shell -b "light -U 5"\; refresh-client
