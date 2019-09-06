@@ -10,8 +10,8 @@ bind -n M-L lock-client
 bind -n M-- run-shell -b "light -U 5"\; refresh-client
 bind -n M-= run-shell -b "light -A 5"\; refresh-client
 # Change volume
-bind -n M-[ run-shell -b "amixer -q set Master 5%-"\; refresh-client
-bind -n M-] run-shell -b "amixer -q set Master 5%+"\; refresh-client
+bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
+bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
 bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
 
 # Change windows
