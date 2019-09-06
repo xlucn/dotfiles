@@ -84,8 +84,15 @@ function __jobs_count() {
     fi
 }
 
+function __ssh_indicator() {
+    if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT ]]
+    then
+        printf "\[\e[34m\][SSH]\[\e[0m\]"
+    fi
+}
+
 function __before_git() {
-    printf "\[\e[35m\]$(whoami)@$(hostname)\[\e[0m\] `__cwd_trim``__jobs_count`"
+    printf "\[\e[35m\]$(whoami)@$(hostname)\[\e[0m\]`__ssh_indicator` `__cwd_trim``__jobs_count`"
 }
 function __after_git() {
     printf " \[\e[1;33m\]\$\[\e[0m\] "
