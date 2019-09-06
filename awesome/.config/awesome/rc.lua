@@ -760,6 +760,17 @@ myimap.widget:buttons(awful.util.table.join(
 ))
 myimap.update()
 -- }}}
+
+--{{{
+systray = wibox.widget.systray()
+mysystray = wibox.widget {
+    systray,
+    top = (beautiful.wibox_height - beautiful.systray_height) / 2,
+    bottom = (beautiful.wibox_height - beautiful.systray_height) / 2,
+    layout = wibox.container.margin
+}
+--}}}
+
 -- }}}
 
 -- {{{ Wibar
@@ -917,7 +928,7 @@ awful.screen.connect_for_each_screen(function(s)
             mybattery,
             net_status,
             wibox.widget.textclock(),
-            wibox.widget.systray(),
+            mysystray,
             s.mylayoutbox,
         },
     }
