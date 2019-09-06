@@ -1255,8 +1255,8 @@ awful.rules.rules = {
 
     -- borderless
     {
-        rule = { class = "Plank", instance = "plank" },
-        properties = { border_width = 0, ontop = true }
+        rule = { class = "Nemo", instance = "file_progress" },
+        properties = { ontop = true }
     },
 
     -- Floating clients.
