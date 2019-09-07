@@ -76,5 +76,6 @@ set-hook -g pane-died 'if "test #{window_panes} == 1" "respawn-pane" "kill-pane 
 
 set -g automatic-rename on
 set -g automatic-rename-format "謹"
+set-hook -g session-created "neww -d \; neww -d \; neww -d -n 拾 \; neww -d -n 漣 \; neww -d -n 爵 \; neww -d -n 輸"
 
 # vim: ft=tmux

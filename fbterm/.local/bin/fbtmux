@@ -53,4 +53,4 @@ then
 fi
 
 # Everything set, start fbterm!
-exec fbterm $@ -- tmux-fancy
+exec fbterm $@ -- $TMUX_CMD
