@@ -62,7 +62,19 @@ with [stow](https://www.gnu.org/software/stow/)
 stow -v -t ~ <package name>
 ```
 
-with `<package name>` being the folder name for a specific program.
+with `<package name>` being the folder name for a specific program. There are
+some system files in `system` folder need to deploy to `/`:
+
+```sh
+sudo stow -v -t / <package name>
+```
+
+Or use the makefile:
+
+```sh
+make install
+sudo make install-system
+```
 
 ### Linux console setup
 
