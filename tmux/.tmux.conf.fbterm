@@ -1,58 +1,32 @@
-# The configs in this file is trying to make tmux behave more like a WM
-# including using root keybindings, emulate a "tiled" layout and keep every
-# window alive by not exit its last window(see the hack below)
+# The configs in this file is trying to make tmux behave more like a WM by
+# using root keybindings, emulate a "tiled" layout and keep every window alive
+# by not closing its last pane(see the hack below)
+# The keybindings are intended to be similar to AwesomeWM/dwm
 
-# Lock screen
-bind -n M-C-l lock-session
-# Lock(start screensaver) after 10 minutes
-set -g lock-after-time 600
-# Set tty-clock as screensaver, make it fullscreen
-set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -cstSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
-
-# Change brightness
-bind -n M-- run-shell -b "light -U 5"\; refresh-client
-bind -n M-= run-shell -b "light -A 5"\; refresh-client
-# Change volume
-bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
-bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
-bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
-
-# Change windows
-bind -n M-. next-window
-bind -n M-, previous-window
-bind -n M-Escape last-window
-
-# Manage panes
-# Select pane
+## Manage panes
+# Select/Navigate pane
 bind -n M-j select-pane -t +
 bind -n M-k select-pane -t -
-# Resize master pane
+# Resize master pane width
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
 # Focus selected pane (move to master)
 bind -n M-Space swap-pane -d -t 0
-# Move pane
+# Move pane up and down in the stack
 bind -n M-] swap-pane -t + \; select-pane -t +
 bind -n M-[ swap-pane -t - \; select-pane -t -
 # Zoom(maximize) pane
 bind -n M-m resize-pane -Z
-
-# Choose tree
-bind -n M-s choose-tree -Zw
-
 # Create new pane in current directory
 bind -n M-Enter split-window -t :.0 -c "#{pane_current_path}" \; swap-pane -s :.0 -t :.1
 
-# Customization: layout
-default_layout=main-vertical
-
-# Kill pane except the last one in the window
-bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
-
-# Toggle status line
-bind -n M-b set-option status
-bind -n M-r select-layout $default_layout
-
+## Manage windows
+# Choose tree (like activity view)
+bind -n M-a choose-tree -Zw
+# Change windows
+bind -n M-. next-window
+bind -n M-, previous-window
+bind -n M-Escape last-window
 # Go directly to windows
 bind -n M-1 select-window -t :1
 bind -n M-2 select-window -t :2
@@ -64,18 +38,49 @@ bind -n M-7 select-window -t :7
 bind -n M-8 select-window -t :8
 bind -n M-9 select-window -t :9
 
+## UI
+# Toggle status line
+bind -n M-b set-option status
+
+## Lock screen
+bind -n M-C-l lock-session
+# Lock(start screensaver) after 10 minutes
+set -g lock-after-time 600
+# Set tty-clock as screensaver, make it fullscreen
+set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -cstSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
+
+## Multimedia
+# Change brightness
+bind -n M-- run-shell -b "light -U 5"\; refresh-client
+bind -n M-= run-shell -b "light -A 5"\; refresh-client
+# Change volume
+bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
+bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
+bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
+
+## Layout
+# Use this layout to simulate stack layout
+default_layout=main-vertical
+bind -n M-r select-layout $default_layout
 # Hooks for reload(keep) layout
 set-hook -g pane-exited "select-layout $default_layout"
 set-hook -g after-split-window "select-layout $default_layout"
+# Always keep the main pane width half the window width
 set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
-set-hook -g after-clock-mode "display jkjkjkjkjk"
 
-# A hack to keep the last pane of a window alive
+## A hack to keep the last pane of a window alive together with M-q keybinding
+# Do not close pane when exit (e.g. exit bash)
 set -g remain-on-exit on
+# After exit, kill pane where there is more than one remaining. So the last one won't close
 set-hook -g pane-died 'if "test #{window_panes} == 1" "respawn-pane" "kill-pane \; select-layout $default_layout"'
+# Kill pane except the last one in the window
+bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
 
+## Use fancy font characters as window names with the idea of saving space
+# (with the loss of not showing the current running program)
 set -g automatic-rename on
 set -g automatic-rename-format "謹"
-set-hook -g session-created "neww -d \; neww -d \; neww -d -n 拾 \; neww -d -n 漣 \; neww -d -n 爵 \; neww -d -n 輸"
+# Automatically create 6 more windows at start
+set-hook -g session-created "neww -d \; neww -d \; neww -d -n 漣 \; neww -d -n 拾 \; neww -d -n 爵 \; neww -d -n 輸"
 
 # vim: ft=tmux
