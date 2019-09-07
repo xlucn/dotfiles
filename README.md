@@ -64,6 +64,21 @@ stow -v -t ~ <package name>
 
 with `<package name>` being the folder name for a specific program.
 
+### Linux console setup
+
+There is some programms that can work under linux console(tty). To install configs
+specifically for them(not including basic ones like bash):
+
+```sh
+stow -v -t ~ elinks fbterm scripts tmux
+```
+
+Those configs include
+
+- Configs for a more powerful(e.g. utf-8 glyfs) terminal emulator, fbterm
+- Tmux config specifically designed(font/char choice, keybinding, etc.) for using in fbterm
+- External image/video viewer in elinks
+
 ## Problem solving configurations
 
 - Fugitive sign column update is slow, in .vimrc
