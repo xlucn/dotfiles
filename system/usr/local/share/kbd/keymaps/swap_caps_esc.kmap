@@ -1,1 +1,2 @@
-keycode 58 = Escape
+keycode 58 = Escape     Caps_Lock
+	alt	keycode   58 = Meta_Escape
