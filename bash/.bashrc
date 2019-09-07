@@ -21,8 +21,6 @@ alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
 alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-id=0"
 alias cmpv="mpv --vo=drm"
-# stow default to $HOME and turn on visual
-alias stow="stow -t ~ -v"
 # vcsi alias with template
 alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
 
