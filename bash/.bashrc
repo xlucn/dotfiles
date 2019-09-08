@@ -56,7 +56,7 @@ fi
 
 function __cwd_trim() {
     limit=24
-    cwd=$(basename $PWD)
+    cwd=$(basename "$PWD")
     if [[ ${#cwd} -gt $limit ]]
     then
         printf "\[\e[1;33m\]${cwd:0:$limit}...\[\e[0m\]"
