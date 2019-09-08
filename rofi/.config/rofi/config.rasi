@@ -11,9 +11,7 @@ configuration {
     columns            : 2;
     lines              : 10;
     cycle              : false;
-    terminal           : "termite";
-    ssh-command        : "{terminal} -e \"{ssh-client} {host}\"";
-    run-shell-command  : "{terminal} -e \"{cmd}\"";
+    terminal           : "urxvtc";
 }
 
 /*@import "/usr/share/rofi/themes/gruvbox-dark.rasi"*/
