@@ -14,29 +14,18 @@ Config files for everything
     everywhere: awesome, terminal, vim, rofi, zathura(pdf)
 - Terminal Emulator
   - [termite](https://github.com/thestinger/termite)
+  - urxvt
 - Text Editor
   - [vim](https://www.vim.org/)
 
 ## Requirement
 
 - fonts
-  - [Hack](https://github.com/source-foundry/Hack):
-    for vim-airline (Hack font has better patched powerline glyphs)
-  - [powerline-console-fonts](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
+  - [Hack](https://github.com/source-foundry/Hack)(recommend only)
+  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
     for linux console
   - [Nerd Font](https://nerdfonts.com):
-    for awesome wm
-
-- Powerline
-  - [powerline-shell](https://github.com/b-ryan/powerline-shell)
-    powerline replacement
-
-- Linters for ALE (optional)
-  ALE is a Asynchronous Lint Engine that can work on neovim or vim8.
-
-  - C: cppcheck, gcc
-  - Python: pylint, autopep8
-  - JSON: jq, prettier
+    for awesome wm and tmux
 
 - curl for vim-plug auto install (in .vimrc)
 
@@ -47,10 +36,15 @@ Config files for everything
 
 - For Awesome WM:
   - [lain](https://github.com/lcpz/lain) for wigdets library
-  - [thunar](https://wiki.archlinux.org/index.php/Thunar) for lightweight file manager and volume manager
+  - [thunar](https://wiki.archlinux.org/index.php/Thunar)/nemo for lightweight file manager and volume manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
+
+- For fbterm+tmux:
+  - fbv for wallpaper and image viewing
+  - jfbview recommended for viewing pdf/image
+  - imagemagick for darkening the image as wallpaper
 
 ## Install
 
