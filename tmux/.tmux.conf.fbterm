@@ -72,7 +72,7 @@ set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window
 # Do not close pane when exit (e.g. exit bash)
 set -g remain-on-exit on
 # After exit, kill pane where there is more than one remaining. So the last one won't close
-set-hook -g pane-died 'if "test #{window_panes} == 1" "respawn-pane" "kill-pane \; select-layout $default_layout"'
+set-hook -g pane-died 'if "test #{window_panes} -eq 1" "respawn-pane" "kill-pane \; select-layout $default_layout"'
 # Kill pane except the last one in the window
 bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
 
