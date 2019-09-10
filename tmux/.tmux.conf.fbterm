@@ -3,18 +3,31 @@
 # by not closing its last pane(see the hack below)
 # The keybindings are intended to be similar to AwesomeWM/dwm
 
+## Layout
+# Use this layout to simulate stack layout
+default_layout=main-vertical
+bind -n M-r select-layout $default_layout
+# Hooks for reload(keep) layout
+set-hook -g pane-exited "select-layout $default_layout"
+set-hook -g after-split-window "select-layout $default_layout"
+# Always keep the main pane width half the window width
+set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
+
 ## Manage panes
-# Select/Navigate pane
+# Select/Navigate pane up and down
 bind -n M-j select-pane -t +
 bind -n M-k select-pane -t -
+# Move pane up and down in the stack
+bind -n M-J swap-pane -t + \; select-pane -t +
+bind -n M-K swap-pane -t - \; select-pane -t -
 # Resize master pane width
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
+# Resize stack pane height
+bind -n M-H resize-pane -U 2
+bind -n M-L resize-pane -D 2
 # Focus selected pane (move to master)
 bind -n M-Space swap-pane -d -t 0
-# Move pane up and down in the stack
-bind -n M-] swap-pane -t + \; select-pane -t +
-bind -n M-[ swap-pane -t - \; select-pane -t -
 # Zoom(maximize) pane
 bind -n M-m resize-pane -Z
 # Create new pane in current directory
@@ -27,6 +40,9 @@ bind -n M-a choose-tree -Zw
 bind -n M-. next-window
 bind -n M-, previous-window
 bind -n M-Escape last-window
+# Move pane to prev/next window
+bind -n M-< if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :- \; select-layout $default_layout \; select-layout -t :! $default_layout
+bind -n M-> if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :+ \; select-layout $default_layout \; select-layout -t :! $default_layout
 # Go directly to windows
 bind -n M-1 select-window -t :1
 bind -n M-2 select-window -t :2
@@ -58,29 +74,19 @@ bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
 bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
 bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
 
-## Layout
-# Use this layout to simulate stack layout
-default_layout=main-vertical
-bind -n M-r select-layout $default_layout
-# Hooks for reload(keep) layout
-set-hook -g pane-exited "select-layout $default_layout"
-set-hook -g after-split-window "select-layout $default_layout"
-# Always keep the main pane width half the window width
-set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
-
-## A hack to keep the last pane of a window alive together with M-q keybinding
-# Do not close pane when exit (e.g. exit bash)
+## A hack to keep the last pane of a window alive together
+# Do not close pane when exit (e.g. after exit bash)
 set -g remain-on-exit on
-# After exit, kill pane where there is more than one remaining. So the last one won't close
+# After exit, kill pane only when there is more than one remaining. So the last one won't close
 set-hook -g pane-died 'if "test #{window_panes} -eq 1" "respawn-pane" "kill-pane \; select-layout $default_layout"'
-# Kill pane except the last one in the window
+# Kill pane if it's not the last one in the window
 bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
 
 ## Use fancy font characters as window names with the idea of saving space
 # (with the loss of not showing the current running program)
 set -g automatic-rename on
 set -g automatic-rename-format "謹"
-# Automatically create 6 more windows at start
+# Automatically create 6 more windows at start (the chars are fbterm friendly)
 set-hook -g session-created "neww -d \; neww -d \; neww -d -n 漣 \; neww -d -n 拾 \; neww -d -n 爵 \; neww -d -n 輸"
 
 # vim: ft=tmux
