@@ -1,5 +1,29 @@
 #!/bin/sh
 
-top -bn2 | grep "Cpu(s)" | tail -1 | \
-    sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
-    awk '{printf("%2.0f", 100 - $1)}'
+function cpuinfo()
+{
+    total=0
+    active=0
+    count=0
+    for i in `grep "cpu " /proc/stat | tr -d cpu`
+    do
+        total=$(expr $total + $i)
+        count=$(expr $count + 1)
+        if [[ $count -lt 4 || $count -gt 5 ]]
+        then
+            active=$(expr $active + $i)
+        fi
+    done
+    echo $active $total
+}
+
+info1=$(cpuinfo)
+sleep 1
+info2=$(cpuinfo)
+
+active1=$(echo $info1 | cut -d " " -f 1)
+total1=$(echo $info1 | cut -d " " -f 2)
+active2=$(echo $info2 | cut -d " " -f 1)
+total2=$(echo $info2 | cut -d " " -f 2)
+
+echo $(expr $(expr $(expr $active2 - $active1) \* 100) / $(expr $total2 - $total1))
