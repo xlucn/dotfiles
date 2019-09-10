@@ -41,10 +41,11 @@ Config files for everything
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
-- For fbterm+tmux:
+- For fbterm+tmux (all are optional but every useful):
   - fbv for wallpaper and image viewing
   - jfbview recommended for viewing pdf/image
   - imagemagick for darkening the image as wallpaper
+  - tty-clock for lockscreen, only without locking
 
 ## Install
 
@@ -60,7 +61,7 @@ with `<package name>` being the folder name for a specific program. There are
 some system files in `system` folder need to deploy to `/`:
 
 ```sh
-sudo stow -v -t / <package name>
+sudo stow -v -t / system
 ```
 
 Or use the makefile:
@@ -82,39 +83,5 @@ stow -v -t ~ elinks fbterm scripts tmux
 Those configs include
 
 - Configs for a more powerful(e.g. utf-8 glyfs) terminal emulator, fbterm
-- Tmux config specifically designed(font/char choice, keybinding, etc.) for using in fbterm
-- External image/video viewer in elinks
-
-## Problem solving configurations
-
-- Fugitive sign column update is slow, in .vimrc
-
-  ```vim
-  set updatetime=100
-  ```
-
-- Delay when escaping out of insert mode, in .vimrc
-
-  ```vim
-  set ttimeoutlen=0
-  ```
-
-  and in tmux.conf(if using it)
-
-  ```tmux
-  set -g escape-time 0
-  ```
-- Leader guide plugin takes a second to pop up, in .vimrc
-
-  ```vim
-  set timeoutlen=300
-  ```
-
-  this makes the list pop up in 0.3 seconds.
-
-- Programs not showing correctly in tmux (tremc in my case), in .tmux.conf
-
-  Refer to the NOTE on [tmux github wiki FAQ page](https://github.com/tmux/tmux/wiki/FAQ)
-
-  The TERM environment varialbe must be "tmux", "screen" or similar.
-
+- Tmux config specifically designed for using in fbterm (font/char choice, keybinding, etc.)
+- External image/video viewing with jfbview/mpv in elinks
