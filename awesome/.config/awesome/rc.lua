@@ -153,8 +153,12 @@ local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
 
 -- some configurations
-menu_utils.terminal = "urxvtc"
-menu_gen.all_menu_dirs = {'/usr/share/applications/', '/usr/local/share/applications/', '~/.local/share/applications'}
+menu_utils.terminal = terminal
+menu_gen.all_menu_dirs = {
+    '/usr/share/applications/',
+    '/usr/local/share/applications/',
+    os.getenv("HOME") .. '/.local/share/applications'
+}
 
 -- icon for applications without one
 default_icon = menu_utils.lookup_icon("application-default-icon")
@@ -868,8 +872,8 @@ awful.screen.connect_for_each_screen(function(s)
                         id     = 'icon_role',
                         widget = wibox.widget.imagebox,
                     },
-                    forced_height = 28,
-                    forced_width = 40,
+                    forced_height = beautiful.wibox_height,
+                    forced_width = beautiful.wibox_height + 12,
                     left = 8,
                     right = 8,
                     top = 2,
