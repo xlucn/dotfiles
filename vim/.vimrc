@@ -67,6 +67,7 @@ set laststatus=2
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
+" do not wait after escape key
 set ttimeoutlen=0
 " open diff window vertically
 set diffopt+=vertical
@@ -93,7 +94,7 @@ set showmatch
 set scrolloff=2
 " split into right by default
 set splitright
-" update time
+" update time, related to fugitive sign column update, etc.
 set updatetime=100
 " redraw when needed
 set lazyredraw
@@ -269,8 +270,8 @@ let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
 " Keymapping
 let g:which_key_map.a = {
   \ 'name' : '+ale',
-  \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
-  \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
+  \ 'n' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
+  \ 'p' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ }
 " }}}
 " Nerdtree {{{
