@@ -90,7 +90,7 @@ function __ssh_indicator() {
 }
 
 function __before_git() {
-    printf "\[\e[35m\]$(whoami)@$(hostname)\[\e[0m\]`__ssh_indicator` `__cwd_trim``__jobs_count`"
+    printf "`__ssh_indicator` \[\e[35m\]$(whoami)@$(hostname)\[\e[0m\] `__cwd_trim``__jobs_count`"
 }
 function __after_git() {
     printf " \[\e[1;33m\]\$\[\e[0m\] "
