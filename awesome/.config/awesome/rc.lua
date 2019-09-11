@@ -486,9 +486,7 @@ local lain_bat = lain.widget.bat({
             end
         end
         widget:set_markup(
-            string.format("%s",
-                markup.fontfg(beautiful.widgets_nerdfont, color, state)
-            )
+            markup.fontfg(beautiful.widgets_nerdfont, color, state)
         )
     end
 })
@@ -1300,7 +1298,7 @@ awful.rules.rules = {
     -- Set Firefox to always map on the tag 2.
     {
         rule = {
-            class = "firefox",
+            class = "Firefox",
             role = "browser",
             instance = "Navigator"
         },
