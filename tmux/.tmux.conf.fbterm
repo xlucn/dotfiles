@@ -1,6 +1,6 @@
 # The configs in this file is trying to make tmux behave more like a WM by
-# using root keybindings, emulate a "tiled" layout and keep every window alive
-# by not closing its last pane(see the hack below)
+# using root keybindings, emulating a "tiled" layout and keeping every window
+# alive by not closing its last pane(see the hack below)
 # The keybindings are intended to be similar to AwesomeWM/dwm
 
 ## Layout
@@ -58,11 +58,11 @@ bind -n M-9 select-window -t :9
 # Toggle status line
 bind -n M-b set-option status
 
-## Lock screen
+## Lock screen / more like screensaver
 bind -n M-C-l lock-session
 # Lock(start screensaver) after 10 minutes
 set -g lock-after-time 600
-# Set tty-clock as screensaver, make it fullscreen
+# Set tty-clock as screensaver, make it fullscreen, exit upon any keypress
 set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -csSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
 
 ## Multimedia
@@ -88,5 +88,15 @@ set -g automatic-rename on
 set -g automatic-rename-format "謹"
 # Automatically create 6 more windows at start (the chars are fbterm friendly)
 set-hook -g session-created "neww -d \; neww -d \; neww -d -n 漣 \; neww -d -n 拾 \; neww -d -n 爵 \; neww -d -n 輸"
+
+# Launchers
+bind -n M-e split-window "neomutt"
+bind -n M-f split-window "ranger"
+bind -n M-w split-window "elinks"
+bind -n M-c split-window "irssi"
+
+# Rebind some prefix hotkeys
+bind -n M-C-r source-file ~/.tmux.conf
+bind -n M-Q detach-client
 
 # vim: ft=tmux
