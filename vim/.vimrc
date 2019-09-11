@@ -202,6 +202,9 @@ let g:lightline = {
     \   'left': [['buffers']],
     \   'right' : [[]]
     \ },
+    \ 'component': {
+    \   'filename': '%<%{expand("%:t")}'
+    \ },
     \ 'component_expand': {
     \   'buffers': 'lightline#bufferline#buffers',
     \   'linter_checking': 'lightline#ale#checking',
