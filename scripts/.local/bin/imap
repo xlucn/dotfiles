@@ -1,0 +1,12 @@
+#!/bin/sh
+
+server=imap-mail.outlook.com
+port=993
+email=oliver_lew@outlook.com
+password=`pass show mail/$email`
+
+curl --insecure -fsm 10 --connect-timeout 10 \
+     --url "imaps://$server:$port" \
+     --user "$email:$password" \
+     --request "STATUS Inbox (UNSEEN)" | \
+grep -oE "[0-9]*"
