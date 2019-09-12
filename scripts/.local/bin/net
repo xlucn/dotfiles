@@ -1,0 +1,4 @@
+#!/bin/sh
+r=`nmcli -f TYPE connection show --active `
+if [[ $1 == -w ]]; then [[ $r == *wifi* ]] && echo 1 || echo 0; fi
+if [[ $1 == -e ]]; then [[ $r == *ethernet* ]] && echo 1 || echo 0; fi
