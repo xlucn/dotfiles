@@ -45,6 +45,7 @@ Config files for everything
 - For fbterm+tmux session (all are optional but every useful):
   - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
   - [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
+  - [fbcat](https://github.com/jwilk/fbcat) for screenshot
   - imagemagick for darkening the image as wallpaper
   - [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
 
