@@ -1,0 +1,30 @@
+#!/bin/sh
+count=0
+for range in $(fc-match --format='%{charset}\n' "$1")
+do
+    if [[ $range == *-* ]]
+    then
+        first=${range%-*}
+        last=${range#*-}
+        for (( n=$((16#$first)); $n<=$((16#$last)); n=$n+1 ))
+        do
+            n_hex=$(printf "%04x" $n)
+            printf "%04x \u$n_hex\t" $n
+            count=$(expr $count + 1)
+            if [[ $(expr $count % 8) == 0 ]]
+            then
+                printf "\n"
+            fi
+        done
+    else
+        n=$((16#$range))
+        n_hex=$(printf "%04x" $n)
+        printf "%04x \u$n_hex\t" $n
+        count=$(expr $count + 1)
+        if [[ $(expr $count % 8) == 0 ]]
+        then
+            printf "\n"
+        fi
+    fi
+done
+printf "\n"
