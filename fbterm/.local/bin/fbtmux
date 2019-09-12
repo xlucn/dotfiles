@@ -45,4 +45,4 @@ EOF
 fi
 
 # Everything set, start fbterm!
-exec fbterm $@ -- tmux new -A -s fbterm
+exec fbterm $@ -- tmux -L fbterm -f ~/.tmux.conf.fbterm new -A -s fbterm

@@ -1,7 +1,17 @@
+## This config is used in the fbtmux script, and is specially for session in fbterm
+
+# Like the method in the fbtmux script, I recommand start a session with a
+# special session name, e.g. fbterm, and a special socket name, e.g. fbterm
+# so that only
+
 # The configs in this file is trying to make tmux behave more like a WM by
-# using root keybindings, emulating a "tiled" layout and keeping every window
-# alive by not closing its last pane(see the hack below)
+# - using root keybindings,
+# - emulating a "tiled" layout and
+# - keeping every window alive by not closing its last pane(see the hack below)
 # The keybindings are intended to be similar to AwesomeWM/dwm
+
+## Source the common configs
+source ~/.tmux.conf
 
 ## Layout
 # Use this layout to simulate stack layout
@@ -98,5 +108,20 @@ bind -n M-c split-window "irssi"
 # Rebind some prefix hotkeys
 bind -n M-C-r source-file ~/.tmux.conf
 bind -n M-Q detach-client
+
+# Status bar
+set -g status-right-length 100
+set -g status-right "\
+#[fg=colour154,bg=colour0] #(wttr-tmux) \
+#[fg=colour172,bg=colour0] 祥#(up) \
+#[fg=colour13 ,bg=colour0] 﨧#(imap-tmux) \
+#[fg=colour201,bg=colour0] 龍#(cpu)% \
+#[fg=colour9  ,bg=colour0] 力#(mem -u)/#(mem -t) \
+#[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
+#[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
+#[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
+#[fg=colour46 ,bg=colour0] #{?#(net -w),直,睊}#{?#(net -e),囹,} #{?#(ac),,} #(bat)% \
+"
+# 
 
 # vim: ft=tmux
