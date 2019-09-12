@@ -1,8 +1,9 @@
 #!/bin/sh
-if [[ $1 == -u || $1 == --used ]]
+if [[ $# == 0 || $1 == -u || $1 == --used ]]
 then
     free -h --si | grep Mem: | awk '{ print $3 }'
-elif [[ $1 == -t || $1 == --total ]]
+fi
+if [[ $# == 0 || $1 == -t || $1 == --total ]]
 then
     free -h --si | grep Mem: | awk '{ print $2 }'
 fi
