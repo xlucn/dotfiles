@@ -1,9 +1,5 @@
 # Configuration for FbTerm
 
-# Lines starting with '#' are ignored.
-# Note that end-of-line comments are NOT supported, comments must be on a line of their own.
-
-
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
 font-names=Hack,Hack Nerd Font,Source Han Sans CN
@@ -18,41 +14,25 @@ font-height=20
 # available colors: 0 = black, 1 = red, 2 = green, 3 = brown, 4 = blue, 5 = magenta, 6 = cyan, 7 = white
 color-foreground=7
 color-background=0
-#color-0=000000
-#color-1=AA0000
-#color-2=00AA00
-#color-3=AA5500
-#color-4=0000AA
-#color-5=AA00AA
-#color-6=00AAAA
-#color-7=AAAAAA
-#color-8=555555
-#color-9=FF5555
-#color-10=55FF55
-#color-11=FFFF55
-#color-12=5555FF
-#color-13=FF55FF
-#color-14=55FFFF
-#color-15=FFFFFF
-color-0=282828
-color-1=cc241d
-color-2=98971a
-color-3=d79921
-color-4=458588
-color-5=b16286
-color-6=689d6a
-color-7=a89984
-color-8=928374
-color-9=fb4934
-color-10=b8bb26
-color-11=fabd2f
-color-12=83a598
-color-13=d3869b
-color-14=8ec07c
-color-15=ebdbb2
+color-0=000000
+color-1=AA0000
+color-2=00AA00
+color-3=AA5500
+color-4=0000AA
+color-5=AA00AA
+color-6=00AAAA
+color-7=AAAAAA
+color-8=555555
+color-9=FF5555
+color-10=55FF55
+color-11=FFFF55
+color-12=5555FF
+color-13=FF55FF
+color-14=55FFFF
+color-15=FFFFFF
 
 # max scroll-back history lines of every window, value must be [0 - 65535], 0 means disable it
-history-lines=0
+history-lines=10000
 
 # up to 5 additional text encodings, multiple encodings must be seperated by ','
 # run 'iconv --list' to get available encodings.
@@ -73,6 +53,6 @@ screen-rotate=0
 # specify the favorite input method program to run
 input-method=fcitx-fbterm
 
+## do not turn on this when using tmux, tmux will have display problems
 # treat ambiguous width characters as wide
-## do not turn on this, tmux will have display problems
 #ambiguous-wide=yes
