@@ -1,0 +1,9 @@
+#!/bin/sh
+# the line above is important, otherwise there won't be a process for the script
+# use this where refresh rate is higher than needed
+
+if [[ $(pgrep -c wttr-tmux) -gt 1 ]]; then exit 0; fi
+
+wttr
+
+sleep 60
