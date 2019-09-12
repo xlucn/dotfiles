@@ -105,6 +105,9 @@ bind -n M-f split-window "ranger"
 bind -n M-w split-window "elinks"
 bind -n M-c split-window "irssi"
 
+# Screenshot
+bind -n M-p run "fbgrab ~/Pictures/Fbterm_$(date +%F_%H-%M-%S).png &"
+
 # Rebind some prefix hotkeys
 bind -n M-C-r source-file ~/.tmux.conf.fbterm
 bind -n M-Q detach-client
