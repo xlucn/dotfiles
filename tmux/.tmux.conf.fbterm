@@ -106,8 +106,9 @@ bind -n M-w split-window "elinks"
 bind -n M-c split-window "irssi"
 
 # Rebind some prefix hotkeys
-bind -n M-C-r source-file ~/.tmux.conf
+bind -n M-C-r source-file ~/.tmux.conf.fbterm
 bind -n M-Q detach-client
+bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
 
 # Status bar
 set -g status-right-length 100
