@@ -56,14 +56,17 @@ The files can be linked to corresponding places relative to home directory
 with [stow](https://www.gnu.org/software/stow/)
 
 ```sh
-stow -v -t ~ <package name>
+stow <package name>
 ```
 
-with `<package name>` being the folder name for a specific program. There are
-some system files in `system` folder need to deploy to `/`:
+with `<package name>` being the folder name for a specific program. There is no
+`-t` or `-v` arguments because I am using `.stowrc` file, but do note that only
+since version 2.3.1 can stow expand ~/$HOME in the rc file.
+
+There are some system files in `system` folder need to deploy to `/`:
 
 ```sh
-sudo stow -v -t / system
+sudo stow -t / system
 ```
 
 Or use the makefile:
