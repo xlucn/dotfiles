@@ -18,7 +18,7 @@ function cpuinfo()
 }
 
 info1=$(cpuinfo)
-sleep 1
+sleep 3
 info2=$(cpuinfo)
 
 active1=$(echo $info1 | cut -d " " -f 1)
@@ -26,4 +26,4 @@ total1=$(echo $info1 | cut -d " " -f 2)
 active2=$(echo $info2 | cut -d " " -f 1)
 total2=$(echo $info2 | cut -d " " -f 2)
 
-echo $(expr $(expr $(expr $active2 - $active1) \* 100) / $(expr $total2 - $total1))
+printf "%02s" $(expr $(expr $(expr $active2 - $active1) \* 100) / $(expr $total2 - $total1))
