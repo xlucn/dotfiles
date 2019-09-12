@@ -85,7 +85,7 @@ function __jobs_count() {
 function __ssh_indicator() {
     if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT ]]
     then
-        printf "\[\e[34m\][SSH]\[\e[0m\] "
+        printf "\[\e[36m\][SSH]\[\e[0m\] "
     fi
 }
 
