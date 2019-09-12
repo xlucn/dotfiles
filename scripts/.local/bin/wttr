@@ -1,5 +1,5 @@
 #!/bin/sh
-curl -s wttr.in/?format="%C%t" | \
+curl -s wttr.in/$1?format="%C%t" | \
 sed -E 's/patchy//I;
         s/freezing//I;
         s/possible//I;

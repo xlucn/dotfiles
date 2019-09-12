@@ -4,6 +4,6 @@
 
 if [[ $(pgrep -c wttr-tmux) -gt 1 ]]; then exit 0; fi
 
-wttr
+wttr $1
 
 sleep 60
