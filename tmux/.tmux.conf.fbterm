@@ -124,7 +124,7 @@ set -g status-right "\
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
 #[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
-#[fg=colour46 ,bg=colour0] #{?#(net -w),直,睊}#{?#(net -e),囹,} #{?#(ac),,} #(bat)% \
+#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,} #{?#(ac),,} #(battery)% \
 "
 # 
 
