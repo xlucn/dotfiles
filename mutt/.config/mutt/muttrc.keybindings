@@ -54,11 +54,11 @@ bind   attach            <return>   view-attach
 bind   attach            <enter>    view-attach
 
 # sidebar
-bind   generic,index,pager \cp sidebar-prev
-bind   generic,index,pager \cn sidebar-next
-bind   generic,index,pager \co sidebar-open
+bind   generic,index,pager,browser \cp sidebar-prev
+bind   generic,index,pager,browser \cn sidebar-next
+bind   generic,index,pager,browser \co sidebar-open
 # Toggle the visibility of the Sidebar.
-bind   generic,index,pager B sidebar-toggle-visible
+bind   generic,index,pager,browser B sidebar-toggle-visible
 
 # macros
 macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
