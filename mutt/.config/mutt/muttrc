@@ -8,7 +8,7 @@ set sig_on_top = yes
 unset markers
 
 # show sidebar
-set sidebar_visible = yes
+set sidebar_visible = no
 set sidebar_width = 20
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
