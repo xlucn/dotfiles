@@ -1,8 +1,8 @@
 #!/bin/sh
 
-server=imap-mail.outlook.com
-port=993
-email=oliver_lew@outlook.com
+server=$1
+port=$2
+email=$3
 password=`pass show mail/$email`
 
 curl --insecure -fsm 10 --connect-timeout 10 \
