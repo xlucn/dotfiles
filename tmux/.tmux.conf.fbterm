@@ -110,6 +110,7 @@ bind -n M-p run "fbgrab ~/Pictures/Fbterm_$(date +%F_%H-%M-%S).png &"
 
 # Rebind some prefix hotkeys
 bind -n M-C-r source-file ~/.tmux.conf.fbterm
+bind r source-file ~/.tmux.conf.fbterm
 bind -n M-Q detach-client
 bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
 
