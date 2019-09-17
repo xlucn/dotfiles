@@ -14,6 +14,11 @@ external_editor = vim
 # Note: set to yes if external editor is a console application.
 use_console_editor = yes
 
+seek_time=10
+
+user_interface = alternative
+colors_enabled = yes
+
 ##### various settings #####
 
 ##
@@ -23,19 +28,11 @@ use_console_editor = yes
 #execute_on_song_change = ""
 
 ##
-## Note: Custom command that will be executed each time player state
-## changes. The environment variable MPD_PLAYER_STATE is set to the current
-## state (either unknown, play, pause, or stop) for its duration.
-##
-
-#execute_on_player_state_change = ""
-
-##
 ## Note: Possible display modes: classic, columns.
 ##
 #playlist_display_mode = columns
 
-#browser_display_mode = classic
+browser_display_mode = columns
 
 #search_engine_display_mode = classic
 
@@ -45,26 +42,20 @@ use_console_editor = yes
 
 #centered_cursor = no
 
-##
-## Note: You can specify third character which will be used to build 'empty'
-## part of progressbar.
-##
-#progressbar_look = =>
-
-#user_interface = classic
+progressbar_look = =>-
 
 #lyrics_fetchers = lyricwiki, azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, internet
 
-#follow_now_playing_lyrics = no
+follow_now_playing_lyrics = no
 
-#fetch_lyrics_for_current_song_in_background = no
+fetch_lyrics_for_current_song_in_background = no
 
-#store_lyrics_in_song_dir = no
+store_lyrics_in_song_dir = no
 
-#generate_win32_compatible_filenames = yes
+generate_win32_compatible_filenames = yes
 
-#allow_for_physical_item_deletion = no
+allow_for_physical_item_deletion = no
 
-#display_bitrate = no
+display_bitrate = yes
 
-#display_remaining_time = no
+display_remaining_time = no
