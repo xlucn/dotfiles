@@ -104,6 +104,8 @@ set noerrorbells
 set shortmess+=I
 set showtabline=2
 set noshowmode
+" show partial line
+set display+=lastline
 " }}}
 " Space Tabs Indentations {{{
 " indentations
