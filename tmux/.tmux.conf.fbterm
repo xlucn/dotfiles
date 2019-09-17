@@ -63,6 +63,16 @@ bind -n M-6 select-window -t :6
 bind -n M-7 select-window -t :7
 bind -n M-8 select-window -t :8
 bind -n M-9 select-window -t :9
+# Move to a window
+bind -n M-'!' if "test #I != 1 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 1" "move-pane -t :1 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'@' if "test #I != 2 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 2" "move-pane -t :2 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'#' if "test #I != 3 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 3" "move-pane -t :3 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'$' if "test #I != 4 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 4" "move-pane -t :4 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'%' if "test #I != 5 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 5" "move-pane -t :5 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'^' if "test #I != 6 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 6" "move-pane -t :6 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'&' if "test #I != 7 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 7" "move-pane -t :7 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'*' if "test #I != 8 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 8" "move-pane -t :8 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -n M-'(' if "test #I != 9 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 9" "move-pane -t :9 \; select-layout $default_layout \; select-layout -t :! $default_layout"
 
 ## UI
 # Toggle status line
@@ -113,6 +123,7 @@ bind -n M-C-r source-file ~/.tmux.conf.fbterm
 bind r source-file ~/.tmux.conf.fbterm
 bind -n M-Q detach-client
 bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
+bind -n M-C-BSpace display yes
 
 # Status bar
 set -g status-right-length 100
@@ -125,7 +136,9 @@ set -g status-right "\
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
 #[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
-#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,} #{?#(ac),,} #(battery)% \
+#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}\
+#[#{?#(fcitx-remote),fg=colour2,fg=colour7}, bg=colour0]韛\
+#[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
 # 
 
