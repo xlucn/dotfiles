@@ -77,7 +77,7 @@ theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 -- }}}
 
 -- Colors {{{
-theme.border_normal         = gray_244
+theme.border_normal         = theme.bg_normal
 theme.border_focus          = neutral_yellow
 theme.border_marked         = neutral_red
 theme.titlebar_bg_focus     = theme.bg_normal
@@ -129,7 +129,7 @@ theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
 theme.useless_gap               = dpi(16)
-theme.border_width              = dpi(4)
+theme.border_width              = dpi(2)
 theme.systray_icon_spacing      = dpi(2)
 theme.systray_height            = dpi(24)
 -- }}}
