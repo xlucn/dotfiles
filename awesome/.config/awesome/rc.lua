@@ -1253,7 +1253,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = false } },
+        properties = { titlebars_enabled = true } },
 
     -- borderless
     {
@@ -1305,7 +1305,7 @@ awful.rules.rules = {
         properties = {
             tag = tag2,
             titlebars_enabled = false,
-            maximized = false
+            maximized = true
         }
     },
 }
@@ -1358,17 +1358,17 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
+    awful.titlebar(c, {size = 8}) : setup {
         { -- Left
-            awful.titlebar.widget.iconwidget(c),
+            --awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
             layout  = wibox.layout.fixed.horizontal
         },
         { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
+            --{ -- Title
+                --align  = "center",
+                --widget = awful.titlebar.widget.titlewidget(c)
+            --},
             buttons = buttons,
             layout  = wibox.layout.flex.horizontal
         },

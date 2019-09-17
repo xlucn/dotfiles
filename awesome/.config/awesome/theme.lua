@@ -80,7 +80,7 @@ theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = neutral_yellow
 theme.border_marked         = neutral_red
-theme.titlebar_bg_focus     = theme.bg_normal
+theme.titlebar_bg_focus     = dark3
 -- }}}
 
 -- Widget colors {{{
@@ -129,7 +129,7 @@ theme.font                      = "Hack Bold 10"
 theme.widgets_nerdfont          = "Hack Nerd Font 12"
 theme.wibox_height              = dpi(28)
 theme.useless_gap               = dpi(16)
-theme.border_width              = dpi(2)
+theme.border_width              = dpi(0)
 theme.systray_icon_spacing      = dpi(2)
 theme.systray_height            = dpi(24)
 -- }}}
@@ -259,28 +259,28 @@ theme.layout_cornerse   = themes_path .. "zenburn/layouts/cornerse.png"
 -- }}}
 
 -- {{{ Titlebar
-theme.titlebar_close_button_focus  = themes_path .. "zenburn/titlebar/close_focus.png"
-theme.titlebar_close_button_normal = themes_path .. "zenburn/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = config_path .. "icons/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = config_path .. "icons/titlebar/close_normal.png"
 
-theme.titlebar_ontop_button_focus_active  = themes_path .. "zenburn/titlebar/ontop_focus_active.png"
-theme.titlebar_ontop_button_normal_active = themes_path .. "zenburn/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_inactive  = themes_path .. "zenburn/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_inactive = themes_path .. "zenburn/titlebar/ontop_normal_inactive.png"
+theme.titlebar_ontop_button_focus_active  = config_path .. "icons/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_active = config_path .. "icons/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_inactive  = config_path .. "icons/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_inactive = config_path .. "icons/titlebar/ontop_normal_inactive.png"
 
-theme.titlebar_sticky_button_focus_active  = themes_path .. "zenburn/titlebar/sticky_focus_active.png"
-theme.titlebar_sticky_button_normal_active = themes_path .. "zenburn/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_inactive  = themes_path .. "zenburn/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_inactive = themes_path .. "zenburn/titlebar/sticky_normal_inactive.png"
+theme.titlebar_sticky_button_focus_active  = config_path .. "icons/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_active = config_path .. "icons/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_inactive  = config_path .. "icons/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_inactive = config_path .. "icons/titlebar/sticky_normal_inactive.png"
 
-theme.titlebar_floating_button_focus_active  = themes_path .. "zenburn/titlebar/floating_focus_active.png"
-theme.titlebar_floating_button_normal_active = themes_path .. "zenburn/titlebar/floating_normal_active.png"
-theme.titlebar_floating_button_focus_inactive  = themes_path .. "zenburn/titlebar/floating_focus_inactive.png"
-theme.titlebar_floating_button_normal_inactive = themes_path .. "zenburn/titlebar/floating_normal_inactive.png"
+theme.titlebar_floating_button_focus_active  = config_path .. "icons/titlebar/floating_focus_active.png"
+theme.titlebar_floating_button_normal_active = config_path .. "icons/titlebar/floating_normal_active.png"
+theme.titlebar_floating_button_focus_inactive  = config_path .. "icons/titlebar/floating_focus_inactive.png"
+theme.titlebar_floating_button_normal_inactive = config_path .. "icons/titlebar/floating_normal_inactive.png"
 
-theme.titlebar_maximized_button_focus_active  = themes_path .. "zenburn/titlebar/maximized_focus_active.png"
-theme.titlebar_maximized_button_normal_active = themes_path .. "zenburn/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_inactive  = themes_path .. "zenburn/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_inactive = themes_path .. "zenburn/titlebar/maximized_normal_inactive.png"
+theme.titlebar_maximized_button_focus_active  = config_path .. "icons/titlebar/maximized_focus_active.png"
+theme.titlebar_maximized_button_normal_active = config_path .. "icons/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_focus_inactive  = config_path .. "icons/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_inactive = config_path .. "icons/titlebar/maximized_normal_inactive.png"
 
 theme.titlebar_minimize_button_focus  = config_path .. "icons/titlebar/minimize_focus.png"
 theme.titlebar_minimize_button_normal = config_path .. "icons/titlebar/minimize_normal.png"
