@@ -940,8 +940,8 @@ end)
 
 -- {{{ Mouse bindings
 mylauncher:buttons(awful.util.table.join(
-    awful.button({ }, 1, function() os.execute(rofi_drun) end),
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 3, function() os.execute(rofi_drun) end),
+    awful.button({ }, 1, function () mymainmenu:toggle() end),
     awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 ))
