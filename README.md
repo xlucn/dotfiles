@@ -88,13 +88,33 @@ Those configs feature:
 
 - Configs for fbterm, a more powerful (e.g. utf-8 glyfs) terminal emulator in framebuffer
 - Tmux config specifically designed for using in fbterm
-  - font/characters choice is fbterm-friendly, look terrible in other terminal emulators
-  - keybindings are similar to AwesomeWM/dwm with `alt` being the mod key
+  - Try to mimic a tiling WM with multiple 'workspaces', e.g.
+    - keep a specific layout,
+    - start with multiple tmux windows,
+    - not killing the last pane i.e. not closing any tmux window (so it's more like a workspace).
+  - Keybindings are similar to AwesomeWM/dwm with `alt` being the mod key. A lot of operations
+    are available with `alt + key` keybindings:
+    - navigating between windows/panes,
+    - moving panes between windows/panes,
+    - resizing panes
+    - creating and closing panes
+    - launching programs
+    - changing volume and even brightness (with `light`)
+    - taking screenshot (with `fbgrab`, I prefer the executable from [fbcat](https://github.com/jwilk/fbcat) project)
+    - start screensaver (with tty-clock)
+  - CPU/memory/battery/volume/email/weather status indicator, and even more
+  - Font/characters for window names and status inidicators. The choosed characters are fbterm-friendly
+    and look terrible in other terminal emulators in DE/WM
 
-Program recommendations:
-- [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
-- [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
-- [fbcat](https://github.com/jwilk/fbcat) for screenshot
-- [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
-- [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
-
+Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
+- framebuffer only
+  - [fbcat](https://github.com/jwilk/fbcat) for taking screenshots
+  - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
+  - [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
+  - [fbcat](https://github.com/jwilk/fbcat) for screenshot
+- graphical programs work both under X and framebuffer
+  - [mpv](https://github.com/haikarainen/light) for watching/streaming videos
+- terminal programs which naturally work everywhere
+  - [light](https://github.com/haikarainen/light) for change screen brightness
+  - [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
+  - [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
