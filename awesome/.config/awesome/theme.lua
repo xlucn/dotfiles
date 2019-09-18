@@ -259,31 +259,31 @@ theme.layout_cornerse   = themes_path .. "zenburn/layouts/cornerse.png"
 -- }}}
 
 -- {{{ Titlebar
-theme.titlebar_close_button_focus  = config_path .. "icons/titlebar/close_focus.png"
-theme.titlebar_close_button_normal = config_path .. "icons/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_red)
+theme.titlebar_close_button_normal = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_red)
 
-theme.titlebar_ontop_button_focus_active  = config_path .. "icons/titlebar/ontop_focus_active.png"
-theme.titlebar_ontop_button_normal_active = config_path .. "icons/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_inactive  = config_path .. "icons/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_inactive = config_path .. "icons/titlebar/ontop_normal_inactive.png"
+theme.titlebar_maximized_button_focus_active    = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_green)
+theme.titlebar_maximized_button_normal_active   = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_green)
+theme.titlebar_maximized_button_focus_inactive  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_green)
+theme.titlebar_maximized_button_normal_inactive = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_green)
 
-theme.titlebar_sticky_button_focus_active  = config_path .. "icons/titlebar/sticky_focus_active.png"
-theme.titlebar_sticky_button_normal_active = config_path .. "icons/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_inactive  = config_path .. "icons/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_inactive = config_path .. "icons/titlebar/sticky_normal_inactive.png"
+theme.titlebar_minimize_button_focus  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_yellow)
+theme.titlebar_minimize_button_normal = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_yellow)
 
-theme.titlebar_floating_button_focus_active  = config_path .. "icons/titlebar/floating_focus_active.png"
-theme.titlebar_floating_button_normal_active = config_path .. "icons/titlebar/floating_normal_active.png"
-theme.titlebar_floating_button_focus_inactive  = config_path .. "icons/titlebar/floating_focus_inactive.png"
-theme.titlebar_floating_button_normal_inactive = config_path .. "icons/titlebar/floating_normal_inactive.png"
+theme.titlebar_ontop_button_focus_active    = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_blue)
+theme.titlebar_ontop_button_normal_active   = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_blue)
+theme.titlebar_ontop_button_focus_inactive  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_blue)
+theme.titlebar_ontop_button_normal_inactive = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_blue)
 
-theme.titlebar_maximized_button_focus_active  = config_path .. "icons/titlebar/maximized_focus_active.png"
-theme.titlebar_maximized_button_normal_active = config_path .. "icons/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_inactive  = config_path .. "icons/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_inactive = config_path .. "icons/titlebar/maximized_normal_inactive.png"
+theme.titlebar_sticky_button_focus_active    = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_purple)
+theme.titlebar_sticky_button_normal_active   = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_purple)
+theme.titlebar_sticky_button_focus_inactive  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_purple)
+theme.titlebar_sticky_button_normal_inactive = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_purple)
 
-theme.titlebar_minimize_button_focus  = config_path .. "icons/titlebar/minimize_focus.png"
-theme.titlebar_minimize_button_normal = config_path .. "icons/titlebar/minimize_normal.png"
+theme.titlebar_floating_button_focus_active    = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_aqua)
+theme.titlebar_floating_button_normal_active   = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_aqua)
+theme.titlebar_floating_button_focus_inactive  = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_aqua)
+theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (24, 12, gears.shape.rectangle, bright_aqua)
 -- }}}
 
 -- Generate Awesome icon:
