@@ -995,10 +995,10 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "z", function() end,
               {description = "zen mode", group = "awesome"}),
     -- On the fly useless gaps change
-    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(4) end,
-              {description = "increase useless gap", group = "awesome"}),
-    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-4) end,
-              {description = "decrease useless gap", group = "awesome"}),
+    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(8) end,
+              {description = "increase gap", group = "awesome"}),
+    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-8) end,
+              {description = "decrease gap", group = "awesome"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return",  function () awful.spawn(terminal) end,
