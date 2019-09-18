@@ -11,10 +11,9 @@ Config files for everything
   - [AwesomeWM](https://awesomewm.org/)
 - Colorscheme:
   - [wal](https://github.com/dylanaraps/pywal)
-  - [gruvbox](https://github.com/morhetz/gruvbox)
-    everywhere: awesome, terminal, vim, rofi, zathura(pdf)
+  - [gruvbox](https://github.com/morhetz/gruvbox):
+    awesome, terminal, vim, rofi, zathura(pdf)
 - Terminal Emulator
-  - [termite](https://github.com/thestinger/termite)
   - [urxvt](http://software.schmorp.de/pkg/rxvt-unicode.html)
 - Text Editor
   - [vim](https://www.vim.org/)
@@ -24,30 +23,23 @@ Config files for everything
 - fonts
   - [Hack](https://github.com/source-foundry/Hack)
   - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
-    for linux console
+    for large font in linux console
   - [Nerd Font](https://nerdfonts.com):
-    for awesome wm and tmux
+    for awesome wm and fbterm
 
 - curl for vim-plug auto install (in .vimrc) and a lot other scripts
 
 - For [mutt](http://www.mutt.org/)/[neomutt](https://neomutt.org/):
   - [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
   - [pass](https://www.passwordstore.org/) for store email passwords
-  - gpg for passwordstore and other encryptions
+  - [gpg](https://gnupg.org/) for passwordstore and other encryptions
 
 - For Awesome WM:
   - [lain](https://github.com/lcpz/lain) for wigdets library
-  - nemo for file manager
+  - [nemo](https://github.com/linuxmint/nemo) for file manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [compton](https://github.com/chjj/compton) for compositing
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
-
-- For fbterm+tmux session (all are optional but every useful):
-  - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
-  - [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
-  - [fbcat](https://github.com/jwilk/fbcat) for screenshot
-  - imagemagick for darkening the image as wallpaper
-  - [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
 
 ## Install
 
@@ -59,9 +51,13 @@ with [stow](https://www.gnu.org/software/stow/)
 stow <package name>
 ```
 
-with `<package name>` being the folder name for a specific program. There is no
-`-t` or `-v` arguments because I am using `.stowrc` file, but do note that only
-since version 2.3.1 can stow expand ~/$HOME in the rc file.
+with `<package name>` being the folder name for a specific program except `system` which
+should be installed in root.
+
+There is no `-t` or `-v` arguments because I am using `.stowrc` file, but note that only
+since version `2.3.1` can stow expand ~/$HOME in the rc file. If you are using stow
+with older versions, you have to specify the target dir argument with `-t ~` in
+the commands.
 
 There are some system files in `system` folder need to deploy to `/`:
 
@@ -78,15 +74,27 @@ sudo make install-system
 
 ### Linux console setup
 
-There is some programms that can work under linux console(tty). To install configs
-specifically for them(not including basic ones like bash):
+There is some programms that can work under linux console (tty) without X. After getting
+familiar with those programms, you can become quite efficient working without a DE/WM.
+And I configured a usable environment to make it more enjoyable.
+
+To install configs specifically for them:
 
 ```sh
-stow -v -t ~ elinks fbterm scripts tmux
+stow -v -t ~ fbterm tmux scripts
 ```
 
-Those configs include
+Those configs feature:
 
-- Configs for a more powerful(e.g. utf-8 glyfs) terminal emulator, fbterm
-- Tmux config specifically designed for using in fbterm (font/char choice, keybinding, etc.)
-- External image/video viewing with jfbview/mpv in elinks
+- Configs for fbterm, a more powerful (e.g. utf-8 glyfs) terminal emulator in framebuffer
+- Tmux config specifically designed for using in fbterm
+  - font/characters choice is fbterm-friendly, look terrible in other terminal emulators
+  - keybindings are similar to AwesomeWM/dwm with `alt` being the mod key
+
+Program recommendations:
+- [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
+- [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
+- [fbcat](https://github.com/jwilk/fbcat) for screenshot
+- [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
+- [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
+
