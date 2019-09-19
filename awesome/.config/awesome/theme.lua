@@ -1,41 +1,42 @@
 local theme = {}
 
 -- Libraries {{{
+local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
 local themes_path = gears.filesystem.get_themes_dir()
-local dpi = require("beautiful.xresources").apply_dpi
+local config_path = gears.filesystem.get_configuration_dir()
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
--- Gruvbox color table {{{
--- https://github.com/morhetz/gruvbox-contrib/blob/master/color.table
--- GRUVCOLR     "HEX    " --  ALIAS     RGB
--------------   "-------" -- --------   -----------
-local dark0   = "#282828" -- [bg0]       40- 40- 40
-local dark1   = "#3c3836" -- [bg1]       60- 56- 54
-local dark2   = "#504945" -- [bg2]       80- 73- 69
-local dark3   = "#665c54" -- [bg3]      102- 92- 84
-local dark4   = "#7c6f64" -- [bg4]      124-111-100
+-- Gruvbox color table down to ANSI 16 colors {{{
+--local walfile = io.open(os.getenv("HOME") .. "/.cache/wal/colors")
+local walfile = io.open(config_path .. "/colors") -- gruvbox colors here now
+local colors = {}
+for each in walfile:lines() do
+  colors[#colors + 1] = each
+end
 
-local light0  = "#fbf1c7" -- [fg0]      251-241-199
+local dark0   = colors[1]
+local dark4   = colors[9]
 
-local red     = "#fb4934" -- [red]      251- 73- 52
-local green   = "#b8bb26" -- [green]    184-187- 38
-local yellow  = "#fabd2f" -- [yellow]   250-189- 47
-local blue    = "#83a598" -- [blue]     131-165-152
-local purple  = "#d3869b" -- [purple]   211-134-155
-local aqua    = "#8ec07c" -- [aqua]     142-192-124
-local orange  = "#fe8019" -- [orange]   254-128- 25
+local light0  = colors[8]
+
+local red     = colors[2]
+local green   = colors[3]
+local yellow  = colors[4]
+local blue    = colors[5]
+local purple  = colors[6]
+local aqua    = colors[7]
 -- }}}
 
 -- Basic Colors {{{
 theme.bg_normal             = dark0
-theme.bg_focus              = dark2
+theme.bg_focus              = dark4
 theme.bg_urgent             = purple
-theme.bg_minimize           = theme.bg_normal
+theme.bg_minimize           = dark4
 
 theme.fg_normal             = light0
-theme.fg_focus              = blue
+theme.fg_focus              = theme.fg_normal
 theme.fg_urgent             = theme.bg_normal
 theme.fg_minimize           = dark4
 -- }}}
@@ -48,7 +49,7 @@ theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = yellow
 theme.border_marked         = red
-theme.titlebar_bg_focus     = dark3
+theme.titlebar_bg_focus     = dark4
 -- }}}
 
 -- Widget colors {{{
@@ -61,7 +62,7 @@ theme.widget_cpu_high       = red
 theme.widget_alsa           = yellow
 theme.widget_bat_normal     = green
 theme.widget_bat_mid        = green
-theme.widget_bat_low        = orange
+theme.widget_bat_low        = yellow
 theme.widget_bat_empty      = red
 theme.widget_mail_online    = green
 theme.widget_mail_offline   = theme.fg_normal
@@ -69,14 +70,14 @@ theme.widget_mail_offline   = theme.fg_normal
 
 -- Taglist {{{
 theme.taglist_font                = "Hack Nerd Font 14"
-theme.taglist_squares_sel         = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, red)
-theme.taglist_squares_unsel       = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, red)
+theme.taglist_squares_sel         = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, light0)
+theme.taglist_squares_unsel       = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, light0)
 -- }}}
 
 -- Tasklist {{{
 theme.tasklist_fg_focus     = theme.fg_focus
 theme.tasklist_bg_focus     = blue
-theme.tasklist_bg_minimize  = dark1
+theme.tasklist_bg_minimize  = theme.bg_minimize
 theme.tasklist_spacing      = dpi(0)
 -- }}}
 
