@@ -1391,10 +1391,10 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Log {{{
 local logfile = io.open("/tmp/awesomelog", "a")
-local t = timer({ timeout = 2 })
+local t = timer({ timeout = 60 })
 t:connect_signal("timeout", function()
-  --collectgarbage("collect")
-  --logfile:write(os.date(), "\nLua memory usage:", collectgarbage("count"), "\n")
+  collectgarbage()
+  logfile:write(os.date(), "\nLua memory usage:", collectgarbage("count"), "\n")
   logfile:write("Objects alive:\n")
   for name, obj in pairs{ button = button, client = client, drawable = drawable, drawin = drawin, key = key, screen = screen, tag = tag } do
     logfile:write(name, ": ", obj.instances(), "\n")
