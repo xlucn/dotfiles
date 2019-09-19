@@ -204,21 +204,8 @@ theme.nerdfont_ethernet              = ""
 -- {{{ Icons
 -- {{{ Layout
 theme.layout_tile       = themes_path .. "zenburn/layouts/tile.png"
-theme.layout_tileleft   = themes_path .. "zenburn/layouts/tileleft.png"
-theme.layout_tilebottom = themes_path .. "zenburn/layouts/tilebottom.png"
-theme.layout_tiletop    = themes_path .. "zenburn/layouts/tiletop.png"
-theme.layout_fairv      = themes_path .. "zenburn/layouts/fairv.png"
-theme.layout_fairh      = themes_path .. "zenburn/layouts/fairh.png"
-theme.layout_spiral     = themes_path .. "zenburn/layouts/spiral.png"
-theme.layout_dwindle    = themes_path .. "zenburn/layouts/dwindle.png"
 theme.layout_max        = themes_path .. "zenburn/layouts/max.png"
-theme.layout_fullscreen = themes_path .. "zenburn/layouts/fullscreen.png"
-theme.layout_magnifier  = themes_path .. "zenburn/layouts/magnifier.png"
 theme.layout_floating   = themes_path .. "zenburn/layouts/floating.png"
-theme.layout_cornernw   = themes_path .. "zenburn/layouts/cornernw.png"
-theme.layout_cornerne   = themes_path .. "zenburn/layouts/cornerne.png"
-theme.layout_cornersw   = themes_path .. "zenburn/layouts/cornersw.png"
-theme.layout_cornerse   = themes_path .. "zenburn/layouts/cornerse.png"
 -- }}}
 
 -- {{{ Titlebar

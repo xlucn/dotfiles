@@ -100,9 +100,6 @@ modkey = "Mod4"
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.max,
-    awful.layout.suit.fair,
-    --awful.layout.suit.corner.nw,
-    awful.layout.suit.magnifier,
     awful.layout.suit.floating,
 }
 
@@ -743,7 +740,7 @@ local myimap = lain.widget.imap({
     mail = mymail,
     password = "pass show mail/" .. mymail,
     settings = function()
-        local msg = imap_now["UNSEEN"] .. "/" .. imap_now["MESSAGES"]
+        local msg = imap_now["UNSEEN"]
         if imap_now["MESSAGES"] > 0 then
             icon_color = beautiful.widget_mail_online
         else
