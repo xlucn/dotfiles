@@ -8,9 +8,12 @@ local config_path = gears.filesystem.get_configuration_dir()
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
--- Gruvbox color table down to ANSI 16 colors {{{
---local walfile = io.open(os.getenv("HOME") .. "/.cache/wal/colors")
-local walfile = io.open(config_path .. "/colors") -- gruvbox colors here now
+-- Colorscheme {{{
+local walfile = io.open(os.getenv("HOME") .. "/.cache/wal/colors")
+if not walfile then
+    walfile = io.open(config_path .. "/colors") -- gruvbox colors here now
+end
+
 local colors = {}
 for each in walfile:lines() do
   colors[#colors + 1] = each
@@ -18,9 +21,7 @@ end
 
 local dark0   = colors[1]
 local dark4   = colors[9]
-
 local light0  = colors[8]
-
 local red     = colors[2]
 local green   = colors[3]
 local yellow  = colors[4]
