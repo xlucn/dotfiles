@@ -50,7 +50,7 @@ theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = yellow
 theme.border_marked         = red
-theme.titlebar_bg_focus     = dark4
+theme.titlebar_bg_focus     = theme.bg_normal
 -- }}}
 
 -- Widget colors {{{
