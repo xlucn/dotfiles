@@ -1298,7 +1298,7 @@ awful.rules.rules = {
     -- Set Firefox to always map on the tag 2.
     {
         rule = {
-            class = "Firefox",
+            --class = "Firefox",
             role = "browser",
             instance = "Navigator"
         },
