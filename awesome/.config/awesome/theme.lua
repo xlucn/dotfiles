@@ -3,7 +3,6 @@ local theme = {}
 -- Libraries {{{
 local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
-local themes_path = gears.filesystem.get_themes_dir()
 local config_path = gears.filesystem.get_configuration_dir()
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
@@ -87,7 +86,7 @@ theme.nerdfont_email                 = "" -- 
 
 -- Tasklist {{{
 theme.tasklist_fg_focus     = theme.fg_focus
-theme.tasklist_bg_focus     = blue
+theme.tasklist_bg_focus     = theme.fg_normal
 theme.tasklist_bg_minimize  = theme.bg_minimize
 theme.tasklist_spacing      = dpi(0)
 -- }}}
@@ -149,9 +148,11 @@ theme.menu_bg_focus             = theme.bg_focus
 -- }}}
 
 -- Notifications {{{
-theme.notification_shape        = gears.shape.rounded_rect
-theme.notification_border_width = dpi(4)
+--theme.notification_shape        = gears.shape.rounded_rect
+theme.notification_border_width = dpi(88)
+theme.notification_margin   = dpi(88)
 theme.notification_border_color = theme.bg_normal
+theme.notification_opacity      = 0.8
 -- }}}
 
 -- awesome-wm-widgets widgets colors {{{
@@ -202,9 +203,9 @@ theme.nerdfont_ethernet              = ""
 
 -- {{{ Icons
 -- {{{ Layout
-theme.layout_tile       = themes_path .. "zenburn/layouts/tile.png"
-theme.layout_max        = themes_path .. "zenburn/layouts/max.png"
-theme.layout_floating   = themes_path .. "zenburn/layouts/floating.png"
+theme.layout_tile       = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, yellow)
+theme.layout_max        = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, green)
+theme.layout_floating   = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, aqua)
 -- }}}
 
 -- {{{ Titlebar
@@ -240,7 +241,7 @@ theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, blue, theme.bg_normal
+    theme.menu_height, theme.fg_normal, theme.bg_normal
 )
 
 -- Icon theme
