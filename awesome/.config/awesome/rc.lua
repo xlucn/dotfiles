@@ -138,14 +138,6 @@ end
 -- {{{ Menu
 
 -- Create a launcher widget and a main menu
-local myawesomemenu = {
-   { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", "xdg-open /usr/share/doc/awesome/doc/index.html"},
-   { "edit config", terminal_cmd(editor_cmd(awesome.conffile)) },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end}
-}
-
 local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
 
@@ -157,15 +149,28 @@ menu_gen.all_menu_dirs = {
     os.getenv("HOME") .. '/.local/share/applications'
 }
 
--- icon for applications without one
 default_icon = menu_utils.lookup_icon("application-default-icon")
--- icons for terminal applications
 terminal_icon = menu_utils.lookup_icon("terminal")
+browser_icon = menu_utils.lookup_icon("applications-webbrowsers")
+config_icon = menu_utils.lookup_icon("system-config-services")
+restart_icon = menu_utils.lookup_icon("system-restart")
+shutdown_icon = menu_utils.lookup_icon("system-shutdown")
+shortcut_icon = menu_utils.lookup_icon("system-config-keyboard")
+help_icon = menu_utils.lookup_icon("system-help")
+
+local myawesomemenu = {
+   { "hotkeys", function() return false, hotkeys_popup.show_help end, shortcut_icon },
+   { "manual", "xdg-open /usr/share/doc/awesome/doc/index.html", help_icon},
+   { "edit config", terminal_cmd(editor_cmd(awesome.conffile)), config_icon },
+   { "restart", awesome.restart, restart_icon },
+   { "quit", function() awesome.quit() end, shutdown_icon}
+}
 
 local result = {}
 local mymainmenu      = awful.menu()
 mymainmenu:add({ "awesome", myawesomemenu, beautiful.awesome_icon, })
 mymainmenu:add({ "open terminal", terminal, terminal_icon })
+mymainmenu:add({ "open browser", "firefox", browser_icon })
 
 -- Modified from https://github.com/lcpz/awesome-freedesktop/blob/master/menu.lua
 menu_gen.generate(function(entries)
