@@ -111,7 +111,7 @@ tag4 = " " .. beautiful.nerdfont_briefcase .. " "
 tag5 = " " .. beautiful.nerdfont_files     .. " "
 tag6 = " " .. beautiful.nerdfont_movie     .. " "
 tag7 = " " .. beautiful.nerdfont_email     .. " "
-tag8 = " " .. beautiful.nerdfont_git       .. " "
+tag8 = " " .. beautiful.nerdfont_terminal  .. " "
 tag9 = " " .. beautiful.nerdfont_terminal  .. " "
 
 -- }}}

@@ -70,9 +70,19 @@ theme.widget_mail_offline   = theme.fg_normal
 -- }}}
 
 -- Taglist {{{
-theme.taglist_font                = "Hack Nerd Font 14"
-theme.taglist_squares_sel         = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, light0)
-theme.taglist_squares_unsel       = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, light0)
+theme.taglist_font                = "Hack Nerd Font 16"
+theme.taglist_squares_sel         = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, theme.fg_normal)
+theme.taglist_squares_unsel       = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, theme.fg_normal)
+-- }}}
+
+-- Nerd Fonts Glyphs For tags {{{
+theme.nerdfont_browser               = "爵" -- 
+theme.nerdfont_terminal              = "" -- 
+theme.nerdfont_book                  = "" -- ﴬ
+theme.nerdfont_briefcase             = "ﲂ" -- ﴕ
+theme.nerdfont_files                 = "" -- 
+theme.nerdfont_movie                 = "" -- ﳜ辶輸
+theme.nerdfont_email                 = "" -- 
 -- }}}
 
 -- Tasklist {{{
@@ -151,18 +161,6 @@ theme.widget_yellow      = yellow
 theme.widget_green       = green
 theme.widget_black       = dark0
 theme.widget_transparent = "#00000000"
--- }}}
-
--- Nerd Fonts Glyphs For tags {{{
-theme.nerdfont_browser               = ""
-theme.nerdfont_terminal              = "" --  
-theme.nerdfont_book                  = "龎" --   
-theme.nerdfont_briefcase             = ""
-theme.nerdfont_note                  = "" -- ﴬ
-theme.nerdfont_files                 = "" -- 
-theme.nerdfont_movie                 = ""
-theme.nerdfont_email                 = "" -- 
-theme.nerdfont_git                   = "" -- 
 -- }}}
 
 -- Nerd Fonts Glyphs For widgets {{{
