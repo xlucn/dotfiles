@@ -26,9 +26,9 @@ xset -b
 
 # start up applications
 fcitx -d
-udiskie -s &
-nm-applet &
-redshift-gtk &
-compton &
-urxvtd -q -f -o
+pgrep -x udiskie || udiskie -s &
+pgrep -x nm-applet || nm-applet &
+pgrep -x redshift-gtk || redshift-gtk &
+pgrep -x compton || compton &
+pgrep -x urxvtd || urxvtd -q -f -o
 libinput-gestures-setup start
