@@ -8,7 +8,7 @@ configuration {
     show-icons         : true;
     icon-theme         : "Papirus";
     scroll-method      : 0;
-    columns            : 2;
+    columns            : 1;
     lines              : 10;
     cycle              : false;
     terminal           : "urxvtc";
@@ -24,33 +24,28 @@ configuration {
     margin          : 0;
     padding         : 0;
     border          : 0;
-}
-
-window {
-    width           : 60%;
-    border          : 0px;
-    padding         : 0px;
-}
-
-mainbox {
     spacing         : 0;
 }
 
+window {
+    width           : 960px;
+    padding         : 0px;
+}
+
 button {
-    padding         : 12px 6px;
+    padding         : 24px 16px;
 }
 
 inputbar {
-    children        : [entry];
+    children        : [prompt, entry];
+    spacing         : 32px;
     padding         : 24px;
 }
 
 listview {
-    padding         : 0;
-    spacing         : 0;
-    scrollbar       : true;
+    scrollbar       : false;
 }
 
 element {
-    padding         : 16px;
+    padding         : 20px;
 }
