@@ -21,9 +21,6 @@ xinput set-prop "$trackpad" "libinput Tapping Enabled" 1
 xinput set-prop "$trackpad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
 
-# disable bell
-xset -b
-
 # start up applications
 fcitx -d
 pgrep -x udiskie || udiskie -s &

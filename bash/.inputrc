@@ -14,8 +14,6 @@ set completion-ignore-case on
 
 # Show extra file information when completing, like `ls -F` does
 set visible-stats on
-# Disable bell
-set bell-style none
 
 # kill the lag, do not wait after ESC
 set keyseq-timeout 0
