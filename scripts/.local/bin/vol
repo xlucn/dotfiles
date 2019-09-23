@@ -2,8 +2,8 @@
 
 if [[ $1 == -s ]]
 then
-    stat_raw=$(amixer get Master | grep Right: | awk -F'[][]' '{ print $4 }')
-    if [[ $stat_raw == "on" ]]
+    stat_raw=$(amixer get Master | grep Right: | grep -Eo '\[on\]|\[off\]')
+    if [[ $stat_raw == "[on]" ]]
     then
         stat=1
     else
@@ -11,8 +11,8 @@ then
     fi
     echo $stat
 else
-    voll=$(amixer get Master | grep Left: | awk -F'[][]' '{ print $2 }' | tr -d %)
-    volr=$(amixer get Master | grep Right: | awk -F'[][]' '{ print $2 }' | tr -d %)
+    voll=$(amixer get Master | grep Left: | grep -Eo '[[:digit:]]+%' | tr -d %)
+    volr=$(amixer get Master | grep Right: | grep -Eo '[[:digit:]]+%' | tr -d %)
     vol=$(expr $(expr $volr + $voll ) / 2)
     echo $vol
 fi
