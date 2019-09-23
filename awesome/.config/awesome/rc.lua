@@ -51,13 +51,6 @@ end
 --beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
-seperator = wibox.widget {
-    widget = wibox.widget.separator,
-    orientation = "vertical",
-    forced_width = 64,
-    color = beautiful.bg_normal
-}
-
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtc"
 editor = os.getenv("EDITOR") or "vim"
@@ -912,7 +905,6 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
-            seperator,
             s.mytasklist,
         },
         -- Middle widget
