@@ -19,6 +19,9 @@ require("awful.hotkeys_popup.keys")
 local lain = require("lain")
 local dpi = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
+-- menu
+local menu_utils = require("menubar.utils")
+local menu_gen = require("menubar.menu_gen")
 -- }}}
 
 -- {{{ Error handling
@@ -53,6 +56,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtc"
+filemanager = "nemo"
+browser = "firefox"
 editor = os.getenv("EDITOR") or "vim"
 local function terminal_cmd(cmd)
     if terminal == "termite" then
@@ -129,10 +134,7 @@ end
 -- }}}
 
 -- {{{ Menu
-
 -- Create a launcher widget and a main menu
-local menu_utils = require("menubar.utils")
-local menu_gen = require("menubar.menu_gen")
 
 -- some configurations
 menu_utils.terminal = terminal
@@ -145,6 +147,7 @@ menu_gen.all_menu_dirs = {
 default_icon = menu_utils.lookup_icon("application-default-icon")
 terminal_icon = menu_utils.lookup_icon("terminal")
 browser_icon = menu_utils.lookup_icon("applications-webbrowsers")
+fm_icon = menu_utils.lookup_icon("system-file-manager")
 config_icon = menu_utils.lookup_icon("system-config-services")
 restart_icon = menu_utils.lookup_icon("system-restart")
 shutdown_icon = menu_utils.lookup_icon("system-shutdown")
@@ -162,8 +165,9 @@ local myawesomemenu = {
 local result = {}
 local mymainmenu      = awful.menu()
 mymainmenu:add({ "awesome", myawesomemenu, beautiful.awesome_icon, })
-mymainmenu:add({ "open terminal", terminal, terminal_icon })
-mymainmenu:add({ "open browser", "firefox", browser_icon })
+mymainmenu:add({ "open terminal (" .. terminal .. ")", terminal, terminal_icon })
+mymainmenu:add({ "open browser (" .. browser.. ")", browser, browser_icon })
+mymainmenu:add({ "open file manager (".. filemanager .. ")", filemanager, fm_icon })
 
 -- Modified from https://github.com/lcpz/awesome-freedesktop/blob/master/menu.lua
 menu_gen.generate(function(entries)
