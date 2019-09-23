@@ -1082,7 +1082,11 @@ globalkeys = gears.table.join(
     --awful.key({ modkey }, "p", function() menubar.show() end,
               --{description = "show the menubar", group = "launcher"})
     -- Xrandr
-    awful.key({ modkey }, "p", function() xrandr.xrandr() end,
+    --awful.key({ modkey }, "p", function() xrandr.xrandr() end,
+              --{description = "swap arrangements of monitors", group = "screen"}),
+    --awful.key({ }, "XF86Display", function() xrandr.xrandr() end,
+              --{description = "swap arrangements of monitors", group = "screen"}),
+    awful.key({ modkey }, "p", function() awful.spawn("setmonitor") end,
               {description = "swap arrangements of monitors", group = "screen"}),
     awful.key({ }, "XF86Display", function() xrandr.xrandr() end,
               {description = "swap arrangements of monitors", group = "screen"}),
