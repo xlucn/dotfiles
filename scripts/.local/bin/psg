@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# ps and grep
+ps -fp "$(pgrep "$@")"

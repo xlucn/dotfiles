@@ -3,7 +3,7 @@
 server=$1
 port=$2
 email=$3
-password=`pass show mail/$email`
+password=$(pass show mail/"$email")
 
 curl --insecure -fsm 10 --connect-timeout 10 \
      --url "imaps://$server:$port" \

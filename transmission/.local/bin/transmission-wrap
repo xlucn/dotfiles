@@ -4,17 +4,17 @@ then
     dir_arg="-g $1"
 fi
 
-transmission-daemon $dir_arg --foreground --log-info 2>&1 | while read line; do
-    echo $line |
+transmission-daemon "$dir_arg" --foreground --log-info 2>&1 | while read -r line; do
+    echo "$line" |
         grep -v "announcer.c:\|platform.c:\|announce done (tr-dht.c:" |
         grep -v "Saved.*variant.c:" |
         grep -v "Network is unreachable" |
         grep -v "Tracker gave HTTP response code" |
-        while read line; do
-            echo $line | grep -q "Queued for verification (verify.c:" &&
+        while read -r line; do
+            echo "$line" | grep -q "Queued for verification (verify.c:" &&
                 notify-send --app-name="Transmission Started" "${line#* * }"
-            echo $line | grep -q "changed from .Incomplete. to .Complete." &&
+            echo "$line" | grep -q "changed from .Incomplete. to .Complete." &&
                 notify-send --app-name="Transmission Complete" "${line#* * }"
-            echo $line | systemd-cat --identifier="TransWrap" --priority=5
-        done 2>&1 > /dev/null
-    done&disown
+            echo "$line" | systemd-cat --identifier="TransWrap" --priority=5
+        done > /dev/null 2>&1
+    done & disown

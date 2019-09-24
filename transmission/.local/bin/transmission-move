@@ -1,5 +1,5 @@
-#!/bin/bash
-if [[ $# == 3 ]]
+#!/bin/sh
+if [ $# = 3 ]
 then
     from=$1
     dest=$2
@@ -9,11 +9,11 @@ else
     exit
 fi
 
-for i in $1/resume/*.resume
+for i in "$1"/resume/*.resume
 do
-    if [[ `cat "$i" | grep -i "$match"` ]]
+    if grep -i "$match" "$i"
     then
-        echo moving ${i//resume/}
+        echo moving "$i"
         echo mv "$i" "$dest/resume/"
         trnname=$(basename "${i%.*}")
         echo mv "$from/torrents/$trnname.torrent" "$dest/torrents/"

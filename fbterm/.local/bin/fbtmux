@@ -1,48 +1,49 @@
-#! /bin/bash
+#! /bin/sh
 
 # Only start in tty
-if [[ ! `tty | grep tty` ]]; then echo "not in tty"; exit; fi
+if ! tty | grep -q tty; then echo "not in tty"; exit; fi
 
 # Check commands
-if [[ ! `which fbterm 2> /dev/null` ]]; then echo please install fbterm; exit; fi
-if [[ ! `which tmux 2> /dev/null` ]]; then echo please install tmux; exit; fi
-if [[ ! `which fbv 2> /dev/null` ]]; then echo no fbv installed, won\'t be using wallpaper; sleep 1; fi
-if [[ ! `which convert 2> /dev/null` ]]; then echo no convert\(from pachage imagemagick\), won\'t be darkening wallpaper; sleep 1; fi
+if ! command -v fbterm > /dev/null 2>&1; then echo please install fbterm; exit; fi
+if ! command -v tmux > /dev/null 2>&1; then echo please install tmux; exit; fi
+if ! command -v fbv > /dev/null 2>&1; then echo no fbv installed, won\'t be using wallpaper; sleep 1; fi
+if ! command -v convert > /dev/null 2>&1; then echo no convert\(from pachage imagemagick\), won\'t be darkening wallpaper; sleep 1; fi
 
 # Configure wallpaper
 bg_dir="$HOME/.local/share/backgrounds"
-bg_wallpaper=`find $bg_dir -name wallpaper* | head -1`
-bg_fbterm=${bg_wallpaper/wallpaper/fbterm}
+bg_wallpaper=$(find "$bg_dir" -name 'wallpaper*' | head -1)
+ext=${bg_wallpaper##*.}
+bg_fbterm=$bg_dir/fbterm.$ext
 
 # Set wallpaper with fbv
-if [[ -n $bg_wallpaper && `which fbv` ]]
+if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1
 then
     # regenerate darkened image for fbterm with convert
-    if [[ `which convert` ]]
+    if command -v convert > /dev/null 2>&1
     then
         # Compare modified time, only update when needed
         # use stat instead of test -nt/-ot command, test will dereference links
-        bg_wallpaper_time=`stat -c %Y $bg_wallpaper`
-        if [[ -e $bg_fbterm ]]
+        bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
+        if [ -e "$bg_fbterm" ]
         then
-            bg_fbterm_time=`stat -c %Y $bg_fbterm`
+            bg_fbterm_time=$(stat -c %Y "$bg_fbterm")
         fi
-        if [[ ! -e $bg_fbterm || $bg_fbterm_time -lt $bg_wallpaper_time ]]
+        if [ ! -e "$bg_fbterm" ] || [ "$bg_fbterm_time" -lt "$bg_wallpaper_time" ]
         then
-            convert $bg_wallpaper -modulate 35,20 $bg_fbterm
+            convert "$bg_wallpaper" -modulate 35,20 "$bg_fbterm"
         fi
     else
         bg_fbterm=$bg_wallpaper
     fi
 
     # start fbterm with background using fbv
-    echo -ne "\e[?25l" # hide cursor
+    tput civis # hide cursor
     fbv -ciuker "$bg_fbterm" << EOF
     q
 EOF
-    shift
     export FBTERM_BACKGROUND_IMAGE=1
 fi
 
 # Everything set, start fbterm!
-exec fbterm $@ -- tmux -L fbterm -f ~/.tmux.conf.fbterm new -A -s fbterm
+fbterm "$@" -- tmux -L fbterm -f ~/.tmux.conf.fbterm new -A -s fbterm
+tput cnorm

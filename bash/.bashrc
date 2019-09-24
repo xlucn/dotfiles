@@ -3,7 +3,7 @@
 [ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
 [ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
 
-[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+[ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 [ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
 
 # Environments
@@ -33,18 +33,6 @@ PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 
 PS1='[\u@\h \W]\$ '
 
-# my customized du
-function sdu() { du -ahx -d 1 ${*} 2>/dev/null | sort -h; }
-
-# ps and grep
-function psg() { ps -ef | grep ${*}; }
-
-# count journal sources
-function journalcount()
-{
-    journalctl -b | cut -d\  -f 5 | cut -d\[ -f 1 | sort | uniq -c | sort -h
-}
-
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
@@ -54,57 +42,62 @@ if [ "$TERM" = "linux" ]; then
     clear
 fi
 
-function __cwd_trim() {
+__cwd_trim() {
     limit=24
     cwd=$(basename "$PWD")
-    if [[ ${#cwd} -gt $limit ]]
+    if [ ${#cwd} -gt $limit ]
     then
-        printf "\[\e[1;33m\]${cwd:0:$limit}...\[\e[0m\]"
+        printf "\[\e[1;33m\]%s...\[\e[0m\]" "${cwd:0:$limit}"
     else
-        printf "\[\e[1;33m\]$cwd\[\e[0m\]"
+        printf "\[\e[1;33m\]%s\[\e[0m\]" "$cwd"
     fi
 }
 
-function __jobs_count() {
-    jobs_info=`jobs`
-    count_stop=`echo $jobs_info | grep -E "Stopped|Suspended" | wc -l`
-    count_run=`echo $jobs_info | grep -E "Running" | wc -l`
-    count_done=`echo $jobs_info | grep -E "Done" | wc -l`
-    count_kill=`echo $jobs_info | grep -E "Killed|Terminated" | wc -l`
-    count=`expr $count_stop + $count_run + $count_done + $count_kill`
-    if [[ $count > 0 ]]
+__jobs_count() {
+    jobs_info=$(jobs)
+    count_stop=$(echo "$jobs_info" | grep -Ec "Stopped|Suspended")
+    count_run=$(echo "$jobs_info" | grep -Ec "Running")
+    count_done=$(echo "$jobs_info" | grep -Ec "Done")
+    count_kill=$(echo "$jobs_info" | grep -Ec "Killed|Terminated")
+    count=$(( "$count_stop" + "$count_run" + "$count_done" + "$count_kill" ))
+    if [ $count -gt 0 ]
     then
         printf " "
-        if [[ $count_stop > 0 ]]; then printf "\[\e[33mT$count_stop\[\e[0m\]"; fi
-        if [[ $count_run > 0 ]]; then printf "\[\e[32mR$count_run\[\e[0m\]"; fi
-        if [[ $count_done > 0 ]]; then printf "\[\e[34mD$count_done\[\e[0m\]"; fi
-        if [[ $count_kill > 0 ]]; then printf "\[\e[31mK$count_kill\[\e[0m\]"; fi
+        if [ "$count_stop" -gt 0 ]; then printf "\[\e[33mT%s\[\e[0m\]" "$count_stop"; fi
+        if [ "$count_run"  -gt 0 ]; then printf "\[\e[32mR%s\[\e[0m\]" "$count_run"; fi
+        if [ "$count_done" -gt 0 ]; then printf "\[\e[34mD%s\[\e[0m\]" "$count_done"; fi
+        if [ "$count_kill" -gt 0 ]; then printf "\[\e[31mK%s\[\e[0m\]" "$count_kill"; fi
     fi
 }
 
-function __ssh_indicator() {
-    if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT ]]
+__ssh_indicator() {
+    if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]
     then
         printf "\[\e[36m\][SSH]\[\e[0m\] "
     fi
 }
 
-function __before_git() {
-    printf "`__ssh_indicator`\[\e[35m\]$(whoami)@$(hostname)\[\e[0m\] `__cwd_trim``__jobs_count`"
+__before_git() {
+    printf "%s\[\e[35m\]%s@%s\[\e[0m\] %s%s" \
+           "$(__ssh_indicator)" \
+           "$(whoami)" \
+           "$(hostname)" \
+           "$(__cwd_trim)" \
+           "$(__jobs_count)"
 }
-function __after_git() {
+__after_git() {
     printf " \[\e[1;33m\]\$\[\e[0m\] "
 }
 
 # use the prompt script somes with git
-if [[ -z `type -t __git_ps1` ]]
+if [ -z "$(type -t __git_ps1)" ]
 then
-    source /usr/share/git/completion/git-prompt.sh
+    . /usr/share/git/completion/git-prompt.sh
 fi
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWUPSTREAM="verbose"
-GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWUPSTREAM="verbose"
+export GIT_PS1_SHOWCOLORHINTS=1
 PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
 
 # Disable ctrl-s and ctrl-q

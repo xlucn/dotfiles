@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# count journal sources
+journalctl -b | cut -d\  -f 5 | cut -d\[ -f 1 | sort | uniq -c | sort -h

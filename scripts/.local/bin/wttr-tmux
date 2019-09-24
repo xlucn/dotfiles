@@ -2,8 +2,8 @@
 # the line above is important, otherwise there won't be a process for the script
 # use this where refresh rate is higher than needed
 
-if [[ $(pgrep -c wttr-tmux) -gt 1 ]]; then exit 0; fi
+if [ "$(pgrep -c wttr-tmux)" -gt 1 ]; then exit 0; fi
 
-wttr $1
+wttr "$1"
 
 sleep 60

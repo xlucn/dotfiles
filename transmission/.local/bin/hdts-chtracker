@@ -4,20 +4,18 @@
 # the latest m torrent to check
 if [[ $# == 1 ]]
 then
-    m=$(expr $1 + 1)
+    m=$(("$1" + 1))
 elif [[ $# == 0 ]]
 then
     m=50
 fi
 
-N=$(expr `transmission-remote -l|wc -l` - 2)
-
 # find the torrent ids
-for i in `transmission-remote -tall -l | tail -n $m | awk -F'([ ][ ]+|[*])' '{ print $1 }'`
+for i in $(transmission-remote -tall -l | tail -n $m | awk -F'([ ][ ]+|[*])' '{ print $1 }')
 do
-    pid=`transmission-remote -t$i -i | awk -F'pid%3D' '/hd-t/{print $2}'`
+    pid=$(transmission-remote -t"$i" -i | awk -F'pid%3D' '/hd-t/{print $2}')
     if [[ -n $pid ]]
     then
-        echo transmission-remote -t$i -tr 0 -td "http://hd-torrents.org/announce.php?pid=$pid"
+        echo transmission-remote -t"$i" -tr 0 -td "http://hd-torrents.org/announce.php?pid=$pid"
     fi
 done

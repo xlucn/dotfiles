@@ -2,26 +2,30 @@
 count=0
 for range in $(fc-match --format='%{charset}\n' "$1")
 do
-    if [[ $range == *-* ]]
+    if echo "$range" | grep - > /dev/null
     then
         first=${range%-*}
         last=${range#*-}
-        for (( n=$((16#$first)); $n<=$((16#$last)); n=$n+1 ))
+
+        n=$((0x$first))
+        m=$((0x$last))
+        while [ "$n" -le "$m"  ]
         do
-            n_hex=$(printf "%04x" $n)
-            printf "%04x \u$n_hex\t" $n
-            count=$(expr $count + 1)
-            if [[ $(expr $count % 8) == 0 ]]
+            n_hex=$(printf "%04x" "$n")
+            printf "%04x \u$n_hex\t" "$n"
+            count=$((count + 1))
+            if [ $((count % 8)) = 0 ]
             then
                 printf "\n"
             fi
+            n=$((n + 1))
         done
     else
-        n=$((16#$range))
-        n_hex=$(printf "%04x" $n)
-        printf "%04x \u$n_hex\t" $n
-        count=$(expr $count + 1)
-        if [[ $(expr $count % 8) == 0 ]]
+        n=$((0x$range))
+        n_hex=$(printf "%04x" "$n")
+        printf "%04x \u$n_hex\t" "$n"
+        count=$((count + 1))
+        if [ $((count % 8)) = 0 ]
         then
             printf "\n"
         fi

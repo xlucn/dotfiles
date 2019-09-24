@@ -1,19 +1,19 @@
 #!/bin/sh
 
-batteries=`ls -d /sys/class/power_supply/BAT* 2> /dev/null`
-if [[ -z $batteries ]]
+batteries=$(ls -d /sys/class/power_supply/BAT* 2> /dev/null)
+if [ -z "$batteries" ]
 then
-    # probably laptop
+    # probably laptop, pretend it's fully charged
     echo 100
 else
     for battery in $batteries
     do
-        b=`cat $battery/capacity`
-        if [[ $b -gt 100 ]]
+        b=$(cat "$battery"/capacity)
+        if [ "$b" -gt 100 ]
         then
             echo 100
         else
-            echo $b
+            echo "$b"
         fi
     done
 fi

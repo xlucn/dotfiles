@@ -1,17 +1,17 @@
 #!/bin/sh
 
-function cpuinfo()
+cpuinfo()
 {
     total=0
     active=0
     count=0
-    for i in `grep "cpu " /proc/stat | tr -d cpu`
+    for i in $(grep "cpu " /proc/stat | tr -d cpu)
     do
-        total=$(expr $total + $i)
-        count=$(expr $count + 1)
-        if [[ $count -lt 4 || $count -gt 5 ]]
+        total=$((total + i))
+        count=$((count + 1))
+        if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]
         then
-            active=$(expr $active + $i)
+            active=$((active + i))
         fi
     done
     echo $active $total
@@ -21,9 +21,9 @@ info1=$(cpuinfo)
 sleep 3
 info2=$(cpuinfo)
 
-active1=$(echo $info1 | cut -d " " -f 1)
-total1=$(echo $info1 | cut -d " " -f 2)
-active2=$(echo $info2 | cut -d " " -f 1)
-total2=$(echo $info2 | cut -d " " -f 2)
+active1=$(echo "$info1" | cut -d " " -f 1)
+total1=$(echo "$info1" | cut -d " " -f 2)
+active2=$(echo "$info2" | cut -d " " -f 1)
+total2=$(echo "$info2" | cut -d " " -f 2)
 
-printf "%02s" $(expr $(expr $(expr $active2 - $active1) \* 100) / $(expr $total2 - $total1))
+printf "%02s" $(((active2 - active1) * 100 / (total2 - total1)))

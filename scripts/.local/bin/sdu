@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# my customized du
+du -ahx -d 1 "$@" 2>/dev/null | sort -h

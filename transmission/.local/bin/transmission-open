@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Script to work with transmission-remote-gtk's action functionality.
 # Pass two parameters: file manager and torrent path (%{full-path}).
 # If the torrent doesn't contain a directory the script will open the
@@ -11,12 +11,12 @@ msg()
     notify-send -a "Transmission Remote" "testing" "$*"
 }
 
-if [[ $# != 1 ]]
+if [ $# != 1 ]
 then
     msg "Action need one argument: target path"
 else
     fm=nemo
-    if [[ -d $1 ]]
+    if [ -d "$1" ]
     then
         dir="$1"
     else
