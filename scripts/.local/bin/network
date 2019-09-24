@@ -1,4 +1,22 @@
 #!/bin/sh
-r=`nmcli -f TYPE connection show --active `
-if [[ $1 == -w ]]; then [[ $r == *wifi* ]] && echo 1 || echo 0; fi
-if [[ $1 == -e ]]; then [[ $r == *ethernet* ]] && echo 1 || echo 0; fi
+r=$(nmcli -f TYPE,DEVICE connection show --active)
+case "$1" in
+    -w)
+        echo "$r" | grep wifi > /dev/null && echo 1 || echo 0
+        ;;
+    -wn)
+        echo "$r" | awk '/ethernet/ { print $2 }'
+        ;;
+    -e)
+        echo "$r" | grep ethernet > /dev/null && echo 1 || echo 0
+        ;;
+    -en)
+        echo "$r" | awk '/wifi/ { print $2 }'
+        ;;
+    -b)
+        echo "$r" | grep bluetooth > /dev/null && echo 1 || echo 0
+        ;;
+    -bn)
+        echo "$r" | awk '/bluetooth/ { print $2 }'
+        ;;
+esac
