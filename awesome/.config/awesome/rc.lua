@@ -216,21 +216,12 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 local mpd_tooltip = awful.tooltip {}
 mpd_tooltip.mode = "outside"
 mpd_tooltip.preferred_alignments = {"middle"}
-local mpd_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_music },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
+local mpd_slider = wibox.widget {
+    forced_width        = 128,
+    minimum             = 0,
+    maximum             = 1,
+    widget              = wibox.widget.slider,
 }
-local mpd_stop = wibox.widget.textbox(
-    markup.fontfg(beautiful.widgets_nerdfont,
-                  beautiful.widget_music,
-                  beautiful.nerdfont_music_stop)
-)
 local mpd_prev = wibox.widget.textbox(
     markup.fontfg(beautiful.widgets_nerdfont,
                   beautiful.widget_music,
@@ -276,11 +267,11 @@ local mpd_upd = lain.widget.mpd({
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
                                         beautiful.widget_music,
                                         state))
-        -- time arc
+        -- time slider
         if mpd_now.state == "play" or mpd_now.state == "pause" then
-            mpd_arc.value = mpd_now.elapsed / mpd_now.time
+            mpd_slider.value = mpd_now.elapsed / mpd_now.time
         else
-            mpd_arc.value = 0
+            mpd_slider.value = 0
         end
         -- repeat mode
         if mpd_now.single_mode == true then
@@ -295,24 +286,14 @@ local mpd_upd = lain.widget.mpd({
 })
 local mpd = wibox.widget {
     wibox.widget {
-        mpd_stop,
-        margins = 8,
-        right = 0,
-        layout = wibox.container.margin
-    },
-    wibox.widget {
         mpd_prev,
         margins = 8,
         layout = wibox.container.margin
     },
-    {
-        wibox.widget {
-            mpd_upd.widget,
-            margins = 8,
-            layout = wibox.container.margin
-        },
-        mpd_arc,
-        layout = wibox.layout.stack
+    wibox.widget {
+        mpd_upd.widget,
+        margins = 8,
+        layout = wibox.container.margin
     },
     wibox.widget {
         mpd_next,
@@ -320,34 +301,34 @@ local mpd = wibox.widget {
         layout = wibox.container.margin
     },
     wibox.widget {
+        mpd_slider,
+        margins = 8,
+        layout = wibox.container.margin
+    },
+    wibox.widget {
         mpd_repeat,
         margins = 8,
-        left = 0,
         layout = wibox.container.margin
     },
     layout = wibox.layout.fixed.horizontal
 }
 mpd_tooltip:add_to_object(mpd)
-mpd_arc:buttons(awful.util.table.join(
+mpd_upd.widget:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         awful.spawn.with_shell("mpc toggle")
         mpd_upd.update()
     end),
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("ncmpcpp"))
-    end),
+    end)
+))
+mpd_slider:buttons(awful.util.table.join(
     awful.button({}, 4, function()
         awful.spawn.with_shell("mpc seek +10")
         mpd_upd.update()
     end),
     awful.button({}, 5, function()
         awful.spawn.with_shell("mpc seek -10")
-        mpd_upd.update()
-    end)
-))
-mpd_stop:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc stop")
         mpd_upd.update()
     end)
 ))
@@ -373,19 +354,17 @@ mpd_upd.update()
 -- }}}
 
 -- alsa widget {{{
-local volume_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_alsa },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
+local volume_slider = wibox.widget {
+    forced_width        = 64,
+    minimum             = 0,
+    maximum             = 1,
+    widget              = wibox.widget.slider,
 }
-volume_arc.tooltip = awful.tooltip({ objects = { volume_arc } })
-volume_arc.tooltip.mode = "outside"
-volume_arc.tooltip.preferred_alignments = {"middle"}
+
+volume_slider.tooltip = awful.tooltip({ objects = { volume_slider } })
+volume_slider.tooltip.mode = "outside"
+volume_slider.tooltip.preferred_alignments = {"middle"}
+
 local volume = lain.widget.alsa({
     settings = function ()
         local state
@@ -397,24 +376,24 @@ local volume = lain.widget.alsa({
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
                                         beautiful.widget_alsa,
                                         state))
-        volume_arc.tooltip:set_text(volume_now.level .. "%")
-        volume_arc.value = volume_now.level / 100
+        volume_slider.tooltip:set_text(volume_now.level .. "%")
+        volume_slider.value = volume_now.level / 100
     end
 })
 
+local volume_text = wibox.widget {
+    volume,
+    margins = 8,
+    layout = wibox.container.margin
+}
+
 local myvolume = {
-    wibox.widget {
-        volume,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    volume_arc,
-    layout = wibox.layout.stack
+    volume_text,
+    volume_slider,
+    layout = wibox.layout.fixed.horizontal
 }
 
 -- audio functions
-tuimixer_command = "alsamixer"
-audio_mixer = terminal_cmd(tuimixer_command)
 volume_toggle = function()
     os.execute(string.format("%s set %s toggle",
                              volume.cmd,
@@ -431,9 +410,11 @@ volume_down = function()
 end
 
 -- button bindings
-volume_arc:buttons(awful.util.table.join(
+volume_text:buttons(awful.util.table.join(
     awful.button({}, 1, volume_toggle),     -- left click
     awful.button({}, 3, function()          -- right click
+        tuimixer_command = "alsamixer"
+        audio_mixer = terminal_cmd(tuimixer_command)
         awful.spawn(audio_mixer)
     end),
     awful.button({}, 4, volume_down),       -- scroll down
@@ -442,19 +423,6 @@ volume_arc:buttons(awful.util.table.join(
 -- }}}
 
 -- battery widget {{{
-local bat_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_bat_normal },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
-}
-bat_arc.tooltip = awful.tooltip({ objects = { bat_arc } })
-bat_arc.tooltip.mode = "outside"
-bat_arc.tooltip.preferred_alignments = {"middle"}
 local lain_bat = lain.widget.bat({
     full_notify = "off",
     notify = "on",
@@ -462,8 +430,6 @@ local lain_bat = lain.widget.bat({
         local state, color
         color = beautiful.widget_bat_normal
         local perc = tonumber(bat_now.perc)
-        bat_arc.tooltip:set_text(perc .. "%")
-        bat_arc.value = perc / 100
         if bat_now.ac_status == 1 then
             state = beautiful.nerdfont_bat_full_charging
         elseif bat_now.status == "N/A" then
@@ -485,18 +451,15 @@ local lain_bat = lain.widget.bat({
             end
         end
         widget:set_markup(
-            markup.fontfg(beautiful.widgets_nerdfont, color, state)
+            markup.fontfg(beautiful.widgets_nerdfont, color, state) .. " " ..
+            perc .. "%"
         )
     end
 })
-local mybattery = {
-    layout = wibox.layout.stack,
-    wibox.widget {
-        lain_bat,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    bat_arc,
+local mybattery = wibox.widget {
+    lain_bat,
+    margins = 8,
+    layout = wibox.container.margin
 }
 -- }}}
 
@@ -570,15 +533,15 @@ local mynet = lain.widget.net({
         end
 
         -- set widget content
-        net_status.markup = " " .. eth_icon .. " " .. wlan_icon
+        net_status.markup = eth_icon .. " " .. wlan_icon
 
         -- send and receive speed
         local sent_str, sent_unit = format_netspeed(tonumber(net_now.sent))
         local received_str, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            markup.fg.color(beautiful.blue, sent_str .. " " .. sent_unit)
+            markup.fg.color(beautiful.widget_net_up, sent_str .. " " .. sent_unit)
             .. " " ..
-            markup.fg.color(beautiful.red, received_str .. " " .. received_unit)
+            markup.fg.color(beautiful.widget_net_down, received_str .. " " .. received_unit)
         )
     end
 }).widget
@@ -594,39 +557,15 @@ net_status:buttons(awful.util.table.join(
 -- }}}
 
 -- CPU {{{
-local cpu_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_cpu },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
-}
-cpu_arc.tooltip = awful.tooltip({ objects = { cpu_arc } })
-cpu_arc.tooltip.mode = "outside"
-cpu_arc.tooltip.preferred_alignments = {"middle"}
-local laincpu = lain.widget.cpu({
+local mycpu = lain.widget.cpu({
     settings = function()
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
                                         beautiful.widget_cpu,
-                                        beautiful.nerdfont_cpu))
-        cpu_arc.tooltip:set_text(cpu_now.usage .. "%")
-        cpu_arc.value = cpu_now.usage / 100
+                                        beautiful.nerdfont_cpu) .. " " ..
+                          string.format("%2.0f%%", cpu_now.usage))
     end
 })
-local mycpu = wibox.widget {
-    wibox.widget {
-        layout = wibox.container.margin,
-        margins = 8,
-        laincpu.widget
-    },
-    cpu_arc,
-    layout = wibox.layout.stack
-}
-mycpu:buttons(awful.util.table.join(
-    laincpu.widget:buttons(),
+mycpu.widget:buttons(awful.util.table.join(
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("htop -s PERCENT_CPU"))
     end)
@@ -634,39 +573,15 @@ mycpu:buttons(awful.util.table.join(
 -- }}}
 
 -- Memory {{{
-local mem_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_ram },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
-}
-mem_arc.tooltip = awful.tooltip({ objects = { mem_arc } })
-mem_arc.tooltip.mode = "outside"
-mem_arc.tooltip.preferred_alignments = {"middle"}
-
-local lainmem = lain.widget.mem({
-    settings = function()
+local myram = lain.widget.mem({     
+    settings = function()           
         widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
                                         beautiful.widget_ram,
-                                        beautiful.nerdfont_memory))
-        mem_arc.tooltip:set_text(string.format("%.2f GB", mem_now.used / 1000.0))
-        mem_arc.value = mem_now.perc / 100
+                                        beautiful.nerdfont_memory) .. " " ..
+                          string.format("%4.2f GB", mem_now.used / 1000.0))
     end
 })
-local myram = wibox.widget {
-    wibox.widget{
-        lainmem.widget,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    mem_arc,
-    layout = wibox.layout.stack
-}
-myram:buttons(awful.util.table.join(
+myram.widget:buttons(awful.util.table.join(
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("htop -s PERCENT_MEM"))
     end)
@@ -675,19 +590,17 @@ myram:buttons(awful.util.table.join(
 
 -- Brightness widget {{{
 -- progressbar
-local light_arc = wibox.widget {
-    bg = beautiful.bg_focus,
-    colors = { beautiful.widget_light },
-    thickness = 2,
-    max_value = 1,
-    forced_width = 24,
-    forced_height = 24,
-    start_angle = math.pi * 3 / 2,
-    widget = wibox.container.arcchart
+local light_slider = wibox.widget {
+    forced_width        = 64,
+    minimum             = 0,
+    maximum             = 1,
+    widget              = wibox.widget.slider,
 }
-light_arc.tooltip = awful.tooltip({ objects = { light_arc } })
-light_arc.tooltip.mode = "outside"
-light_arc.tooltip.preferred_alignments = {"middle"}
+
+light_slider.tooltip = awful.tooltip({ objects = { light_slider } })
+light_slider.tooltip.mode = "outside"
+light_slider.tooltip.preferred_alignments = {"middle"}
+
 local backlight = gears.timer {
     timeout   = 60,
     autostart = true,
@@ -695,26 +608,31 @@ local backlight = gears.timer {
         awful.spawn.easy_async("light -G",
             function(stdout)
                 local perc = tonumber(stdout:match("(%d+).%d"))
-                light_arc.tooltip:set_text(perc .. "%")
-                light_arc.value = perc / 100
+                light_slider.value = perc / 100
+                light_slider.tooltip:set_text(perc)
             end
         )
     end
 }
-local backlight_stack = wibox.widget {
-    wibox.widget {
-        wibox.widget{
-            markup = markup.fontfg(beautiful.widgets_nerdfont,
-                                   beautiful.widget_light,
-                                   beautiful.nerdfont_brightness_high),
-            widget = wibox.widget.textbox
-        },
-        margins = 6,
-        layout = wibox.container.margin
+
+local light_text = wibox.widget {
+    wibox.widget{
+        markup = markup.fontfg(beautiful.widgets_nerdfont,
+                               beautiful.widget_light,
+                               beautiful.nerdfont_brightness_high),
+                 --string.format("%3d", brightness)
+        widget = wibox.widget.textbox
     },
-    light_arc,
-    layout = wibox.layout.stack
+    margins = 6,
+    layout = wibox.container.margin
 }
+
+local backlight_stack = {
+    light_text,
+    light_slider,
+    layout = wibox.layout.fixed.horizontal
+}
+
 backlight:emit_signal("timeout")
 -- light commands
 brightness_down = function ()
@@ -726,7 +644,7 @@ brightness_up = function ()
     backlight:emit_signal("timeout")
 end
 -- bindings
-backlight_stack:buttons(awful.util.table.join(
+light_text:buttons(awful.util.table.join(
     awful.button({}, 4, brightness_down),
     awful.button({}, 5, brightness_up)
 ))
@@ -749,7 +667,9 @@ local myimap = lain.widget.imap({
             icon_color = beautiful.widget_mail_offline
         end
         widget:set_markup(
-            markup.fontfg(beautiful.widgets_nerdfont, icon_color, "") ..
+            markup.fontfg(beautiful.widgets_nerdfont,
+                          icon_color,
+                          beautiful.nerdfont_email) ..
             " " .. msg
         )
     end
@@ -762,7 +682,7 @@ myimap.widget:buttons(awful.util.table.join(
 myimap.update()
 -- }}}
 
---{{{
+-- systray {{{
 systray = wibox.widget.systray()
 mysystray = wibox.widget {
     systray,
@@ -870,9 +790,9 @@ awful.screen.connect_for_each_screen(function(s)
                         widget = wibox.widget.imagebox,
                     },
                     forced_height = beautiful.wibox_height,
-                    forced_width = beautiful.wibox_height + 12,
-                    left = 8,
-                    right = 8,
+                    forced_width = beautiful.wibox_height + 28,
+                    left = 16,
+                    right = 16,
                     top = 2,
                     bottom = 2,
                     widget  = wibox.container.margin
@@ -915,19 +835,17 @@ awful.screen.connect_for_each_screen(function(s)
         nil,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            spacing = 8,
+            spacing = 16,
             myimap.widget,
             mynet,
             mpd,
             mycpu,
-            ram_widget,
             myram,
             myvolume,
-            volume_upd,
             backlight_stack,
-            mybattery,
-            net_status,
             wibox.widget.textclock(),
+            net_status,
+            mybattery,
             mysystray,
             s.mylayoutbox,
         },
