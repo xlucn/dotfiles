@@ -29,9 +29,8 @@ widget_cpu            = theme.blue
 widget_cpu_high       = theme.red
 widget_alsa           = theme.yellow
 widget_bat_normal     = theme.green
-widget_bat_mid        = theme.green
-widget_bat_low        = theme.yellow
-widget_bat_empty      = theme.red
+widget_bat_mid        = theme.yellow
+widget_bat_low        = theme.red
 widget_mail_online    = theme.green
 widget_mail_offline   = theme.fg_normal
 widget_net_up         = theme.blue
@@ -52,27 +51,9 @@ nerdfont_music_repeat_one       = "綾"
 nerdfont_upspeed                = "祝"
 nerdfont_downspeed              = ""
 nerdfont_brightness             = ""
-nerdfont_brightness_low         = ""
-nerdfont_brightness_mid         = ""
 nerdfont_brightness_high        = ""
 nerdfont_bat_unknown            = ""
-nerdfont_bat_empty              = ""
-nerdfont_bat_low                = ""
-nerdfont_bat_mid                = ""
-nerdfont_bat_high               = ""
-nerdfont_bat_full               = ""
 nerdfont_batteries              = { "", "", "", "", "", "", "", "", "", "", "" }
-nerdfont_bat_5                  = ""
-nerdfont_bat_15                 = ""
-nerdfont_bat_25                 = ""
-nerdfont_bat_35                 = ""
-nerdfont_bat_45                 = ""
-nerdfont_bat_55                 = ""
-nerdfont_bat_65                 = ""
-nerdfont_bat_75                 = ""
-nerdfont_bat_85                 = ""
-nerdfont_bat_95                 = ""
-nerdfont_bat_100                = ""
 nerdfont_bat_full_charging      = ""
 nerdfont_volume_mute            = "婢" -- ﱝ
 nerdfont_volume_low             = "奄" -- 
@@ -81,10 +62,9 @@ nerdfont_volume_high            = "墳" -- 
 nerdfont_memory                 = ""
 nerdfont_cpu                    = "異" --  
 nerdfont_wifi_on                = "直"
-nerdfont_wifi_off               = "睊"
 nerdfont_ethernet               = ""
 nerdfont_calendar               = ""
-nerdfont_email                  = ""
+nerdfont_email                  = "" -- 
 -- }}}
 
 -- volume {{{
@@ -138,7 +118,10 @@ volume_slider:connect_signal('property::value', volume_set)
 
 -- button bindings
 volume.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, volume_toggle)      -- left click
+    awful.button({}, 1, volume_toggle),     -- left click
+    awful.button({}, 2, function()
+        volume_slider.visible = not volume_slider.visible
+    end)
 ))
 
 local alsa = wibox.widget {
@@ -216,7 +199,7 @@ light:buttons(awful.util.table.join(
 -- battery {{{
 local bat = lain.widget.bat({
     full_notify = "off",
-    notify = "on",
+    notify = "off",
     settings = function()
         local state, color
         local perc = tonumber(bat_now.perc)
@@ -225,26 +208,17 @@ local bat = lain.widget.bat({
         elseif bat_now.status == "N/A" then
             state = nerdfont_bat_unknown
         else
-            if perc > 80 then
-                state = nerdfont_bat_full
+            state = nerdfont_batteries[(perc + 4) // 10 + 1]
+            if perc > 30 then
                 color = widget_bat_normal
-            elseif perc > 60 then
-                state = nerdfont_bat_high
-                color = widget_bat_normal
-            elseif perc > 40 then
-                state = nerdfont_bat_mid
-                color = widget_bat_mid
             elseif perc > 15 then
-                state = nerdfont_bat_low
-                color = widget_bat_low
+                color = widget_bat_mid
             else
-                state = nerdfont_bat_empty
-                color = widget_bat_empty
+                color = widget_bat_low
             end
         end
         widget:set_markup(
-            markup.fontfg(widgets_nerdfont, color, state) .. " " ..
-            perc .. "%"
+            markup.fontfg(widgets_nerdfont, color, state) .. " " ..  perc .. "%"
         )
     end
 })
@@ -434,6 +408,9 @@ local mpd_slider = wibox.widget {
     forced_width        = 128,
     widget              = wibox.widget.slider,
 }
+local mpd_icon = wibox.widget.textbox(
+    markup.fontfg(widgets_nerdfont, widget_music, nerdfont_music)
+)
 local mpd_play = wibox.widget.textbox(
     markup.font(widgets_nerdfont, nerdfont_music_play)
 )
@@ -494,6 +471,7 @@ local mpd_upd = lain.widget.mpd({
 })
 mpd_slider:connect_signal("property::value", mpd_seek)
 local mpd = wibox.widget {
+    mpd_icon,
     mpd_prev,
     mpd_play,
     mpd_next,
@@ -504,6 +482,12 @@ local mpd = wibox.widget {
     layout = wibox.layout.fixed.horizontal
 }
 mpd_tooltip:add_to_object(mpd)
+mpd_icon:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        mpd_slider.visible = not mpd_slider.visible
+        mpd_time.visible = not mpd_time.visible
+    end)
+))
 mpd_prev:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         awful.spawn.with_shell("mpc prev")
@@ -547,6 +531,7 @@ mpd:buttons(awful.util.table.join(
 mpd_upd.update()
 -- }}}
 
+-- return {{{
 return {
     alsa = {
         widget = alsa,
@@ -578,5 +563,6 @@ return {
         widget = mpd,
     },
 }
+-- }}}
 
 -- vim:foldmethod=marker:foldlevel=0
