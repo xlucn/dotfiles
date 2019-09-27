@@ -293,14 +293,14 @@ local imap = lain.widget.imap({
     settings = function()
         local msg = imap_now["UNSEEN"]
         if imap_now["MESSAGES"] > 0 then
-            icon_color = beautiful.widget_mail_online
+            icon_color = widget_mail_online
         else
-            icon_color = beautiful.widget_mail_offline
+            icon_color = widget_mail_offline
         end
         widget:set_markup(
-            markup.fontfg(beautiful.widgets_nerdfont,
+            markup.fontfg(widgets_nerdfont,
                           icon_color,
-                          beautiful.nerdfont_email) ..
+                          nerdfont_email) ..
             " " .. msg
         )
     end
@@ -416,6 +416,17 @@ local net = wibox.widget {
 -- }}}
 
 -- mpd {{{
+local function fmt_time(seconds)
+    minites = seconds // 60
+    s = seconds % 60
+    m = minites % 60
+    h = minites // 60
+    if h > 0 then
+        return string.format("%d:%02d:%02d", h, m, s)
+    else
+        return string.format("%d:%02d", m, s)
+    end
+end
 local mpd_tooltip = awful.tooltip {}
 mpd_tooltip.mode = "outside"
 mpd_tooltip.preferred_alignments = {"middle"}
@@ -423,9 +434,6 @@ local mpd_slider = wibox.widget {
     forced_width        = 128,
     widget              = wibox.widget.slider,
 }
-local function mpd_seek()
-    awful.spawn(string.format("mpc seek %f%%", mpd_slider.value))
-end
 local mpd_play = wibox.widget.textbox(
     markup.font(widgets_nerdfont, nerdfont_music_play)
 )
@@ -439,6 +447,9 @@ local mpd_repeat = wibox.widget.textbox(
     markup.font(widgets_nerdfont, nerdfont_music_repeat_on)
 )
 local mpd_time = wibox.widget.textbox()
+local function mpd_seek()
+    awful.spawn(string.format("mpc seek %f%%", mpd_slider.value))
+end
 local mpd_upd = lain.widget.mpd({
     timeout = 5,
     notify = "off",
@@ -470,7 +481,8 @@ local mpd_upd = lain.widget.mpd({
         end
         mpd_slider:connect_signal("property::value", mpd_seek)
         -- time text
-        mpd_time.text = mpd_now.elapsed .. "/" .. mpd_now.time
+        --mpd_time.text = mpd_now.elapsed .. "/" .. mpd_now.time
+        mpd_time.text = fmt_time(mpd_now.elapsed) .. "/" .. fmt_time(mpd_now.time)
         -- repeat mode
         if mpd_now.single_mode == true then
             repeat_mode = nerdfont_music_repeat_one
@@ -485,9 +497,9 @@ local mpd = wibox.widget {
     mpd_prev,
     mpd_play,
     mpd_next,
-    mpd_slider,
     mpd_repeat,
-    --mpd_time,
+    mpd_slider,
+    mpd_time,
     spacing = 8,
     layout = wibox.layout.fixed.horizontal
 }
@@ -500,8 +512,11 @@ mpd_prev:buttons(awful.util.table.join(
 ))
 mpd_play:buttons(awful.util.table.join(
     awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc toggle")
+        awful.spawn.with_shell("mpc && mpc toggle || systemctl --user start mpd")
         mpd_upd.update()
+    end),
+    awful.button({}, 2, function()
+        awful.spawn.with_shell("systemctl --user stop mpd")
     end)
 ))
 mpd_next:buttons(awful.util.table.join(
