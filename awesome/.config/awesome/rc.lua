@@ -11,8 +11,6 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 --local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
--- Xrandr https://awesomewm.org/recipes/xrandr/
-local xrandr = require("xrandr")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -22,6 +20,8 @@ local markup = lain.util.markup
 -- menu
 local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
+-- my own widgets
+local mywidgets = require("widgets")
 -- }}}
 
 -- {{{ Error handling
@@ -211,477 +211,6 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                            menu = mymainmenu })
 -- }}}
 
--- {{{ Widgets
--- MPD widget {{{
-local mpd_tooltip = awful.tooltip {}
-mpd_tooltip.mode = "outside"
-mpd_tooltip.preferred_alignments = {"middle"}
-local mpd_slider = wibox.widget {
-    forced_width        = 128,
-    minimum             = 0,
-    maximum             = 1,
-    widget              = wibox.widget.slider,
-}
-local mpd_prev = wibox.widget.textbox(
-    markup.fontfg(beautiful.widgets_nerdfont,
-                  beautiful.widget_music,
-                  beautiful.nerdfont_music_prev)
-)
-local mpd_next = wibox.widget.textbox(
-    markup.fontfg(beautiful.widgets_nerdfont,
-                  beautiful.widget_music,
-                  beautiful.nerdfont_music_next)
-)
-local mpd_repeat = wibox.widget.textbox(
-    markup.fontfg(beautiful.widgets_nerdfont,
-                  beautiful.widget_music,
-                  beautiful.nerdfont_music_repeat_on)
-)
-local mpd_upd = lain.widget.mpd({
-    timeout = 5,
-    notify = "off",
-    settings = function()
-        local current_summary = string.format(
-            "File:\t%s\nArtist:\t%s\nAlbum:\t(%s) - %s\nTitle:\t%s",
-            mpd_now.file,
-            mpd_now.artist,
-            mpd_now.album,
-            mpd_now.date,
-            mpd_now.title
-        )
-        mpd_notification_preset = {
-            title   = "Now playing",
-            timeout = 6,
-            text    = current_summary
-        }
-        mpd_tooltip:set_text(current_summary)
-        local repeat_mode, state
-        -- state
-        if mpd_now.state == "play" then
-            state = beautiful.nerdfont_music_pause
-        elseif mpd_now.state == "pause" then
-            state = beautiful.nerdfont_music_play
-        else
-            state = beautiful.nerdfont_music_stop
-        end
-        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
-                                        beautiful.widget_music,
-                                        state))
-        -- time slider
-        if mpd_now.state == "play" or mpd_now.state == "pause" then
-            mpd_slider.value = mpd_now.elapsed / mpd_now.time
-        else
-            mpd_slider.value = 0
-        end
-        -- repeat mode
-        if mpd_now.single_mode == true then
-            repeat_mode = beautiful.nerdfont_music_repeat_one
-        else
-            repeat_mode = beautiful.nerdfont_music_repeat_on
-        end
-        mpd_repeat.markup = markup.fontfg(beautiful.widgets_nerdfont,
-                                          beautiful.widget_music,
-                                          repeat_mode)
-    end
-})
-local mpd = wibox.widget {
-    wibox.widget {
-        mpd_prev,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    wibox.widget {
-        mpd_upd.widget,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    wibox.widget {
-        mpd_next,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    wibox.widget {
-        mpd_slider,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    wibox.widget {
-        mpd_repeat,
-        margins = 8,
-        layout = wibox.container.margin
-    },
-    layout = wibox.layout.fixed.horizontal
-}
-mpd_tooltip:add_to_object(mpd)
-mpd_upd.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc toggle")
-        mpd_upd.update()
-    end),
-    awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("ncmpcpp"))
-    end)
-))
-mpd_slider:buttons(awful.util.table.join(
-    awful.button({}, 4, function()
-        awful.spawn.with_shell("mpc seek +10")
-        mpd_upd.update()
-    end),
-    awful.button({}, 5, function()
-        awful.spawn.with_shell("mpc seek -10")
-        mpd_upd.update()
-    end)
-))
-mpd_prev:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc prev")
-        mpd_upd.update()
-    end)
-))
-mpd_next:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc next")
-        mpd_upd.update()
-    end)
-))
-mpd_repeat:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc single")
-        mpd_upd.update()
-    end)
-))
-mpd_upd.update()
--- }}}
-
--- alsa widget {{{
-local volume_slider = wibox.widget {
-    forced_width        = 64,
-    minimum             = 0,
-    maximum             = 1,
-    widget              = wibox.widget.slider,
-}
-
-volume_slider.tooltip = awful.tooltip({ objects = { volume_slider } })
-volume_slider.tooltip.mode = "outside"
-volume_slider.tooltip.preferred_alignments = {"middle"}
-
-local volume = lain.widget.alsa({
-    settings = function ()
-        local state
-        if volume_now.status == "off" then
-            state = beautiful.nerdfont_volume_mute
-        else
-            state = beautiful.nerdfont_volume_high
-        end
-        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
-                                        beautiful.widget_alsa,
-                                        state))
-        volume_slider.tooltip:set_text(volume_now.level .. "%")
-        volume_slider.value = volume_now.level / 100
-    end
-})
-
-local volume_text = wibox.widget {
-    volume,
-    margins = 8,
-    layout = wibox.container.margin
-}
-
-local myvolume = {
-    volume_text,
-    volume_slider,
-    layout = wibox.layout.fixed.horizontal
-}
-
--- audio functions
-volume_toggle = function()
-    os.execute(string.format("%s set %s toggle",
-                             volume.cmd,
-                             volume.togglechannel or volume.channel))
-    volume.update()
-end
-volume_up = function()
-    os.execute(string.format("%s set %s 2%%+", volume.cmd, volume.channel))
-    volume.update()
-end
-volume_down = function()
-    os.execute(string.format("%s set %s 2%%-", volume.cmd, volume.channel))
-    volume.update()
-end
-
--- button bindings
-volume_text:buttons(awful.util.table.join(
-    awful.button({}, 1, volume_toggle),     -- left click
-    awful.button({}, 3, function()          -- right click
-        tuimixer_command = "alsamixer"
-        audio_mixer = terminal_cmd(tuimixer_command)
-        awful.spawn(audio_mixer)
-    end),
-    awful.button({}, 4, volume_down),       -- scroll down
-    awful.button({}, 5, volume_up)          -- scroll up
-))
--- }}}
-
--- battery widget {{{
-local lain_bat = lain.widget.bat({
-    full_notify = "off",
-    notify = "on",
-    settings = function()
-        local state, color
-        color = beautiful.widget_bat_normal
-        local perc = tonumber(bat_now.perc)
-        if bat_now.ac_status == 1 then
-            state = beautiful.nerdfont_bat_full_charging
-        elseif bat_now.status == "N/A" then
-            state = beautiful.nerdfont_bat_unknown
-        else
-            if perc > 80 then
-                state = beautiful.nerdfont_bat_full
-            elseif perc > 60 then
-                state = beautiful.nerdfont_bat_high
-            elseif perc > 40 then
-                state = beautiful.nerdfont_bat_mid
-                color = beautiful.widget_bat_mid
-            elseif perc > 15 then
-                state = beautiful.nerdfont_bat_low
-                color = beautiful.widget_bat_low
-            else
-                state = beautiful.nerdfont_bat_empty
-                color = beautiful.widget_bat_empty
-            end
-        end
-        widget:set_markup(
-            markup.fontfg(beautiful.widgets_nerdfont, color, state) .. " " ..
-            perc .. "%"
-        )
-    end
-})
-local mybattery = wibox.widget {
-    lain_bat,
-    margins = 8,
-    layout = wibox.container.margin
-}
--- }}}
-
--- Network widget {{{
-local net_status = wibox.widget.textbox()
--- format network speed
-local function format_netspeed(raw_speed)
-    -- use 1000 here to keep under 3-digits
-    if raw_speed < 1000 then
-        speed = raw_speed
-        speed_unit = "KB/s"
-    elseif raw_speed < 1000 * 1024 then
-        speed = raw_speed / 1024
-        speed_unit = "MB/s"
-    else
-        speed = raw_speed / 1024 / 1024
-        speed_unit = "GB/s"
-    end
-
-    if speed < 10 then
-        speed_str = string.format("%3.1f", speed)
-    else
-        speed_str = string.format("%3.0f", speed)
-    end
-
-    return speed_str, speed_unit
-end
--- command to show active wifi SSID
--- nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2
-local mynet = lain.widget.net({
-    wifi_state = "on",
-    eth_state = "on",
-    notify = "off",
-    settings = function()
-        -- get wlan and ethernet interface name
-        awful.spawn.easy_async_with_shell(
-            "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
-            function (stdout, _, _, _)
-                for name in string.gmatch(stdout, "(%w+)") do
-                    if string.sub(name, 1, 1) == "e" then
-                        ethernet_name = name
-                    elseif string.sub(name, 1, 1) == "w" then
-                        wlan_name = name
-                    end
-                end
-                --naughty.notify({ text = ethernet_name .. ' ' .. wlan_name })
-            end)
-
-        -- set ethernet status
-        local eth = net_now.devices[ethernet_name]
-        if eth and eth.ethernet then
-            eth_icon = markup.fontfg(beautiful.widgets_nerdfont,
-                                     beautiful.fg_normal,
-                                     beautiful.nerdfont_ethernet)
-        else
-            eth_icon = markup.fontfg(beautiful.widgets_nerdfont,
-                                     beautiful.bg_focus,
-                                     beautiful.nerdfont_ethernet)
-        end
-
-        -- set wlan status
-        local wifi = net_now.devices[wlan_name]
-        if wifi and wifi.wifi then
-            wlan_icon = markup.fontfg(beautiful.widgets_nerdfont,
-                                     beautiful.fg_normal,
-                                     beautiful.nerdfont_wifi_on)
-        else
-            wlan_icon = markup.fontfg(beautiful.widgets_nerdfont,
-                                     beautiful.bg_focus,
-                                     beautiful.nerdfont_wifi_on)
-        end
-
-        -- set widget content
-        net_status.markup = eth_icon .. " " .. wlan_icon
-
-        -- send and receive speed
-        local sent_str, sent_unit = format_netspeed(tonumber(net_now.sent))
-        local received_str, received_unit = format_netspeed(tonumber(net_now.received))
-        widget:set_markup(
-            markup.fg.color(beautiful.widget_net_up, sent_str .. " " .. sent_unit)
-            .. " " ..
-            markup.fg.color(beautiful.widget_net_down, received_str .. " " .. received_unit)
-        )
-    end
-}).widget
-mynet.visible = false  -- default to invisible
-net_status:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        mynet.visible = not mynet.visible
-    end),     -- left click
-    awful.button({}, 3, function()          -- right click
-        awful.spawn(terminal_cmd("nmtui-connect"))
-    end)
-))
--- }}}
-
--- CPU {{{
-local mycpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
-                                        beautiful.widget_cpu,
-                                        beautiful.nerdfont_cpu) .. " " ..
-                          string.format("%2.0f%%", cpu_now.usage))
-    end
-})
-mycpu.widget:buttons(awful.util.table.join(
-    awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("htop -s PERCENT_CPU"))
-    end)
-))
--- }}}
-
--- Memory {{{
-local myram = lain.widget.mem({     
-    settings = function()           
-        widget:set_markup(markup.fontfg(beautiful.widgets_nerdfont,
-                                        beautiful.widget_ram,
-                                        beautiful.nerdfont_memory) .. " " ..
-                          string.format("%4.2f GB", mem_now.used / 1000.0))
-    end
-})
-myram.widget:buttons(awful.util.table.join(
-    awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("htop -s PERCENT_MEM"))
-    end)
-))
--- }}}
-
--- Brightness widget {{{
--- progressbar
-local light_slider = wibox.widget {
-    forced_width        = 64,
-    minimum             = 0,
-    maximum             = 1,
-    widget              = wibox.widget.slider,
-}
-
-light_slider.tooltip = awful.tooltip({ objects = { light_slider } })
-light_slider.tooltip.mode = "outside"
-light_slider.tooltip.preferred_alignments = {"middle"}
-
-local backlight = gears.timer {
-    timeout   = 60,
-    autostart = true,
-    callback  = function()
-        awful.spawn.easy_async("light -G",
-            function(stdout)
-                local perc = tonumber(stdout:match("(%d+).%d"))
-                light_slider.value = perc / 100
-                light_slider.tooltip:set_text(perc)
-            end
-        )
-    end
-}
-
-local light_text = wibox.widget {
-    wibox.widget{
-        markup = markup.fontfg(beautiful.widgets_nerdfont,
-                               beautiful.widget_light,
-                               beautiful.nerdfont_brightness_high),
-                 --string.format("%3d", brightness)
-        widget = wibox.widget.textbox
-    },
-    margins = 6,
-    layout = wibox.container.margin
-}
-
-local backlight_stack = {
-    light_text,
-    light_slider,
-    layout = wibox.layout.fixed.horizontal
-}
-
-backlight:emit_signal("timeout")
--- light commands
-brightness_down = function ()
-    awful.spawn("light -U 10")
-    backlight:emit_signal("timeout")
-end
-brightness_up = function ()
-    awful.spawn("light -A 10")
-    backlight:emit_signal("timeout")
-end
--- bindings
-light_text:buttons(awful.util.table.join(
-    awful.button({}, 4, brightness_down),
-    awful.button({}, 5, brightness_up)
-))
-
--- }}}
-
--- {{{ mail
-local mymail = "oliver_lew@outlook.com"
-local myserver =  "imap-mail.outlook.com"
-local myimap = lain.widget.imap({
-    notify = "off",
-    server = myserver,
-    mail = mymail,
-    password = "pass show mail/" .. mymail,
-    settings = function()
-        local msg = imap_now["UNSEEN"]
-        if imap_now["MESSAGES"] > 0 then
-            icon_color = beautiful.widget_mail_online
-        else
-            icon_color = beautiful.widget_mail_offline
-        end
-        widget:set_markup(
-            markup.fontfg(beautiful.widgets_nerdfont,
-                          icon_color,
-                          beautiful.nerdfont_email) ..
-            " " .. msg
-        )
-    end
-})
-myimap.widget:buttons(awful.util.table.join(
-    awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("neomutt"))
-    end)
-))
-myimap.update()
--- }}}
-
 -- systray {{{
 systray = wibox.widget.systray()
 mysystray = wibox.widget {
@@ -691,8 +220,6 @@ mysystray = wibox.widget {
     layout = wibox.container.margin
 }
 --}}}
-
--- }}}
 
 -- {{{ Wibar
 
@@ -836,16 +363,15 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             spacing = 16,
-            myimap.widget,
-            mynet,
-            mpd,
-            mycpu,
-            myram,
-            myvolume,
-            backlight_stack,
+            mywidgets.imap.widget,
+            mywidgets.mpd.widget,
+            mywidgets.cpu.widget,
+            mywidgets.mem.widget,
+            mywidgets.alsa.widget,
+            mywidgets.light.widget,
             wibox.widget.textclock(),
-            net_status,
-            mybattery,
+            mywidgets.net.widget,
+            mywidgets.bat.widget,
             mysystray,
             s.mylayoutbox,
         },
@@ -1010,25 +536,25 @@ globalkeys = gears.table.join(
               {description = "swap arrangements of monitors", group = "screen"}),
 
     -- XF86 keys
-    awful.key({}, "XF86AudioMute", volume_toggle,
+    awful.key({}, "XF86AudioMute", mywidgets.alsa.toggle,
               {description = "toggle mute", group = "Media"}),
-    awful.key({}, "XF86AudioRaiseVolume", volume_up,
+    awful.key({}, "XF86AudioRaiseVolume", mywidgets.alsa.up,
               {description = "volume up", group = "Media"}),
-    awful.key({}, "XF86AudioLowerVolume", volume_down,
+    awful.key({}, "XF86AudioLowerVolume", mywidgets.alsa.down,
               {description = "volume down", group = "Media"}),
-    awful.key({ modkey }, "\\", volume_toggle,
+    awful.key({ modkey }, "\\", mywidgets.alsa.toggle,
               {description = "toggle mute", group = "Media"}),
-    awful.key({ modkey }, "]", volume_up,
+    awful.key({ modkey }, "]", mywidgets.alsa.up,
               {description = "volume up", group = "Media"}),
-    awful.key({ modkey }, "[", volume_down,
+    awful.key({ modkey }, "[", mywidgets.alsa.down,
               {description = "volume down", group = "Media"}),
-    awful.key({}, "XF86MonBrightnessDown", brightness_down,
+    awful.key({}, "XF86MonBrightnessDown", mywidgets.light.down,
               {description = "brightness down", group = "Media"}),
-    awful.key({}, "XF86MonBrightnessUp", brightness_up,
+    awful.key({}, "XF86MonBrightnessUp", mywidgets.light.up,
               {description = "brightness up", group = "Media"}),
-    awful.key({ modkey }, "-", brightness_down,
+    awful.key({ modkey }, "-", mywidgets.light.down,
               {description = "brightness down", group = "Media"}),
-    awful.key({ modkey }, "=", brightness_up,
+    awful.key({ modkey }, "=", mywidgets.light.up,
               {description = "brightness up", group = "Media"}),
 
     -- Application launching

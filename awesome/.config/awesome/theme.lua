@@ -1,5 +1,3 @@
-local theme = {}
-
 -- Libraries {{{
 local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
@@ -7,7 +5,13 @@ local config_path = gears.filesystem.get_configuration_dir()
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
--- Colorscheme {{{
+local theme = {}
+
+-- wallpaper {{{
+theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
+-- }}}
+
+-- Colorscheme files from wal {{{
 local walfile = io.open(os.getenv("HOME") .. "/.cache/wal/colors")
 if not walfile then
     walfile = io.open(config_path .. "/colors") -- gruvbox colors here now
@@ -33,7 +37,7 @@ local aqua    = colors[7]
 theme.bg_normal             = dark0
 theme.bg_focus              = dark4
 theme.bg_urgent             = purple
-theme.bg_minimize           = dark4
+theme.bg_minimize           = dark4 .. "60"
 
 theme.fg_normal             = light0
 theme.fg_focus              = theme.fg_normal
@@ -41,48 +45,33 @@ theme.fg_urgent             = theme.bg_normal
 theme.fg_minimize           = dark4
 -- }}}
 
--- wallpaper {{{
-theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
+-- Sizes {{{
+awesome.set_preferred_icon_size(48)
+theme.font                      = "Hack Bold 10"
+theme.wibox_height              = dpi(32)
+theme.systray_icon_spacing      = dpi(4)
+theme.systray_height            = dpi(22)
 -- }}}
 
--- Colors {{{
+-- Window {{{
+theme.useless_gap               = dpi(24)
+theme.border_width              = dpi(0)
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = yellow
 theme.border_marked         = red
 theme.titlebar_bg_focus     = theme.bg_normal
 -- }}}
 
--- Widget colors {{{
-theme.widget_music          = purple
-theme.widget_light          = yellow
-theme.widget_ram            = blue
-theme.widget_ram_high       = birght_red
-theme.widget_cpu            = blue
-theme.widget_cpu_high       = red
-theme.widget_alsa           = yellow
-theme.widget_bat_normal     = green
-theme.widget_bat_mid        = green
-theme.widget_bat_low        = yellow
-theme.widget_bat_empty      = red
-theme.widget_mail_online    = green
-theme.widget_mail_offline   = theme.fg_normal
-theme.widget_net_up         = blue
-theme.widget_net_down       = red
--- }}}
-
 -- Taglist {{{
 theme.taglist_font                = "Hack Nerd Font 16"
 theme.taglist_squares_sel         = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, theme.fg_normal)
 theme.taglist_squares_unsel       = gears.surface.load_from_shape (4, 4, gears.shape.rectangle, theme.fg_normal)
--- }}}
-
--- Nerd Fonts Glyphs For tags {{{
 theme.nerdfont_browser               = "爵" -- 
 theme.nerdfont_terminal              = "" -- 
 theme.nerdfont_book                  = "" -- ﴬ
 theme.nerdfont_briefcase             = "ﲂ" -- ﴕ
 theme.nerdfont_files                 = "" -- 
-theme.nerdfont_movie                 = "" -- ﳜ辶輸
+theme.nerdfont_movie                 = "" -- 輸
 theme.nerdfont_email                 = "" -- 
 -- }}}
 
@@ -93,7 +82,7 @@ theme.tasklist_bg_minimize  = theme.bg_minimize
 theme.tasklist_spacing      = dpi(0)
 -- }}}
 
--- slider {{{
+-- Slider {{{
 theme.slider_bar_border_width = 0
 theme.slider_handle_border_width = 0
 theme.slider_handle_width = 12
@@ -102,24 +91,10 @@ theme.slider_handle_color = light0
 theme.slider_bar_shape = gears.shape.rounded_rect
 theme.slider_bar_height = 3
 theme.slider_bar_color = dark4
---theme.slider_bar_margins =
---theme.slider_handle_margins =
 -- }}}
 
 -- Tooltip {{{
 theme.tooltip_align = "top_left"
--- }}}
-
--- Sizes {{{
--- choose the largest icon size below this size
-awesome.set_preferred_icon_size(48)
-theme.font                      = "Hack Bold 10"
-theme.widgets_nerdfont          = "Hack Nerd Font 12"
-theme.wibox_height              = dpi(32)
-theme.useless_gap               = dpi(24)
-theme.border_width              = dpi(0)
-theme.systray_icon_spacing      = dpi(2)
-theme.systray_height            = dpi(22)
 -- }}}
 
 -- Hotkey {{{
@@ -133,21 +108,6 @@ theme.hotkeys_border_width     = dpi(16)
 theme.hotkeys_font             = "Hack Bold 12"
 theme.hotkeys_description_font = "Hack 9"
 theme.hotkeys_group_margin     = dpi(16)
--- }}}
-
--- example sizes for a progress bar {{{
-theme.progressbar_margins       = dpi(1)
-theme.progressbar_paddings      = dpi(1)
-theme.progressbar_ticks_size    = dpi(4)
-theme.progressbar_ticks_gap     = dpi(1)
--- make the progress bar have 10 blocks (or change the number to what you like)
-theme.progressbar_width         = dpi(5 * (theme.progressbar_ticks_size +
-                                           theme.progressbar_ticks_gap) +
-                                      2 * theme.progressbar_margins +
-                                      theme.progressbar_paddings)
-theme.progressbar_height        = dpi(8)
-theme.progressbar_outer_margin  = dpi((theme.wibox_height - 
-                                       theme.progressbar_height) / 2)
 -- }}}
 
 -- Menu {{{
@@ -170,91 +130,41 @@ theme.notification_border_color = theme.bg_normal
 theme.notification_opacity      = 0.8
 -- }}}
 
--- awesome-wm-widgets widgets colors {{{
-theme.widget_main_color  = blue
-theme.widget_red         = red
-theme.widget_yellow      = yellow
-theme.widget_green       = green
-theme.widget_black       = dark0
-theme.widget_transparent = "#00000000"
--- }}}
-
--- Nerd Fonts Glyphs For widgets {{{
-theme.nerdfont_music                 = ""
-theme.nerdfont_music_off             = ""
-theme.nerdfont_music_play            = "契" --  
-theme.nerdfont_music_pause           = "" -- 
-theme.nerdfont_music_stop            = "栗" -- 
-theme.nerdfont_music_next            = "" --  
-theme.nerdfont_music_prev            = "" --  
-theme.nerdfont_music_shuffle_on      = "列" -- 咽
-theme.nerdfont_music_shuffle_off     = "劣"
-theme.nerdfont_music_repeat_on       = "凌"
-theme.nerdfont_music_repeat_off      = "稜"
-theme.nerdfont_music_repeat_one      = "綾"
-theme.nerdfont_upspeed               = "祝"
-theme.nerdfont_downspeed             = ""
-theme.nerdfont_brightness            = ""
-theme.nerdfont_brightness_low        = ""
-theme.nerdfont_brightness_mid        = ""
-theme.nerdfont_brightness_high       = ""
-theme.nerdfont_bat_unknown           = ""
-theme.nerdfont_bat_empty             = ""
-theme.nerdfont_bat_low               = ""
-theme.nerdfont_bat_mid               = ""
-theme.nerdfont_bat_high              = ""
-theme.nerdfont_bat_full              = ""
-theme.nerdfont_bat_full_charging     = ""
-theme.nerdfont_volume_mute           = "婢" -- ﱝ
-theme.nerdfont_volume_low            = "奄" -- 
-theme.nerdfont_volume_mid            = "奔" -- 
-theme.nerdfont_volume_high           = "墳" -- 
-theme.nerdfont_memory                = ""
-theme.nerdfont_cpu                   = "異" --  
-theme.nerdfont_wifi_on               = "直"
-theme.nerdfont_wifi_off              = "睊"
-theme.nerdfont_ethernet              = ""
-theme.nerdfont_calendar              = ""
-theme.nerdfont_email                 = ""
--- }}}
-
 -- {{{ Icons
--- {{{ Layout
+-- Layout
 theme.layout_tile       = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, yellow)
 theme.layout_max        = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, green)
 theme.layout_floating   = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, aqua)
--- }}}
 
--- {{{ Titlebar
-titlebar_button_height = 12
-titlebar_button_width = titlebar_button_height * 2
+-- Titlebar
+height = 12
+width = height * 2
 
-theme.titlebar_close_button_focus  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, red)
-theme.titlebar_close_button_normal = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_close_button_focus  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, red)
+theme.titlebar_close_button_normal = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
-theme.titlebar_maximized_button_focus_active    = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, green)
-theme.titlebar_maximized_button_normal_active   = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_maximized_button_focus_inactive  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, green)
-theme.titlebar_maximized_button_normal_inactive = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_maximized_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, green)
+theme.titlebar_maximized_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_maximized_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, green)
+theme.titlebar_maximized_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
-theme.titlebar_minimize_button_focus  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, yellow)
-theme.titlebar_minimize_button_normal = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_minimize_button_focus  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, yellow)
+theme.titlebar_minimize_button_normal = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
-theme.titlebar_ontop_button_focus_active    = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, blue)
-theme.titlebar_ontop_button_normal_active   = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_ontop_button_focus_inactive  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, blue .. "60")
-theme.titlebar_ontop_button_normal_inactive = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_ontop_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, blue)
+theme.titlebar_ontop_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_ontop_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, blue .. "60")
+theme.titlebar_ontop_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
-theme.titlebar_sticky_button_focus_active    = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, purple)
-theme.titlebar_sticky_button_normal_active   = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_sticky_button_focus_inactive  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, purple .. "60")
-theme.titlebar_sticky_button_normal_inactive = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_sticky_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, purple)
+theme.titlebar_sticky_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_sticky_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, purple .. "60")
+theme.titlebar_sticky_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
-theme.titlebar_floating_button_focus_active    = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, aqua)
-theme.titlebar_floating_button_normal_active   = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_floating_button_focus_inactive  = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, aqua .. "60")
-theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (titlebar_button_width, titlebar_button_height, gears.shape.rectangle, theme.bg_focus)
--- }}}
+theme.titlebar_floating_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, aqua)
+theme.titlebar_floating_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_floating_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, aqua .. "60")
+theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
@@ -264,6 +174,16 @@ theme.awesome_icon = theme_assets.awesome_icon(
 -- Icon theme
 theme.icon_theme = "Papirus"
 -- }}}
+
+theme.dark0  = dark0
+theme.dark4  = dark4
+theme.light0 = light0
+theme.red    = red
+theme.green  = green
+theme.yellow = yellow
+theme.blue   = blue
+theme.purple = purple
+theme.aqua   = aqua
 
 return theme
 
