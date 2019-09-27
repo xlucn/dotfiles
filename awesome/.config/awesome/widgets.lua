@@ -391,6 +391,9 @@ local net = wibox.widget {
 
 -- mpd {{{
 local function fmt_time(seconds)
+    if seconds == "N/A" then
+        return "-"
+    end
     minites = seconds // 60
     s = seconds % 60
     m = minites % 60
@@ -458,7 +461,6 @@ local mpd_upd = lain.widget.mpd({
         end
         mpd_slider:connect_signal("property::value", mpd_seek)
         -- time text
-        --mpd_time.text = mpd_now.elapsed .. "/" .. mpd_now.time
         mpd_time.text = fmt_time(mpd_now.elapsed) .. "/" .. fmt_time(mpd_now.time)
         -- repeat mode
         if mpd_now.single_mode == true then
