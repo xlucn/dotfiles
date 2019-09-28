@@ -14,9 +14,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-local lain = require("lain")
 local dpi = require("beautiful.xresources").apply_dpi
-local markup = lain.util.markup
 -- menu
 local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
@@ -437,9 +435,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "z", function() end,
               {description = "zen mode", group = "awesome"}),
     -- On the fly useless gaps change
-    awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(8) end,
+    awful.key({ modkey, "Control" }, "=", function () awful.tag.incgap(8) end,
               {description = "increase gap", group = "awesome"}),
-    awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-8) end,
+    awful.key({ modkey, "Control" }, "-", function () awful.tag.incgap(-8) end,
               {description = "decrease gap", group = "awesome"}),
 
     -- Standard program
