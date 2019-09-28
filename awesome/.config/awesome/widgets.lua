@@ -141,7 +141,7 @@ alsa:buttons(awful.util.table.join(
 -- }}}
 
 -- brightness {{{
-local light_text = wibox.widget{ widget = wibox.widget.textbox }
+local light_text = wibox.widget.textbox()
 local light_slider = wibox.widget {
     forced_width        = 64,
     widget              = wibox.widget.slider,
@@ -259,27 +259,33 @@ mem.widget:buttons(awful.util.table.join(
 -- {{{ mail
 local mail = "oliver_lew@outlook.com"
 local server =  "imap-mail.outlook.com"
-local imap = lain.widget.imap({
-    notify = "off",
-    server = server,
-    mail = mail,
-    password = "pass show mail/" .. mail,
-    settings = function()
-        local msg = imap_now["UNSEEN"]
-        if imap_now["MESSAGES"] > 0 then
-            icon_color = widget_mail_online
-        else
-            icon_color = widget_mail_offline
-        end
-        widget:set_markup(
-            markup.fontfg(widgets_nerdfont,
-                          icon_color,
-                          nerdfont_email) ..
-            " " .. msg
+local port = 993
+--local mail = "2869761396@qq.com"
+--local server = "imap.qq.com"
+
+local imap = wibox.widget.textbox()
+
+local imap_upd = gears.timer {
+    timeout   = 60,
+    autostart = true,
+    callback  = function()
+        awful.spawn.easy_async(string.format("imap %s %d %s", server, port, mail),
+            function(stdout)
+                local color
+                if stdout == nil or stdout == "" then
+                    color = widget_mail_offline
+                else
+                    color = widget_mail_online
+                end
+                imap:set_markup(markup.fontfg(widgets_nerdfont, color, nerdfont_email)
+                                .. " " .. stdout)
+            end
         )
     end
-})
-imap.widget:buttons(awful.util.table.join(
+}
+
+imap_upd:emit_signal("timeout")
+imap:buttons(awful.util.table.join(
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("neomutt"))
     end)
@@ -551,7 +557,7 @@ return {
         widget = mem.widget,
     },
     imap = {
-        widget = imap.widget,
+        widget = imap,
     },
     net = {
         widget = net,
