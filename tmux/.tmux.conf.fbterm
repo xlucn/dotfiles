@@ -119,7 +119,17 @@ set-hook -g session-created "neww -d \; neww -d \; neww -d -n 漣 \; neww -d -n 
 bind -n M-e split-window "neomutt"
 bind -n M-f split-window "ranger"
 bind -n M-w split-window "elinks"
-bind -n M-c split-window "irssi"
+bind -n M-i split-window "irssi"
+
+# copy and paste
+bind -n M-c copy-mode
+bind -n M-v paste-buffer
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi V send-keys -X select-line
+bind -T copy-mode-vi C-v send-keys -X rectangle-toggle \; send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+bind -T copy-mode-vi Space send-keys -X page-down
+bind -T copy-mode-vi BSpace send-keys -X page-up
 
 # Screenshot
 bind -n M-p run "fbgrab ~/Pictures/Fbterm_$(date +%F_%H-%M-%S).png &"
