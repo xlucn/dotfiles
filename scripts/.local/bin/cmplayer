@@ -1,0 +1,59 @@
+#!/bin/bash
+# A script to play video with framebuffer using mplayer, and put it on the position
+# of current tmux pane.
+
+# Character with and height
+charw=10
+charh=20
+
+# Calculate position and available size
+if $(tmux display -p -F "#S")
+then
+    pane_index=$(tmux display -p -F "#P")
+    read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
+        | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
+        | awk -F'[x,]' '{ if(NR == '$((pane_index + 1))') print $1, $2 - 1, $3, $4 }')
+    W=$((w * charw))
+    H=$((h * charh))
+    X=$((x * charw))
+    Y=$((y * charh))
+else
+    X=0
+    Y=0
+fi
+
+for video in "$@"
+do
+    # Get the real size of the video
+    read -r width height < \
+    <(ffprobe "$video" \
+              -v error \
+              -select_streams v:0 \
+              -show_entries stream=width,height \
+              -of csv=s=x:p=0 |
+    awk -Fx '{ print $1, $2 }')
+
+    # Calculate the actual video dimension on screen
+    vH="$H"
+    vW="$W"
+    if [ $((width * H - height * W)) -gt 0 ]
+    then
+        vH=$((height * W / width))
+    elif [ $((width * H - height * W)) -lt 0 ]
+    then
+        vW=$((width * H / height))
+    fi
+
+    # hide the cursor in case it blinks in the video region
+    tput civis
+    # Play the video
+    clear
+    mplayer "$video" -really-quiet \
+            -vo fbdev2 \
+            -vf scale=$vW:$vH \
+            -geometry $X:$Y \
+            > /dev/null 2>&1
+    clear
+    # show the cursor
+    tput cnorm
+done
