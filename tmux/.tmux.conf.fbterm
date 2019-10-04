@@ -152,7 +152,7 @@ set -g status-right "\
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
 #[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
-#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}\
+#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
 #[#{?#(fcitx-remote),fg=colour2,fg=colour7}, bg=colour0]韛\
 #[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
