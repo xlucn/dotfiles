@@ -12,6 +12,8 @@ bind   alias,index,attach,browser,compose   <up>     previous-entry
 bind   alias,index,attach,browser,compose   k        previous-entry
 bind   alias,index,attach,browser,compose   <down>   next-entry
 bind   alias,index,attach,browser,compose   j        next-entry
+bind   alias,index,attach,browser,compose   K        previous-line
+bind   alias,index,attach,browser,compose   J        next-line
 bind   pager                  K        previous-entry
 bind   pager                  J        next-entry
 bind   generic,alias,attach,index,pager,browser   <pageup>     previous-page
@@ -54,8 +56,8 @@ bind   attach            <return>   view-attach
 bind   attach            <enter>    view-attach
 
 # sidebar
-bind   generic,index,pager \cp sidebar-prev
-bind   generic,index,pager \cn sidebar-next
+bind   generic,index,pager \ck sidebar-prev
+bind   generic,index,pager \cj sidebar-next
 bind   generic,index,pager \co sidebar-open
 # Toggle the visibility of the Sidebar.
 bind   generic,index,pager B sidebar-toggle-visible

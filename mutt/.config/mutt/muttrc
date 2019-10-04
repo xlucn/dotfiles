@@ -10,11 +10,13 @@ unset markers
 # show sidebar
 set sidebar_visible = no
 set sidebar_width = 20
+
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
-
 # forward subject formats
 set forward_format = "Fwd: %s"
+# index (list of mails)
+set index_format = "%4C %Z %[%y/%m/%d %R] %-15.15L (%?l?%4l&%4c?) %s"
 
 # cache folder
 set message_cachedir = ~/.cache/mutt/bodies
