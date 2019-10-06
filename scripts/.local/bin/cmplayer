@@ -7,7 +7,7 @@ charw=10
 charh=20
 
 # Calculate position and available size
-if tmux display -p -F "#S"
+if tmux display -p -F "#S" > /dev/null 2>&1
 then
     pane_id=$(tmux display -p -F "#D" | tr -d %)
     read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
