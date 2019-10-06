@@ -1,12 +1,49 @@
 #!/bin/sh
 
-server=$1
-port=$2
-email=$3
+while getopts s:p:m: param
+do
+    case "$param" in
+        s)
+            server="$OPTARG"
+            ;;
+        p)
+            port="$OPTARG"
+            ;;
+        m)
+            email="$OPTARG"
+            ;;
+        ?)
+            ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+case "${email#*@}" in
+    outlook.com)
+        server=imap-mail.outlook.com
+        port=993
+        ;;
+    qq.com)
+        server=imap.qq.com
+        port=993
+        ;;
+    gmail)
+        server=imap.gmail.com
+        port=993
+        ;;
+    ?)
+        ;;
+esac
+
+if [ -z "$server" ] || [ -z "$port" ]
+then
+    echo Error
+    exit
+fi
+
 password=$(pass show mail/"$email")
 
-curl --insecure -fsm 10 --connect-timeout 10 \
+curl -fsm 10 --connect-timeout 10 \
      --url "imaps://$server:$port" \
      --user "$email:$password" \
-     --request "STATUS Inbox (UNSEEN)" | \
-grep -oE "[0-9]*"
+     --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"

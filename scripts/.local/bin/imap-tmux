@@ -1,11 +1,11 @@
 #!/bin/sh
-# the line above is important, otherwise there won't be a process for the script
-# use this where refresh rate is higher than needed
+# The line above is important, otherwise there won't be a process for the script
+# Use this where refresh rate is higher than needed
 
 if [ "$(pgrep -c imap-tmux)" -gt 1 ]; then exit 0; fi
 
-count1=$(imap imap-mail.outlook.com 993 oliver_lew@outlook.com)
-count2=$(imap imap.qq.com 993 2869761396@qq.com)
+count1=$(imap -m oliver_lew@outlook.com)
+count2=$(imap -m 2869761396@qq.com)
 echo "$count1"\|"$count2"
 
 sleep 60
