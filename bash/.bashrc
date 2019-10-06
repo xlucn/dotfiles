@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 [ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
 [ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
@@ -9,8 +9,7 @@
 # Environments
 export EDITOR=vim
 export VISUAL=vim
-# python start up script
-export PYTHONSTARTUP=~/.pythonrc.py
+export LESS="--mouse --wheel-lines=5"
 
 # Alias
 # auto color
@@ -24,19 +23,15 @@ alias cmpv="mpv --vo=drm"
 # vcsi alias with template
 alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
 
-# History, https://unix.stackexchange.com/questions/18212
-HISTSIZE=-1
-HISTFILESIZE=-1
-HISTCONTROL=ignoredups:erasedups
-shopt -s histappend
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
-
 PS1='[\u@\h \W]\$ '
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
-    for i in $(sed -n "$_SEDCMD" $HOME/.Xresources | awk '$1 < 16 {printf "\\e]P%X%s", $1, $2}'); do
+    while read -r i < <(\
+        sed -n "$_SEDCMD" "$HOME/.Xresources" | \
+        awk '$1 < 16 {printf "\\e]P%X%s", $1, $2}')
+    do
         echo -en "$i"
     done
     clear
@@ -99,6 +94,13 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="verbose"
 export GIT_PS1_SHOWCOLORHINTS=1
 PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
+
+# History, https://unix.stackexchange.com/questions/18212
+HISTSIZE=-1
+HISTFILESIZE=-1
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
