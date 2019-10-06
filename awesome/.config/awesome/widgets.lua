@@ -54,7 +54,7 @@ nerdfont_brightness             = ""
 nerdfont_brightness_high        = ""
 nerdfont_bat_unknown            = ""
 nerdfont_batteries              = { "", "", "", "", "", "", "", "", "", "", "" }
-nerdfont_bat_full_charging      = ""
+nerdfont_bat_full_charging      = ""
 nerdfont_volume_mute            = "婢" -- ﱝ
 nerdfont_volume_low             = "奄" -- 
 nerdfont_volume_mid             = "奔" -- 
@@ -64,13 +64,14 @@ nerdfont_cpu                    = "異" --  
 nerdfont_wifi_on                = "直"
 nerdfont_ethernet               = ""
 nerdfont_calendar               = ""
-nerdfont_email                  = "" -- 
+nerdfont_email                  = "" -- 
 -- }}}
 
 -- volume {{{
 local volume_slider = wibox.widget {
     forced_width        = 64,
     widget              = wibox.widget.slider,
+    visible             = false,
 }
 
 local volume_text = wibox.widget{ widget = wibox.widget.textbox }
@@ -145,6 +146,7 @@ local light_text = wibox.widget.textbox()
 local light_slider = wibox.widget {
     forced_width        = 64,
     widget              = wibox.widget.slider,
+    visible             = false,
 }
 
 local backlight = gears.timer {
@@ -190,6 +192,9 @@ local light = wibox.widget {
 backlight:emit_signal("timeout")
 -- bindings
 light:buttons(awful.util.table.join(
+    awful.button({}, 2, function()
+        light_slider.visible = not light_slider.visible
+    end),
     awful.button({}, 5, brightness_down),
     awful.button({}, 4, brightness_up)
 ))
@@ -209,13 +214,13 @@ local bat = lain.widget.bat({
             state = nerdfont_bat_unknown
         else
             state = nerdfont_batteries[(perc + 4) // 10 + 1]
-            if perc > 30 then
-                color = widget_bat_normal
-            elseif perc > 15 then
-                color = widget_bat_mid
-            else
-                color = widget_bat_low
-            end
+        end
+        if perc > 30 then
+            color = widget_bat_normal
+        elseif perc > 15 then
+            color = widget_bat_mid
+        else
+            color = widget_bat_low
         end
         widget:set_markup(
             markup.fontfg(widgets_nerdfont, color, state) .. " " ..  perc .. "%"
@@ -258,10 +263,7 @@ mem.widget:buttons(awful.util.table.join(
 
 -- {{{ mail
 local mail = "oliver_lew@outlook.com"
-local server =  "imap-mail.outlook.com"
-local port = 993
 --local mail = "2869761396@qq.com"
---local server = "imap.qq.com"
 
 local imap = wibox.widget.textbox()
 
@@ -269,7 +271,7 @@ local imap_upd = gears.timer {
     timeout   = 60,
     autostart = true,
     callback  = function()
-        awful.spawn.easy_async(string.format("imap %s %d %s", server, port, mail),
+        awful.spawn.easy_async(string.format("imap -m %s", mail),
             function(stdout)
                 local color
                 if stdout == nil or stdout == "" then
