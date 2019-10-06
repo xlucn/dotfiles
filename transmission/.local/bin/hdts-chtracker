@@ -13,9 +13,9 @@ fi
 # find the torrent ids
 for i in $(transmission-remote -tall -l | tail -n $m | awk -F'([ ][ ]+|[*])' '{ print $1 }')
 do
-    pid=$(transmission-remote -t"$i" -i | awk -F'pid%3D' '/hd-t/{print $2}')
+    pid=$(transmission-remote -t"$i" -i | awk -F'pid%3D' '/hdts/{print $2}')
     if [[ -n $pid ]]
     then
-        echo transmission-remote -t"$i" -tr 0 -td "http://hd-torrents.org/announce.php?pid=$pid"
+        transmission-remote -t"$i" -tr 0 -td "http://hd-torrents.org/announce.php?pid=$pid"
     fi
 done
