@@ -2,14 +2,25 @@
 # A script to play video with framebuffer using mplayer, and put it on the position
 # of current tmux pane.
 
-# Character with and height
+# Character with and height (this need to be changed to fit the current font size)
 charw=10
 charh=20
+
+usage="usage: $(basename "$0") video [video ...]"
+
+if [ $# = 0 ]
+then
+    echo "$usage"
+    exit
+fi
 
 # Calculate position and available size
 if tmux display -p -F "#S" > /dev/null 2>&1
 then
     pane_id=$(tmux display -p -F "#D" | tr -d %)
+    # This outputs the "layout" of all the panes and then
+    # locates the current pane with its pane id and then
+    # gets its location and size (in characters).
     read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
         | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
         | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
@@ -18,23 +29,30 @@ then
     X=$((x * charw))
     Y=$((y * charh))
 else
+    # TODO: use fullscreen in mplayer settings
     X=0
     Y=0
     read -r W H < <(fbset | awk '/geometry/{ print $2, $3 }')
 fi
 
+# Play each of the videos seperately (due to different video sizes)
 for video in "$@"
 do
     # Get the real size of the video
-    read -r width height < \
+    read -r width height sar < \
     <(ffprobe "$video" \
               -v error \
               -select_streams v:0 \
-              -show_entries stream=width,height \
+              -show_entries stream=width,height,sample_aspect_ratio \
               -of csv=s=x:p=0 |
-    awk -Fx '{ print $1, $2 }')
+    awk -Fx '{ print $1, $2, $3 }')
 
-    # Calculate the actual video dimension on screen
+    # fix the aspect ratio
+    sar_x="${sar%:*}"
+    sar_y="${sar#*:}"
+    width=$((width * sar_x / sar_y))
+
+    # Calculate the actual video dimension on screen that could fit in the pane
     vH="$H"
     vW="$W"
     if [ $((width * H - height * W)) -gt 0 ]
@@ -45,7 +63,8 @@ do
         vW=$((width * H / height))
     fi
 
-    # hide the cursor in case it blinks in the video region
+    # Hide the cursor in case it blinks in the video region
+    # TODO: This went bad if force stop the script :)
     tput civis
     # Play the video
     clear
@@ -55,6 +74,6 @@ do
             -geometry $X:$Y \
             > /dev/null 2>&1
     clear
-    # show the cursor
+    # Show the cursor
     tput cnorm
 done
