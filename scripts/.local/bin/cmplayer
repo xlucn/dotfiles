@@ -1,8 +1,10 @@
 #!/bin/bash
 # A script to play video with framebuffer using mplayer, and put it on the position
 # of current tmux pane.
+# TODO: mplayer font display issue
+# TODO: use another method to deal with blinking cursor
 
-# Character with and height (this need to be changed to fit the current font size)
+# Character with and height (you might need to modify this)
 charw=10
 charh=20
 
@@ -21,6 +23,8 @@ then
     # This outputs the "layout" of all the panes and then
     # locates the current pane with its pane id and then
     # gets its location and size (in characters).
+    # The format is <width>x<height>,<x>,<y>,<id>|{<recursive format>}|[<recursive format>].
+    # We only need the ones with ids, which means they don't have further structures.
     read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
         | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
         | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
@@ -29,7 +33,7 @@ then
     X=$((x * charw))
     Y=$((y * charh))
 else
-    # TODO: use fullscreen in mplayer settings
+    # Use framebuffer size if not in tmux
     X=0
     Y=0
     read -r W H < <(fbset | awk '/geometry/{ print $2, $3 }')
@@ -39,18 +43,13 @@ fi
 for video in "$@"
 do
     # Get the real size of the video
-    read -r width height sar < \
+    read -r width height sar_x sar_y < \
     <(ffprobe "$video" \
               -v error \
               -select_streams v:0 \
               -show_entries stream=width,height,sample_aspect_ratio \
               -of csv=s=x:p=0 |
-    awk -Fx '{ print $1, $2, $3 }')
-
-    # fix the aspect ratio
-    sar_x="${sar%:*}"
-    sar_y="${sar#*:}"
-    width=$((width * sar_x / sar_y))
+    awk -F'[x:]' '{ print $1, $2, $3, $4 }')
 
     # Calculate the actual video dimension on screen that could fit in the pane
     vH="$H"
@@ -58,21 +57,22 @@ do
     if [ $((width * H - height * W)) -gt 0 ]
     then
         vH=$((height * W / width))
-    elif [ $((width * H - height * W)) -lt 0 ]
-    then
+    else
         vW=$((width * H / height))
     fi
 
+    # fix the aspect ratio
+    vW=$((vW * sar_x / sar_y))
+
     # Hide the cursor in case it blinks in the video region
-    # TODO: This went bad if force stop the script :)
+    # This went bad if force stop the script :)
     tput civis
     # Play the video
     clear
     mplayer "$video" -really-quiet \
             -vo fbdev2 \
             -vf scale=$vW:$vH \
-            -geometry $X:$Y \
-            > /dev/null 2>&1
+            -geometry $X:$Y
     clear
     # Show the cursor
     tput cnorm
