@@ -11,8 +11,7 @@ Config files for everything
   - [AwesomeWM](https://awesomewm.org/)
 - Colorscheme:
   - [wal](https://github.com/dylanaraps/pywal)
-  - [gruvbox](https://github.com/morhetz/gruvbox):
-    awesome, terminal, vim, rofi, zathura(pdf)
+  - [gruvbox](https://github.com/morhetz/gruvbox)
 - Terminal Emulator
   - [urxvt](http://software.schmorp.de/pkg/rxvt-unicode.html)
 - Text Editor
@@ -86,7 +85,7 @@ stow -v -t ~ fbterm tmux scripts
 
 Those configs feature:
 
-- Configs for fbterm, a more powerful (e.g. utf-8 glyfs) terminal emulator in framebuffer
+- Configs for `fbterm`, a more powerful (e.g. show utf-8 glyfs, faster) terminal emulator in framebuffer
 - Tmux config specifically designed for using in fbterm
   - Try to mimic a tiling WM with multiple 'workspaces', e.g.
     - keep a specific layout,
@@ -103,7 +102,7 @@ Those configs feature:
     - taking screenshot (with `fbgrab`, I prefer the executable from [fbcat](https://github.com/jwilk/fbcat) project)
     - start screensaver (with tty-clock)
   - CPU/memory/battery/volume/email/weather status indicator, and even more
-  - Font/characters for window names and status inidicators. The choosed characters are fbterm-friendly
+  - Nerd font characters for window names and status inidicators. The choosed characters are fbterm-friendly
     and look terrible in other terminal emulators in DE/WM
 
 Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
@@ -111,9 +110,10 @@ Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc
   - [fbcat](https://github.com/jwilk/fbcat) for taking screenshots
   - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
   - [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
-  - [fbcat](https://github.com/jwilk/fbcat) for screenshot
 - graphical programs work both under X and framebuffer
-  - [mpv](https://github.com/haikarainen/light) for watching/streaming videos
+  - [mpv](https://github.com/haikarainen/light) and [mplayer](mplayerhq.hu) for watching/streaming videos
+    - `mpv --vo=drm`: more powerful
+    - `mplayer -vo fbdev2`: can specify size and location in framebufffer
 - terminal programs which naturally work everywhere
   - [light](https://github.com/haikarainen/light) for change screen brightness
   - [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
