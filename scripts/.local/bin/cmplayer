@@ -61,8 +61,11 @@ do
         vW=$((width * H / height))
     fi
 
-    # fix the aspect ratio
-    vW=$((vW * sar_x / sar_y))
+    # fix the aspect ratio, sar might be absent in some videos
+    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] || [ -n "$sar_y" ]
+    then
+        vW=$((vW * sar_x / sar_y))
+    fi
 
     # Hide the cursor in case it blinks in the video region
     # This went bad if force stop the script :)
