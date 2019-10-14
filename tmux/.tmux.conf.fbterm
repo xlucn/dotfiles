@@ -1,8 +1,11 @@
 ## This config is used in the fbtmux script, and is specially for session in fbterm
 
-# Like the method in the fbtmux script, I recommand start a session with a
+# As in the fbtmux script, I recommand start a tmux session with a
 # special session name, e.g. fbterm, and a special socket name, e.g. fbterm
-# so that only
+# so that only this session uses the config and the normal sessions remain
+# unaffected.
+# e.g.
+# tmux -L fbterm -f ~/.tmux.conf.fbterm new -A -s fbterm
 
 # The configs in this file is trying to make tmux behave more like a WM by
 # - using root keybindings,
@@ -142,11 +145,11 @@ bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed)
 bind -n M-C-BSpace display yes
 
 # Status bar
-set -g status-right-length 100
+set -g status-right-length 120
 set -g status-right "\
 #[fg=colour154,bg=colour0] #(wttr-tmux) \
-#[fg=colour172,bg=colour0] 祥#(up) \
 #[fg=colour13 ,bg=colour0] 﨧#(imap-tmux) \
+#[fg=colour172,bg=colour0] 祥#(up) \
 #[fg=colour201,bg=colour0] 龍#(cpu)% \
 #[fg=colour9  ,bg=colour0] 力#(mem -u)/#(mem -t) \
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
