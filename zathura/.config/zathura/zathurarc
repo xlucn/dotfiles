@@ -1,16 +1,24 @@
+# Keymappings
 map h navigate previous
 map l navigate next
-map fullscreen k navigate previous
-map fullscreen j navigate next
-map fullscreen <Up> navigate previous
-map fullscreen <Down> navigate next
+map <Left> navigate previous
+map <Right> navigate next
+map b toggle_statusbar
+map [fullscreen] k navigate previous
+map [fullscreen] j navigate next
+map [fullscreen] <Up> navigate previous
+map [fullscreen] <Down> navigate next
+map [fullscreen] <Left> navigate previous
+map [fullscreen] <Right> navigate next
 
-set guioptions "svh"
-
+# Synctex
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 
+# User interface
 set highlight-transparency 0.2
+
+set guioptions "vh"
 
 set default-fg "#CDD3DE"
 set default-bg "#263238"
@@ -23,7 +31,9 @@ set recolor-reverse-video true
 set recolor-darkcolor "#CDD3DE"
 set recolor-lightcolor "#263238"
 
+# Clipboard
 set selection-clipboard "clipboard"
 
+# Default
 set adjust-open "width"
 set window-title-basename true
