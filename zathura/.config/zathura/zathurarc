@@ -1,30 +1,37 @@
+# TODO: all the colors
 # Keymappings
 map h navigate previous
 map l navigate next
 map <Left> navigate previous
 map <Right> navigate next
-map b toggle_statusbar
-map [fullscreen] k navigate previous
-map [fullscreen] j navigate next
+map [presentation] k navigate previous
+map [presentation] j navigate next
 map [fullscreen] <Up> navigate previous
 map [fullscreen] <Down> navigate next
 map [fullscreen] <Left> navigate previous
 map [fullscreen] <Right> navigate next
+# UI toggling
+map b toggle_statusbar
+# Mode changing
+map f toggle_fullscreen
+map p toggle_presentation
+map [presentation] p toggle_presentation
+map [fullscreen] f toggle_fullscreen
 
 # Synctex
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 
 # User interface
+set guioptions "vh"
 set highlight-transparency 0.2
 
-set guioptions "vh"
-
+# Colors
 set default-fg "#CDD3DE"
 set default-bg "#263238"
 set statusbar-bg "#263238"
 set statusbar-fg "#CDD3DE"
-
+# Recolor
 set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
