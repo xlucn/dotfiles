@@ -2,7 +2,6 @@
 # A script to play video with framebuffer using mplayer, and put it on the position
 # of current tmux pane.
 # TODO: mplayer font display issue
-# TODO: use another method to deal with blinking cursor
 
 # Character with and height (you might need to modify this)
 charw=10
@@ -80,3 +79,6 @@ do
     # Show the cursor
     tput cnorm
 done
+
+# Deal with some exit signals (still can't process KILL signal)
+trap 'clear; tput cnorm' INT QUIT TERM EXIT
