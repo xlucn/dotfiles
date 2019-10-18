@@ -1,6 +1,7 @@
 #!/bin/sh
 
-while getopts s:p:m: param
+# Get the server and port if provided
+while getopts s:p: param
 do
     case "$param" in
         s)
@@ -9,14 +10,20 @@ do
         p)
             port="$OPTARG"
             ;;
-        m)
-            email="$OPTARG"
-            ;;
         ?)
             ;;
     esac
 done
 shift $((OPTIND - 1))
+
+# Get the email
+if [ $# = 1 ]
+then
+    email=$1
+else
+    echo Only one positional argument as email
+    exit
+fi
 
 case "${email#*@}" in
     outlook.com)
@@ -35,15 +42,18 @@ case "${email#*@}" in
         ;;
 esac
 
-if [ -z "$server" ] || [ -z "$port" ]
+password=$(pass show mail/"$email")
+
+if [ -z "$server" ] || [ -z "$port" ] || [ -z "$password" ]
 then
     echo Error
     exit
 fi
 
-password=$(pass show mail/"$email")
-
-curl -fsm 10 --connect-timeout 10 \
-     --url "imaps://$server:$port" \
-     --user "$email:$password" \
-     --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
+if ! curl -fsm 10 --connect-timeout 10 \
+          --url "imaps://$server:$port" \
+          --user "$email:$password" \
+          --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
+then
+    echo Timeout
+fi
