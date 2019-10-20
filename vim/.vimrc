@@ -269,7 +269,7 @@ let g:ale_lint_on_text_changed = 'normal'
 " specify linters
 let g:ale_linters = {
   \ 'c': ['gcc'],
-  \ 'python': ['flake8'],
+  \ 'python': ['pyflakes', 'flake8'],
   \ 'sh': ['shellcheck']
   \ }
 let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
