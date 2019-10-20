@@ -1,30 +1,33 @@
 #!/bin/sh
-curl -s wttr.in/"$1"?format="%C%t" | \
-sed -E 's/patchy//I;
-        s/freezing//I;
-        s/possible//I;
-        s/at times//I;
-        s/partly cloudy/杖/I;
-        s/cloudy/摒/I;
-        s/overcast/摒/I;
-        s/sunny/滛/I;
-        s/clear/望/I;
-        s/fog/敖/I;
-        s/mist/敖/I;
-        s/snow/流/I;
-        s/rain/殺/I;
-        s/drizzle/殺/I;
-        s/showers?/歹/I;
-        s/outbreaks/歹/I;
-        s/sleet/晴/I;
-        s/thundery/朗/I;
-        s/moderate or heavy/▓/I;
-        s/torrential/█/I;
-        s/heavy/█/I;
-        s/moderate/▒/I;
-        s/light/░/I;
-        s/blowing/░/I;
-        s/with thunder/朗/I;
-        s/blizzard/█流/I;
-        s/Ice pellets/░晴/I;
-        s/\s+//g'
+if ! curl -fsm 10 --connect-timeout 10 -s wttr.in/"$1"?format="%C%t" | \
+    sed -E 's/patchy//I;
+            s/freezing//I;
+            s/possible//I;
+            s/at times//I;
+            s/partly cloudy/杖/I;
+            s/cloudy/摒/I;
+            s/overcast/摒/I;
+            s/sunny/滛/I;
+            s/clear/望/I;
+            s/fog/敖/I;
+            s/mist/敖/I;
+            s/snow/流/I;
+            s/rain/殺/I;
+            s/drizzle/殺/I;
+            s/showers?/歹/I;
+            s/outbreaks/歹/I;
+            s/sleet/晴/I;
+            s/thundery/朗/I;
+            s/moderate or heavy/▓/I;
+            s/torrential/█/I;
+            s/heavy/█/I;
+            s/moderate/▒/I;
+            s/light/░/I;
+            s/blowing/░/I;
+            s/with thunder/朗/I;
+            s/blizzard/█流/I;
+            s/Ice pellets/░晴/I;
+            s/\s+//g'
+then
+    echo -
+fi

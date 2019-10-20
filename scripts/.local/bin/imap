@@ -55,5 +55,5 @@ if ! curl -fsm 10 --connect-timeout 10 \
           --user "$email:$password" \
           --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
 then
-    echo Timeout
+    echo -
 fi

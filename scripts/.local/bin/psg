@@ -1,4 +1,8 @@
 #!/bin/sh
 
 # ps and grep
-ps -fp "$(pgrep "$@")"
+pid=$(pgrep "$@")
+if [ -n "$pid" ]
+then
+    ps -fp "$pid"
+fi
