@@ -3,6 +3,7 @@ set from = $my_email
 
 # password, using the program passwordstore
 set my_pass = `pass show mail/$my_email`
+set imap_user = $my_email
 set imap_pass = $my_pass
 set smtp_pass = $my_pass
 
@@ -16,3 +17,4 @@ set postponed = "+Drafts"
 set copy = no
 unset record
 
+account-hook $folder "set imap_user=$imap_user imap_pass=$imap_pass"
