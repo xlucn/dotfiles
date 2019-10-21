@@ -1,15 +1,20 @@
 source ~/.config/mutt/muttrc.accounts.work
-source ~/.config/mutt/muttrc.accounts
+folder-hook $folder 'source ~/.config/mutt/muttrc.accounts.work'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/mutt/muttrc.accounts.work<enter><change-folder>!<enter>'
+
+source ~/.config/mutt/muttrc.accounts.personal
+folder-hook $folder 'source ~/.config/mutt/muttrc.accounts.personal'
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/mutt/muttrc.accounts.personal<enter><change-folder>!<enter>'
 
 # editor, use vim
 set editor = "vim"
 set sig_on_top = yes
-# disable '+' markers at the beginning of every line
+# disable '+' markers at the beginning of every wrapped line
 unset markers
 
 # show sidebar
 set sidebar_visible = no
-set sidebar_width = 20
+set sidebar_width = 80
 
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
@@ -43,7 +48,7 @@ set sort_aux = "last-date-received"
 # index scroll
 set menu_scroll
 
-# aliases stored in gpg encrypted file
+# aliases
 set alias_file = "~/.config/mutt/muttrc.aliases"
 set reverse_alias = yes
 source $alias_file
