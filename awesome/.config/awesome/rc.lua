@@ -1,3 +1,4 @@
+-- luacheck: globals awesome client root timer screen mouse button drawin drawable tag key
 -- Libraries {{{
 -- Standard awesome library
 local gears = require("gears")
@@ -14,12 +15,12 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-local dpi = require("beautiful.xresources").apply_dpi
 -- menu
 local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
 -- my own widgets
 local mywidgets = require("widgets")
+local xrandr = require("xrandr")
 -- }}}
 
 -- {{{ Error handling
@@ -53,10 +54,10 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvtc"
-filemanager = "nemo"
-browser = "firefox"
-editor = os.getenv("EDITOR") or "vim"
+local terminal = "urxvtc"
+local filemanager = "nemo"
+local browser = "firefox"
+local editor = os.getenv("EDITOR") or "vim"
 local function terminal_cmd(cmd)
     if terminal == "termite" then
         return terminal .. " -e \"" .. cmd .. "\""
@@ -69,27 +70,26 @@ local function editor_cmd(file)
 end
 
 -- rofi (launcher tool) commands
-rofi_basic = "rofi -theme common -modi drun,window,run"
-rofi_drun = "rofi -theme ./launcher.rasi -show drun"
-rofi_run = rofi_basic .. " -show run"
-rofi_window = rofi_basic .. " -show window"
+local rofi_basic = "rofi -theme common -modi drun,window,run"
+local rofi_drun = "rofi -theme ./launcher.rasi -show drun"
+local rofi_run = rofi_basic .. " -show run"
+local rofi_window = rofi_basic .. " -show window"
 
 -- maim (screenshot tool) commands
-maim_basic = "maim"
+local maim_basic = "maim"
 -- target
-maim_selection = " -s"
-maim_current = " -i $(xdotool getactivewindow)"
+local maim_selection = " -s"
 -- location
-maim_savefile = " ~/Pictures/Screenshot_$(date +%F_%H-%M-%S).png"
-maim_clipboard = " | xclip -selection clipboard -t image/png"
+local maim_savefile = " ~/Pictures/Screenshot_$(date +%F_%H-%M-%S).png"
+local maim_clipboard = " | xclip -selection clipboard -t image/png"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-altkey = "Mod1"
-modkey = "Mod4"
+local altkey = "Mod1"
+local modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -99,15 +99,15 @@ awful.layout.layouts = {
 }
 
 -- Tag names
-tag1 = " " .. beautiful.nerdfont_terminal  .. " "
-tag2 = " " .. beautiful.nerdfont_browser   .. " "
-tag3 = " " .. beautiful.nerdfont_book      .. " "
-tag4 = " " .. beautiful.nerdfont_briefcase .. " "
-tag5 = " " .. beautiful.nerdfont_files     .. " "
-tag6 = " " .. beautiful.nerdfont_movie     .. " "
-tag7 = " " .. beautiful.nerdfont_email     .. " "
-tag8 = " " .. beautiful.nerdfont_terminal  .. " "
-tag9 = " " .. beautiful.nerdfont_terminal  .. " "
+local tag1 = " " .. beautiful.nerdfont_terminal  .. " "
+local tag2 = " " .. beautiful.nerdfont_browser   .. " "
+local tag3 = " " .. beautiful.nerdfont_book      .. " "
+local tag4 = " " .. beautiful.nerdfont_briefcase .. " "
+local tag5 = " " .. beautiful.nerdfont_files     .. " "
+local tag6 = " " .. beautiful.nerdfont_movie     .. " "
+local tag7 = " " .. beautiful.nerdfont_email     .. " "
+local tag8 = " " .. beautiful.nerdfont_terminal  .. " "
+local tag9 = " " .. beautiful.nerdfont_terminal  .. " "
 
 -- }}}
 
@@ -124,10 +124,6 @@ local function client_menu_toggle_fn()
         end
     end
 end
--- format time
-local function format_time(seconds)
-    return string.format("%2d:%02d", seconds // 60, seconds % 60)
-end
 -- }}}
 
 -- {{{ Menu
@@ -141,15 +137,15 @@ menu_gen.all_menu_dirs = {
     os.getenv("HOME") .. '/.local/share/applications'
 }
 
-default_icon = menu_utils.lookup_icon("application-default-icon")
-terminal_icon = menu_utils.lookup_icon("terminal")
-browser_icon = menu_utils.lookup_icon("applications-webbrowsers")
-fm_icon = menu_utils.lookup_icon("system-file-manager")
-config_icon = menu_utils.lookup_icon("system-config-services")
-restart_icon = menu_utils.lookup_icon("system-restart")
-shutdown_icon = menu_utils.lookup_icon("system-shutdown")
-shortcut_icon = menu_utils.lookup_icon("system-config-keyboard")
-help_icon = menu_utils.lookup_icon("system-help")
+local default_icon = menu_utils.lookup_icon("application-default-icon")
+local terminal_icon = menu_utils.lookup_icon("terminal")
+local browser_icon = menu_utils.lookup_icon("applications-webbrowsers")
+local fm_icon = menu_utils.lookup_icon("system-file-manager")
+local config_icon = menu_utils.lookup_icon("system-config-services")
+local restart_icon = menu_utils.lookup_icon("system-restart")
+local shutdown_icon = menu_utils.lookup_icon("system-shutdown")
+local shortcut_icon = menu_utils.lookup_icon("system-config-keyboard")
+local help_icon = menu_utils.lookup_icon("system-help")
 
 local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end, shortcut_icon },
@@ -174,7 +170,7 @@ menu_gen.generate(function(entries)
     end
 
     -- Add applications
-    for k, v in pairs(entries) do
+    for _, v in pairs(entries) do
         -- Use fallback icon
         v.icon = v.icon or default_icon
         for _, cat in pairs(result) do
@@ -209,8 +205,8 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- }}}
 
 -- systray {{{
-systray = wibox.widget.systray()
-mysystray = wibox.widget {
+local systray = wibox.widget.systray()
+local mysystray = wibox.widget {
     systray,
     top = (beautiful.wibox_height - beautiful.systray_height) / 2,
     bottom = (beautiful.wibox_height - beautiful.systray_height) / 2,
@@ -327,8 +323,6 @@ awful.screen.connect_for_each_screen(function(s)
             },
             layout = wibox.layout.align.vertical,
             create_callback = function(self, c, index, objects) --luacheck: no unused args
-                local icon = self:get_children_by_id('icon_role')[1]
-
                 local tooltip = awful.tooltip({
                   objects = { self },
                   timer_function = function() return c.name end,
@@ -361,9 +355,9 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             spacing = 16,
             mywidgets.mpd.widget,
+            mywidgets.imap.widget,
             mywidgets.alsa.widget,
             mywidgets.light.widget,
-            mywidgets.imap.widget,
             mywidgets.cpu.widget,
             mywidgets.mem.widget,
             wibox.widget.textclock(),
@@ -387,7 +381,7 @@ mylauncher:buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = gears.table.join(
+local globalkeys = gears.table.join(
     awful.key({ modkey }, "b", function ()
         mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible
     end),
@@ -561,7 +555,7 @@ globalkeys = gears.table.join(
               {description = "launch email client", group = "launcher"})
 )
 
-clientkeys = gears.table.join(
+local clientkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "f",
               function (c)
                   c.fullscreen = not c.fullscreen
@@ -668,7 +662,7 @@ for i = 1, 9 do
     )
 end
 
-clientbuttons = gears.table.join(
+local clientbuttons = gears.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
@@ -839,7 +833,13 @@ t:connect_signal("timeout", function()
   collectgarbage()
   logfile:write(os.date(), "\nLua memory usage:", collectgarbage("count"), "\n")
   logfile:write("Objects alive:\n")
-  for name, obj in pairs{ button = button, client = client, drawable = drawable, drawin = drawin, key = key, screen = screen, tag = tag } do
+  for name, obj in pairs{ button = button,
+                          client = client,
+                          drawable = drawable,
+                          drawin = drawin,
+                          key = key,
+                          screen = screen,
+                          tag = tag } do
     logfile:write(name, ": ", obj.instances(), "\n")
   end
   logfile:flush()

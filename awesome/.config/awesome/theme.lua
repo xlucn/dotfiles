@@ -1,3 +1,4 @@
+-- luacheck: globals awesome
 -- Libraries {{{
 local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
@@ -137,34 +138,35 @@ theme.layout_max        = gears.surface.load_from_shape (24, 24, gears.shape.rec
 theme.layout_floating   = gears.surface.load_from_shape (24, 24, gears.shape.rectangle, aqua)
 
 -- Titlebar
-height = 12
-width = height * 2
+local height = 12
+local width = height * 2
+local shape = gears.shape.rectangle
 
-theme.titlebar_close_button_focus  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, red)
-theme.titlebar_close_button_normal = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_close_button_focus  = gears.surface.load_from_shape (width, height, shape, red)
+theme.titlebar_close_button_normal = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
-theme.titlebar_maximized_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, green)
-theme.titlebar_maximized_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_maximized_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, green)
-theme.titlebar_maximized_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_maximized_button_focus_active    = gears.surface.load_from_shape (width, height, shape, green)
+theme.titlebar_maximized_button_normal_active   = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
+theme.titlebar_maximized_button_focus_inactive  = gears.surface.load_from_shape (width, height, shape, green)
+theme.titlebar_maximized_button_normal_inactive = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
-theme.titlebar_minimize_button_focus  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, yellow)
-theme.titlebar_minimize_button_normal = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_minimize_button_focus  = gears.surface.load_from_shape (width, height, shape, yellow)
+theme.titlebar_minimize_button_normal = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
-theme.titlebar_ontop_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, blue)
-theme.titlebar_ontop_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_ontop_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, blue .. "60")
-theme.titlebar_ontop_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_ontop_button_focus_active    = gears.surface.load_from_shape (width, height, shape, blue)
+theme.titlebar_ontop_button_normal_active   = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
+theme.titlebar_ontop_button_focus_inactive  = gears.surface.load_from_shape (width, height, shape, blue .. "60")
+theme.titlebar_ontop_button_normal_inactive = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
-theme.titlebar_sticky_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, purple)
-theme.titlebar_sticky_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_sticky_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, purple .. "60")
-theme.titlebar_sticky_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_sticky_button_focus_active    = gears.surface.load_from_shape (width, height, shape, purple)
+theme.titlebar_sticky_button_normal_active   = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
+theme.titlebar_sticky_button_focus_inactive  = gears.surface.load_from_shape (width, height, shape, purple .. "60")
+theme.titlebar_sticky_button_normal_inactive = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
-theme.titlebar_floating_button_focus_active    = gears.surface.load_from_shape (width, height, gears.shape.rectangle, aqua)
-theme.titlebar_floating_button_normal_active   = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
-theme.titlebar_floating_button_focus_inactive  = gears.surface.load_from_shape (width, height, gears.shape.rectangle, aqua .. "60")
-theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (width, height, gears.shape.rectangle, theme.bg_focus)
+theme.titlebar_floating_button_focus_active    = gears.surface.load_from_shape (width, height, shape, aqua)
+theme.titlebar_floating_button_normal_active   = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
+theme.titlebar_floating_button_focus_inactive  = gears.surface.load_from_shape (width, height, shape, aqua .. "60")
+theme.titlebar_floating_button_normal_inactive = gears.surface.load_from_shape (width, height, shape, theme.bg_focus)
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(

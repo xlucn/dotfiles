@@ -1,3 +1,4 @@
+-- luacheck: globals widget cpu_now mem_now mpd_now volume_now bat_now net_now
 -- libraries {{{
 local awful = require("awful")
 local gears = require("gears")
@@ -11,7 +12,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- }}}
 
 -- helper function {{{
-terminal = "urxvtc"
+local terminal = "urxvtc"
 local function terminal_cmd(cmd)
     return terminal .. " -e " .. cmd
 end
@@ -19,52 +20,49 @@ end
 
 -- font, colors, characters {{{
 -- font
-widgets_nerdfont          = "Hack Nerd Font 12"
+local widgets_nerdfont          = "Hack Nerd Font 12"
 -- colors
-widget_music          = theme.purple
-widget_light          = theme.yellow
-widget_ram            = theme.blue
-widget_ram_high       = theme.birght_red
-widget_cpu            = theme.blue
-widget_cpu_high       = theme.red
-widget_alsa           = theme.yellow
-widget_bat_normal     = theme.green
-widget_bat_mid        = theme.yellow
-widget_bat_low        = theme.red
-widget_mail_online    = theme.green
-widget_mail_offline   = theme.fg_normal
-widget_net_up         = theme.blue
-widget_net_down       = theme.red
+local widget_music          = theme.purple
+local widget_light          = theme.yellow
+local widget_ram            = theme.blue
+local widget_cpu            = theme.blue
+local widget_alsa           = theme.yellow
+local widget_bat_normal     = theme.green
+local widget_bat_mid        = theme.yellow
+local widget_bat_low        = theme.red
+local widget_mail_online    = theme.green
+local widget_mail_offline   = theme.fg_normal
+local widget_net_up         = theme.blue
+local widget_net_down       = theme.red
 -- font characters
-nerdfont_music                  = ""
-nerdfont_music_off              = ""
-nerdfont_music_play             = "契" --  
-nerdfont_music_pause            = "" -- 
-nerdfont_music_stop             = "栗" -- 
-nerdfont_music_next             = "" --  
-nerdfont_music_prev             = "" --  
-nerdfont_music_shuffle_on       = "列" -- 咽
-nerdfont_music_shuffle_off      = "劣"
-nerdfont_music_repeat_on        = "凌"
-nerdfont_music_repeat_off       = "稜"
-nerdfont_music_repeat_one       = "綾"
-nerdfont_upspeed                = "祝"
-nerdfont_downspeed              = ""
-nerdfont_brightness             = ""
-nerdfont_brightness_high        = ""
-nerdfont_bat_unknown            = ""
-nerdfont_batteries              = { "", "", "", "", "", "", "", "", "", "", "" }
-nerdfont_bat_full_charging      = ""
-nerdfont_volume_mute            = "婢" -- ﱝ
-nerdfont_volume_low             = "奄" -- 
-nerdfont_volume_mid             = "奔" -- 
-nerdfont_volume_high            = "墳" -- 
-nerdfont_memory                 = ""
-nerdfont_cpu                    = "異" --  
-nerdfont_wifi_on                = "直"
-nerdfont_ethernet               = ""
-nerdfont_calendar               = ""
-nerdfont_email                  = "" -- 
+local nerdfont_music                  = ""
+local nerdfont_music_play             = "契" --  
+local nerdfont_music_pause            = "" -- 
+local nerdfont_music_stop             = "栗" -- 
+local nerdfont_music_next             = "" --  
+local nerdfont_music_prev             = "" --  
+local nerdfont_music_shuffle_on       = "列" -- 咽
+local nerdfont_music_shuffle_off      = "劣"
+local nerdfont_music_repeat_on        = "凌"
+local nerdfont_music_repeat_off       = "稜"
+local nerdfont_music_repeat_one       = "綾"
+local nerdfont_upspeed                = "祝"
+local nerdfont_downspeed              = ""
+local nerdfont_brightness             = ""
+local nerdfont_brightness_high        = ""
+local nerdfont_bat_unknown            = ""
+local nerdfont_batteries              = { "", "", "", "", "", "", "", "", "", "", "" }
+local nerdfont_bat_full_charging      = ""
+local nerdfont_volume_mute            = "婢" -- ﱝ
+local nerdfont_volume_low             = "奄" -- 
+local nerdfont_volume_mid             = "奔" -- 
+local nerdfont_volume_high            = "墳" -- 
+local nerdfont_memory                 = ""
+local nerdfont_cpu                    = "異" --  
+local nerdfont_wifi_on                = "直"
+local nerdfont_ethernet               = ""
+local nerdfont_calendar               = ""
+local nerdfont_email                  = "" -- 
 -- }}}
 
 -- volume {{{
@@ -93,7 +91,7 @@ local volume = lain.widget.alsa({
 })
 
 -- audio functions
-function volume_toggle()
+local function volume_toggle()
     os.execute(string.format("%s set %s toggle",
                              volume.cmd,
                              volume.togglechannel or volume.channel))
@@ -102,13 +100,13 @@ end
 
 -- interacting first with the slider, and changing the system volume by
 -- setting signals
-function volume_up()
+local function volume_up()
     volume_slider.value = volume_slider.value + 2
 end
-function volume_down()
+local function volume_down()
     volume_slider.value = volume_slider.value - 2
 end
-function volume_set()
+local function volume_set()
     awful.spawn(string.format("%s set %s %f%%",
                              volume.cmd,
                              volume.channel,
@@ -170,10 +168,10 @@ awful.spawn.easy_async_with_shell("light -G; light -Gr; light -Pr",
     end
 )
 -- light commands
-brightness_down = function ()
+local function brightness_down()
     light_slider.value = light_slider.value - 10
 end
-brightness_up = function ()
+local function brightness_up()
     light_slider.value = light_slider.value + 10
 end
 local function brightness_set()
@@ -325,6 +323,8 @@ local net_status = wibox.widget.textbox()
 -- format network speed
 local function format_netspeed(raw_speed)
     -- use 1000 here to keep under 3-digits
+    local speed, speed_unit, speed_str
+
     if raw_speed < 1000 then
         speed = raw_speed
         speed_unit = "KB/s"
@@ -346,11 +346,12 @@ local function format_netspeed(raw_speed)
 end
 -- command to show active wifi SSID
 -- nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2
-local net = lain.widget.net({
+local lain_net = lain.widget.net({
     wifi_state = "on",
     eth_state = "on",
     notify = "off",
     settings = function()
+        local eth_icon, wlan_icon
         -- get wlan and ethernet interface name
         awful.spawn.easy_async_with_shell(
             "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
@@ -362,7 +363,6 @@ local net = lain.widget.net({
                         wlan_name = name
                     end
                 end
-                --naughty.notify({ text = ethernet_name .. ' ' .. wlan_name })
             end)
 
         -- set ethernet status
@@ -405,7 +405,7 @@ local net = lain.widget.net({
 local net_speed = wibox.widget {
     layout = wibox.container.margin,
     right = 16,
-    net.widget,
+    lain_net.widget,
 }
 net_speed.visible = false  -- default to invisible
 net_status:buttons(awful.util.table.join(
@@ -428,10 +428,10 @@ local function fmt_time(seconds)
     if seconds == "N/A" then
         return "-"
     end
-    minites = seconds // 60
-    s = seconds % 60
-    m = minites % 60
-    h = minites // 60
+    local minites = seconds // 60
+    local s = seconds % 60
+    local m = minites % 60
+    local h = minites // 60
     if h > 0 then
         return string.format("%d:%02d:%02d", h, m, s)
     else
