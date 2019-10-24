@@ -1,21 +1,11 @@
 configuration {
     font               : "Hack 14";
-    sidebar-mode       : true;
-    modi               : "run, drun, window";
-    display-drun       : "Applications";
-    display-run        : "Command";
-    display-window     : "Window";
     show-icons         : true;
     icon-theme         : "Papirus";
     scroll-method      : 0;
-    columns            : 1;
-    lines              : 10;
     cycle              : false;
     terminal           : "urxvtc";
 }
-
-/*@import "/usr/share/rofi/themes/gruvbox-dark.rasi"*/
-@import "~/.cache/wal/colors-rofi-dark.rasi"
 
 * {
     line-margin     : 0;
@@ -28,24 +18,10 @@ configuration {
 }
 
 window {
-    width           : 960px;
     padding         : 0px;
-}
-
-button {
-    padding         : 24px 16px;
-}
-
-inputbar {
-    children        : [prompt, entry];
-    spacing         : 32px;
-    padding         : 24px;
 }
 
 listview {
     scrollbar       : false;
-}
-
-element {
-    padding         : 20px;
+    spacing         : 0px;
 }

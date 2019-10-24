@@ -1,0 +1,98 @@
+configuration {
+    font             : "Hack 12";
+    icon-theme       : "Papirus";
+    terminal         : "urxvtc";
+    sidebar-mode     : false;
+    modi             : "drun";
+    show-icons       : true;
+    scroll-method    : 0;
+    columns          : 5;
+    lines            : 5;
+    cycle            : false;
+}
+
+* {
+    background-color : transparent;
+    line-margin      : 0;
+    line-padding     : 0;
+    separator-style  : "none";
+    margin           : 0;
+    padding          : 0;
+    border           : 0;
+    spacing          : 0;
+    background:                     #00000066;
+    background-alt:                 #E5E9F047;
+    text-color:                     #D8DEE9;
+    selected-text-color:            #000000;
+    primary:                        #A3BE8C;
+    urgent:                         #BF616A;
+}
+
+window {
+    width            : 100%;
+    height           : 100%;
+    y-offset         : 32px;
+}
+
+inputbar {
+    children         : [entry];
+    padding          : 10% 40% 0 40%;
+}
+
+entry {
+    border           : 0px;
+    font             : "Hack 16";
+    border-radius    : 12px;
+    padding          : 16px;
+    background-color : #ffffff20;
+}
+
+prompt {
+    font             : "Hack 16";
+}
+
+listview {
+    margin           : 10% 20%;
+    scrollbar        : false;
+    spacing          : 0px;
+}
+
+element {
+    border-radius    : 12px;
+    padding          : 2%;
+    orientation      : vertical;
+    border-radius    : 12px;
+}
+
+element-icon {
+    size             : 6%;
+}
+
+element-text {
+    expand           : true;
+    horizontal-align : 0.5;
+    margin           : 5px 0px 0px 0px;
+}
+
+element normal.urgent, element alternate.urgent {
+    background-color:               @urgent;
+}
+
+element normal.active, element alternate.active {
+    background-color:               @background-alt;
+    color:                          @selected-text-color;
+}
+
+element selected {
+    background-color:               @background-alt;
+    color:                          @selected-text-color;
+}
+
+element selected.urgent {
+    background-color:               @urgent;
+}
+
+element selected.active {
+    background-color:               @background-alt;
+    color:                          @selected-text-color;
+}
