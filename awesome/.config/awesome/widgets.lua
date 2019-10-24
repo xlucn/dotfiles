@@ -142,25 +142,33 @@ alsa:buttons(awful.util.table.join(
 -- }}}
 
 -- brightness {{{
+-- Note: using percentage format in `light` command will cause problematic feedbacks.
+-- That is, when the accuracy of the controller is not exactly 1%, you will not be
+-- setting the value to almost ANY x% by simply `light -S x`.
+-- The loss is due to the precision when switching between percentage and raw format.
 local light_text = wibox.widget.textbox()
 local light_slider = wibox.widget {
     forced_width        = 64,
     widget              = wibox.widget.slider,
     visible             = false,
 }
-
-local backlight = gears.timer {
-    timeout   = 5,
-    autostart = true,
-    callback  = function()
-        awful.spawn.easy_async("light -G",
-            function(stdout)
-                light_slider.value = tonumber(stdout:match("(%d+).%d"))
-            end
-        )
+-- modify the slider's maximum value to the estimated maximum raw value
+awful.spawn.easy_async_with_shell("light -G; light -Gr; light -Pr",
+    function(stdout)
+        -- This returns a iterator
+        local a = string.gmatch(stdout, "%d*%.?%d+")
+        local perc = a()
+        local raw = a()
+        local min = a()
+        -- calculate the maximum raw level (0.5 is for rounding the result)
+        if tonumber(raw) > 0 then
+            light_slider.maximum = math.floor(raw * 100 / perc + 0.5)
+        end
+        light_slider.minimum = tonumber(min)
+        light_slider.value = tonumber(raw)
+        light_text:set_text(string.format("%3.0f%%", perc))
     end
-}
-
+)
 -- light commands
 brightness_down = function ()
     light_slider.value = light_slider.value - 10
@@ -168,10 +176,28 @@ end
 brightness_up = function ()
     light_slider.value = light_slider.value + 10
 end
-function brightness_set()
-    awful.spawn(string.format("light -S %f%%", light_slider.value))
-    light_text:set_text(string.format("%3.0f%%", light_slider.value))
+local function brightness_set()
+    awful.spawn(string.format("light -Sr %f", light_slider.value))
+    light_text:set_text(string.format("%3.0f%%", 100 * light_slider.value / light_slider.maximum))
 end
+
+local backlight = gears.timer {
+    timeout   = 5,
+    autostart = true,
+    callback  = function()
+        awful.spawn.easy_async_with_shell("light -Gr",
+            function(stdout)
+                light_slider.value = tonumber(stdout)
+                light_text:set_text(
+                    string.format(
+                        "%3.0f%%", 100 * light_slider.value / light_slider.maximum
+                    )
+                )
+            end
+        )
+    end
+}
+
 light_slider:connect_signal('property::value', brightness_set)
 
 local light_icon = wibox.widget {
