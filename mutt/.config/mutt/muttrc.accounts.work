@@ -3,6 +3,7 @@ set realname = "Xu Lu"
 
 # email address
 set my_email = "oliver_lew@outlook.com"
+set from = $my_email
 set imap_user = $my_email
 
 # imap/smtp urls
