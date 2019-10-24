@@ -4,24 +4,32 @@
 [ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-[ -f ~/.extend.bashrc ] && . ~/.extend.bashrc
+# shellcheck source=/dev/null
+[ -f ~/.extend.bashrc ] && . "$HOME/.extend.bashrc"
 
 # Environments
 export EDITOR=vim
 export VISUAL=vim
-export LESS="--mouse --wheel-lines=5"
+# add mouse support after less version 550
+less_version=$(less -V | grep -E "^less [[:digit:]]+" | cut -d" " -f 2)
+if [ "$less_version" -ge 550 ]
+then
+    export LESS="--mouse --wheel-lines=5"
+fi
 
 # Alias
 # auto color
 alias ls="ls --color=auto"
+alias grep="grep --color=auto"
+# ask when replacing files
 alias mv="mv -i"
-# do not show temp fs
+# do not show *tmpfs
 alias df="df -h -x tmpfs -x devtmpfs"
 # mpv under virtual console using drm
 alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-id=0"
 alias cmpv="mpv --vo=drm"
 # vcsi alias with template
-alias vcsi="vcsi -t --template $HOME/.config/vcsi/template.txt"
+alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 
 PS1='[\u@\h \W]\$ '
 
