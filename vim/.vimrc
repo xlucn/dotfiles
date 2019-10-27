@@ -176,20 +176,9 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
 " }}}
-" Airline {{{
-"let g:airline#extensions#tabline#enabled   = 1
-"let g:airline#extensions#tabline#formatter = 'unique_tail'
-"let g:airline#extensions#ale#enabled       = 1
-"let g:airline_theme                        = 'gruvbox'
-"let g:airline_powerline_fonts              = 1
-"let g:airline_highlighting_cache           = 0
-"" async run
-"let g:asyncrun_status = ''
-"let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
-" }}}
 " Lightline {{{
 let g:lightline = {
-    \ 'colorscheme': 'seoul256',
+    \ 'colorscheme': 'base256',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
@@ -314,8 +303,6 @@ let g:vimtex_compiler_latexmk_engines = {
         \ 'context (luatex)' : '-pdf -pdflatex=context',
         \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
     \}
-" bib completion
-let g:vimtex_complete_bib = { 'simple': 1 }
 " }}}
 " Mathematica {{{
 let g:mma_candy = 1
