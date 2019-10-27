@@ -313,7 +313,9 @@ let g:vimtex_compiler_latexmk_engines = {
         \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
         \ 'context (luatex)' : '-pdf -pdflatex=context',
         \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
-        \}
+    \}
+" bib completion
+let g:vimtex_complete_bib = { 'simple': 1 }
 " }}}
 " Mathematica {{{
 let g:mma_candy = 1
