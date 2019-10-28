@@ -14,7 +14,7 @@ export VISUAL=vim
 less_version=$(less -V | grep -E "^less [[:digit:]]+" | cut -d" " -f 2)
 if [ "$less_version" -ge 550 ]
 then
-    export LESS="--mouse --wheel-lines=5"
+    export LESS="-R --mouse --wheel-lines=5"
 fi
 
 # Alias
