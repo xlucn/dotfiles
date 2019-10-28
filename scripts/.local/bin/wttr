@@ -10,6 +10,7 @@ if ! curl -fsm 10 --connect-timeout 10 -s wttr.in/"$1"?format="%C%t" | \
             s/sunny/滛/I;
             s/clear/望/I;
             s/fog/敖/I;
+            s/haze/敖/I;
             s/mist/敖/I;
             s/snow/流/I;
             s/rain/殺/I;
@@ -26,7 +27,7 @@ if ! curl -fsm 10 --connect-timeout 10 -s wttr.in/"$1"?format="%C%t" | \
             s/blowing/░/I;
             s/with thunder/朗/I;
             s/blizzard/█流/I;
-            s/Ice pellets/░晴/I;
+            s/ice pellets/░晴/I;
             s/\s+//g'
 then
     echo -
