@@ -1,7 +1,7 @@
 # dotfiles
 Config files for everything
 
-![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesome.png?raw=true)
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesomewm.png?raw=true)
 
 ## Environment
 
@@ -72,6 +72,8 @@ sudo make install-system
 ```
 
 ### Linux console setup
+
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/fbterm.png?raw=true)
 
 There is some programms that can work under linux console (tty) without X. After getting
 familiar with those programms, you can become quite efficient working without a DE/WM.
