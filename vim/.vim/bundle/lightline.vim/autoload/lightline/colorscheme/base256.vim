@@ -33,10 +33,10 @@ let s:p.visual.left = [ [ s:base02, s:peach ], [ s:base3, s:base01 ] ]
 let s:p.normal.middle = [ [ s:base0, s:base02 ] ]
 let s:p.inactive.middle = [ [ s:base00, s:base02 ] ]
 let s:p.tabline.left = [ [ s:base3, s:base02 ] ]
-let s:p.tabline.tabsel = [ [ s:base3, s:base00 ] ]
+let s:p.tabline.tabsel = [ [ s:base02, s:base1 ] ]
 let s:p.tabline.middle = [ [ s:base01, s:base02 ] ]
 let s:p.tabline.right = copy(s:p.normal.right)
-let s:p.normal.error = [ [ s:red, s:base02 ] ]
-let s:p.normal.warning = [ [ s:yellow, s:base01 ] ]
+let s:p.normal.error = [ [ s:base02, s:red ] ]
+let s:p.normal.warning = [ [ s:base02, s:yellow ] ]
 
 let g:lightline#colorscheme#base256#palette = lightline#colorscheme#flatten(s:p)
