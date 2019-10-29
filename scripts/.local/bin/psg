@@ -4,5 +4,5 @@
 pid=$(pgrep "$@")
 if [ -n "$pid" ]
 then
-    ps -fp "$pid"
+    echo "$pid" | xargs ps -fp
 fi
