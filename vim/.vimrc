@@ -10,31 +10,24 @@ endif
 call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
 Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzy search everything
-Plug 'scrooloose/nerdtree'            " File tree
 Plug 'scrooloose/nerdcommenter'       " commenting code
 Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
 Plug 'plasticboy/vim-markdown'        " markdown plugins
-"Plug 'vim-airline/vim-airline'        " airline status line
-"Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
-Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'tpope/vim-fugitive'             " git status and commands
 Plug 'airblade/vim-gitgutter'         " sign column indicator
 Plug 'tpope/vim-surround'             " surround parentheses change
-Plug 'morhetz/gruvbox'                " theme
 Plug 'liuchengxu/vim-which-key'       " leader guide like in spacevim
 Plug 'w0rp/ale'                       " linter plugin
-Plug 'skywind3000/asyncrun.vim'       " asynchronous run tasks in parallel
 Plug 'majutsushi/tagbar'              " tag bar
 Plug 'ervandew/supertab'              " supertab
 Plug 'lervag/vimtex'                  " vimtex plugin
-Plug 'rsmenon/vim-mathematica'        " mathematica
+Plug 'VoldikSS/vim-mma'               " mathematica
 Plug 'lilydjwg/fcitx.vim'             " fcitx
 Plug 'jpalardy/vim-slime'             " vim-slime
-Plug 'jamessan/vim-gnupg'             " gpg file edit plugin
-Plug 'ap/vim-css-color'               " preview colors
+Plug 'tpope/vim-commentary'
 call plug#end()
 " }}}
 " }}}
@@ -278,10 +271,8 @@ let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
-" Asyncrun {{{
-let g:asyncrun_open = 8
-" fugitive related, see official website
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+" Nerd commenter{{{
+let g:NERDDefaultAlign = 'left'
 " }}}
 " Vim Tex {{{
 " enable vimtex fold
@@ -309,9 +300,9 @@ let g:vimtex_compiler_latexmk_engines = {
     \}
 " }}}
 " Mathematica {{{
-let g:mma_candy = 1
 autocmd BufNewFile,BufRead *.wl setfiletype mma
 autocmd BufNewFile,BufRead *.wls setfiletype mma
+let g:mma_candy = 2
 " }}}
 " ibus-vim {{{
 let g:ibus#layout = "xkb:us::eng"
@@ -348,6 +339,9 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
+" }}}
+" super tab {{{
+let g:SuperTabDefaultCompletionType = "context"
 " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=1
