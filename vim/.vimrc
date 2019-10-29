@@ -99,6 +99,9 @@ set showtabline=2
 set noshowmode
 " show partial line
 set display+=lastline
+" color scheme
+colorscheme desert
+set background=dark
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -174,7 +177,8 @@ let g:lightline = {
     \ 'colorscheme': 'base256',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+    \             [ 'gitbranch', 'readonly' ],
+    \             [ 'filename', 'modified' ] ],
     \   'right': [ [ 'linter_checking',
     \               'linter_errors',
     \               'linter_warnings',
@@ -309,17 +313,6 @@ let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
 " }}}
 " fcitx {{{
-" }}}
-" Theme gruvbox {{{
-if has("gui_running")
-    colorscheme gruvbox
-else
-    colorscheme desert
-endif
-" some terminal not supporting italic would replace with reverse, so disable it
-let g:gruvbox_italic      = 0
-let g:gruvbox_sign_column = "bg0"
-set background=dark
 " }}}
 " vim-slime {{{
 if $TERM == "screen-256color"
