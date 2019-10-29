@@ -332,21 +332,17 @@ set background=dark
 " }}}
 " vim-slime {{{
 if $TERM == "screen-256color"
-    " use tmux
     let g:slime_target = "tmux"
-    " set config to use the pane on the right by default
-    let g:slime_default_config = {
-        \ "socket_name": "fbterm",
-        \ "target_pane": "{right-of}"
-        \ }
-else
-    " or use vim :terminal
-    let g:slime_target = "vimterminal"
-    " vim terminal config
-    let g:slime_vimterminal_config = {
-        \ "vertical": 1
-        \ }
 endif
+" set config to use the pane on the right by default
+let g:slime_default_config = {
+    \ "socket_name": "fbterm",
+    \ "target_pane": "{right-of}"
+    \ }
+" vim terminal config
+let g:slime_vimterminal_config = {
+    \ "vertical": 1
+    \ }
 let g:slime_dont_ask_default = 1
 " use temp file
 let g:slime_paste_file = tempname()
