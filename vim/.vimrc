@@ -332,7 +332,7 @@ if $TERM == "screen-256color"
     let g:slime_target = "tmux"
     " set config to use the pane on the right by default
     let g:slime_default_config = {
-        \ "socket_name": "default",
+        \ "socket_name": "fbterm",
         \ "target_pane": "{right-of}"
         \ }
 else
