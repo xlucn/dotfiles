@@ -255,18 +255,22 @@ let g:ale_sign_warning         = '-'
 " only lint when leaving insert mode
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
-" specify linters
+" specify linters, 'clang-tidy'
 let g:ale_linters = {
-  \ 'c': ['gcc'],
-  \ 'python': ['pyflakes', 'flake8'],
-  \ 'sh': ['shellcheck']
+  \ 'c': ['clangd', 'clang-check', 'cppcheck'],
+  \ 'python': ['pyls', 'pyflakes', 'flake8'],
+  \ 'sh': ['shellcheck'],
+  \ 'lua': ['luacheck']
   \ }
 let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
+
 " Keymapping
 let g:which_key_map.a = {
   \ 'name' : '+ale',
   \ 'n' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
   \ 'p' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
+  \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
+  \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ }
 " }}}
 " Nerdtree {{{
