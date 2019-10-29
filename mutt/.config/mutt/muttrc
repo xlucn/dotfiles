@@ -71,6 +71,9 @@ set pager_stop = yes
 auto_view text/html                                   # view html automatically
 alternative_order text/plain text/enriched text/html  # save html for last
 
+# encoding
+set rfc2047_parameters=yes
+
 # color configuration
 source ~/.config/mutt/muttrc.colors
 # keybindings
