@@ -5,23 +5,48 @@ configuration {
     scroll-method      : 0;
     cycle              : false;
     terminal           : "urxvtc";
+    sidebar-mode       : true;
+    modi               : "run, drun, window";
+    display-drun       : "Applications";
+    display-run        : "Command";
+    display-window     : "Window";
+    columns            : 1;
+    lines              : 10;
 }
 
+@import "~/.cache/wal/colors-rofi-dark.rasi"
+
 * {
-    line-margin     : 0;
-    line-padding    : 0;
+    line-margin     : 0px;
+    line-padding    : 0px;
     separator-style : "none";
-    margin          : 0;
-    padding         : 0;
-    border          : 0;
-    spacing         : 0;
+    margin          : 0px;
+    padding         : 0px;
+    border          : 0px;
+    spacing         : 0px;
 }
 
 window {
     padding         : 0px;
+    width           : 960px;
+}
+
+button {
+    padding         : 24px 16px;
 }
 
 listview {
     scrollbar       : false;
+    border          : 0px;
     spacing         : 0px;
+}
+
+inputbar {
+    children        : [prompt, entry];
+    spacing         : 32px;
+    padding         : 24px;
+}
+
+element {
+    padding         : 20px;
 }

@@ -12,7 +12,7 @@ configuration {
 }
 
 * {
-    background-color : transparent;
+    background-color : #00000000;
     line-margin      : 0;
     line-padding     : 0;
     separator-style  : "none";
@@ -20,7 +20,7 @@ configuration {
     padding          : 0;
     border           : 0;
     spacing          : 0;
-    background:                     #00000066;
+    background:                     #00000088;
     background-alt:                 #E5E9F047;
     text-color:                     #D8DEE9;
     selected-text-color:            #000000;
@@ -29,6 +29,7 @@ configuration {
 }
 
 window {
+    background-color : @background;
     width            : 100%;
     height           : 100%;
     y-offset         : 32px;
@@ -40,11 +41,11 @@ inputbar {
 }
 
 entry {
+    background-color : @background;
     border           : 0px;
     font             : "Hack 16";
     border-radius    : 12px;
     padding          : 16px;
-    background-color : #ffffff20;
 }
 
 prompt {
@@ -74,7 +75,7 @@ element-text {
     margin           : 5px 0px 0px 0px;
 }
 
-element normal.urgent, element alternate.urgent {
+element normal.urgent, element alternate.urgent, element selected.urgent {
     background-color:               @urgent;
 }
 
@@ -83,16 +84,12 @@ element normal.active, element alternate.active {
     color:                          @selected-text-color;
 }
 
-element selected {
+element normal.normal, element alternate.normal {
+    background-color:               #00000000;
+}
+
+element selected.normal, element selected.active {
     background-color:               @background-alt;
     color:                          @selected-text-color;
 }
 
-element selected.urgent {
-    background-color:               @urgent;
-}
-
-element selected.active {
-    background-color:               @background-alt;
-    color:                          @selected-text-color;
-}

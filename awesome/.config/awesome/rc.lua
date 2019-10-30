@@ -70,8 +70,8 @@ local function editor_cmd(file)
 end
 
 -- rofi (launcher tool) commands
-local rofi_basic = "rofi -theme common -modi drun,window,run"
-local rofi_drun = "rofi -theme ./launcher.rasi -show drun"
+local rofi_basic = "rofi -modi drun,window,run"
+local rofi_drun = "rofi -theme launcher -show drun"
 local rofi_run = rofi_basic .. " -show run"
 local rofi_window = rofi_basic .. " -show window"
 
