@@ -140,9 +140,12 @@ nnoremap <silent> <C-L> :bnext<CR>
 nnoremap <space> za
 " }}}
 " Autocmd {{{
+autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
+autocmd BufNewFile,BufRead *.wl setfiletype mma
+autocmd BufNewFile,BufRead *.wls setfiletype mma
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :!xrdb %
-autocmd BufRead,BufNewFile *.plt set filetype=gnuplot
+autocmd FileType tex setlocal sw=2 ts=2 sts=2
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -306,8 +309,6 @@ let g:vimtex_compiler_latexmk_engines = {
     \}
 " }}}
 " Mathematica {{{
-autocmd BufNewFile,BufRead *.wl setfiletype mma
-autocmd BufNewFile,BufRead *.wls setfiletype mma
 let g:mma_candy = 2
 " }}}
 " ibus-vim {{{
