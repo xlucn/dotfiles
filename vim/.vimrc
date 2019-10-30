@@ -28,6 +28,7 @@ Plug 'VoldikSS/vim-mma'               " mathematica
 Plug 'lilydjwg/fcitx.vim'             " fcitx
 Plug 'jpalardy/vim-slime'             " vim-slime
 Plug 'tpope/vim-commentary'
+Plug 'neomutt/neomutt.vim'
 call plug#end()
 " }}}
 " }}}
@@ -139,6 +140,7 @@ nnoremap <silent> <C-L> :bnext<CR>
 nnoremap <space> za
 " }}}
 " Autocmd {{{
+autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :!xrdb %
 autocmd BufRead,BufNewFile *.plt set filetype=gnuplot
 " }}}

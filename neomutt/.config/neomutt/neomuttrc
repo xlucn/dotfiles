@@ -1,10 +1,10 @@
-source ~/.config/mutt/muttrc.accounts.personal
-folder-hook $folder 'source ~/.config/mutt/muttrc.accounts.personal'
-macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/mutt/muttrc.accounts.personal<enter><change-folder>!<enter>'
+source ~/.config/neomutt/accounts.personal.muttrc
+folder-hook $folder 'source ~/.config/neomutt/accounts.personal.muttrc'
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts.personal.muttrc<enter><change-folder>!<enter>'
 
-source ~/.config/mutt/muttrc.accounts.work
-folder-hook $folder 'source ~/.config/mutt/muttrc.accounts.work'
-macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/mutt/muttrc.accounts.work<enter><change-folder>!<enter>'
+source ~/.config/neomutt/accounts.work.muttrc
+folder-hook $folder 'source ~/.config/neomutt/accounts.work.muttrc'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts.work.muttrc<enter><change-folder>!<enter>'
 
 # editor, use vim
 set editor = "vim"
@@ -24,8 +24,8 @@ set forward_format = "Fwd: %s"
 set index_format = "%4C %Z %[%y/%m/%d %R] %-15.15L (%?l?%4l&%4c?) %s"
 
 # cache folder
-set message_cachedir = ~/.cache/mutt/bodies
-set header_cache = ~/.cache/mutt/headers
+set message_cachedir = ~/.cache/neomutt/bodies
+set header_cache = ~/.cache/neomutt/headers
 # interval of mail checking
 set mail_check = 30
 set timeout = 30
@@ -49,9 +49,9 @@ set sort_aux = "last-date-received"
 set menu_scroll
 
 # aliases
-set alias_file = "~/.config/mutt/muttrc.aliases"
+set alias_file = "~/.config/neomutt/aliases.muttrc"
 set reverse_alias = yes
-source $alias_file
+source "~/.config/neomutt/aliases.muttrc"
 
 # header
 # show only those headers
@@ -75,7 +75,7 @@ alternative_order text/plain text/enriched text/html  # save html for last
 set rfc2047_parameters=yes
 
 # color configuration
-source ~/.config/mutt/muttrc.colors
+source ~/.config/neomutt/colors.muttrc
 # keybindings
-#source ~/.config/mutt/muttrc.unbindall
-source ~/.config/mutt/muttrc.keybindings
+#source ~/.config/neomutt/unbindall.muttrc
+source ~/.config/neomutt/keybindings.muttrc

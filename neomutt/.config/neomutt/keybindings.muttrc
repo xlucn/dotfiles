@@ -63,7 +63,7 @@ bind   generic,index,pager B sidebar-toggle-visible
 
 # macros
 macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
-macro  generic,index,browser,pager \cr ":source ~/.config/mutt/muttrc\n" "Reload mutt's configuration file"
+macro  generic,index,browser,pager \cr ":source ~/.config/mutt/neomuttrc\n" "Reload mutt's configuration file"
 macro  pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
 macro  generic,index,browser,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
 
@@ -102,5 +102,3 @@ bind   pager } half-down
 
 # attach bindings
 bind   attach T view-text
-
-# vim: ft=neomuttrc
