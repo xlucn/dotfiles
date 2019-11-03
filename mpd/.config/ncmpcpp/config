@@ -35,10 +35,11 @@ display_remaining_time = no
 
 #song_list_format
 #song_status_format
-#sont_library_format
+#song_library_format
 
-seek_time=10
-
+seek_time = 10
+lines_scrolled = 1
+mouse_list_scroll_whole_page = no
 
 # lyrics
 #lyrics_fetchers = lyricwiki, azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, internet
