@@ -24,7 +24,7 @@ alias grep="grep --color=auto"
 # ask when replacing files
 alias mv="mv -i"
 # do not show *tmpfs
-alias df="df -h -x tmpfs -x devtmpfs"
+alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcent,target"
 # mpv under virtual console using drm
 alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-id=0"
 alias cmpv="mpv --vo=drm"
