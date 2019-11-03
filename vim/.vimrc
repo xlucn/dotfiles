@@ -282,6 +282,8 @@ nnoremap <C-N> :NERDTreeToggle<CR>
 " }}}
 " Nerd commenter{{{
 let g:NERDDefaultAlign = 'left'
+let g:NERDSpaceDelims = 1
+let g:NERDRemoveExtraSpaces = 1
 " }}}
 " Vim Tex {{{
 " enable vimtex fold
