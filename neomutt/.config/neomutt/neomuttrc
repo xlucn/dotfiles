@@ -75,6 +75,8 @@ alternative_order text/plain text/enriched text/html  # save html for last
 set rfc2047_parameters=yes
 set send_charset="utf-8"
 
+# send notify open receiving new email
+set new_mail_command="notify-send 'New Email' '%n new messages, %u unread.' &"
 
 # color configuration
 source ~/.config/neomutt/colors.muttrc
