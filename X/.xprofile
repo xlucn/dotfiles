@@ -11,6 +11,7 @@ export GTK_CSD=0
 export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 
 # LOAD FILES
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 [ -f "$HOME/.profile" ] && . "$HOME/.profile"
 [ -f "$HOME/.Xmodmap" ] && xmodmap "$HOME/.Xmodmap"
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
