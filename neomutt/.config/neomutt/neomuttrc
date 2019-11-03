@@ -73,6 +73,8 @@ alternative_order text/plain text/enriched text/html  # save html for last
 
 # encoding
 set rfc2047_parameters=yes
+set send_charset="utf-8"
+
 
 # color configuration
 source ~/.config/neomutt/colors.muttrc
