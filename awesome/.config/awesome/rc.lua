@@ -549,7 +549,7 @@ local globalkeys = gears.table.join(
     -- Application launching
     awful.key({ modkey }, "f", function () awful.spawn(terminal_cmd("ranger")) end,
               {description = "launch file manager", group = "launcher"}),
-    awful.key({ modkey }, "e", function () awful.spawn(terminal_cmd("neomutt")) end,
+    awful.key({ modkey }, "e", function () awful.spawn(terminal_cmd("abduco -A neomutt neomutt")) end,
               {description = "launch email client", group = "launcher"})
 )
 

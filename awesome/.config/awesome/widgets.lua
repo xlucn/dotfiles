@@ -313,7 +313,7 @@ local imap_upd = gears.timer {
 imap_upd:emit_signal("timeout")
 imap:buttons(awful.util.table.join(
     awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("neomutt"))
+        awful.spawn(terminal_cmd("abduco -A neomutt neomutt"))
     end)
 ))
 -- }}}
