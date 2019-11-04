@@ -1,3 +1,6 @@
+# unbind all
+# unbind *
+
 # search
 bind   generic,index,pager / search
 bind   generic,index,pager n search-next

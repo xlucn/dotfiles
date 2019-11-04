@@ -81,5 +81,4 @@ set new_mail_command="notify-send 'New Email' '%n new messages, %u unread.' &"
 # color configuration
 source ~/.config/neomutt/colors.muttrc
 # keybindings
-#source ~/.config/neomutt/unbindall.muttrc
 source ~/.config/neomutt/keybindings.muttrc
