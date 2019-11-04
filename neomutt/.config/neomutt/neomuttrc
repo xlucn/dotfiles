@@ -27,12 +27,12 @@ set index_format = "%4C %Z %[%y/%m/%d %R] %-15.15L (%?l?%4l&%4c?) %s"
 set message_cachedir = ~/.cache/neomutt/bodies
 set header_cache = ~/.cache/neomutt/headers
 # interval of mail checking
-set mail_check = 30
-set timeout = 30
+set mail_check = 60
+set timeout = 120
 # Allow Mutt to open a new IMAP connection automatically.
 unset imap_passive
 # keep the IMAP connection alive
-set imap_keepalive = 30
+set imap_keepalive = 60
 # suppress pause when switching mail boxes
 set sleep_time = 0
 # default recipient and subject when reply
