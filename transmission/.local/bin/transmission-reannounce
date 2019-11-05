@@ -1,0 +1,10 @@
+#!/bin/sh
+for i in $(transmission-remote -l | awk '/^[0-9]/{print $1}')
+do
+    if transmission-remote -t"$i" -it | grep error
+    then
+        echo "$i"
+        transmission-remote -t"$i" --reannounce
+        sleep 1
+    fi
+done
