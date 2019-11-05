@@ -35,8 +35,8 @@ bind   generic,pager                         <end>    bottom
 # enter and exit with left/right h/l enter/q
 macro  index <left> "c?\t" "Go back to the list of mailboxes"
 macro  index h      "c?\t" "Go back to the list of mailboxes"
-bind   generic,index,pager,attach q      exit
-bind   generic,browser,pager,attach       <left> exit
+bind   generic,pager,attach,index q      exit
+bind   generic,pager,attach       <left> exit
 bind   generic,pager,attach       h      exit
 bind   browser     <left> goto-parent
 bind   browser     h      goto-parent
