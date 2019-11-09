@@ -50,7 +50,7 @@ then
     exit
 fi
 
-if ! curl -fsm 10 --connect-timeout 10 \
+if ! curl -fsm 30 --connect-timeout 30 \
           --url "imaps://$server:$port" \
           --user "$email:$password" \
           --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
