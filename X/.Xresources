@@ -10,7 +10,7 @@ Xcursor.theme: Breeze-Adapta-Cursor
 
 ! -- URxvt UI -- !
 URxvt.depth              : 32
-URxvt.geometry           : 80x24
+! URxvt.geometry           : 80x24
 URxvt.internalBorder     : 0
 URxvt.externalBorder     : 0
 URxvt.letterSpace        : 0
@@ -43,10 +43,8 @@ URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 
 ! -- Fonts -- !
-URxvt.font: xft:Hack:size=12, xft:Hack Nerd Font Mono:size=12, xft: Noto Sans CJK SC:size=12, xft: WenQuanYi Micro Hei:size=12, xft: Source Han Sans CN:size=13, xft: HanaMinB:size=12
-URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
-URxvt.italicFont: xft:Hack:style=Italic:size=12, xft: WenQuanYi Micro Hei:size=12
-URxvt.boldItalicFont: xft:Hack:style=Bold Italic:size=12, xft: WenQuanYi Micro Hei:size=12
+URxvt.font: xft:Hack:size=12, xft:Hack Nerd Font Mono:size=12, xft: FandolHei:style=Regular:size=12, xft: WenQuanYi Micro Hei:size=12
+URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: FandolHei:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
 ! using wal
 #include ".cache/wal/colors.Xresources"
