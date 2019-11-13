@@ -16,41 +16,30 @@ fullscreen = true
 icon_name = terminal
 
 [colors]
-# gruvbox dark: https://github.com/morhetz/gruvbox-contrib/blob/master/termite
-# hard contrast: background = #1d2021
-background = #282828
-# soft contrast: background = #32302f
-foreground = #ebdbb2
-foreground_bold = #ebdbb2
-
+background = #263238
+foreground = #CDD3DE
+foreground_bold = #CDD3DE
 # dark0 + gray
-color0 = #282828
-color8 = #928374
-
+color0 = #263238
+color8 = #707880
 # neutral_red + bright_red
-color1 = #cc241d
-color9 = #fb4934
-
+color1 = #EC5F67
+color9 = #EC5F67
 # neutral_green + bright_green
-color2 = #98971a
-color10 = #b8bb26
-
+color2 = #8BD649
+color10 = #8BD649
 # neutral_yellow + bright_yellow
-color3 = #d79921
-color11 = #fabd2f
-
+color3 = #FFCC00
+color11 = #FFCC00
 # neutral_blue + bright_blue
-color4 = #458588
-color12 = #83a598
-
+color4 = #89DDFF
+color12 = #89DDFF
 # neutral_purple + bright_purple
-color5 = #b16286
-color13 = #d3869b
-
+color5 = #82AAFF
+color13 = #82AAFF
 # neutral_aqua + faded_aqua
-color6 = #689d6a
-color14 = #8ec07c
-
+color6 = #80CBC4
+color14 = #80CBC4
 # light4 + light1
-color7 = #a89984
-color15 = #ebdbb2
+color7 = #CDD3DE
+color15 = #FFFFFF
