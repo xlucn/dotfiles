@@ -26,6 +26,7 @@ fi
 
 # configure trackpad, it can be found by `xinput` command
 trackpad="AlpsPS/2 ALPS GlidePoint"
+trackpad="ALP001A:00 044E:121B Touchpad"
 xinput set-prop "$trackpad" "libinput Tapping Enabled" 1
 xinput set-prop "$trackpad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
