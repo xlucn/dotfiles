@@ -6,3 +6,6 @@ Wants=network-online.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/ss-local -c ${HOME}/.config/shadowsocks/config.json
+
+[Install]
+WantedBy=default.target
