@@ -1,22 +1,37 @@
 #!/bin/sh
-if [ $# = 3 ]
-then
-    from=$1
-    dest=$2
-    match=$3
-else
-    echo usage: transmission-move from to pattern
-    exit
-fi
 
-for i in "$1"/resume/*.resume
+# username, password, etc for transmission-remote
+remote_args=""
+
+match=$1
+
+config_dir=$(transmission-remote $remote_args -si |
+             awk -F ": " '/Configuration directory:/{ print $2 }')
+torrent_dir="$config_dir"/torrents
+resume_dir="$config_dir"/resume
+
+for i in $(transmission-remote $remote_args -l | grep -o "^[[:space:]]*[[:digit:]]*")
 do
-    if grep -i "$match" "$i"
+    info=$(transmission-remote $remote_args -t"$i" -i)
+    if echo "$info" | grep -E "$match" > /dev/null
     then
-        echo moving "$i"
-        echo mv "$i" "$dest/resume/"
-        trnname=$(basename "${i%.*}")
-        echo mv "$from/torrents/$trnname.torrent" "$dest/torrents/"
-        echo ""
+        name=$(echo "$info" | awk -F ": " '/Name:/{ print $2 }')
+        info_hash=$(echo "$info" | awk -F ": " '/Hash:/{ print substr($2, 1, 16) }')
+        location=$(echo "$info" | awk -F ": " '/Location:/{ print $2 }')
+
+        resume_file=$(find "$resume_dir" -name "*.$info_hash.resume")
+        torrent_file=$(find "$torrent_dir" -name "*.$info_hash.torrent")
+
+        if [ -f "$resume_file" ] && [ -f "$torrent_file" ]
+        then
+            echo "$i"
+            # echo "$name"
+            # echo "$resume_file"
+            # echo "$torrent_file"
+            # echo "$location"
+            # echo
+        else
+            echo Torrent or resume file not file for ID: "$i", "$name"
+        fi
     fi
 done
