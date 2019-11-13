@@ -76,6 +76,7 @@ set guifont=Hack\ 12
 set number
 " enable mouse support in console
 set mouse=a
+set ttymouse=urxvt
 " shows what you are typing as a command
 set showcmd
 " turn on wild menu on :e <Tab>
@@ -254,17 +255,17 @@ set signcolumn=yes
 let g:ale_sign_column_always   = 1
 let g:ale_sign_error           = '>'
 let g:ale_sign_warning         = '-'
+let g:ale_set_balloons         = 1
 " only lint when leaving insert mode
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
-" specify linters, 'clang-tidy'
+
 let g:ale_linters = {
-  \ 'c': ['clangd', 'clang-check', 'cppcheck'],
-  \ 'python': ['pyls', 'pyflakes', 'flake8'],
-  \ 'sh': ['shellcheck'],
+  \ 'c': ['clangd'],
+  \ 'python': ['pyls'],
+  \ 'sh': ['language-server', 'shellcheck'],
   \ 'lua': ['luacheck']
   \ }
-let g:ale_c_gcc_options = "-std=c11 -Wall -lncurses"
 
 " Keymapping
 let g:which_key_map.a = {
@@ -273,6 +274,7 @@ let g:which_key_map.a = {
   \ 'p' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
   \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
+  \ 'h' : [ '<Plug>(ale_hover)' , 'show hover info' ],
   \ }
 " }}}
 " Nerdtree {{{
