@@ -11,6 +11,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
 Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzy search everything
 Plug 'scrooloose/nerdcommenter'       " commenting code
+Plug 'scrooloose/nerdtree'            " tree file browser
 Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
 Plug 'plasticboy/vim-markdown'        " markdown plugins
 Plug 'itchyny/lightline.vim'
