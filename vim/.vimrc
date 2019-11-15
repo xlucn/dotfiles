@@ -262,7 +262,7 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 
 let g:ale_linters = {
-  \ 'c': ['clangd'],
+  \ 'c': ['clangd', 'clang'],
   \ 'python': ['pyls'],
   \ 'sh': ['language-server', 'shellcheck'],
   \ 'lua': ['luacheck']
