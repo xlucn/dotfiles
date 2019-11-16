@@ -3,6 +3,26 @@
 # username, password, etc for transmission-remote
 remote_args=""
 
+while getopts "hinrtl" arg; do
+    case "$arg" in
+        i) i_flag=1;;
+        n) n_flag=1;;
+        r) r_flag=1;;
+        t) t_flag=1;;
+        l) l_flag=1;;
+        h)
+            printf "Usage: %s [-inrtl] \"match pattern\"\n" "$(basename "$0")"
+            printf "\t-i: print id\n"
+            printf "\t-n: print name\n"
+            printf "\t-r: print resume file path\n"
+            printf "\t-t: print torrent file path\n"
+            printf "\t-l: print download dir path\n"
+            exit
+            ;;
+        *) ;;
+    esac
+done
+shift $((OPTIND - 1))
 match=$1
 
 config_dir=$(transmission-remote $remote_args -si |
@@ -24,12 +44,11 @@ do
 
         if [ -f "$resume_file" ] && [ -f "$torrent_file" ]
         then
-            echo "$i"
-            # echo "$name"
-            # echo "$resume_file"
-            # echo "$torrent_file"
-            # echo "$location"
-            # echo
+            [ -n "$i_flag" ] && echo "$i"
+            [ -n "$n_flag" ] && echo "$name"
+            [ -n "$r_flag" ] && echo "$resume_file"
+            [ -n "$t_flag" ] && echo "$torrent_file"
+            [ -n "$l_flag" ] && echo "$location"
         else
             echo Torrent or resume file not file for ID: "$i", "$name"
         fi
