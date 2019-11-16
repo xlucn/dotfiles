@@ -30,6 +30,7 @@ Plug 'lilydjwg/fcitx.vim'             " fcitx
 Plug 'jpalardy/vim-slime'             " vim-slime
 Plug 'tpope/vim-commentary'
 Plug 'neomutt/neomutt.vim'
+Plug 'dylanaraps/wal.vim'
 call plug#end()
 " }}}
 " }}}
@@ -103,7 +104,7 @@ set noshowmode
 " show partial line
 set display+=lastline
 " color scheme
-colorscheme desert
+colorscheme wal
 set background=dark
 " }}}
 " Space Tabs Indentations {{{
