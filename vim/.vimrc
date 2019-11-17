@@ -68,6 +68,8 @@ set timeoutlen=300
 set ttimeoutlen=0
 " open diff window vertically
 set diffopt+=vertical
+" comletion
+set completeopt=menuone,noinsert,longest
 " }}}
 " UI basic {{{
 " clear sign column highlight
@@ -254,11 +256,16 @@ let g:gitgutter_terminal_reports_focus  = 0
 set signcolumn=yes
 " }}}
 " ALE {{{
-"let g:ale_completion_enabled = 1
+" automatically pop up completion candidates
+let g:ale_completion_enabled = 1
+let g:ale_completion_delay   = 100
+" set sign column characters
 let g:ale_sign_column_always   = 1
 let g:ale_sign_error           = '>'
 let g:ale_sign_warning         = '-'
+" show pop up in balloons
 let g:ale_set_balloons         = 1
+let g:ale_set_quickfix         = 1
 " only lint when leaving insert mode
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
@@ -270,9 +277,11 @@ let g:ale_linters = {
   \ 'lua': ['luacheck']
   \ }
 
-" Keymapping
+" Key mapping
 let g:which_key_map.a = {
   \ 'name' : '+ale',
+  \ 'r' : [ '<Plug>(ale_find_references)', 'find references' ],
+  \ 'd' : [ '<Plug>(ale_go_to_definition)', 'go to definition' ],
   \ 'n' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
   \ 'p' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
@@ -348,9 +357,6 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
-" }}}
-" super tab {{{
-let g:SuperTabDefaultCompletionType = "context"
 " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=1
