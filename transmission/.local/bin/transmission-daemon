@@ -1,0 +1,9 @@
+#!/bin/sh
+
+logdir="$HOME/.cache/transmission-daemon"
+logfile="$logdir/$(date +%s).log"
+if [ ! -d "$logdir" ]
+then
+    mkdir -p "$logdir"
+fi
+/usr/bin/transmission-daemon "$@" --log-info --logfile "$logdir/$logfile"
