@@ -1,0 +1,11 @@
+[Unit]
+Description=Transmission BitTorrent Daemon
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=${HOME}/.local/bin/transmission-daemon
+ExecReload=/bin/kill -s HUP $MAINPID
+
+[Install]
+WantedBy=default.target
