@@ -8,31 +8,34 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
-Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
-Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzzy search everything
-Plug 'scrooloose/nerdcommenter'       " commenting code
-Plug 'scrooloose/nerdtree'            " tree file browser
-Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
-Plug 'plasticboy/vim-markdown'        " markdown plugins
+Plug 'VundleVim/Vundle.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
-Plug 'tpope/vim-fugitive'             " git status and commands
-Plug 'airblade/vim-gitgutter'         " sign column indicator
-Plug 'tpope/vim-surround'             " surround parentheses change
-Plug 'liuchengxu/vim-which-key'       " leader guide like in spacevim
-Plug 'w0rp/ale'                       " linter plugin
-Plug 'majutsushi/tagbar'              " tag bar
-Plug 'ervandew/supertab'              " supertab
-Plug 'lervag/vimtex'                  " vimtex plugin
-Plug 'VoldikSS/vim-mma'               " mathematica
-Plug 'lilydjwg/fcitx.vim'             " fcitx
-Plug 'jpalardy/vim-slime'             " vim-slime
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-surround'
+Plug 'liuchengxu/vim-which-key'
+Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'ervandew/supertab'
+Plug 'lervag/vimtex'
+Plug 'VoldikSS/vim-mma'
+Plug 'lilydjwg/fcitx.vim'
+Plug 'jpalardy/vim-slime'
 Plug 'tpope/vim-commentary'
 Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
 Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
 call plug#end()
 " }}}
 " }}}
@@ -80,6 +83,8 @@ set guioptions=ci
 set guifont=Hack\ 12
 " show line number
 set number
+" always show sign column
+set signcolumn=yes
 " enable mouse support in console
 set mouse=a
 set ttymouse=urxvt
@@ -152,11 +157,10 @@ nnoremap <space> za
 " }}}
 " Autocmd {{{
 autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
-autocmd BufNewFile,BufRead *.wl setfiletype mma
-autocmd BufNewFile,BufRead *.wls setfiletype mma
+autocmd BufNewFile,BufRead *.wl,*.wls setfiletype mma
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :!xrdb %
-autocmd FileType tex setlocal sw=2 ts=2 sts=2
+autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -229,7 +233,7 @@ let g:lightline = {
     \ }
 " }}}
 " Fugitive {{{
-" wrote this by my own, show the log in a pretty way
+" show the log in a pretty way
 function! GitRepoLogAll()
     silent Git log --all --decorate --oneline --graph --date-order
     redraw!
@@ -257,8 +261,6 @@ let g:which_key_map.g = {
 let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
-" always show sign column
-set signcolumn=yes
 " }}}
 " ALE {{{
 " automatically pop up completion candidates
@@ -362,6 +364,11 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
+" }}}
+" Goyo {{{
+nnoremap gy :Goyo<CR>
+" On window resize, if goyo is active, do <c-w>= to resize the window
+autocmd VimResized * if exists('#goyo') | exe "normal \<c-w>=" | endif
 " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=1
