@@ -37,14 +37,20 @@ URxvt.underlineURLs: True
 ! disable ctrl-shift keybinding
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-! copy ans paste with S+C+c/v
+! copy and paste with S+C+c/v
 URxvt.clipboard.autocopy: true
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 
 ! -- Fonts -- !
-URxvt.font: xft:Hack:size=12, xft:Hack Nerd Font Mono:size=12, xft: FandolHei:style=Regular:size=12, xft: WenQuanYi Micro Hei:size=12
-URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: FandolHei:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
+URxvt.font: xft:Hack:size=12, \
+            xft:Hack Nerd Font Mono:size=12, \
+            xft: FandolHei:style=Regular:size=12, \
+            xft: WenQuanYi Micro Hei:size=12
+URxvt.boldFont: xft:Hack:style=Bold:size=12, \
+                xft:Hack Nerd Font Mono:style=Bold:size=12, \
+                xft: FandolHei:style=Bold:size=12, \
+                xft: WenQuanYi Micro Hei:size=12
 
 ! using wal
 #include ".cache/wal/colors.Xresources"
