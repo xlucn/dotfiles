@@ -31,6 +31,7 @@ Plug 'jpalardy/vim-slime'             " vim-slime
 Plug 'tpope/vim-commentary'
 Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
 " }}}
@@ -281,8 +282,14 @@ let g:which_key_map.a = {
 " }}}
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
-let NERDTreeShowHidden=1
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrowExpandable="\u00a0"
+let NERDTreeDirArrowCollapsible="\u00a0"
 nnoremap <C-N> :NERDTreeToggle<CR>
+let NERDTreeMapUpdir='h'
+let NERDTreeMapUpdirKeepOpen='H'
+let NERDTreeMapChangeRoot='l'
+let g:DevIconsEnableFoldersOpenClose = 1
 " }}}
 " Nerd commenter{{{
 let g:NERDDefaultAlign = 'left'
