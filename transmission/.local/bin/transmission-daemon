@@ -6,4 +6,4 @@ if [ ! -d "$logdir" ]
 then
     mkdir -p "$logdir"
 fi
-/usr/bin/transmission-daemon "$@" --log-info --logfile "$logdir/$logfile"
+/usr/bin/transmission-daemon "$@" --logfile "$logfile"
