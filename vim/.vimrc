@@ -9,7 +9,7 @@ endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'           " the Vundle plugin it self
-Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzy search everything
+Plug 'ctrlpvim/ctrlp.vim'             " CtrlP, fuzzy search everything
 Plug 'scrooloose/nerdcommenter'       " commenting code
 Plug 'scrooloose/nerdtree'            " tree file browser
 Plug 'godlygeek/tabular'              " this plugin must be before vim-markdown
@@ -31,6 +31,7 @@ Plug 'jpalardy/vim-slime'             " vim-slime
 Plug 'tpope/vim-commentary'
 Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
+Plug 'jdkanani/vim-material-theme'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
@@ -100,15 +101,19 @@ set updatetime=100
 set lazyredraw
 " don't beep
 set noerrorbells
-" don't show welcome scren
+" don't show welcome screen
 set shortmess+=I
 set showtabline=2
 set noshowmode
 " show partial line
 set display+=lastline
 " color scheme
-colorscheme wal
 set background=dark
+if has('gui_running')
+    colorscheme material-theme
+else
+    colorscheme wal
+endif
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -121,7 +126,7 @@ set shiftwidth=0  " make it the same as tabstop
 set softtabstop=-1  " make it the same as shiftwidth
 set expandtab
 set smarttab
-" show tabs and trailing whitespace
+" show tabs and trailing white space
 set list
 set listchars=tab:>-,trail:.
 " }}}
