@@ -31,8 +31,6 @@ alias cmpv="mpv --vo=drm"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 
-PS1='[\u@\h \W]\$ '
-
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
@@ -62,31 +60,30 @@ __jobs_count() {
     count_run=$(echo "$jobs_info" | grep -Ec "Running")
     count_done=$(echo "$jobs_info" | grep -Ec "Done")
     count_kill=$(echo "$jobs_info" | grep -Ec "Killed|Terminated")
-    count=$(( "$count_stop" + "$count_run" + "$count_done" + "$count_kill" ))
+    count=$(( count_stop + count_run + count_done + count_kill ))
     if [ $count -gt 0 ]
     then
         printf " "
-        if [ "$count_stop" -gt 0 ]; then printf "\[\e[33mT%s\[\e[0m\]" "$count_stop"; fi
-        if [ "$count_run"  -gt 0 ]; then printf "\[\e[32mR%s\[\e[0m\]" "$count_run"; fi
-        if [ "$count_done" -gt 0 ]; then printf "\[\e[34mD%s\[\e[0m\]" "$count_done"; fi
-        if [ "$count_kill" -gt 0 ]; then printf "\[\e[31mK%s\[\e[0m\]" "$count_kill"; fi
+        [ "$count_stop" -gt 0 ] && printf "\[\e[33mS%s\[\e[0m\]" "$count_stop"
+        [ "$count_run"  -gt 0 ] && printf "\[\e[32mR%s\[\e[0m\]" "$count_run"
+        [ "$count_done" -gt 0 ] && printf "\[\e[34mD%s\[\e[0m\]" "$count_done"
+        [ "$count_kill" -gt 0 ] && printf "\[\e[31mK%s\[\e[0m\]" "$count_kill"
     fi
 }
 
 __ssh_indicator() {
-    if [ -n "$SSH_CLIENT" ]
-    then
-        printf "\[\e[36m\][SSH]\[\e[0m\] "
-    fi
+    [ -n "$SSH_CLIENT" ] && printf "\[\e[36m\][SSH]\[\e[0m\] "
+}
+
+__user_host() {
+    printf "\[\e[35m\]%s@%s\[\e[0m\] " "$(whoami)" "$(hostname)"
 }
 
 __before_git() {
-    printf "%s\[\e[35m\]%s@%s\[\e[0m\] %s%s" \
-           "$(__ssh_indicator)" \
-           "$(whoami)" \
-           "$(hostname)" \
-           "$(__cwd_trim)" \
-           "$(__jobs_count)"
+    __ssh_indicator
+    __user_host
+    __cwd_trim
+    __jobs_count
 }
 __after_git() {
     printf " \[\e[1;33m\]\$\[\e[0m\] "
