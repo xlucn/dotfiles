@@ -11,6 +11,7 @@ visualizer_fifo_path = /tmp/mpd.fifo
 visualizer_output_name = Visualizer feed
 # If you set format to 44100:16:2, make it 'yes'.
 visualizer_in_stereo = yes
+visualizer_color = 41, 83, 119, 155, 185, 215, 209, 203, 197, 161
 
 
 # editor
@@ -32,6 +33,9 @@ centered_cursor = yes
 progressbar_look = =>-
 display_bitrate = yes
 display_remaining_time = no
+
+startup_screen = playlist
+screen_switcher_mode = playlist, browser, search_engine, media_library, playlist_editor, tag_editor, outputs, visualizer
 
 #song_list_format
 #song_status_format
