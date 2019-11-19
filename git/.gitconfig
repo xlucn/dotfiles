@@ -11,7 +11,8 @@
 [alias]
     ls = ls-tree master --name-only -r
     s = status
-    c = commit
-    cm = commit -m
+    c = commit -m
     l = log
     b = branch
+[http]
+    proxy = socks5h://localhost:1080
