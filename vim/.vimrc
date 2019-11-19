@@ -265,7 +265,7 @@ let g:gitgutter_terminal_reports_focus  = 0
 " ALE {{{
 " automatically pop up completion candidates
 let g:ale_completion_enabled = 1
-let g:ale_completion_delay   = 100
+let g:ale_completion_delay   = 0
 " set sign column characters
 let g:ale_sign_column_always   = 1
 let g:ale_sign_error           = '>'
@@ -277,12 +277,19 @@ let g:ale_set_quickfix         = 1
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 
+" clangd needs a compile_commands.json file for the project
 let g:ale_linters = {
-  \ 'c': ['clangd', 'clang'],
+  \ 'c': ['clangd'],
   \ 'python': ['pyls'],
   \ 'sh': ['language-server', 'shellcheck'],
   \ 'lua': ['luacheck']
   \ }
+let g:ale_fixers = {
+  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \ 'c': ['clang-format', 'clangtidy']
+  \ }
+let g:ale_linters_explicit = 1
+let g:ale_c_parse_makefile = 1
 
 " Key mapping
 let g:which_key_map.a = {

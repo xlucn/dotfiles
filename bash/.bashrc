@@ -23,6 +23,7 @@ alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 # ask when replacing files
 alias mv="mv -i"
+alias cp="cp -i"
 # do not show *tmpfs
 alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcent,target"
 # mpv under virtual console using drm
