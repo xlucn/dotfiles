@@ -36,6 +36,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 call plug#end()
 " }}}
 " }}}
@@ -191,6 +192,9 @@ call which_key#register(maplocalleader, "g:which_key_map_local")
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
+" preview
+let g:mkdp_auto_start = 1
+let g:mkdp_browser = 'firefox'
 " }}}
 " Lightline {{{
 let g:lightline = {
