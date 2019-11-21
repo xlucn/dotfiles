@@ -310,8 +310,8 @@ let g:which_key_map.a = {
 " Nerdtree {{{
 let NERDTreeShowBookmarks=1
 let NERDTreeMinimalUI=1
-let NERDTreeDirArrowExpandable="\u00a0"
-let NERDTreeDirArrowCollapsible="\u00a0"
+" let NERDTreeDirArrowExpandable="\u00a0"
+" let NERDTreeDirArrowCollapsible="\u00a0"
 nnoremap <C-N> :NERDTreeToggle<CR>
 let NERDTreeMapUpdir='h'
 let NERDTreeMapUpdirKeepOpen='H'
