@@ -23,7 +23,7 @@ set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 
 # User interface
-set guioptions "vs"
+set guioptions "vhs"
 set highlight-transparency 0.2
 
 # Colors
