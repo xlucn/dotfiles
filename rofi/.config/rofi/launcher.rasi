@@ -20,7 +20,7 @@ configuration {
     padding          : 0;
     border           : 0;
     spacing          : 0;
-    background:                     #00000088;
+    background:                     #000000b0;
     background-alt:                 #E5E9F047;
     text-color:                     #D8DEE9;
     selected-text-color:            #000000;
@@ -32,7 +32,7 @@ window {
     background-color : @background;
     width            : 100%;
     height           : 100%;
-    y-offset         : 32px;
+    /* y-offset         : 32px; */
 }
 
 inputbar {
