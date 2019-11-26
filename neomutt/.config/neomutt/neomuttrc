@@ -14,14 +14,14 @@ unset markers
 
 # show sidebar
 set sidebar_visible = no
-set sidebar_width = 80
+set sidebar_width = 40
 
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
 # forward subject formats
 set forward_format = "Fwd: %s"
 # index (list of mails)
-set index_format = "%4C %Z %[%y/%m/%d %R] %-15.15L (%?l?%4l&%4c?) %s"
+set index_format = "%4C %Z %[%Y-%m-%d %R] %-15.15L (%?l?%4l&%4c?) %s"
 
 # cache folder
 set message_cachedir = ~/.cache/neomutt/bodies
@@ -45,7 +45,7 @@ set imap_list_subscribed = yes
 # sort by threads
 set sort = "threads"
 set sort_aux = "last-date-received"
-# index scroll
+# index scroll instead of turning pages
 set menu_scroll
 
 # aliases
