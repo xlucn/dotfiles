@@ -1,0 +1,36 @@
+#!/bin/sh
+# a script to change torrent tracker from hd-torrents.org
+
+usage() {
+    echo "provide a name or number for the site: (1) hdt (2) pter"
+    echo "if not available, add an option to the script"
+}
+
+if [ "$#" = 0 ]
+then
+    usage
+    exit
+elif [ "$1" = 1 ] || [ "$1" = hdt ]
+then
+    old_pattern='/hdts/'
+    old_key='pid'
+    new_url='http://hd-torrents.org'
+elif [ "$1" = 2 ] || [ "$1" = pter ]
+then
+    old_pattern='/pter.club/'
+    old_key='passkey'
+    new_url='http://tracker.pterclub.com'
+else
+    usage
+    exit
+fi
+
+# find the torrent ids
+for i in $(transmission-remote -tall -l | awk -F'([ ][ ]+|[*])' '{ print $1 }')
+do
+    pid=$(transmission-remote -t"$i" -i | awk -F"$old_key%3D" "$old_pattern"'{print $2}')
+    if [ -n "$pid" ]
+    then
+        echo transmission-remote -t"$i" -tr 0 -td "$new_url/announce.php?$old_key=$pid"
+    fi
+done
