@@ -1,4 +1,4 @@
-## This config is used in the fbtmux script, and is specially for session in fbterm
+## This config is used in the fbtmux script, better to use in fbterm (with support for nerd fonts)
 
 # As in the fbtmux script, I recommand start a tmux session with a
 # special session name, e.g. fbterm, and a special socket name, e.g. fbterm
@@ -145,7 +145,7 @@ bind -n M-Q detach-client
 bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
 bind -n M-C-BSpace display yes
 
-# Status bar
+# Status bar the commands below are scripts in my repo
 set -g status-right-length 120
 set -g status-right "\
 #[fg=colour154,bg=colour0] #(wttr-tmux) \
@@ -157,7 +157,7 @@ set -g status-right "\
 #[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
 #[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
-#[#{?#(fcitx-remote),fg=colour2,fg=colour7}, bg=colour0]韛\
+#[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
 #[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
 # 
