@@ -27,16 +27,16 @@ set guioptions "vhs"
 set highlight-transparency 0.2
 
 # Colors
-set default-fg "#CDD3DE"
-set default-bg "#263238"
-set statusbar-bg "#263238"
-set statusbar-fg "#CDD3DE"
+set default-fg "#EEFFFF"
+set default-bg "#212121"
+set statusbar-bg "#212121"
+set statusbar-fg "#EEFFFF"
 # Recolor
 set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
-set recolor-darkcolor "#CDD3DE"
-set recolor-lightcolor "#263238"
+set recolor-darkcolor "#FFFFFF"
+set recolor-lightcolor "#212121"
 
 # Clipboard
 set selection-clipboard "clipboard"
