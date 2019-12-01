@@ -150,6 +150,8 @@ set hlsearch
 " go up/down
 nnoremap <silent> j gj
 nnoremap <silent> k gk
+vnoremap <silent> j gj
+vnoremap <silent> k gk
 " buffers
 nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
