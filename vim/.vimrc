@@ -285,7 +285,7 @@ let g:ale_lint_on_text_changed = 'normal'
 
 " clangd needs a compile_commands.json file for the project
 let g:ale_linters = {
-  \ 'c': ['clangd'],
+  \ 'c': ['ccls'],
   \ 'python': ['pyls'],
   \ 'sh': ['language-server', 'shellcheck'],
   \ 'lua': ['luacheck']
