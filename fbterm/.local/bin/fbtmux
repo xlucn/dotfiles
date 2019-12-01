@@ -45,5 +45,5 @@ EOF
 fi
 
 # Everything set, start fbterm!
-fbterm "$@" -- tmux -L fbterm -f ~/.tmux.conf.fbterm new -A -s fbterm
+fbterm -- tmux -L fbterm -f ~/.tmux.conf.fbterm "$@" new -A -s fbterm
 tput cnorm
