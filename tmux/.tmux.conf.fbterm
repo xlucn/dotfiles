@@ -95,15 +95,16 @@ bind -n M-= run-shell -b "light -A 5"\; refresh-client
 # Change volume
 bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
 bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
-bind -n M-\ run-shell -b "amixer -q set Master toggle"\; refresh-client
+bind -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client
 # mpd operations
 bind -n M-_ run-shell -b "mpc -q seek -10"
 bind -n M-+ run-shell -b "mpc -q seek +10"
-bind -n M-{ run-shell -b "mpc -q prev"
-bind -n M-} run-shell -b "mpc -q next"
+bind -n M-\{ run-shell -b "mpc -q prev"
+bind -n M-\} run-shell -b "mpc -q next"
 bind -n M-| run-shell -b "mpc -q toggle"
 
 ## A hack to keep the last pane of a window alive together
+# TODO: use the new 'empty pane' feature in tmux 3.0
 # Do not close pane when exit (e.g. after exit bash)
 set -g remain-on-exit on
 # After exit, kill pane only when there is more than one remaining. So the last one won't close
