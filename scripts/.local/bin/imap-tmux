@@ -4,8 +4,8 @@
 
 if [ "$(pgrep -c imap-tmux)" -gt 1 ]; then exit 0; fi
 
-count1=$(imap -m oliver_lew@outlook.com)
-count2=$(imap -m 2869761396@qq.com)
+count1=$(imap oliver_lew@outlook.com)
+count2=$(imap 2869761396@qq.com)
 echo "$count1"\|"$count2"
 
 sleep 60
