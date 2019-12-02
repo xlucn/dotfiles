@@ -37,7 +37,7 @@ Config files for everything
   - [lain](https://github.com/lcpz/lain) for wigdets library
   - [nemo](https://github.com/linuxmint/nemo) for file manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
-  - [compton](https://github.com/chjj/compton) for compositing
+  - [picom](https://github.com/yshui/picom) for compositing (a fork of [compton](https://github.com/chjj/compton))
   - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
 ## Install
