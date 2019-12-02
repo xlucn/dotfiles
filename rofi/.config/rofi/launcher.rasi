@@ -1,31 +1,32 @@
 configuration {
-    font             : "Hack 12";
-    icon-theme       : "Papirus";
-    terminal         : "urxvtc";
-    sidebar-mode     : false;
-    modi             : "drun";
-    show-icons       : true;
-    scroll-method    : 0;
-    columns          : 5;
-    lines            : 5;
-    cycle            : false;
+    font                : "Hack 12";
+    icon-theme          : "Papirus";
+    terminal            : "urxvtc";
+    sidebar-mode        : false;
+    modi                : "drun";
+    show-icons          : true;
+    scroll-method       : 0;
+    columns             : 5;
+    lines               : 5;
+    cycle               : false;
+    drun-display-format : "{name}";
 }
 
 * {
-    background-color : #00000000;
-    line-margin      : 0;
-    line-padding     : 0;
-    separator-style  : "none";
-    margin           : 0;
-    padding          : 0;
-    border           : 0;
-    spacing          : 0;
-    background:                     #000000b0;
-    background-alt:                 #E5E9F047;
-    text-color:                     #D8DEE9;
-    selected-text-color:            #000000;
-    primary:                        #A3BE8C;
-    urgent:                         #BF616A;
+    background-color    : #00000000;
+    line-margin         : 0;
+    line-padding        : 0;
+    separator-style     : "none";
+    margin              : 0;
+    padding             : 0;
+    border              : 0;
+    spacing             : 0;
+    background          : #000000b0;
+    background-alt      : #E5E9F047;
+    text-color          : #D8DEE9;
+    selected-text-color : #000000;
+    primary             : #A3BE8C;
+    urgent              : #BF616A;
 }
 
 window {
@@ -41,32 +42,27 @@ inputbar {
 }
 
 entry {
-    background-color : @background;
+    background-color : @background-alt;
     border           : 0px;
     font             : "Hack 16";
     border-radius    : 12px;
     padding          : 16px;
 }
 
-prompt {
-    font             : "Hack 16";
-}
-
 listview {
-    margin           : 10% 20%;
+    margin           : 4% 12%;
     scrollbar        : false;
     spacing          : 0px;
 }
 
 element {
     border-radius    : 12px;
-    padding          : 2%;
+    padding          : 2% 1%;
     orientation      : vertical;
-    border-radius    : 12px;
 }
 
 element-icon {
-    size             : 6%;
+    size             : 8%;
 }
 
 element-text {
