@@ -740,7 +740,7 @@ awful.rules.rules = {
         properties = {
             tag = tag2,
             titlebars_enabled = false,
-            maximized = true
+            -- maximized = true
         }
     },
 }
