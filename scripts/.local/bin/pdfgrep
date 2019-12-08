@@ -1,0 +1,8 @@
+#!/bin/sh
+pattern="$1"
+shift
+
+for pdf in "$@"; do
+    pdftotext "$pdf" - | \
+    grep --with-filename --label="$pdf" --color "$pattern"
+done
