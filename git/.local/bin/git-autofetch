@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ -f "$HOME/.config/git-autofetch" ]; then
+    while read -r p; do
+        echo git fetch in "$p" >> "$HOME/.cache/git-autofetch.log"
+        cd "$p" && git fetch >> "$HOME/.cache/git-autofetch.log" 2>&1
+    done < "$HOME/.config/git-autofetch"
+fi

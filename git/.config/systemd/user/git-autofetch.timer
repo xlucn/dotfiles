@@ -1,0 +1,8 @@
+[Unit]
+Description=Auto fetch for git repo
+
+[Timer]
+OnCalendar=*:00,20,40
+
+[Install]
+WantedBy=timers.target
