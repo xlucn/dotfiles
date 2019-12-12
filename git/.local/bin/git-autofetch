@@ -1,7 +1,7 @@
 #!/bin/sh
 if [ -f "$HOME/.config/git-autofetch" ]; then
     while read -r p; do
-        echo git fetch in "$p" >> "$HOME/.cache/git-autofetch.log"
-        cd "$p" && git fetch >> "$HOME/.cache/git-autofetch.log" 2>&1
+        echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5
+        cd "$p" && git fetch | systemd-cat --identifier="git-autofetch" --priority=5
     done < "$HOME/.config/git-autofetch"
 fi
