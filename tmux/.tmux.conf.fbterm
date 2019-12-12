@@ -110,6 +110,7 @@ set -g remain-on-exit on
 # After exit, kill pane only when there is more than one remaining. So the last one won't close
 set-hook -g pane-died 'if "test #{window_panes} -eq 1" "respawn-pane $SHELL" "kill-pane \; select-layout $default_layout"'
 # Kill pane if it's not the last one in the window
+# TODO: after-kill-pane available since tmux 3.0, replace the following with it later.
 bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
 
 ## Use fancy font characters as window names with the idea of saving space
