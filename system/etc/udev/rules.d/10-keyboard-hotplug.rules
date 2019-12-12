@@ -1,3 +1,2 @@
 # IKBC C87
-SUBSYSTEM=="usb",ACTION=="bind",ATTRS{idProduct}=="4042",RUN+="/usr/local/bin/caps2esc"
-#ATTRS{idVendor}=="04B4" not working???
+SUBSYSTEM=="input",ACTION=="add",ATTRS{idProduct}=="4042",ATTRS{idVendor}=="04b4",RUN+="/usr/local/bin/caps2esc"
