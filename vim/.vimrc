@@ -9,7 +9,6 @@ endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
@@ -21,6 +20,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'liuchengxu/vim-which-key'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
@@ -29,14 +29,12 @@ Plug 'lervag/vimtex'
 Plug 'VoldikSS/vim-mma'
 Plug 'lilydjwg/fcitx.vim'
 Plug 'jpalardy/vim-slime'
-Plug 'tpope/vim-commentary'
 Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 call plug#end()
 " }}}
