@@ -31,6 +31,13 @@ alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-video-plane-i
 alias cmpv="mpv --vo=drm"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
+# vi -> vim -> nvim :)
+if command -v vim > /dev/null 2>&1; then
+    alias vi="vim"
+    if command -v nvim > /dev/null 2>&1; then
+        alias vim="nvim"
+    fi
+fi
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
