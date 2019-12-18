@@ -198,6 +198,8 @@ let g:mkdp_auto_start = 1
 let g:mkdp_browser = 'firefox'
 " }}}
 " Lightline {{{
+" the base256 and base16 colorscheme are not from any vim plugins, find them
+" in my repo
 let g:lightline = {
     \ 'colorscheme': 'base256',
     \ 'active': {
@@ -236,6 +238,9 @@ let g:lightline = {
     \   'gitbranch': 'fugitive#head'
     \ },
     \ }
+if $TERM == 'linux'
+    let g:lightline.colorscheme = 'base16'
+endif
 " }}}
 " Fugitive {{{
 " show the log in a pretty way
