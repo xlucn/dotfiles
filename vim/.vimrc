@@ -87,7 +87,9 @@ set number
 set signcolumn=yes
 " enable mouse support in console
 set mouse=a
-set ttymouse=urxvt
+if !has('nvim')
+    set ttymouse=urxvt
+endif
 " shows what you are typing as a command
 set showcmd
 " turn on wild menu on :e <Tab>
