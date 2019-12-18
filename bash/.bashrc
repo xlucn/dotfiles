@@ -34,9 +34,10 @@ alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # vi -> vim -> nvim :)
 if command -v vim > /dev/null 2>&1; then
     alias vi="vim"
-    if command -v nvim > /dev/null 2>&1; then
-        alias vim="nvim"
-    fi
+fi
+if command -v nvim > /dev/null 2>&1; then
+    alias vi="nvim"
+    alias vim="nvim"
 fi
 
 # Console color theme, reuse .Xresources definitions
