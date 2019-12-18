@@ -27,7 +27,7 @@ Plug 'majutsushi/tagbar'
 Plug 'ervandew/supertab'
 Plug 'lervag/vimtex'
 Plug 'VoldikSS/vim-mma'
-Plug 'lilydjwg/fcitx.vim'
+" Plug 'lilydjwg/fcitx.vim'
 Plug 'jpalardy/vim-slime'
 Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
@@ -167,6 +167,23 @@ autocmd BufWritePost *Xresources :!xrdb %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown setlocal spell
 " }}}
+" fcitx {{{
+function! Fcitx(mode)
+    if system('fcitx-remote') != 0
+        if a:mode == 'leave'
+            let b:toggle = system('fcitx-remote') - 1
+            call system('fcitx-remote -c')
+        endif
+        if a:mode == 'enter'
+            if exists('b:toggle') && b:toggle == 1
+                call system('fcitx-remote -o')
+            endif
+        endif
+    endif
+endfunction
+autocmd InsertLeave * call Fcitx("leave")
+autocmd InsertEnter * call Fcitx("enter")
+" }}}
 " }}}
 " Plugin Settings {{{
 " Vim Which Key {{{
@@ -197,7 +214,7 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
 " preview
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 let g:mkdp_browser = 'firefox'
 " }}}
 " Lightline {{{
@@ -363,8 +380,6 @@ let g:mma_candy = 2
 " ibus-vim {{{
 let g:ibus#layout = "xkb:us::eng"
 let g:ibus#engine = "libpinyin"
-" }}}
-" fcitx {{{
 " }}}
 " vim-slime {{{
 if $TERM == "screen-256color"
