@@ -3,10 +3,9 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
-# nocsd hack
-# export GTK_CSD=0
-# export LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
-
-# pgrep -x picom || picom &
-# exec awesome
-# exec startxfce4
+fcitx -d
+pgrep -x picom || picom &
+pgrep -x udiskie || udiskie -s &
+pgrep -x nm-applet || nm-applet &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec awesome

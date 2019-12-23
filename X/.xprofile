@@ -28,11 +28,7 @@ trackpad="AlpsPS/2 ALPS GlidePoint"
 xinput set-prop "$trackpad" "libinput Tapping Enabled" 1
 xinput set-prop "$trackpad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "$trackpad" "libinput Accel Speed" 0.5
+libinput-gestures-setup start
 
 # start up applications
-fcitx -d
-pgrep -x udiskie || udiskie -s &
-pgrep -x nm-applet || nm-applet &
 pgrep -x urxvtd || urxvtd -q -f -o
-libinput-gestures-setup start
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
