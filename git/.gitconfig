@@ -15,4 +15,4 @@
     l = log
     b = branch
 [http]
-    proxy = socks5h://localhost:1080
+    proxy = "socks5h://localhost:1080"
