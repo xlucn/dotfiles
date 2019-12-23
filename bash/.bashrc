@@ -120,5 +120,3 @@ PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 stty -ixon
 # set vi mode keybinding
 set -o vi
-#Allows you to cd into directory merely by typing the directory name.
-shopt -s autocd
