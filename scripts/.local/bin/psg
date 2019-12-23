@@ -1,7 +1,6 @@
 #!/bin/sh
-
 # ps and grep
-pid=$(pgrep "$@")
+pid=$(pgrep -i "$@")
 if [ -n "$pid" ]
 then
     echo "$pid" | xargs ps -fp
