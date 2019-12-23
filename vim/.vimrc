@@ -362,6 +362,9 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_matchparen_enabled = 0
 " compiler
 let g:vimtex_compiler_method = "latexmk"
+let g:vimtex_compiler_latexmk = {
+    \ 'build_dir' : 'output',
+    \}
 " }}}
 " Mathematica {{{
 let g:mma_candy = 2
