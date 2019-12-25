@@ -33,7 +33,8 @@ then
             [ "$bg_fbterm_time" -lt "$bg_wallpaper_time" ] || \
             [ "$bg_fbterm_time" -lt "$script_time" ]
         then
-            convert "$bg_wallpaper" -modulate 35,20 "$bg_fbterm"
+            # the parameters after -modulate: brightness and saturation
+            convert "$bg_wallpaper" -modulate 20,10 "$bg_fbterm"
         fi
     else
         bg_fbterm=$bg_wallpaper
