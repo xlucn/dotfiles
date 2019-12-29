@@ -4,8 +4,8 @@ map h scroll left
 map j scroll down
 map k scroll up
 map l scroll right
-map p navigate previous
-map n navigate next
+map [ navigate previous
+map ] navigate next
 map K navigate previous
 map J navigate next
 map <PageUp> navigate previous
