@@ -1,56 +1,112 @@
 #!/bin/sh
 
-# username, password, etc for transmission-remote
-remote_args=""
+usage() {
+    printf "Usage: %s -H <host> -P <port> -u <username> -p <password> [-adh] -t <tracker_regex> -l <loc_regex> -n <name_regex> <destination>\n\n" "$(basename "$0")"
+    printf "A script to move resume file and cached torrent file between transmission config dirs.\n"
+    printf "The script might be buggy, it's recommended to run with -d the first time.\n\n"
+    printf "Match patterns are one or more of match patterns combined with AND logical operation\n"
+    printf "that will be used to match the information in \`transmission-remote -t<id> -i.\`\n"
+    printf "There must be at list one <*_regex> argument. The <destination> must be at the end.\n\n"
+    printf "<destination>:\n\tThe destination dir (normally another transmission config dir)\n\n"
+    printf "Optional arguments:\n"
+    printf "\t-a: print more infomation\n"
+    printf "\t-d: dry run, do not move any files\n"
+    printf "\t-u <username>: username for transmission session\n"
+    printf "\t-p <password>: password if username is given\n"
+    printf "\t-H <host>: host of transmission session\n"
+    printf "\t-P <port>: port of transmission session, you can specify one or both of host and port\n"
+    printf "\t-l <loc_regex>: the regex to match the Location line\n"
+    printf "\t-n <name_regex>: the regex to match the Name line\n"
+    printf "\t-t <tracker_regex>: the regex to match the Magnet line\n"
+    printf "\t-h: show help message\n"
+}
 
-while getopts "hinrtl" arg; do
+while getopts "hdat:l:n:u:p:H:P:" arg; do
     case "$arg" in
-        i) i_flag=1;;
-        n) n_flag=1;;
-        r) r_flag=1;;
-        t) t_flag=1;;
-        l) l_flag=1;;
-        h)
-            printf "Usage: %s [-inrtl] \"match pattern\"\n" "$(basename "$0")"
-            printf "\t-i: print id\n"
-            printf "\t-n: print name\n"
-            printf "\t-r: print resume file path\n"
-            printf "\t-t: print torrent file path\n"
-            printf "\t-l: print download dir path\n"
-            exit
-            ;;
+        a) a_flag=1;;
+        d) dry_run=1;;
+        H) host="$OPTARG";;
+        P) port="$OPTARG";;
+        u) username="$OPTARG";;
+        p) password="$OPTARG";;
+        n) name_regex="$OPTARG";;
+        l) loc_regex="$OPTARG";;
+        t) tracker_regex="$OPTARG";;
+        h) usage; exit;;
         *) ;;
     esac
 done
-shift $((OPTIND - 1))
-match=$1
 
-config_dir=$(transmission-remote $remote_args -si |
-             awk -F ": " '/Configuration directory:/{ print $2 }')
+remote_args=
+if [ -n "$host" ] && [ -n "$port" ]; then
+    remote_args="$host:$port"
+elif [ -n "$host" ]; then
+    remote_args="$host"
+elif [ -n "$port" ]; then
+    remote_args="$port"
+else
+    remote_args="localhost"
+fi
+if [ -n "$username" ] && [ -n "$password" ]; then
+    remote_args="$remote_args -n $username:$password"
+fi
+
+shift $((OPTIND - 1))
+if [ "$#" != 1 ] || [ "$match_flag" = 0 ]
+then
+    usage
+    exit
+fi
+
+dest="$1"
+
+config_dir=$(transmission-remote "$remote_args" -si | awk -F ": " '/Configuration directory:/{ print $2 }')
 torrent_dir="$config_dir"/torrents
 resume_dir="$config_dir"/resume
 
-for i in $(transmission-remote $remote_args -l | grep -o "^[[:space:]]*[[:digit:]]*")
+for i in $(transmission-remote "$remote_args" -l | grep -o "^[[:space:]]*[[:digit:]]*")
 do
-    info=$(transmission-remote $remote_args -t"$i" -i)
-    if echo "$info" | grep -E "$match" > /dev/null
+    info=$(transmission-remote "$remote_args" -t"$i" -i)
+
+    name=$(echo "$info" | awk -F ": " '/Name:/{ print $2 }')
+    info_hash=$(echo "$info" | awk -F ": " '/Hash:/{ print substr($2, 1, 16) }')
+    location=$(echo "$info" | awk -F ": " '/Location:/{ print $2 }')
+    trackers=$(echo "$info" | awk -F "&tr=" '/Magnet:/{ for(i=2; i<=NF; i++) { print $i } }')
+    # trackers=$(echo -e ${trackers//%/\\x})
+
+    if ! echo "$trackers" | grep -E "$tracker_regex" > /dev/null; then continue; fi
+    if ! echo "$location" | grep -E "$loc_regex"     > /dev/null; then continue; fi
+    if ! echo "$name"     | grep -E "$name_regex"    > /dev/null; then continue; fi
+
+    resume_file=$(find "$resume_dir" -name "*.$info_hash.resume")
+    torrent_file=$(find "$torrent_dir" -name "*.$info_hash.torrent")
+
+    if [ ! -f "$resume_file" ] || [ ! -f "$torrent_file" ]
     then
-        name=$(echo "$info" | awk -F ": " '/Name:/{ print $2 }')
-        info_hash=$(echo "$info" | awk -F ": " '/Hash:/{ print substr($2, 1, 16) }')
-        location=$(echo "$info" | awk -F ": " '/Location:/{ print $2 }')
+        echo Torrent or resume file not file for ID: "$i", "$name"
+        continue
+    fi
 
-        resume_file=$(find "$resume_dir" -name "*.$info_hash.resume")
-        torrent_file=$(find "$torrent_dir" -name "*.$info_hash.torrent")
+    if [ "$a_flag" = 1 ]
+    then
+        printf "%-10s: %s\n" "ID" "$i"
+        printf "%-10s: %s\n" "NAME" "$name"
+        printf "%-10s: %s\n" "Resume" "$resume_file"
+        printf "%-10s: %s\n" "Torrent" "$torrent_file"
+        printf "%-10s: %s\n" "File dir" "$location"
+        printf "%-10s: %s\n" "Trackers" "$trackers"
+    fi
 
-        if [ -f "$resume_file" ] && [ -f "$torrent_file" ]
-        then
-            [ -n "$i_flag" ] && echo "$i"
-            [ -n "$n_flag" ] && echo "$name"
-            [ -n "$r_flag" ] && echo "$resume_file"
-            [ -n "$t_flag" ] && echo "$torrent_file"
-            [ -n "$l_flag" ] && echo "$location"
-        else
-            echo Torrent or resume file not file for ID: "$i", "$name"
-        fi
+    mvtorrent="cp \"$torrent_file\" \"$dest/torrents/\""
+    mvresume="cp \"$resume_file\" \"$dest/resume/\""
+    if [ "$dry_run" != 1 ]
+    then
+        echo "$mvtorrent"
+        sh -c "$mvtorrent"
+        echo "$mvresume"
+        sh -c "$mvresume"
+    else
+        printf "\n# (dryrun)\n$mvtorrent"
+        printf "\n# (dryrun)\n$mvresume"
     fi
 done
