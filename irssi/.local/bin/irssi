@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 pass_ipt=$(pass show irc/irc.iptorrents.com/oliverlew)
 export pass_ipt
 /usr/bin/irssi
