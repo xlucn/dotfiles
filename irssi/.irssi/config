@@ -182,13 +182,6 @@ statusbar = {
         topicbarend = { priority = "100"; alignment = "right"; };
       };
     };
-    awl_0 = {
-      items = {
-        barstart = { priority = "100"; };
-        awl_0 = { };
-        barend = { priority = "100"; alignment = "right"; };
-      };
-    };
   };
 };
 
@@ -204,7 +197,7 @@ settings = {
     nicklist_height = "50";
     nicklist_width = "20";
     awl_shared_sbar = "OFF";
-    awl_viewer = "no";
+    awl_viewer = "yes";
   };
 };
 
