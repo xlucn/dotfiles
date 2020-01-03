@@ -44,8 +44,6 @@ chatnets = {
   };
   Iptorrents = {
     type = "IRC";
-    nick = "oliverlew";
-    realname = "Oliver Lew";
     autosendcmd = "/^msg nickserv identify ${pass_ipt}";
   };
 };
@@ -58,54 +56,36 @@ channels = (
 
 aliases = {
   ATAG = "WINDOW SERVER";
-  B = "BAN";
-  BACK = "AWAY";
-  BANS = "BAN";
-  BYE = "QUIT";
   C = "CLEAR";
   CHAT = "DCC CHAT";
   DATE = "TIME";
   DEHIGHLIGHT = "DEHILIGHT";
   DESCRIBE = "ACTION";
   DHL = "DEHILIGHT";
-  EXEMPTLIST = "MODE $C +e";
   EXIT = "QUIT";
   GOTO = "SCROLLBACK GOTO";
   HIGHLIGHT = "HILIGHT";
   HL = "HILIGHT";
   HOST = "USERHOST";
-  INVITELIST = "MODE $C +I";
   J = "JOIN";
-  K = "KICK";
-  KB = "KICKBAN";
-  KN = "KNOCKOUT";
   LAST = "LASTLOG";
-  LEAVE = "PART";
   M = "MSG";
-  MUB = "UNBAN *";
   N = "NAMES";
   NMSG = "^MSG";
   P = "PART";
   Q = "QUERY";
   RESET = "SET -default";
-  RUN = "SCRIPT LOAD";
   SAY = "MSG *";
   SB = "SCROLLBACK";
   SBAR = "STATUSBAR";
   T = "TOPIC";
-  UB = "UNBAN";
-  UMODE = "MODE $N";
   UNSET = "SET -clear";
   W = "WHO";
   WC = "WINDOW CLOSE";
   WG = "WINDOW GOTO";
-  WJOIN = "JOIN -window";
   WI = "WHOIS";
   WII = "WHOIS $0 $0";
   WL = "WINDOW LIST";
-  WN = "WINDOW NEW HIDDEN";
-  WQUERY = "QUERY -window";
-  WW = "WHOWAS";
 };
 
 statusbar = {
