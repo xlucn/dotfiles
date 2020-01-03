@@ -1,3 +1,10 @@
+# The passwords variables are passed through shell environments
+# to avoid hard coded text appearing in configuration file.
+# There should be a companion script (named irssi) in my repo:
+# github.com/oliverlew/dotfiles
+# NOTE: check the path of my irssi script is in $PATH and before the path
+#   of the actuall irssi executable.
+
 servers = (
   {
     address = "chat.freenode.net";
@@ -12,6 +19,13 @@ servers = (
     port = "6697";
     use_tls = "yes";
     tls_verify = "yes";
+  },
+  {
+    address = "irc.iptorrents.com";
+    chatnet = "Iptorrents";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
   }
 );
 
@@ -28,11 +42,18 @@ chatnets = {
     max_msgs = "1";
     max_whois = "1";
   };
+  Iptorrents = {
+    type = "IRC";
+    nick = "oliverlew";
+    realname = "Oliver Lew";
+    autosendcmd = "/^msg nickserv identify ${pass_ipt}";
+  };
 };
 
 channels = (
   { name = "#freenode"; chatnet = "Freenode"; autojoin = "No"; },
-  { name = "#irssi"; chatnet = "Freenode"; autojoin = "No"; }
+  { name = "#irssi"; chatnet = "Freenode"; autojoin = "No"; },
+  { name = "#iptorrents"; chatnet = "Iptorrents"; }
 );
 
 aliases = {

@@ -1,7 +1,9 @@
 #! /bin/bash
 
 [ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
-[ -d ~/.local/bin ] && export PATH="${PATH}:$HOME/.local/bin"
+if [ -d ~/.local/bin ] && echo $PATH | grep -q ".local/bin"; then
+    export PATH="$HOME/.local/bin:${PATH}"
+fi
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 # shellcheck source=/dev/null
