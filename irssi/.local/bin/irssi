@@ -1,5 +1,45 @@
 #!/bin/sh
+# Wrapping script around irssi featuring:
+# 1. Run irssi in a tmux session to work with some irssi scripts, e.g.
+#     - adv_windowlist.pl
+#     - tmux-nicklist-portable.pl
+# 2. Use tmux detach functionality (but nothing else like keybindings, etc.)
+# 3. Pass some passwords through shell environments to use in nickserv, etc.
+# Note:
+# a. The password related commands should be changed both here and in the irssi
+#    config file according to your own needs.
+# b. The script even starts tmux inside another tmux session by unset the $TMUX
+#    shell environment. The side effect is attempted to be minimized by unbinding
+#    all tmux keybindings and hiding the status bar in the nested session so that
+#    the outter tmux works like the nested session never exists. (It can still be
+#    hacked by '/exec tmux' command in irssi)
+
+# Pass the passwords as shell environments into irssi
 pass_ipt=$(pass show irc/iptorrents/oliverlew)
 pass_freenode=$(pass show irc/freenode/oliverlew)
 export pass_ipt pass_freenode
-/usr/bin/irssi
+
+# start in tmux
+irssi_tmux()
+{
+    if ! tmux -L irssi ls -F "#S" | grep -q irssi 2> /dev/null
+    then
+        tmux -L irssi new -d -s irssi /usr/bin/irssi
+        # don't use tmux keybindings as user, only let irssi scripts use tmux
+        tmux -L irssi unbind-key -a
+        # leave a detach short cut, this is the same as abduco
+        tmux -L irssi bind-key -n C-\\ detach-client
+        # hide status bar
+        tmux -L irssi set-option status off
+    fi
+    tmux -L irssi attach -t irssi
+}
+
+# unset $TMUX if already in tmux
+if [ -n "$TMUX" ]; then
+    export TMUX_TEMP="$TMUX"
+    irssi_tmux
+    export TMUX="$TMUX_TEMP"
+else
+    irssi_tmux
+fi
