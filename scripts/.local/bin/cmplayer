@@ -1,9 +1,17 @@
 #!/bin/bash
 # A script to play video with framebuffer using mplayer, and put it on the position
 # of current tmux pane.
-# TODO: mplayer font display issue
+# Requirement:
+#   framebuffer, e.g. in tty or fbterm
+#   mplayer
+#   fbset
+#   ffmpeg
+# Optional:
+#   tmux
+# TODO: mplayer font display issue (I know it's not a issue of the script)
 
-# Character with and height (you might need to modify this)
+# Note: you might need to modify this according to your vconsole font setting.
+# Character with and height
 charw=10
 charh=20
 
@@ -19,11 +27,15 @@ fi
 if tmux display -p -F "#S" > /dev/null 2>&1
 then
     pane_id=$(tmux display -p -F "#D" | tr -d %)
-    # This outputs the "layout" of all the panes and then
-    # locates the current pane with its pane id and then
-    # gets its location and size (in characters).
-    # The format is <width>x<height>,<x>,<y>,<id>|{<recursive format>}|[<recursive format>].
-    # We only need the ones with ids, which means they don't have further structures.
+    # The following command does the steps:
+    # 1. Output the layout of all the panes
+    # 2. Locate the current pane by its pane id
+    # 3. Get the pane's location and size (in unit of characters)
+    #
+    # The format is loosely summarised as:
+    # <format> = <width>x<height>,<x>,<y>,(<id> or {<format>} or [<format>])
+    #
+    # We only need the ones with ids, which means they don't have child structures.
     read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
         | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
         | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
@@ -80,5 +92,5 @@ do
     tput cnorm
 done
 
-# Deal with some exit signals (still can't process KILL signal)
+# Deal with some exit signals (still can't process KILL signal, good luck with that)
 trap 'clear; tput cnorm' INT QUIT TERM EXIT
