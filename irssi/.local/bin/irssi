@@ -24,9 +24,10 @@ irssi_tmux()
 {
     if ! tmux -L irssi ls -F "#S" | grep -q irssi 2> /dev/null
     then
-        tmux -L irssi new -d -s irssi /usr/bin/irssi
+        tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi
         # don't use tmux keybindings as user, only let irssi scripts use tmux
         tmux -L irssi unbind-key -a
+        tmux -L irssi set -g prefix None
         # leave a detach short cut, this is the same as abduco
         tmux -L irssi bind-key -n C-\\ detach-client
         # hide status bar
