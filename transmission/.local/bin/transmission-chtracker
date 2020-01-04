@@ -2,7 +2,7 @@
 # a script to change torrent tracker from hd-torrents.org
 
 usage() {
-    echo "provide a name or number for the site: (1) hdt (2) pter (3) mteam"
+    echo "provide a name or number for the site: (1) hdt (2) pter (3) mteam (4) frds"
     echo "if not available, add an option to the script"
 }
 
@@ -25,6 +25,11 @@ then
     old_pattern='/pt.m-team.cc/'
     old_key='passkey'
     new_url='https://tracker.m-team.cc'
+elif [ "$1" = 4 ] || [ "$1" = frds ]
+then
+    old_pattern='/pt.keepfrds.com/'
+    old_key='passkey'
+    new_url='https://tracker.keepfrds.com'
 else
     usage
     exit
