@@ -15,6 +15,8 @@
 
 ## Source the common configs
 source ~/.tmux.conf
+# unbind root keybindings, usually mouse events
+unbind-key -T root -a
 
 ## Layout
 # Use this layout to simulate stack layout
