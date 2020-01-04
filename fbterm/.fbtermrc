@@ -2,11 +2,13 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=Hack,Hack Nerd Font,Source Han Sans CN
+font-names=Hack Nerd Font Mono:style=Bold,Source Han Sans CN:style=Medium
 font-size=16
 
 # force font width (and/or height), usually for non-fixed width fonts
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
+## recommend size-width-height:
+## 16-10-20 18-12-24 20-13-25
 font-width=10
 font-height=20
 
