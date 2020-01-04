@@ -1,4 +1,5 @@
 #!/bin/sh
-pass_ipt=$(pass show irc/irc.iptorrents.com/oliverlew)
-export pass_ipt
+pass_ipt=$(pass show irc/iptorrents/oliverlew)
+pass_freenode=$(pass show irc/freenode/oliverlew)
+export pass_ipt pass_freenode
 /usr/bin/irssi

@@ -35,6 +35,7 @@ chatnets = {
     max_kicks = "1";
     max_msgs = "4";
     max_whois = "1";
+    autosendcmd = "/^msg nickserv identify ${pass_freenode}";
   };
   Rizon = { 
     type = "IRC";
