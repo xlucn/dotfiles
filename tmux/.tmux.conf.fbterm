@@ -156,11 +156,10 @@ set -g status-right "\
 #[fg=colour9  ,bg=colour0] 力#(mem -u)/#(mem -t) \
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
 #[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
-#[fg=colour172,bg=colour0] 﨟%a %d/%m/%y %R \
-#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
-#[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
+#[fg=colour172,bg=colour0] 﨟%a %d/%m/%Y %R \
 #[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
-# 
+#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
+#[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
 
 # vim: ft=tmux
