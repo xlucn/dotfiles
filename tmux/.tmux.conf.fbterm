@@ -139,12 +139,13 @@ bind -T copy-mode-vi BSpace send-keys -X page-up
 # Screenshot
 bind -n M-p run "fbgrab ~/Pictures/Fbterm_$(date +%F_%H-%M-%S).png &"
 
-# Rebind some prefix hotkeys
+# Session-wide. Rebind some prefix hotkeys
+bind C-a send-prefix
 bind -n M-C-r source-file ~/.tmux.conf.fbterm
 bind r source-file ~/.tmux.conf.fbterm
 bind -n M-Q detach-client
 bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
-bind -n M-C-BSpace display yes
+bind -n M-s list-keys -T root
 
 # Status bar the commands below are scripts in my repo
 set -g status-right-length 120
