@@ -39,8 +39,10 @@ irssi_tmux()
 # unset $TMUX if already in tmux
 if [ -n "$TMUX" ]; then
     export TMUX_TEMP="$TMUX"
+    unset TMUX
     irssi_tmux
     export TMUX="$TMUX_TEMP"
+    unset TMUX_TEMP
 else
     irssi_tmux
 fi
