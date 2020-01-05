@@ -203,7 +203,7 @@ settings = {
   };
 };
 
-ignores = ( { level = "JOINS PARTS QUITS NICKS"; } );
+ignores = ( { level = "JOINS PARTS QUITS TOPICS NICKS"; } );
 
 keyboard = ( 
   { key = "meta-[M"; id = "command"; data = "mouse_xterm "; }
