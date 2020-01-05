@@ -1,9 +1,7 @@
-# The passwords variables are passed through shell environments
+# Note: The passwords variables are passed through shell environments
 # to avoid hard coded text appearing in configuration file.
 # There should be a companion script (named irssi) in my repo:
 # github.com/oliverlew/dotfiles
-# NOTE: check the path of my irssi script is in $PATH and before the path
-#   of the actuall irssi executable.
 
 servers = (
   {
@@ -12,6 +10,7 @@ servers = (
     port = "6697";
     use_tls = "yes";
     tls_verify = "yes";
+    autoconnect = "yes";
   },
   {
     address = "irc.rizon.net";
@@ -19,6 +18,7 @@ servers = (
     port = "6697";
     use_tls = "yes";
     tls_verify = "yes";
+    autoconnect = "yes";
   },
   {
     address = "irc.iptorrents.com";
@@ -26,6 +26,23 @@ servers = (
     port = "6667";
     use_tls = "no";
     tls_verify = "no";
+    autoconnect = "yes";
+  },
+  {
+    address = "irc.alpharatio.cc";
+    chatnet = "AlphaRatio";
+    port = "7000";
+    use_tls = "yes";
+    tls_verify = "yes";
+    autoconnect = "yes";
+  },
+  {
+    address = "irc.filelist.ro";
+    chatnet = "FileList";
+    port = "6697";
+    use_tls = "yes";
+    tls_verify = "yes";
+    autoconnect = "yes";
   }
 );
 
@@ -35,24 +52,39 @@ chatnets = {
     max_kicks = "1";
     max_msgs = "4";
     max_whois = "1";
-    autosendcmd = "/^msg nickserv identify ${pass_freenode}";
+    autosendcmd = "/^msg nickserv identify ${pass_freenode_oliverlew}";
   };
-  Rizon = { 
+  Rizon = {
     type = "IRC";
     max_kicks = "1";
     max_msgs = "1";
     max_whois = "1";
+    autosendcmd = "/^msg nickserv identify ${pass_rizon_oliverlew}";
   };
   Iptorrents = {
     type = "IRC";
-    autosendcmd = "/^msg nickserv identify ${pass_ipt}";
+    autosendcmd = "/^msg nickserv identify ${pass_iptorrents_oliverlew}";
+  };
+  AlphaRatio = {
+    type = "IRC";
+    autosendcmd = "/^msg voyager enter ${pass_alpharatio_key}";
+  };
+  FileList = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
   };
 };
 
 channels = (
   { name = "#freenode"; chatnet = "Freenode"; autojoin = "No"; },
   { name = "#irssi"; chatnet = "Freenode"; autojoin = "No"; },
-  { name = "#iptorrents"; chatnet = "Iptorrents"; }
+  { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "yes"; },
+  { name = "#alpharatio"; chatnet = "AlphaRatio"; autojoin = "yes"; },
+  { name = "#announce"; chatnet = "AlphaRatio"; },
+  { name = "#filelist"; chatnet = "FileList"; autojoin = "yes"; },
+  { name = "#english"; chatnet = "FileList"; autojoin = "yes"; },
+  { name = "#support"; chatnet = "FileList"; },
+  { name = "#privatehd"; chatnet = "Rizon"; }
 );
 
 aliases = {
@@ -198,10 +230,11 @@ settings = {
   "perl/core/scripts" = {
     nicklist_height = "50";
     nicklist_width = "20";
+    nicklist_smallest_main = "40";
     awl_shared_sbar = "OFF";
     awl_viewer = "yes";
     awl_sort = "server";
-    nicklist_smallest_main = "40";
+    awl_block = "15";
   };
   "irc/core" = { skip_motd = "yes"; };
 };
