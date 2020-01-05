@@ -43,6 +43,14 @@ servers = (
     use_tls = "yes";
     tls_verify = "yes";
     autoconnect = "yes";
+  },
+  {
+    address = "irc.p2p-network.net";
+    chatnet = "P2P-NET";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
+    autoconnect = "yes";
   }
 );
 
@@ -73,6 +81,10 @@ chatnets = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
   };
+  "P2P-NET" = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify ${pass_p2p_network_oliverlew}";
+  };
 };
 
 channels = (
@@ -84,7 +96,13 @@ channels = (
   { name = "#filelist"; chatnet = "FileList"; autojoin = "yes"; },
   { name = "#english"; chatnet = "FileList"; autojoin = "yes"; },
   { name = "#support"; chatnet = "FileList"; },
-  { name = "#privatehd"; chatnet = "Rizon"; }
+  { name = "#privatehd"; chatnet = "Rizon"; },
+  { name = "#uhdbits"; chatnet = "P2P-NET"; password = "uhdbits19"; },
+  {
+    name = "#uhd.announce";
+    chatnet = "P2P-NET";
+    password = "uhdbits19";
+  }
 );
 
 aliases = {
