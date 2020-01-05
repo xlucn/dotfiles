@@ -1,18 +1,26 @@
 #!/bin/sh
+#
 # Wrapping script around irssi featuring:
 # 1. Run irssi in a tmux session to work with some irssi scripts, e.g.
 #     - adv_windowlist.pl
 #     - tmux-nicklist-portable.pl
 # 2. Use tmux detach functionality (but nothing else like keybindings, etc.)
-# 3. Pass some passwords through shell environments to use in nickserv, etc.
+# 3. Export irc passwords using 'pass' through shell environments that can be
+#    used in irssi config
+#
 # Note:
-# a. The password related commands should be changed both here and in the irssi
-#    config file according to your own needs.
+# a. The passwords stored with 'pass' command should be under a 'irc' subfolder
+#    and have the file structure as:
+#      irc
+#      └── network
+#          └── nickname
+#    You can create it with `pass insert irc/network/nickname`
+#    The exported shell variable are named $pass_network_nickname
 # b. The script even starts tmux inside another tmux session by unset the $TMUX
-#    shell environment. The side effect is attempted to be minimized by unbinding
-#    all tmux keybindings and hiding the status bar in the nested session so that
-#    the outter tmux works like the nested session never exists. (It can still be
-#    hacked by '/exec tmux' command in irssi)
+#    shell environment. The side effect is tried to be minimized by unbinding
+#    all tmux keybindings and hiding the status bar in the nested session so
+#    that the outter tmux works like the nested session never exists.
+#    (It can still be hacked by '/exec tmux' command in irssi)
 
 # Pass the passwords as shell environments into irssi
 for network in "$HOME"/.password-store/irc/*
@@ -30,10 +38,10 @@ done
 # start in tmux
 irssi_tmux()
 {
-    if ! tmux -L irssi ls -F "#S" | grep -q irssi 2> /dev/null
+    if ! tmux -L irssi ls -F "#S" 2> /dev/null | grep -q irssi
     then
         tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi
-        # don't use tmux keybindings as user, only let irssi scripts use tmux
+        # disable all keybindings, let the irssi script deal with tmux
         tmux -L irssi unbind-key -a
         tmux -L irssi set -g prefix None
         # leave a detach short cut, this is the same as abduco
