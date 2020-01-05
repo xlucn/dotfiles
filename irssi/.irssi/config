@@ -203,6 +203,7 @@ settings = {
     awl_sort = "server";
     nicklist_smallest_main = "40";
   };
+  "irc/core" = { skip_motd = "yes"; };
 };
 
 ignores = ( { level = "JOINS PARTS QUITS TOPICS NICKS"; } );
