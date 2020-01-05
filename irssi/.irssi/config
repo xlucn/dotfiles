@@ -201,6 +201,7 @@ settings = {
     awl_shared_sbar = "OFF";
     awl_viewer = "yes";
     awl_sort = "server";
+    nicklist_smallest_main = "40";
   };
 };
 
