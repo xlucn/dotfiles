@@ -15,9 +15,17 @@
 #    hacked by '/exec tmux' command in irssi)
 
 # Pass the passwords as shell environments into irssi
-pass_ipt=$(pass show irc/iptorrents/oliverlew)
-pass_freenode=$(pass show irc/freenode/oliverlew)
-export pass_ipt pass_freenode
+for network in "$HOME"/.password-store/irc/*
+do
+    for nickname in "$network"/*
+    do
+        net=$(basename "$network")
+        nick=$(basename "${nickname%.*}")
+        passvar=pass_"$net"_"$nick"
+        eval "$passvar=$(pass show irc/"$net"/"$nick")"
+        eval export "$passvar"
+    done
+done
 
 # start in tmux
 irssi_tmux()
