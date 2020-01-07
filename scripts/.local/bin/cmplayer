@@ -83,7 +83,7 @@ do
     tput civis
     # Play the video
     clear
-    mplayer "$video" -really-quiet \
+    mplayer "$video" -msglevel all=-1 -nolirc \
             -vo fbdev2 \
             -vf scale=$vW:$vH \
             -geometry $X:$Y
