@@ -85,7 +85,6 @@ bind -n M-b set-option status
 
 ## Lock screen / more like screensaver
 bind -n M-C-l lock-session
-# Lock(start screensaver) after 10 minutes
 set -g lock-after-time 600
 # Set tty-clock as screensaver, make it fullscreen, exit upon any keypress
 set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -csSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
@@ -98,7 +97,7 @@ bind -n M-= run-shell -b "light -A 5"\; refresh-client -S
 bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client -S
 bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client -S
 bind -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client -S
-# mpd operations
+# mpd operations, 5 keybinds above + Shift
 bind -n M-_ run-shell -b "mpc -q seek -10"
 bind -n M-+ run-shell -b "mpc -q seek +10"
 bind -n M-\{ run-shell -b "mpc -q prev"
@@ -152,7 +151,6 @@ bind -n M-s list-keys -T root
 # Status bar the commands below are scripts in my repo
 set -g status-right-length 120
 set -g status-right "\
-#[fg=colour154,bg=colour0] #(wttr-tmux) \
 #[fg=colour13 ,bg=colour0] 﨧#(imap-tmux) \
 #[fg=colour172,bg=colour0] 祥#(up) \
 #[fg=colour201,bg=colour0] 龍#(cpu)% \
@@ -162,6 +160,7 @@ set -g status-right "\
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%Y %R \
 #[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
+#[fg=colour154,bg=colour0] #(wttr-tmux) \
 #[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
 #[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
 
