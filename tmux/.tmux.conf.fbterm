@@ -92,12 +92,12 @@ set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -csSa 1
 
 ## Multimedia
 # Change brightness
-bind -n M-- run-shell -b "light -U 5"\; refresh-client
-bind -n M-= run-shell -b "light -A 5"\; refresh-client
+bind -n M-- run-shell -b "light -U 5"\; refresh-client -S
+bind -n M-= run-shell -b "light -A 5"\; refresh-client -S
 # Change volume
-bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client
-bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client
-bind -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client
+bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client -S
+bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client -S
+bind -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client -S
 # mpd operations
 bind -n M-_ run-shell -b "mpc -q seek -10"
 bind -n M-+ run-shell -b "mpc -q seek +10"
