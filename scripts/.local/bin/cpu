@@ -1,29 +1,32 @@
 #!/bin/sh
 
-cpuinfo()
-{
-    total=0
-    active=0
-    count=0
-    for i in $(grep "cpu " /proc/stat | tr -d cpu)
-    do
-        total=$((total + i))
-        count=$((count + 1))
-        if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]
-        then
-            active=$((active + i))
-        fi
-    done
-    echo $active $total
-}
+tmpfile="/tmp/tmux_cpu_info"
 
-info1=$(cpuinfo)
-sleep 3
-info2=$(cpuinfo)
+if [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
+    echo "err"
+    exit
+elif [ "$(stat -c "%a" "$tmpfile")" != "600" ]; then
+    chmod 600 "$tmpfile"
+fi
 
-active1=$(echo "$info1" | cut -d " " -f 1)
-total1=$(echo "$info1" | cut -d " " -f 2)
-active2=$(echo "$info2" | cut -d " " -f 1)
-total2=$(echo "$info2" | cut -d " " -f 2)
+total=0
+active=0
+count=0
+for i in $(grep "cpu " /proc/stat | tr -d cpu)
+do
+    total=$((total + i))
+    count=$((count + 1))
+    if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]
+    then
+        active=$((active + i))
+    fi
+done
 
-printf "%02s" $(((active2 - active1) * 100 / (total2 - total1)))
+if [ -f "$tmpfile" ]; then
+    read -r active_old total_old < "$tmpfile"
+    printf "%02s" $(((active - active_old) * 100 / (total - total_old)))
+else
+    echo '-'
+fi
+
+echo "$active $total" > "$tmpfile"
