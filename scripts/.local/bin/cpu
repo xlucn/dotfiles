@@ -2,7 +2,9 @@
 
 tmpfile="/tmp/tmux_cpu_info"
 
-if [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
+if [ ! -e "$tmpfile" ]; then
+    continue
+elif [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
     echo "err"
     exit
 elif [ "$(stat -c "%a" "$tmpfile")" != "600" ]; then
