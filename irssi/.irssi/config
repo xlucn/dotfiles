@@ -21,6 +21,14 @@ servers = (
     autoconnect = "yes";
   },
   {
+    address = "irc.rizon.net";
+    chatnet = "Rizon2";
+    port = "6697";
+    use_tls = "yes";
+    tls_verify = "yes";
+    autoconnect = "yes";
+  },
+  {
     address = "irc.iptorrents.com";
     chatnet = "Iptorrents";
     port = "6667";
@@ -93,6 +101,11 @@ chatnets = {
     max_whois = "1";
     autosendcmd = "/^msg nickserv identify ${pass_rizon_oliverlew}";
   };
+  Rizon2 = {
+    type = "IRC";
+    nick = "Lewinat0r";
+    autosendcmd = "/^msg nickserv identify ${pass_rizon_lewinat0r}";
+  };
   Iptorrents = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_iptorrents_oliverlew}";
@@ -131,6 +144,8 @@ channels = (
   { name = "#support"; chatnet = "FileList"; },
   { name = "#privatehd"; chatnet = "Rizon"; },
   { name = "#uhdbits"; chatnet = "P2P-NET"; password = "uhdbits19"; },
+  { name = "#avistaz"; chatnet = "Rizon2"; autojoin = "yes"; },
+  { name = "#cinemaz"; chatnet = "Rizon2"; autojoin = "yes"; },
   {
     name = "#uhd.announce";
     chatnet = "P2P-NET";
@@ -141,8 +156,6 @@ channels = (
   { name = "#bhd_announce"; chatnet = "BeyondHD"; },
   { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
   { name = "#jpopsuki-support"; chatnet = "synIRC"; },
-  { name = "#avistaz"; chatnet = "Rizon"; autojoin = "yes"; },
-  { name = "#cinemaz"; chatnet = "Rizon"; autojoin = "yes"; }
 );
 
 aliases = {
