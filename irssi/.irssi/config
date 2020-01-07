@@ -83,6 +83,14 @@ servers = (
     use_tls = "yes";
     tls_verify = "yes";
     autoconnect = "yes";
+  },
+  {
+    address = "irc.digitalirc.org";
+    chatnet = "DigitalIRC";
+    port = "6697";
+    use_tls = "yes";
+    tls_verify = "yes";
+    autoconnect = "yes";
   }
 );
 
@@ -130,6 +138,11 @@ chatnets = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_gazellegames_oliverlew}; wait 3000; /msg Vertigo enter OliverLew ${pass_gazellegames_key}";
   };
+  DigitalIRC = {
+    type = "IRC";
+    nick = "BeeBeeKing17";
+    autosendcmd = "/^msg nickserv identify ${pass_digitalirc_beebeeking17}";
+  };
 };
 
 channels = (
@@ -160,6 +173,7 @@ channels = (
   { name = "#bhd_announce"; chatnet = "BeyondHD"; },
   { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
   { name = "#jpopsuki-support"; chatnet = "synIRC"; },
+  { name = "#empornium"; chatnet = "DigitalIRC"; autojoin = "yes"; }
 );
 
 aliases = {
