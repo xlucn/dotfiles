@@ -51,6 +51,30 @@ servers = (
     use_tls = "no";
     tls_verify = "no";
     autoconnect = "yes";
+  },
+  {
+    address = "irc.beyond-hd.me";
+    chatnet = "BeyondHD";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
+    autoconnect = "no";
+  },
+  {
+    address = "irc.synirc.net";
+    chatnet = "synIRC";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
+    autoconnect = "no";
+  },
+  {
+    address = "irc.gazellegames.net";
+    chatnet = "GazelleGames";
+    port = "7000";
+    use_tls = "yes";
+    tls_verify = "yes";
+    autoconnect = "no";
   }
 );
 
@@ -85,6 +109,15 @@ chatnets = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_p2p_network_oliverlew}";
   };
+  BeyondHD = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify ${pass_beyondhd_oliverlew}";
+  };
+  synIRC = { type = "IRC"; nick = "Lewinat0r"; };
+  GazelleGames = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify ${pass_gazellegames_oliverlew}; wait 3000; /msg Vertigo enter OliverLew ${pass_gazellegames_key}";
+  };
 };
 
 channels = (
@@ -102,7 +135,14 @@ channels = (
     name = "#uhd.announce";
     chatnet = "P2P-NET";
     password = "uhdbits19";
-  }
+  },
+  { name = "#beyondhd"; chatnet = "BeyondHD"; autojoin = "yes"; },
+  { name = "#bhd_support"; chatnet = "BeyondHD"; },
+  { name = "#bhd_announce"; chatnet = "BeyondHD"; },
+  { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
+  { name = "#jpopsuki-support"; chatnet = "synIRC"; },
+  { name = "#avistaz"; chatnet = "Rizon"; autojoin = "yes"; },
+  { name = "#cinemaz"; chatnet = "Rizon"; autojoin = "yes"; }
 );
 
 aliases = {
