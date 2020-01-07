@@ -23,6 +23,10 @@ then
     exit
 fi
 
+# Deal with some exit signals (still can't process KILL signal, good luck with that)
+trap 'clear; tput cnorm' INT TERM
+trap 'tput cnorm' QUIT EXIT
+
 # Calculate position and available size
 if tmux display -p -F "#S" > /dev/null 2>&1
 then
@@ -60,7 +64,7 @@ do
               -select_streams v:0 \
               -show_entries stream=width,height,sample_aspect_ratio \
               -of csv=s=x:p=0 |
-    awk -F'[x:]' '{ print $1, $2, $3, $4 }')
+    awk -F'[x:]' '{ print $1, $2, $3, $4 }') || exit 1
 
     # Calculate the actual video dimension on screen that could fit in the pane
     vH="$H"
@@ -86,11 +90,8 @@ do
     mplayer "$video" -msglevel all=-1 -nolirc \
             -vo fbdev2 \
             -vf scale=$vW:$vH \
-            -geometry $X:$Y
+            -geometry $X:$Y || exit 1
     clear
     # Show the cursor
     tput cnorm
 done
-
-# Deal with some exit signals (still can't process KILL signal, good luck with that)
-trap 'clear; tput cnorm' INT QUIT TERM EXIT
