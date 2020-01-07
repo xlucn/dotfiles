@@ -54,7 +54,7 @@ servers = (
   },
   {
     address = "irc.p2p-network.net";
-    chatnet = "P2P-NET";
+    chatnet = "P2PNET";
     port = "6667";
     use_tls = "no";
     tls_verify = "no";
@@ -66,7 +66,7 @@ servers = (
     port = "6667";
     use_tls = "no";
     tls_verify = "no";
-    autoconnect = "no";
+    autoconnect = "yes";
   },
   {
     address = "irc.synirc.net";
@@ -74,7 +74,7 @@ servers = (
     port = "6667";
     use_tls = "no";
     tls_verify = "no";
-    autoconnect = "no";
+    autoconnect = "yes";
   },
   {
     address = "irc.gazellegames.net";
@@ -82,23 +82,17 @@ servers = (
     port = "7000";
     use_tls = "yes";
     tls_verify = "yes";
-    autoconnect = "no";
+    autoconnect = "yes";
   }
 );
 
 chatnets = {
   Freenode = {
     type = "IRC";
-    max_kicks = "1";
-    max_msgs = "4";
-    max_whois = "1";
     autosendcmd = "/^msg nickserv identify ${pass_freenode_oliverlew}";
   };
   Rizon = {
     type = "IRC";
-    max_kicks = "1";
-    max_msgs = "1";
-    max_whois = "1";
     autosendcmd = "/^msg nickserv identify ${pass_rizon_oliverlew}";
   };
   Rizon2 = {
@@ -118,15 +112,20 @@ chatnets = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
   };
-  "P2P-NET" = {
+  P2PNET = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_p2p_network_oliverlew}";
   };
   BeyondHD = {
     type = "IRC";
-    autosendcmd = "/^msg nickserv identify ${pass_beyondhd_oliverlew}";
+    # need identify to join channels
+    autosendcmd = "/^msg nickserv identify ${pass_beyondhd_oliverlew}; wait 2000";
   };
-  synIRC = { type = "IRC"; nick = "Lewinat0r"; };
+  synIRC = {
+    type = "IRC";
+    nick = "Lewinat0r";
+    autosendcmd = "/^msg nickserv identify ${pass_synirc_lewinat0r}";
+  };
   GazelleGames = {
     type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_gazellegames_oliverlew}; wait 3000; /msg Vertigo enter OliverLew ${pass_gazellegames_key}";
@@ -135,20 +134,25 @@ chatnets = {
 
 channels = (
   { name = "#freenode"; chatnet = "Freenode"; autojoin = "No"; },
-  { name = "#irssi"; chatnet = "Freenode"; autojoin = "No"; },
+  { name = "#irssi"; chatnet = "Freenode"; autojoin = "yes"; },
   { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "yes"; },
   { name = "#alpharatio"; chatnet = "AlphaRatio"; autojoin = "yes"; },
   { name = "#announce"; chatnet = "AlphaRatio"; },
   { name = "#filelist"; chatnet = "FileList"; autojoin = "yes"; },
   { name = "#english"; chatnet = "FileList"; autojoin = "yes"; },
   { name = "#support"; chatnet = "FileList"; },
-  { name = "#privatehd"; chatnet = "Rizon"; },
-  { name = "#uhdbits"; chatnet = "P2P-NET"; password = "uhdbits19"; },
+  { name = "#privatehd"; chatnet = "Rizon"; autojoin = "yes"; },
   { name = "#avistaz"; chatnet = "Rizon2"; autojoin = "yes"; },
   { name = "#cinemaz"; chatnet = "Rizon2"; autojoin = "yes"; },
   {
+    name = "#uhdbits";
+    chatnet = "P2PNET";
+    autojoin = "yes";
+    password = "uhdbits19";
+  },
+  { 
     name = "#uhd.announce";
-    chatnet = "P2P-NET";
+    chatnet = "P2PNET";
     password = "uhdbits19";
   },
   { name = "#beyondhd"; chatnet = "BeyondHD"; autojoin = "yes"; },
