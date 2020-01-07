@@ -292,9 +292,10 @@ settings = {
     awl_shared_sbar = "OFF";
     awl_viewer = "yes";
     awl_sort = "server";
-    awl_block = "15";
+    awl_block = "16";
   };
   "irc/core" = { skip_motd = "yes"; };
+  "fe-common/core" = { show_names_on_join = "no"; };
 };
 
 ignores = ( { level = "JOINS PARTS QUITS TOPICS NICKS"; } );
