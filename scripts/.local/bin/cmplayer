@@ -1,17 +1,17 @@
 #!/bin/bash
-# A script to play video with framebuffer using mplayer, and put it on the position
-# of current tmux pane.
-# Requirement:
+# A script to play video in framebuffer using mplayer and put it on the position
+# of current tmux pane if in a tmux session.
+# Environment:
 #   framebuffer, e.g. in tty or fbterm
+# Requirement:
 #   mplayer
-#   fbset
-#   ffmpeg
-# Optional:
-#   tmux
-# TODO: mplayer font display issue (I know it's not a issue of the script)
+#   ffprobe (part of ffmpeg, should be installed if you have mplayer)
+#   tmux or fbset (at least one)
+#   bash (to run the script, sorry for using some non-POSIX features)
 
-# Note: you might need to modify this according to your vconsole font setting.
-# Character with and height
+# Note: you might need to modify this according to your vconsole font setting
+# or the terminal emulator you are using, e.g. fbterm.
+# Character width and height
 charw=10
 charh=20
 
@@ -54,7 +54,7 @@ else
     read -r W H < <(fbset | awk '/geometry/{ print $2, $3 }')
 fi
 
-# Play each of the videos seperately (due to different video sizes)
+# Play each of the videos separately (deal with different video sizes)
 for video in "$@"
 do
     # Get the real size of the video
@@ -83,7 +83,6 @@ do
     fi
 
     # Hide the cursor in case it blinks in the video region
-    # This went bad if force stop the script :)
     tput civis
     # Play the video
     clear
