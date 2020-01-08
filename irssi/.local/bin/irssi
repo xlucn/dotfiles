@@ -9,56 +9,58 @@
 #    used in irssi config
 #
 # Note:
-# a. The passwords stored with 'pass' command should be under a 'irc' subfolder
+# a. The passwords stored with 'pass' store should be under a 'irc' subfolder
 #    and have the file structure as:
 #      irc
 #      └── network
-#          └── nickname
+#          └── nickname/key/etc.
 #    You can create it with `pass insert irc/network/nickname`
 #    The exported shell variable are named $pass_network_nickname
-# b. The script even starts tmux inside another tmux session by unset the $TMUX
-#    shell environment. The side effect is tried to be minimized by unbinding
-#    all tmux keybindings and hiding the status bar in the nested session so
-#    that the outter tmux works like the nested session never exists.
-#    (It can still be hacked by '/exec tmux' command in irssi)
+# b. The script even starts tmux inside another tmux session.
+#    The side effect is tried to be minimized by unbinding all tmux keybindings
+#    and hiding the status bar in the nested session so that the outer tmux
+#    works like the nested session never exists.
+#    P.S. Tmux can still be controlled by '/exec tmux' command inside irssi.
 
-# Pass the passwords as shell environments into irssi
-for network in "$HOME"/.password-store/irc/*
-do
-    for nickname in "$network"/*
-    do
-        net=$(basename "$network")
-        nick=$(basename "${nickname%.*}")
-        passvar=pass_"$net"_"$nick"
-        eval "$passvar=$(pass show irc/"$net"/"$nick")"
-        eval export "$passvar"
-    done
-done
-
-# start in tmux
-irssi_tmux()
-{
-    if ! tmux -L irssi ls -F "#S" 2> /dev/null | grep -q irssi
-    then
-        tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi
-        # disable all keybindings, let the irssi script deal with tmux
-        tmux -L irssi unbind-key -a
-        tmux -L irssi set -g prefix None
-        # leave a detach short cut, this is the same as abduco
-        tmux -L irssi bind-key -n C-\\ detach-client
-        # hide status bar
-        tmux -L irssi set-option status off
-    fi
-    tmux -L irssi attach -t irssi
-}
-
-# unset $TMUX if already in tmux
-if [ -n "$TMUX" ]; then
-    export TMUX_TEMP="$TMUX"
-    unset TMUX
-    irssi_tmux
-    export TMUX="$TMUX_TEMP"
-    unset TMUX_TEMP
+if ! command -v pass > /dev/null 2>&1; then
+    echo "please install \`pass\` and store the passwords in irc/<network>/<foobar>"
+    exit 1
 else
-    irssi_tmux
+    passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
 fi
+
+if ! command -v mutt > /dev/null 2>&1; then
+    echo "please install \`tmux\`"
+    exit 1
+fi
+
+if ! tmux -L irssi ls -F "#S" 2> /dev/null | grep -q irssi
+then
+    # Pass the passwords as shell environments into irssi
+    for network in "$passdir"/irc/*
+    do
+        for nickname in "$network"/*
+        do
+            net=$(basename "$network")
+            nick=$(basename "${nickname%.*}")
+            passvar=pass_"$net"_"$nick"
+            eval "$passvar=$(pass show irc/"$net"/"$nick")"
+            eval export "$passvar"
+        done
+    done
+
+    tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi
+    # Disable all keybindings, let the irssi script deal with tmux
+    tmux -L irssi set -s -t irssi prefix None
+    tmux -L irssi unbind-key -a
+    # Leave a detach short cut, this is the same as abduco
+    tmux -L irssi bind-key -n C-\\ detach-client
+fi
+
+# Set border all as foreground color
+tmux -L irssi set -s -t irssi pane-border-style fg=7,bg=0
+tmux -L irssi set -s -t irssi pane-active-border-style fg=7,bg=0
+# Hide status bar
+tmux -L irssi set -s -t irssi status off
+# Attach it
+tmux -L irssi attach -t irssi
