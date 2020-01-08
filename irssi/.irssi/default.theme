@@ -314,8 +314,11 @@ formats = {
   };
   "Irssi::Script::adv_windowlist" = {
     awl_display_header = "%8%9$C";
-    awl_display_key = "$N${cumode_space}$H$C$S";
-    awl_display_key_visible = "%2$N${cumode_space}$H$C$S";
-    awl_display_key_active = "%1$N${cumode_space}$H$C$S";
+    awl_display_key = "$Q${cumode_space}$H$C$S";
+    awl_display_nokey = "$Q${cumode_space}$H$C$S";
+    awl_display_key_visible = "%2$Q${cumode_space}$H$C$S";
+    awl_display_nokey_visible = "%2$Q${cumode_space}$H$C$S";
+    awl_display_key_active = "%1$Q${cumode_space}$H$C$S";
+    awl_display_nokey_active = "%1$Q${cumode_space}$H$C$S";
   };
 };
