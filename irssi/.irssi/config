@@ -315,7 +315,7 @@ settings = {
     nick = "oliverlew";
     server_reconnect_time = "60";
   };
-  "fe-text" = { actlist_sort = "refnum"; };
+  "fe-text" = { actlist_sort = "refnum"; term_appkey_mode = "no"; };
   "perl/core/scripts" = {
     nicklist_height = "50";
     nicklist_width = "20";
