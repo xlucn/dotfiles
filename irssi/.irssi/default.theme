@@ -312,5 +312,10 @@ formats = {
     pubmsg_channel = "{pubmsgnick {pubnick %w$[-20]0}$2}$1";
     msg_private_query = "{privmsgnick $[-20]0}$2";
   };
-  "Irssi::Script::adv_windowlist" = { awl_display_header = "%8$C"; };
+  "Irssi::Script::adv_windowlist" = {
+    awl_display_header = "%8%9$C";
+    awl_display_key = "$N${cumode_space}$H$C$S";
+    awl_display_key_visible = "%2$N${cumode_space}$H$C$S";
+    awl_display_key_active = "%1$N${cumode_space}$H$C$S";
+  };
 };
