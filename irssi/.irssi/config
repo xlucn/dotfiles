@@ -329,7 +329,7 @@ settings = {
     awl_viewer_launch_env = "NOTITLE=1";
     chansort_configurable_autosort = "yes";
   };
-  "irc/core" = { skip_motd = "yes"; };
+  "irc/core" = { skip_motd = "yes"; alternate_nick = "Lewinat0r"; };
   "fe-common/core" = { show_names_on_join = "no"; };
 };
 
