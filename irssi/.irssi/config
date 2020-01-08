@@ -341,7 +341,7 @@ keyboard = (
   { key = "^U"; id = "scroll_backward"; data = ""; },
   { key = "^R"; id = "refresh_screen"; data = ""; },
   { key = "^L"; id = "command"; data = "clear"; },
-  # qwerty window switch bindinds from 1 to 80
+  # qwerty window switch bindinds from 1 to 80, see 'term_appkey_mode' above
   { key = "meta-p"; id = "change_window"; data = "20"; },
   { key = "meta-a"; id = "change_window"; data = "21"; },
   { key = "meta-s"; id = "change_window"; data = "22"; },
