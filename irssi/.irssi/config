@@ -324,6 +324,9 @@ settings = {
     awl_viewer = "yes";
     awl_sort = "server";
     awl_block = "16";
+    awl_maxcolumns = "1";
+    awl_height_adjust = "0";
+    awl_viewer_launch_env = "NOTITLE=1";
   };
   "irc/core" = { skip_motd = "yes"; };
   "fe-common/core" = { show_names_on_join = "no"; };
