@@ -5,8 +5,7 @@ configuration {
     scroll-method      : 0;
     cycle              : false;
     terminal           : "urxvtc";
-    sidebar-mode       : true;
-    modi               : "run, drun, window";
+    sidebar-mode       : false;
     display-drun       : "Applications";
     display-run        : "Command";
     display-window     : "Window";
