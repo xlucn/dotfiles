@@ -1,4 +1,5 @@
 -- luacheck: globals awesome client root timer screen mouse button drawin drawable tag key
+
 -- Libraries {{{
 -- Standard awesome library
 local gears = require("gears")
@@ -672,66 +673,81 @@ root.keys(globalkeys)
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
-    -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     size_hints_honor = false,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
-     }
+    { -- All clients will match this rule.
+        rule = { },
+        properties = {
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_normal,
+            focus = awful.client.focus.filter,
+            raise = true,
+            keys = clientkeys,
+            buttons = clientbuttons,
+            screen = awful.screen.preferred,
+            size_hints_honor = false,
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen
+        },
+        callback = function(c)
+            naughty.notify({text = "instance: " .. c.instance .. "\n" ..
+                                   "class: " .. c.class .. "\n" ..
+                                   "name: " .. c.name .. "\n" ..
+                                   "role: " .. c.role, timeout = 15})
+        end
     },
 
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = true } },
+    { -- Add titlebars to normal clients and dialogs
+        rule_any = {
+            type = { "normal", "dialog" }
+        },
+        properties = {
+            titlebars_enabled = true
+        }
+    },
 
-    -- borderless
-    {
+    { -- borderless
         rule = { class = "Nemo", instance = "file_progress" },
         properties = { ontop = true }
     },
 
-    -- Floating clients.
-    { rule_any = {
-        instance = {
-          "DTA",                  -- Firefox addon DownThemAll.
-          "copyq",                -- Includes session name in class.
-          "Popup",
-        },
+    { -- Floating clients
+        rule_any = {
+            instance = {
+              "DTA",                  -- Firefox addon DownThemAll.
+              "copyq",                -- Includes session name in class.
+              "Popup",
+            },
 
-        name = {
-          "Event Tester",           -- xev.
-          "Select a Template",      -- LibreOffice
-          "Screen Layout Editor",   -- arandr
-          "File Operation Progress" -- thunar file operation
+            name = {
+              "Event Tester",           -- xev.
+              "Select a Template",      -- LibreOffice
+              "Screen Layout Editor",   -- arandr
+              "File Operation Progress" -- thunar file operation
+            },
+            role = {
+              "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+              "page-info",    -- Firefox's image info
+              "About",        -- Firefox's about page
+              "GtkFileChooserDialog"
+            },
+            class = {
+                "Galculator",
+            }
         },
-        role = {
-          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-          "page-info",    -- Firefox's image info
-          "About",        -- Firefox's about page
-          "GtkFileChooserDialog"
+        properties = {
+            floating = true,
+            ontop = true,
+            placement = awful.placement.centered
         },
-        class = {
-            "Galculator",
-        }
-      }, properties = { floating = true,
-                        ontop = true,
-                        placement = awful.placement.centered}},
+    },
 
-    -- Fullscreen and screen management for pdfpc
-    { rule = { class = "Pdfpc" },
+    { -- Fullscreen and screen management for pdfpc
+        rule = { class = "Pdfpc" },
         properties = { fullscreen = true },
         -- This callback will *magically* put presentation to the secondary
         -- screen and leave the presenter console on the current screen.
-        callback = function(c) c:move_to_screen() end },
+        callback = function(c) c:move_to_screen() end
+    },
 
-    -- Set Firefox to always map on the tag 2.
-    {
+    { -- Set Firefox to always map on the tag 2.
         rule = {
             --class = "Firefox",
             role = "browser",
@@ -742,6 +758,18 @@ awful.rules.rules = {
             titlebars_enabled = false,
         }
     },
+
+    { -- firefox picture-in-picture window
+        rule = {
+            class = "firefox",
+            instance = "Toolkit",
+            role = "PictureInPicture",
+        },
+        properties = {
+            sticky = true,
+            floating = true,
+        },
+    }
 }
 -- }}}
 
