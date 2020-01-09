@@ -686,12 +686,13 @@ awful.rules.rules = {
             size_hints_honor = false,
             placement = awful.placement.no_overlap+awful.placement.no_offscreen
         },
-        callback = function(c)
-            naughty.notify({text = "instance: " .. c.instance .. "\n" ..
-                                   "class: " .. c.class .. "\n" ..
-                                   "name: " .. c.name .. "\n" ..
-                                   "role: " .. c.role, timeout = 15})
-        end
+        -- for debug
+        -- callback = function(c)
+        --     naughty.notify({text = "instance: " .. c.instance .. "\n" ..
+        --                            "class: " .. c.class .. "\n" ..
+        --                            "name: " .. c.name .. "\n" ..
+        --                            "role: " .. c.role, timeout = 15})
+        -- end
     },
 
     { -- Add titlebars to normal clients and dialogs
