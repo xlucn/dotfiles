@@ -75,7 +75,7 @@ local volume_slider = wibox.widget {
 local volume_text = wibox.widget{ widget = wibox.widget.textbox }
 
 local volume = lain.widget.alsa({
-    timeout = 2,
+    timeout = 5,
     settings = function ()
         local state
         if volume_now.status == "off" then
