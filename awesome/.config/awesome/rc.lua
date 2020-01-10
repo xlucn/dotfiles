@@ -441,7 +441,7 @@ local globalkeys = gears.table.join(
                                                         placement = awful.placement.centered,
                                                     })
                                                 end,
-              {description = "open a centered floating terminal", group = "launcher"}),
+              {description = "open a floating terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "l",  function () awful.spawn("dm-tool switch-to-greeter") end,
               {description = "lock screen", group = "awesome"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
