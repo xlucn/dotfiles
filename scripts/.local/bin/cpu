@@ -2,13 +2,12 @@
 
 tmpfile="/tmp/tmux_cpu_info"
 
-if [ ! -e "$tmpfile" ]; then
-    continue
-elif [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
-    echo "err"
-    exit
-elif [ "$(stat -c "%a" "$tmpfile")" != "600" ]; then
-    chmod 600 "$tmpfile"
+# check the temp file is a file and created by the user
+if [ -e "$tmpfile" ]; then
+    if [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
+        echo "err"
+        exit
+    fi
 fi
 
 total=0
