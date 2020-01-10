@@ -517,6 +517,36 @@ local mpd = wibox.widget {
     spacing = 8,
     layout = wibox.layout.fixed.horizontal
 }
+local mpc_prev = function()
+    awful.spawn.with_shell("mpc prev")
+    mpd_upd.update()
+end
+local mpc_next = function()
+    awful.spawn.with_shell("mpc next")
+    mpd_upd.update()
+end
+local mpc_toggle = function()
+    awful.spawn.with_shell("mpc && mpc toggle || systemctl --user start mpd")
+    mpd_upd.update()
+end
+local mpc_stop = function()
+    awful.spawn.with_shell("systemctl --user stop mpd")
+end
+local mpc_seek_forward = function()
+    awful.spawn.with_shell("mpc seek +10")
+    mpd_upd.update()
+end
+local mpc_seek_backward = function()
+    awful.spawn.with_shell("mpc seek -10")
+    mpd_upd.update()
+end
+local mpd_launch_client = function()
+    awful.spawn(terminal_cmd("ncmpcpp"))
+end
+local mpc_toggle_single = function()
+    awful.spawn.with_shell("mpc single")
+    mpd_upd.update()
+end
 mpd_tooltip:add_to_object(mpd)
 mpd_icon:buttons(awful.util.table.join(
     awful.button({}, 1, function()
@@ -525,44 +555,22 @@ mpd_icon:buttons(awful.util.table.join(
     end)
 ))
 mpd_prev:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc prev")
-        mpd_upd.update()
-    end)
+    awful.button({}, 1, mpc_prev)
 ))
 mpd_play:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc && mpc toggle || systemctl --user start mpd")
-        mpd_upd.update()
-    end),
-    awful.button({}, 2, function()
-        awful.spawn.with_shell("systemctl --user stop mpd")
-    end)
+    awful.button({}, 1, mpc_toggle),
+    awful.button({}, 2, mpc_stop)
 ))
 mpd_next:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc next")
-        mpd_upd.update()
-    end)
+    awful.button({}, 1, mpc_next)
 ))
 mpd_repeat:buttons(awful.util.table.join(
-    awful.button({}, 1, function()
-        awful.spawn.with_shell("mpc single")
-        mpd_upd.update()
-    end)
+    awful.button({}, 1, mpc_toggle_single)
 ))
 mpd:buttons(awful.util.table.join(
-    awful.button({}, 4, function()
-        awful.spawn.with_shell("mpc seek +10")
-        mpd_upd.update()
-    end),
-    awful.button({}, 5, function()
-        awful.spawn.with_shell("mpc seek -10")
-        mpd_upd.update()
-    end),
-    awful.button({}, 3, function()
-        awful.spawn(terminal_cmd("ncmpcpp"))
-    end)
+    awful.button({}, 4, mpc_seek_forward),
+    awful.button({}, 5, mpc_seek_backward),
+    awful.button({}, 3, mpd_launch_client)
 ))
 mpd_upd.update()
 -- }}}
@@ -597,6 +605,11 @@ return {
     },
     mpd = {
         widget = mpd,
+        next = mpc_next,
+        prev = mpc_prev,
+        forward = mpc_seek_forward,
+        backward = mpc_seek_backward,
+        toggle = mpc_toggle,
     },
 }
 -- }}}

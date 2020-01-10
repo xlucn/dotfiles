@@ -526,6 +526,7 @@ local globalkeys = gears.table.join(
               {description = "swap arrangements of monitors", group = "screen"}),
 
     -- XF86 keys
+    -- volume
     awful.key({}, "XF86AudioMute", mywidgets.alsa.toggle,
               {description = "toggle mute", group = "Media"}),
     awful.key({}, "XF86AudioRaiseVolume", mywidgets.alsa.up,
@@ -538,6 +539,7 @@ local globalkeys = gears.table.join(
               {description = "volume up", group = "Media"}),
     awful.key({ modkey }, "[", mywidgets.alsa.down,
               {description = "volume down", group = "Media"}),
+    -- brightness
     awful.key({}, "XF86MonBrightnessDown", mywidgets.light.down,
               {description = "brightness down", group = "Media"}),
     awful.key({}, "XF86MonBrightnessUp", mywidgets.light.up,
@@ -546,6 +548,17 @@ local globalkeys = gears.table.join(
               {description = "brightness down", group = "Media"}),
     awful.key({ modkey }, "=", mywidgets.light.up,
               {description = "brightness up", group = "Media"}),
+    -- mpd control
+    awful.key({ modkey, "Shift" }, "-", mywidgets.mpd.backward,
+              {description = "mpd: seed backward", group = "Media"}),
+    awful.key({ modkey, "Shift" }, "=", mywidgets.mpd.forward,
+              {description = "mpd: seed forward", group = "Media"}),
+    awful.key({ modkey, "Shift" }, "[", mywidgets.mpd.prev,
+              {description = "mpd: previous song", group = "Media"}),
+    awful.key({ modkey, "Shift" }, "]", mywidgets.mpd.next,
+              {description = "mpd: next song", group = "Media"}),
+    awful.key({ modkey, "Shift" }, "\\", mywidgets.mpd.toggle,
+              {description = "mpd: toggle pause/play", group = "Media"}),
 
     -- Application launching
     awful.key({ modkey }, "f", function () awful.spawn(terminal_cmd("ranger")) end,
