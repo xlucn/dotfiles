@@ -34,11 +34,25 @@ window {
     width            : 100%;
     height           : 100%;
     /* y-offset         : 32px; */
+    orientation     : horizontal;
+    /* children        : [mode-switcher, mainbox]; */
+}
+
+mainbox {
+    children        : [inputbar, message, listview];
+}
+
+mode-switcher {
+    orientation     : vertical;
 }
 
 inputbar {
     children         : [entry];
     padding          : 10% 40% 0 40%;
+}
+
+button {
+    expand          : false;
 }
 
 entry {
