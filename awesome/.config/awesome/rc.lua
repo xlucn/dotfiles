@@ -425,8 +425,6 @@ local globalkeys = gears.table.join(
               end,
               {description = "go back", group = "client"}),
 
-    awful.key({ modkey,           }, "z", function() end,
-              {description = "zen mode", group = "awesome"}),
     -- On the fly useless gaps change
     awful.key({ modkey, "Control" }, "=", function () awful.tag.incgap(8) end,
               {description = "increase gap", group = "awesome"}),
