@@ -59,7 +59,7 @@ for device in $devices; do
             echo -
         fi
         # avoid frequent write
-        if [ "$time_span_ns" -gt 1000000000 ]; then
+        if [ ! -f "$tmpfile" ] || [ "$time_span_ns" -gt 1000000000 ]; then
             echo "$timens $rx_bytes $tx_bytes" > "$tmpfile"
         fi
     fi
