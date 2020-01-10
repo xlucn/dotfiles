@@ -1,22 +1,76 @@
 #!/bin/sh
-r=$(nmcli -f TYPE,DEVICE connection show --active)
-case "$1" in
-    -w)
-        echo "$r" | grep wifi > /dev/null && echo 1 || echo 0
-        ;;
-    -wn)
-        echo "$r" | awk '/ethernet/ { print $2 }'
-        ;;
-    -e)
-        echo "$r" | grep ethernet > /dev/null && echo 1 || echo 0
-        ;;
-    -en)
-        echo "$r" | awk '/wifi/ { print $2 }'
-        ;;
-    -b)
-        echo "$r" | grep bluetooth > /dev/null && echo 1 || echo 0
-        ;;
-    -bn)
-        echo "$r" | awk '/bluetooth/ { print $2 }'
-        ;;
-esac
+usage() {
+    printf "%s [-e/w] [-n/s]\n\n" "$(basename "$0")"
+    printf "Devices:\n"
+    printf "\t-e: show stats about all ethernet devices\n"
+    printf "\t-w: show stats about all wireless devices\n"
+    printf "Output:\n"
+    printf "\t-n: show device names\n"
+    printf "\t-s: show device RX/TX (a.k.a. DL/UL) speed\n"
+    printf "\tNo arguments: print device status, 1 for up, 0 for down\n"
+}
+
+if [ "$#" = 0 ]; then usage; fi
+while getopts "webns" arg; do
+    case "$arg" in
+        w) flag_wireless=1;;
+        e) flag_ethernet=1;;
+        n) flag_name=1;;
+        s) flag_speed=1;;
+        *) usage;;
+    esac
+done
+
+folder="/sys/class/net"
+
+if [ "$flag_ethernet" = 1 ]; then
+    devices=$(find "$folder" -name "e*")
+elif [ "$flag_wireless" = 1 ]; then
+    devices=$(find "$folder" -name "w*")
+fi
+
+for device in $devices; do
+    if [ "$flag_name" = 1 ]; then
+        basename "$device"
+    fi
+    if [ "$flag_speed" = 1 ]; then
+        tmpfile=/tmp/$(basename "$device")_old
+        timens=$(date +"%s%N")
+        if [ -f "$tmpfile" ]; then
+            read -r timens_old rx_bytes_old tx_bytes_old < "$tmpfile"
+            time_span_ns=$((timens - timens_old))
+            # TODO: fix the dirty code below
+            # TODO: store two sets of data
+            if [ "$time_span_ns" -gt 10000000000 ]; then
+                timens_old=$(date +"%s%N")
+                read -r rx_bytes_old < "$device"/statistics/rx_bytes
+                read -r tx_bytes_old < "$device"/statistics/tx_bytes
+                sleep 3
+                timens=$(date +"%s%N")
+                time_span_ns=$((timens - timens_old))
+            fi
+            read -r rx_bytes < "$device"/statistics/rx_bytes
+            read -r tx_bytes < "$device"/statistics/tx_bytes
+            recieve_total=$((rx_bytes - rx_bytes_old))
+            transmission_total=$((tx_bytes - tx_bytes_old))
+            echo $((recieve_total * 1000000000 / time_span_ns))
+            echo $((transmission_total * 1000000000 / time_span_ns))
+        else
+            echo -
+        fi
+        # avoid frequent write
+        if [ "$time_span_ns" -gt 1000000000 ]; then
+            echo "$timens $rx_bytes $tx_bytes" > "$tmpfile"
+        fi
+    fi
+    if [ -z "$flag_name" ] && [ -z "$flag_speed" ]; then
+        read -r state < "$device"/operstate
+        if [ "$state" = "up" ]; then
+            echo 1
+        elif [ "$state" = "down" ]; then
+            echo 0
+        else
+            echo -
+        fi
+    fi
+done
