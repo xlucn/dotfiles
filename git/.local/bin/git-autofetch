@@ -1,4 +1,5 @@
 #!/bin/sh
+# TODO: companion script to gather the stats of all monitored repos
 if [ -f "$HOME/.config/git-autofetch" ]; then
     while read -r p; do
         echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5
