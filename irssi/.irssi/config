@@ -402,5 +402,10 @@ keyboard = (
   { key = "meta-M"; id = "change_window"; data = "77"; },
   { key = "meta-<"; id = "change_window"; data = "78"; },
   { key = "meta->"; id = "change_window"; data = "79"; },
-  { key = "meta-?"; id = "change_window"; data = "80"; }
+  { key = "meta-?"; id = "change_window"; data = "80"; },
+  {
+    key = "^Z";
+    id = "command";
+    data = "script exec Irssi::Script::tmux_nicklist_portable::toggle_nicklist";
+  }
 );
