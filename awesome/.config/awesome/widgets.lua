@@ -351,7 +351,7 @@ local lain_net = lain.widget.net({
     eth_state = "on",
     notify = "off",
     settings = function()
-        local eth_icon, wlan_icon
+        local eth_icon, wlan_icon, ethernet_name, wlan_name
         -- get wlan and ethernet interface name
         awful.spawn.easy_async_with_shell(
             "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
