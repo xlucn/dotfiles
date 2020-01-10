@@ -21,7 +21,6 @@ local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
 -- my own widgets
 local mywidgets = require("widgets")
-local xrandr = require("xrandr")
 -- }}}
 
 -- {{{ Error handling
@@ -515,14 +514,9 @@ local globalkeys = gears.table.join(
     -- Menubar
     --awful.key({ modkey }, "p", function() menubar.show() end,
               --{description = "show the menubar", group = "launcher"})
-    -- Xrandr
-    --awful.key({ modkey }, "p", function() xrandr.xrandr() end,
-              --{description = "swap arrangements of monitors", group = "screen"}),
-    --awful.key({ }, "XF86Display", function() xrandr.xrandr() end,
-              --{description = "swap arrangements of monitors", group = "screen"}),
     awful.key({ modkey }, "p", function() awful.spawn("setmonitor") end,
               {description = "swap arrangements of monitors", group = "screen"}),
-    awful.key({ }, "XF86Display", function() xrandr.xrandr() end,
+    awful.key({ }, "XF86Display", function() awful.spawn("setmonitor") end,
               {description = "swap arrangements of monitors", group = "screen"}),
 
     -- XF86 keys
