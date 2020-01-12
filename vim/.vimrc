@@ -164,7 +164,7 @@ autocmd BufNewFile,BufRead *.wl,*.wls setfiletype mma
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :!xrdb %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
-autocmd FileType tex,markdown setlocal spell
+autocmd FileType tex,markdown,gitcommit setlocal spell
 " }}}
 " fcitx {{{
 function! Fcitx(mode)
