@@ -368,10 +368,6 @@ let g:vimtex_compiler_latexmk = {
 " Mathematica {{{
 let g:mma_candy = 2
 " }}}
-" ibus-vim {{{
-let g:ibus#layout = "xkb:us::eng"
-let g:ibus#engine = "libpinyin"
-" }}}
 " vim-slime {{{
 if $TERM == "screen-256color"
     let g:slime_target = "tmux"
@@ -390,11 +386,6 @@ let g:slime_dont_ask_default = 1
 let g:slime_paste_file = tempname()
 " ipython specific setting
 let g:slime_python_ipython = 1
-" }}}
-" Goyo {{{
-nnoremap gy :Goyo<CR>
-" On window resize, if goyo is active, do <c-w>= to resize the window
-autocmd VimResized * if exists('#goyo') | exe "normal \<c-w>=" | endif
 " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=1
