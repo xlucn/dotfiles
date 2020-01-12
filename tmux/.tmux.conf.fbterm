@@ -165,4 +165,11 @@ set -g status-right "\
 #[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
 #[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
 
+setw -g window-status-style fg=colour7,bg=colour0
+setw -g window-status-activity-style fg=colour1,bg=colour0
+setw -g window-status-current-style fg=colour190,bg=colour0
+setw -g window-status-format "#I#{?window_zoomed_flag,Z, }#W"
+setw -g window-status-current-format "#I#{?window_zoomed_flag,Z, }#W"
+setw -g window-status-separator "   "
+
 # vim: ft=tmux
