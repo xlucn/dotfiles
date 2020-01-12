@@ -29,19 +29,19 @@ set-hook -g after-split-window "select-layout $default_layout"
 set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
 
 ## Manage panes
-# Select/Navigate pane up and down
+# Goto pane up and down
 bind -n M-j select-pane -t +
 bind -n M-k select-pane -t -
-# Move pane up and down in the stack
+# Move pane up and down
 bind -n M-J swap-pane -t + \; select-pane -t +
 bind -n M-K swap-pane -t - \; select-pane -t -
-# Resize master pane width
+# Adjust master pane width
 bind -n M-h resize-pane -L 4
 bind -n M-l resize-pane -R 4
-# Resize stack pane height
+# Adjust stack pane height
 bind -n M-H resize-pane -U 2
 bind -n M-L resize-pane -D 2
-# Focus selected pane (move to master)
+# Move current pane to master
 bind -n M-Space swap-pane -d -t 0
 # Zoom(maximize) pane
 bind -n M-m resize-pane -Z
