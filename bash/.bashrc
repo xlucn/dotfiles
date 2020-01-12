@@ -1,7 +1,7 @@
 #! /bin/bash
 
 [ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
-if [ -d ~/.local/bin ] && echo $PATH | grep -q ".local/bin"; then
+if [ -d ~/.local/bin ] && echo "$PATH" | grep -q ".local/bin"; then
     export PATH="$HOME/.local/bin:${PATH}"
 fi
 
