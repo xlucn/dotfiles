@@ -119,7 +119,8 @@ bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default
 set -g automatic-rename on
 set -g automatic-rename-format "謹"
 # Automatically create 6 more windows at start (the chars are fbterm friendly)
-set-hook -g session-created "neww -d \; neww -d \; neww -d -n 漣 \; neww -d -n 拾 \; neww -d -n 爵 \; neww -d -n 輸"
+# neww -d \; neww -d -n 漣 \; neww -d -n 拾 \;
+set-hook -g session-created "neww -d \; neww -d -n 爵 \; neww -d -n 輸"
 
 # Launchers
 bind -n M-e split-window "neomutt"
