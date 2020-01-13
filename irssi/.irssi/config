@@ -81,7 +81,7 @@ servers = (
     chatnet = "GazelleGames";
     port = "7000";
     use_tls = "yes";
-    tls_verify = "yes";
+    tls_verify = "no";
     autoconnect = "yes";
   },
   {
