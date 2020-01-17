@@ -1,5 +1,8 @@
 #!/bin/sh
+
 # TODO: companion script to gather the stats of all monitored repos
+# git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)"
+# git branch --show-current 
 if [ -f "$HOME/.config/git-autofetch" ]; then
     while read -r p; do
         echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5

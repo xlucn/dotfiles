@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# TODO: store the result in tmp file to avoid frequent request
 # Get the server and port if provided
 while getopts s:p: param
 do

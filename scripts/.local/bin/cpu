@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# TODO: number not stable when frequently queried
 tmpfile="/tmp/tmux_cpu_info"
 
 # check the temp file is a file and created by the user
