@@ -110,7 +110,7 @@ local function volume_set()
     awful.spawn(string.format("%s set %s %f%%",
                              volume.cmd,
                              volume.channel,
-                             volume_slider.value))
+                             volume_slider.value), false)
     volume_text:set_text(string.format("%3.0f%%", volume_slider.value))
 end
 volume_slider:connect_signal('property::value', volume_set)
@@ -175,7 +175,7 @@ local function brightness_up()
     light_slider.value = light_slider.value + 10
 end
 local function brightness_set()
-    awful.spawn(string.format("light -Sr %f", light_slider.value))
+    awful.spawn(string.format("light -Sr %f", light_slider.value), false)
     light_text:set_text(string.format("%3.0f%%", 100 * light_slider.value / light_slider.maximum))
 end
 
