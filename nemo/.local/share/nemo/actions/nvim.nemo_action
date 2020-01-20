@@ -1,9 +1,10 @@
 [Nemo Action]
 Active=true
 Name=Open with Neovim
-Comment=Open %N with Neovim in a Urxvt
-Exec=urxvtc -geometry=80x49 -cd=%P -e nvim %F
+Comment=Open files with Neovim in Urxvt
+Exec=urxvtc -cd=%P -e nvim %F
 Icon-Name=nvim
-Selection=s
-Extensions=nodirs;
+EscapeSpaces=true
+Selection=notnone
+Mimetypes=text/plain;
 Dependencies=nvim;urxvtc;
