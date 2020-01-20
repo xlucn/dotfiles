@@ -82,11 +82,22 @@ __user_host() {
     printf "\[\e[35m\]%s@%s\[\e[0m\] " "$(whoami)" "$(hostname)"
 }
 
+__git_autostats() {
+    read -r uptodate ahead behind conflict < /tmp/git-autostats
+    printf " ["
+    [ "$uptodate" -gt 0 ] && printf "\e[34m%s=\e[0m" "$uptodate"
+    [ "$ahead"    -gt 0 ] && printf "\e[32m%s+\e[0m" "$ahead"
+    [ "$behind"   -gt 0 ] && printf "\e[33m%s-\e[0m" "$behind"
+    [ "$conflict" -gt 0 ] && printf "\e[31m%s±\e[0m" "$conflict"
+    printf "]"
+}
+
 __before_git() {
     __ssh_indicator
     __user_host
     __cwd_trim
     __jobs_count
+    __git_autostats
 }
 __after_git() {
     printf " \[\e[1;33m\]\$\[\e[0m\] "

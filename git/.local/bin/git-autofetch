@@ -1,11 +1,31 @@
 #!/bin/sh
 
-# TODO: companion script to gather the stats of all monitored repos
-# git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)"
-# git branch --show-current 
+ahead=0
+behind=0
+conflict=0
+uptodate=0
+
 if [ -f "$HOME/.config/git-autofetch" ]; then
     while read -r p; do
+        # update
         echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5
         cd "$p" && git fetch | systemd-cat --identifier="git-autofetch" --priority=5
+        # stats
+        upstream="$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")"
+        local="$(git -C "$p" branch --show-current)"
+        left="$(git -C "$p" rev-list --count --left-only "$local"..."$upstream")"
+        right="$(git -C "$p" rev-list --count --right-only "$local"..."$upstream")"
+
+        if [ "$left" = 0 ] && [ "$right" = 0 ]; then
+            uptodate=$((uptodate + 1))
+        elif [ "$left" = 0 ] && [ "$right" != 0 ]; then
+            behind=$((behind + 1))
+        elif [ "$left" != 0 ] && [ "$right" = 0 ]; then
+            ahead=$((ahead + 1))
+        else # [ "$left" != 0 ] && [ "$right" != 0 ]
+            conflict=$((conflict + 1))
+        fi
     done < "$HOME/.config/git-autofetch"
+
+    echo "$uptodate $ahead $behind $conflict" > /tmp/git-autostats
 fi

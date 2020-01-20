@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -f "$HOME/.config/git-autofetch" ]; then
+    while read -r p; do
+        # stats
+        upstream="$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")"
+        local="$(git -C "$p" branch --show-current)"
+        left="$(git -C "$p" rev-list --count --left-only "$local"..."$upstream")"
+        right="$(git -C "$p" rev-list --count --right-only "$local"..."$upstream")"
+        echo "+$left -$right $p"
+    done < "$HOME/.config/git-autofetch"
+fi
