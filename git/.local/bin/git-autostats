@@ -7,6 +7,16 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
         local="$(git -C "$p" branch --show-current)"
         left="$(git -C "$p" rev-list --count --left-only "$local"..."$upstream")"
         right="$(git -C "$p" rev-list --count --right-only "$local"..."$upstream")"
-        echo "+$left -$right $p"
+        if [ "$left" -gt 0 ]; then
+            printf "\e[34m+%s\e[0m " "$left"
+        else
+            printf "+%s " "$left"
+        fi
+        if [ "$right" -gt 0 ]; then
+            printf "\e[31m-%s\e[0m " "$right"
+        else
+            printf "+%s " "$right"
+        fi
+        echo "$p"
     done < "$HOME/.config/git-autofetch"
 fi

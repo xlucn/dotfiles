@@ -85,10 +85,10 @@ __user_host() {
 __git_autostats() {
     read -r uptodate ahead behind conflict < /tmp/git-autostats
     printf " ["
-    [ "$uptodate" -gt 0 ] && printf "\e[34m%s=\e[0m" "$uptodate"
-    [ "$ahead"    -gt 0 ] && printf "\e[32m%s+\e[0m" "$ahead"
-    [ "$behind"   -gt 0 ] && printf "\e[33m%s-\e[0m" "$behind"
-    [ "$conflict" -gt 0 ] && printf "\e[31m%s±\e[0m" "$conflict"
+    [ "$uptodate" -gt 0 ] && printf "\[\e[34m%s=\[\e[0m\]" "$uptodate"
+    [ "$ahead"    -gt 0 ] && printf "\[\e[32m%s+\[\e[0m\]" "$ahead"
+    [ "$behind"   -gt 0 ] && printf "\[\e[33m%s-\[\e[0m\]" "$behind"
+    [ "$conflict" -gt 0 ] && printf "\[\e[31m%s±\[\e[0m\]" "$conflict"
     printf "]"
 }
 
