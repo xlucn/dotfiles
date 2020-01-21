@@ -15,7 +15,7 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
         if [ "$right" -gt 0 ]; then
             printf "\e[31m-%s\e[0m " "$right"
         else
-            printf "+%s " "$right"
+            printf "%s " "-$right"
         fi
         echo "$p"
     done < "$HOME/.config/git-autofetch"
