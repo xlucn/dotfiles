@@ -1,5 +1,6 @@
 #!/bin/sh
 
+printf "%s %s  %s\n" "ahead" "behind" "repo path"
 if [ -f "$HOME/.config/git-autofetch" ]; then
     while read -r p; do
         # stats
@@ -8,15 +9,17 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
         left="$(git -C "$p" rev-list --count --left-only "$local"..."$upstream")"
         right="$(git -C "$p" rev-list --count --right-only "$local"..."$upstream")"
         if [ "$left" -gt 0 ]; then
-            printf "\e[34m+%s\e[0m " "$left"
+            printf "\e[34m%5s\e[0m" "+$left"
         else
-            printf "+%s " "$left"
+            printf "%5s" "+$left"
         fi
+        printf "  "
         if [ "$right" -gt 0 ]; then
-            printf "\e[31m-%s\e[0m " "$right"
+            printf "\e[31m%5s\e[0m" "-$right"
         else
-            printf "%s " "-$right"
+            printf "%5s" "-$right"
         fi
+        printf "  "
         echo "$p"
     done < "$HOME/.config/git-autofetch"
 fi
