@@ -67,10 +67,10 @@ __jobs_count() {
     if [ $count -gt 0 ]
     then
         printf " "
-        [ "$count_stop" -gt 0 ] && printf "\[\e[33mS%s\[\e[0m\]" "$count_stop"
-        [ "$count_run"  -gt 0 ] && printf "\[\e[32mR%s\[\e[0m\]" "$count_run"
-        [ "$count_done" -gt 0 ] && printf "\[\e[34mD%s\[\e[0m\]" "$count_done"
-        [ "$count_kill" -gt 0 ] && printf "\[\e[31mK%s\[\e[0m\]" "$count_kill"
+        [ "$count_stop" -gt 0 ] && printf "\[\e[33m\]S%s\[\e[0m\]" "$count_stop"
+        [ "$count_run"  -gt 0 ] && printf "\[\e[32m\]R%s\[\e[0m\]" "$count_run"
+        [ "$count_done" -gt 0 ] && printf "\[\e[34m\]D%s\[\e[0m\]" "$count_done"
+        [ "$count_kill" -gt 0 ] && printf "\[\e[31m\]K%s\[\e[0m\]" "$count_kill"
     fi
 }
 
@@ -85,10 +85,10 @@ __user_host() {
 __git_autostats() {
     read -r uptodate ahead behind conflict < /tmp/git-autostats
     printf " ["
-    [ "$uptodate" -gt 0 ] && printf "\[\e[34m%s=\[\e[0m\]" "$uptodate"
-    [ "$ahead"    -gt 0 ] && printf "\[\e[32m%s+\[\e[0m\]" "$ahead"
-    [ "$behind"   -gt 0 ] && printf "\[\e[33m%s-\[\e[0m\]" "$behind"
-    [ "$conflict" -gt 0 ] && printf "\[\e[31m%s±\[\e[0m\]" "$conflict"
+    [ "$uptodate" -gt 0 ] && printf "\[\e[34m\]%s=\[\e[0m\]" "$uptodate"
+    [ "$ahead"    -gt 0 ] && printf "\[\e[32m\]%s+\[\e[0m\]" "$ahead"
+    [ "$behind"   -gt 0 ] && printf "\[\e[33m\]%s-\[\e[0m\]" "$behind"
+    [ "$conflict" -gt 0 ] && printf "\[\e[31m\]%s±\[\e[0m\]" "$conflict"
     printf "]"
 }
 
