@@ -1,2 +1,3 @@
 --target=~
+--ignore=README.md
 --verbose
