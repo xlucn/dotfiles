@@ -52,6 +52,10 @@ URxvt.boldFont: xft:Hack:style=Bold:size=12, \
                 xft: FandolHei:style=Bold:size=12, \
                 xft: WenQuanYi Micro Hei:size=12
 
+st.font: Hack Nerd Font:pixelsize=16
+st.alpha: 1
+st.borderpx: 0
+st.cursorColor:  #EEFFFF
 ! using wal
 #include ".cache/wal/colors.Xresources"
 ! -- Color scheme -- !
