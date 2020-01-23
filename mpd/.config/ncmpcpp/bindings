@@ -396,9 +396,9 @@ def_key "ctrl-h"
 
 # search {{{
 def_key "/"
-  find
+  find_item_forward
+# find
 # find_item_backward
-# find_item_forward
 
 def_key "n"
   next_found_item
