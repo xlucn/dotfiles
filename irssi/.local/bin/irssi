@@ -29,7 +29,7 @@ else
     passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
 fi
 
-if ! command -v mutt > /dev/null 2>&1; then
+if ! command -v tmux > /dev/null 2>&1; then
     echo "please install \`tmux\`"
     exit 1
 fi
@@ -37,6 +37,7 @@ fi
 if ! tmux -L irssi ls -F "#S" 2> /dev/null | grep -q irssi
 then
     # Pass the passwords as shell environments into irssi
+    echo "exporting passwords ..."
     for network in "$passdir"/irc/*
     do
         for nickname in "$network"/*
