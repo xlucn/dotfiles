@@ -50,7 +50,7 @@ then
         done
     done
 
-    tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi
+    tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi "$@"
     # Disable all keybindings, let the irssi script deal with tmux
     tmux -L irssi set -s -t irssi prefix None
     tmux -L irssi unbind-key -a
