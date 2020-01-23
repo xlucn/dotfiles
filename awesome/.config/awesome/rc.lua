@@ -150,7 +150,7 @@ local help_icon = menu_utils.lookup_icon("system-help")
 local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end, shortcut_icon },
    { "manual", "xdg-open /usr/share/doc/awesome/doc/index.html", help_icon},
-   { "edit config", terminal_cmd(editor_cmd(awesome.conffile)), config_icon },
+   { "edit config", terminal_cmd(editor_cmd(gears.filesystem.get_configuration_dir())), config_icon },
    { "restart", awesome.restart, restart_icon },
    { "quit", function() awesome.quit() end, shutdown_icon}
 }
