@@ -91,6 +91,13 @@ servers = (
     use_tls = "yes";
     tls_verify = "yes";
     autoconnect = "yes";
+  {
+    address = "irc.oftc.net";
+    chatnet = "OFTC";
+    port = "6697";
+    use_tls = "yes";
+    tls_verify = "no";
+    autoconnect = "yes";
   }
 );
 
@@ -143,6 +150,11 @@ chatnets = {
     nick = "BeeBeeKing17";
     autosendcmd = "/^msg nickserv identify ${pass_digitalirc_beebeeking17}";
   };
+  OFTC = {
+    type = "IRC";
+    nick = "lewinat0r";
+    autosendcmd = "/^msg nickserv identify ${pass_oftc_lewinat0r}; wait 3000";
+  };
 };
 
 channels = (
@@ -173,7 +185,8 @@ channels = (
   { name = "#bhd_announce"; chatnet = "BeyondHD"; },
   { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
   { name = "#jpopsuki-support"; chatnet = "synIRC"; },
-  { name = "#empornium"; chatnet = "DigitalIRC"; autojoin = "yes"; }
+  { name = "#empornium"; chatnet = "DigitalIRC"; autojoin = "yes"; },
+  { name = "#suckless"; chatnet = "OFTC"; autojoin = "yes"; }
 );
 
 aliases = {
