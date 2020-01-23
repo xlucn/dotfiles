@@ -12,7 +12,7 @@ fi
 # Environments
 export EDITOR=vim
 export VISUAL=vim
-# add mouse support after less version 550
+# add mouse support after less version 550, to work with urxvt
 less_version=$(less -V | grep -E "^less [[:digit:]]+" | cut -d" " -f 2)
 if [ "$less_version" -ge 550 ]
 then

@@ -138,7 +138,7 @@ menu_gen.all_menu_dirs = {
 }
 
 local default_icon = menu_utils.lookup_icon("application-default-icon")
-local terminal_icon = menu_utils.lookup_icon("terminal")
+local terminal_icon = menu_utils.lookup_icon("utilities-terminal")
 local browser_icon = menu_utils.lookup_icon("applications-webbrowsers")
 local fm_icon = menu_utils.lookup_icon("system-file-manager")
 local config_icon = menu_utils.lookup_icon("system-config-services")
@@ -499,16 +499,6 @@ local globalkeys = gears.table.join(
               {description = "run command in rofi", group = "launcher"}),
     awful.key({ modkey,           }, "Tab", function () awful.spawn(rofi_window) end,
               {description = "switch window", group = "client"}),
-    awful.key({ modkey,           }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     --awful.key({ modkey }, "p", function() menubar.show() end,
               --{description = "show the menubar", group = "launcher"})

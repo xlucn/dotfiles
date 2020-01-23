@@ -1,7 +1,6 @@
 configuration {
     font                : "Hack 12";
     icon-theme          : "Papirus";
-    terminal            : "urxvtc";
     sidebar-mode        : false;
     modi                : "drun";
     show-icons          : true;
