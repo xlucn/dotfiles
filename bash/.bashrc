@@ -29,8 +29,7 @@ alias cp="cp -i"
 # do not show *tmpfs
 alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcent,target"
 # mpv under virtual console using drm
-alias cmpv-gpu="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-plane=0"
-alias cmpv="mpv --vo=drm"
+alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-plane=0"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 
