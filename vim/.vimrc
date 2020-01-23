@@ -86,8 +86,14 @@ set number
 set signcolumn=yes
 " enable mouse support in console
 set mouse=a
+" fix for urxvt
 if !has('nvim')
-    set ttymouse=urxvt
+    if $TERM == "rxvt-unicode-256color"
+        set ttymouse=urxvt
+    endif
+    if $TERM == "st-256color"
+        set ttymouse=sgr
+    endif
 endif
 " shows what you are typing as a command
 set showcmd

@@ -12,7 +12,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- }}}
 
 -- helper function {{{
-local terminal = "urxvtc"
+-- TODO: set this only in one place (another in rc.lua)
+local terminal = "st"
 local function terminal_cmd(cmd)
     return terminal .. " -e " .. cmd
 end

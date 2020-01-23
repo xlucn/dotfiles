@@ -54,7 +54,7 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "urxvtc"
+local terminal = "st"
 local filemanager = "nemo"
 local browser = "firefox"
 local editor = os.getenv("EDITOR") or "vim"

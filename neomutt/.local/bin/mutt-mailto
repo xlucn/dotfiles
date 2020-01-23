@@ -1,6 +1,9 @@
 #!/bin/sh
 
-if command -v urxvtc
+if command -v st
+then
+    TERMINAL=st
+elif command -v urxvtc
 then
     TERMINAL=urxvtc
 elif command -v termite
