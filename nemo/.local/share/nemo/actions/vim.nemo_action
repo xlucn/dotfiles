@@ -1,0 +1,10 @@
+[Nemo Action]
+Active=true
+Name=Open with Vim
+Comment=Open files with Vim in st
+Exec=st /usr/bin/vim %F
+Icon-Name=vim
+EscapeSpaces=true
+Selection=notnone
+Mimetypes=text/plain;
+Dependencies=vim;st;
