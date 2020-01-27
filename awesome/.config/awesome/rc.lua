@@ -55,6 +55,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 local terminal = "st"
+local floating_terminal = "st -c st-float"
 local filemanager = "nemo"
 local browser = "firefox"
 local editor = os.getenv("EDITOR") or "vim"
@@ -434,13 +435,7 @@ local globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return",  function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Shift"   }, "Return",  function ()
-                                                    awful.spawn(terminal, {
-                                                        ontop = true,
-                                                        floating = true,
-                                                        placement = awful.placement.centered,
-                                                    })
-                                                end,
+    awful.key({ modkey, "Shift"   }, "Return",  function () awful.spawn(floating_terminal) end,
               {description = "open a floating terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "l",  function () awful.spawn("dm-tool switch-to-greeter") end,
               {description = "lock screen", group = "awesome"}),
@@ -765,7 +760,19 @@ awful.rules.rules = {
             sticky = true,
             floating = true,
         },
-    }
+    },
+
+    { -- floating hack for st
+      -- https://github.com/awesomeWM/awesome/issues/2517#issuecomment-578724877
+        rule = {
+            class = "st-float"
+        },
+        properties = {
+            floating = true,
+            ontop = true,
+            placement = awful.placement.centered
+        },
+    },
 }
 -- }}}
 
