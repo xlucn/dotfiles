@@ -5,5 +5,5 @@ Type=Application
 Terminal=false
 Exec=/usr/bin/pdfpc
 Name=Pdfpc
-Icon=org.pwmt.zathura
+Icon=document-viewer
 Categories=Office;Viewer;
