@@ -52,10 +52,10 @@ URxvt.boldFont: xft:Hack:style=Bold:size=12, \
                 xft: FandolHei:style=Bold:size=12, \
                 xft: WenQuanYi Micro Hei:size=12
 
-St.font: Hack Nerd Font:pixelsize=16
-St.alpha: 1
-St.borderpx: 0
-St.cursorColor:  #EEFFFF
+st.font: Hack Nerd Font:pixelsize=16
+st.alpha: 1
+st.borderpx: 0
+st.cursorColor:  #EEFFFF
 
 Sxiv.font: xft:Monospace:pixelsize=14, xft:Source Han Sans CN:pixelsize=14
 
