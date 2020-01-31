@@ -5,7 +5,10 @@ if [ -d ~/.local/bin ] && echo "$PATH" | grep -q ".local/bin"; then
     export PATH="$HOME/.local/bin:${PATH}"
 fi
 
-[ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
+if [ "$PS1" ] && [ -f /usr/share/bash-completion/bash_completion ]
+then
+    . /usr/share/bash-completion/bash_completion
+fi
 # shellcheck source=/dev/null
 [ -f ~/.extend.bashrc ] && . "$HOME/.extend.bashrc"
 
