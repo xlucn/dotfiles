@@ -9,7 +9,7 @@
 [gui]
     spellingdictionary = none
 [alias]
-    ls = ls-tree master --name-only -r
+    ls = ls-tree --name-only -r
     s = status
     c = commit -m
     l = log
