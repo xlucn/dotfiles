@@ -757,8 +757,10 @@ awful.rules.rules = {
             role = "PictureInPicture",
         },
         properties = {
+            ontop = true,
             sticky = true,
             floating = true,
+            placement = awful.placement.bottom_right
         },
     },
 
