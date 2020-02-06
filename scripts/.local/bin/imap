@@ -18,10 +18,13 @@ while getopts hs:p:P: param
 do
     case "$param" in
         s)
-            server="$OPTARG"
+            _server="$OPTARG"
             ;;
         p)
-            port="$OPTARG"
+            _port="$OPTARG"
+            ;;
+        P)
+            _password="$OPTARG"
             ;;
         h|?)
             usage
@@ -58,11 +61,26 @@ case "${email#*@}" in
         ;;
 esac
 
-password=$(pass show mail/"$email")
+if [ -n "$_server" ]
+then
+    server="$_server"
+fi
+if [ -n "$_port" ]
+then
+    port="$_port"
+fi
+
 if [ -z "$server" ] || [ -z "$port" ]
 then
     echo Server or port not set. >&2
     exit 1
+fi
+
+password=$(pass show mail/"$email" 2> /dev/null)
+
+if [ -n "$_password" ]
+then
+    password="$_password"
 fi
 
 if [ -z "$password" ]
