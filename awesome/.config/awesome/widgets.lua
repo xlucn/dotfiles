@@ -4,7 +4,6 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local lain = require("lain")
-local markup = lain.util.markup
 local beautiful = require("beautiful")
 -- local module
 local theme = require("theme")
@@ -17,6 +16,18 @@ local terminal = "st"
 local function terminal_cmd(cmd)
     return terminal .. " -e " .. cmd
 end
+-- replace the markup util in lain
+local markup = {
+    font = function(font, text)
+        return string.format("<span font='%s'>%s</span>", font, text)
+    end,
+    fg = function(color, text)
+        return string.format("<span foreground='%s'>%s</span>", color, text)
+    end,
+    fontfg = function(font, color, text)
+        return string.format("<span font='%s' foreground='%s'>%s</span>", font, color, text)
+    end
+}
 -- }}}
 
 -- font, colors, characters {{{
@@ -397,9 +408,9 @@ local lain_net = lain.widget.net({
         local sent_str, sent_unit = format_netspeed(tonumber(net_now.sent))
         local received_str, received_unit = format_netspeed(tonumber(net_now.received))
         widget:set_markup(
-            markup.fg.color(widget_net_up, sent_str .. " " .. sent_unit)
+            markup.fg(widget_net_up, sent_str .. " " .. sent_unit)
             .. " " ..
-            markup.fg.color(widget_net_down, received_str .. " " .. received_unit)
+            markup.fg(widget_net_down, received_str .. " " .. received_unit)
         )
     end
 })
