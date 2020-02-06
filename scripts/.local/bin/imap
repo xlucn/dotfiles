@@ -1,7 +1,20 @@
 #!/bin/sh
 # TODO: store the result in tmp file to avoid frequent request
+usage()
+{
+    echo Usage: "$(basename "$0")" [-s server] [-p port] [-P password] [-h] email
+    echo
+    echo Notes:
+    echo
+    echo 1. You can also specify the server and port of the imap server in this script \("$0"\) by adding the corresponding information in the \`switch\` command.
+    echo "   "The command line options -s and -p override the built-in ones.
+    echo
+    echo 2. This script also looks for email password with the help of \`pass\`. The passwords should be stored in \"mail/\<email_address\>\".
+    echo "   "The command line option -P overrides this password.
+}
+
 # Get the server and port if provided
-while getopts s:p: param
+while getopts hs:p:P: param
 do
     case "$param" in
         s)
@@ -10,7 +23,9 @@ do
         p)
             port="$OPTARG"
             ;;
-        ?)
+        h|?)
+            usage
+            exit 0
             ;;
     esac
 done
@@ -21,10 +36,11 @@ if [ $# = 1 ]
 then
     email=$1
 else
-    echo Only one positional argument as email
-    exit
+    echo Only one email address as positional argument. See "$(basename "$0")" -h for help.
+    exit 1
 fi
 
+# Some predefined server and ports
 case "${email#*@}" in
     outlook.com)
         server=imap-mail.outlook.com
@@ -43,11 +59,16 @@ case "${email#*@}" in
 esac
 
 password=$(pass show mail/"$email")
-
-if [ -z "$server" ] || [ -z "$port" ] || [ -z "$password" ]
+if [ -z "$server" ] || [ -z "$port" ]
 then
-    echo Error
-    exit
+    echo Server or port not set. >&2
+    exit 1
+fi
+
+if [ -z "$password" ]
+then
+    echo Password not set. >&2
+    exit 1
 fi
 
 if ! curl -fsm 30 --connect-timeout 30 \
@@ -55,5 +76,6 @@ if ! curl -fsm 30 --connect-timeout 30 \
           --user "$email:$password" \
           --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
 then
-    echo -
+    echo Requesting imap server failed. >&2
+    exit 1
 fi
