@@ -793,7 +793,9 @@ client.connect_signal("manage", function (c)
     -- set fallback icon
     -- https://www.reddit.com/r/awesomewm/comments/b5rmeo/how_to_add_fallback_icon_to_the_tasklist/
     local t = {}
-    t["URxvt"] = "/usr/share/icons/Papirus/64x64/apps/terminal.svg"
+    t["URxvt"] = terminal_icon
+    t["St"] = terminal_icon
+    t["st-float"] = terminal_icon
     -- fallback of fallback icon
     t["Others"] = "/usr/share/icons/Papirus/64x64/apps/application-default-icon.svg"
 
