@@ -1,12 +1,34 @@
 #!/bin/sh
-# The line above is important, otherwise there won't be a process for the script
-# Use this where refresh rate is higher than needed
+# TODO: seperate backend (imap query operations)
 
-if [ "$(pgrep -c imap-tmux)" -gt 1 ]; then
-    exit 0
-else
-    count1=$(imap oliver_lew@outlook.com)
-    count2=$(imap 2869761396@qq.com)
-    echo "$count1|$count2"
-    sleep 180
-fi
+# Minimal time interval between two imap queries
+query_interval=120
+
+# email accounts
+accounts="oliver_lew@outlook.com 2869761396@qq.com"
+
+counts=""
+time_now="$(date +%s)"
+for account in $accounts
+do
+    tempfile="/tmp/imap_$account"
+    if [ -f "$tempfile" ]
+    then
+        read -r time_last count < "$tempfile"
+        if [ $((time_now - time_last)) -gt "$query_interval" ]
+        then
+            flag_update=1
+        fi
+        counts="$counts $count"
+    else
+        flag_update=1
+        counts="$counts -"
+    fi
+
+    if [ "$flag_update" = 1 ]
+    then
+        echo "$time_now $(imap "$account")" > "$tempfile"
+    fi
+done
+
+echo "$counts"
