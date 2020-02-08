@@ -28,12 +28,12 @@ Config files for everything
 - curl for vim-plug auto install (in .vimrc) and a lot other scripts
 
 - For [mutt](http://www.mutt.org/)/[neomutt](https://neomutt.org/):
-  - [urlscan](https://github.com/firecat53/urlscan) for mutt url extracions
+  - [urlscan](https://github.com/firecat53/urlscan) for mutt url extractions
   - [pass](https://www.passwordstore.org/) for store email passwords
-  - [gpg](https://gnupg.org/) for passwordstore and other encryptions
+  - [gpg](https://gnupg.org/) for password-store and other encryptions
 
 - For Awesome WM:
-  - [lain](https://github.com/lcpz/lain) for wigdets library
+  - [lain](https://github.com/lcpz/lain) for widgets library
   - [nemo](https://github.com/linuxmint/nemo) for file manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [picom](https://github.com/yshui/picom) for compositing (a fork of [compton](https://github.com/chjj/compton))
@@ -74,8 +74,8 @@ sudo make install-system
 
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/fbterm.png?raw=true)
 
-There is some programms that can work under linux console (tty) without X. After getting
-familiar with those programms, you can become quite efficient working without a DE/WM.
+There is some programs that can work under linux console (tty) without X. After getting
+familiar with those programs, you can become quite efficient working without a DE/WM.
 And I configured a usable environment to make it more enjoyable.
 
 To install configs specifically for them:
@@ -101,4 +101,4 @@ Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc
 - terminal programs which naturally work everywhere
   - [light](https://github.com/haikarainen/light) for change screen brightness
   - [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
-  - [tty-clock](https://github.com/xorg62/tty-clock) for lockscreen, only without locking
+  - [tty-clock](https://github.com/xorg62/tty-clock) for lock screen, only without locking
