@@ -53,7 +53,7 @@ with `<package name>` being the folder name for a specific program except `syste
 should be installed in root.
 
 There is no `-t` or `-v` arguments because I am using `.stowrc` file, but note that only
-since version `2.3.1` can stow expand ~/$HOME in the rc file. If you are using stow
+since version `2.3.0` can stow expand ~/$HOME in the rc file. If you are using stow
 with older versions, you have to specify the target dir argument with `-t ~` in
 the commands.
 
