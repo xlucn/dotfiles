@@ -87,25 +87,8 @@ stow -v -t ~ fbterm tmux scripts
 
 Those configs feature:
 
-- Configs for `fbterm`, a more powerful (e.g. show utf-8 glyfs, faster) terminal emulator in framebuffer
-- Tmux config specifically designed for using in fbterm
-  - Try to mimic a tiling WM with multiple 'workspaces', e.g.
-    - keep a specific layout,
-    - start with multiple tmux windows,
-    - not killing the last pane i.e. not closing any tmux window (so it's more like a workspace).
-  - Keybindings are similar to AwesomeWM/dwm with `alt` being the mod key. A lot of operations
-    are available with `alt + key` keybindings:
-    - navigating between windows/panes,
-    - moving panes between windows/panes,
-    - resizing panes
-    - creating and closing panes
-    - launching programs
-    - changing volume and even brightness (with `light`)
-    - taking screenshot (with `fbgrab`, I prefer the executable from [fbcat](https://github.com/jwilk/fbcat) project)
-    - start screensaver (with tty-clock)
-  - CPU/memory/battery/volume/email/weather status indicator, and even more
-  - Nerd font characters for window names and status inidicators. The choosed characters are fbterm-friendly
-    and look terrible in other terminal emulators in DE/WM
+- Configs for `fbterm`, a more powerful (e.g. show utf-8 glyphs, faster) terminal emulator in framebuffer
+- Tmux config specifically designed for using in fbterm, for details see [the readme](tmux/) in tmux folder.
 
 Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
 - framebuffer only
