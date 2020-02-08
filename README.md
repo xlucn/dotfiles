@@ -10,10 +10,9 @@ Config files for everything
 - WM:
   - [AwesomeWM](https://awesomewm.org/)
 - Colorscheme:
-  - [wal](https://github.com/dylanaraps/pywal)
-  - [gruvbox](https://github.com/morhetz/gruvbox)
+  - [wal](https://github.com/dylanaraps/pywal) base16-materialer
 - Terminal Emulator
-  - [urxvt](http://software.schmorp.de/pkg/rxvt-unicode.html)
+  - [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
 - Text Editor
   - [vim](https://www.vim.org/)
 
