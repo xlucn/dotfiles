@@ -1,11 +1,13 @@
 #!/bin/sh
+# Script to show status, name and speed of network interfaces
+
 # TODO: provide an option that if neither -e nor -w is provided, print all names or speeds. (but at the same time there must be one of -n and -s)
-# TODO: provide an option to specify interface name manually. e.g. network -n -d eth0
 usage() {
-    printf "%s [-e/w] [-n/s]\n\n" "$(basename "$0")"
+    printf "%s [-i interface] [-e/w] [-n/s]\n\n" "$(basename "$0")"
     printf "Devices:\n"
     printf "\t-e: show stats about all ethernet devices\n"
     printf "\t-w: show stats about all wireless devices\n"
+    printf "\t-i <interface>: show stats about <interface>\n"
     printf "Output:\n"
     printf "\t-n: show device names\n"
     printf "\t-s: show device RX/TX (a.k.a. DL/UL) speed\n"
@@ -13,8 +15,9 @@ usage() {
 }
 
 if [ "$#" = 0 ]; then usage; exit; fi
-while getopts "webnsh" arg; do
+while getopts "i:webnsh" arg; do
     case "$arg" in
+        i) interface="$OPTARG";;
         w) flag_wireless=1;;
         e) flag_ethernet=1;;
         n) flag_name=1;;
@@ -27,7 +30,9 @@ if [ "$#" != 0 ]; then usage; exit 1; fi
 
 folder="/sys/class/net"
 
-if [ "$flag_ethernet" = 1 ]; then
+if [ -n "$interface" ]; then
+    devices="$folder/$interface"
+elif [ "$flag_ethernet" = 1 ]; then
     devices=$(find "$folder" -name "e*")
 elif [ "$flag_wireless" = 1 ]; then
     devices=$(find "$folder" -name "w*")
