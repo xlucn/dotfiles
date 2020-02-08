@@ -307,7 +307,7 @@ local imap_upd = gears.timer {
     timeout   = 60,
     autostart = true,
     callback  = function()
-        awful.spawn.easy_async(string.format("imap -m %s", mail),
+        awful.spawn.easy_async(string.format("imap %s", mail),
             function(stdout)
                 local color
                 if stdout == nil or stdout == "" then
