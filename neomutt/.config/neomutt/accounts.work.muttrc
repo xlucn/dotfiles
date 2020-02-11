@@ -19,10 +19,10 @@ set smtp_pass = $my_pass
 set spoolfile = "+Inbox"
 set record = "+Sent"
 set postponed = "+Drafts"
+set trash = "+Deleted"
 
 # do not save sent email
 set copy = no
-unset record
 
 # signature file
 set signature = "~/.config/mutt/signature_work"
