@@ -12,10 +12,13 @@ set sig_on_top = yes
 # disable '+' markers at the beginning of every wrapped line
 unset markers
 
-# show sidebar
-set sidebar_visible = no
-set sidebar_width = 40
 
+# show sidebar
+set sidebar_visible = yes
+set sidebar_width = 24
+set sidebar_short_path = yes
+set sidebar_folder_indent = yes
+set sidebar_sort_method = name
 # sidebar format: Boxname [New messages]  Total size
 set sidebar_format = "%B %?N?[%N]?%* %S"
 # forward subject formats
