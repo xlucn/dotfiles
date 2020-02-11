@@ -1,37 +1,28 @@
 -- luacheck: globals awesome
 -- Libraries {{{
-local dpi = require("beautiful.xresources").apply_dpi
 local gears = require("gears")
-local config_path = gears.filesystem.get_configuration_dir()
+local beautiful = require("beautiful")
 local theme_assets = require("beautiful.theme_assets")
 -- }}}
 
 local theme = {}
+local dpi = beautiful.xresources.apply_dpi
 
 -- wallpaper {{{
 theme.wallpaper = "~/.local/share/backgrounds/wallpaper.jpg"
 -- }}}
 
--- Colorscheme files from wal {{{
-local walfile = io.open(os.getenv("HOME") .. "/.cache/wal/colors")
-if not walfile then
-    walfile = io.open(config_path .. "/colors") -- gruvbox colors here now
-end
-
-local colors = {}
-for each in walfile:lines() do
-  colors[#colors + 1] = each
-end
-
-local dark0   = colors[1]
-local dark4   = colors[9]
-local light0  = colors[8]
-local red     = colors[2]
-local green   = colors[3]
-local yellow  = colors[4]
-local blue    = colors[5]
-local purple  = colors[6]
-local aqua    = colors[7]
+-- Colorscheme files from Xresources {{{
+local xresources_theme = beautiful.xresources.get_current_theme()
+local dark0   = xresources_theme.color0
+local red     = xresources_theme.color1
+local green   = xresources_theme.color2
+local yellow  = xresources_theme.color3
+local blue    = xresources_theme.color4
+local purple  = xresources_theme.color5
+local aqua    = xresources_theme.color6
+local light0  = xresources_theme.color7
+local dark4   = xresources_theme.color8
 -- }}}
 
 -- Basic Colors {{{
