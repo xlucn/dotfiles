@@ -1,4 +1,4 @@
--- luacheck: globals widget cpu_now mem_now mpd_now volume_now bat_now net_now
+-- luacheck: globals widget mpd_now volume_now bat_now net_now
 -- libraries {{{
 local awful = require("awful")
 local gears = require("gears")
@@ -7,7 +7,6 @@ local lain = require("lain")
 local beautiful = require("beautiful")
 -- local module
 local theme = require("theme")
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 -- }}}
 
 -- helper function {{{
@@ -266,15 +265,25 @@ local bat = lain.widget.bat({
 -- }}}
 
 -- cpu {{{
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.fontfg(widgets_nerdfont,
+local cpu_text = wibox.widget.textbox()
+local cpu_upd = gears.timer {
+    timeout   = 3,
+    autostart = true,
+    callback  = function()
+        awful.spawn.easy_async_with_shell("cpu",
+            function(stdout)
+                cpu_text:set_markup(
+                    markup.fontfg(widgets_nerdfont,
                                         widget_cpu,
                                         nerdfont_cpu) .. " " ..
-                          string.format("%2.0f%%", cpu_now.usage))
+                    string.format("%2.0f%%", stdout)
+                )
+            end
+        )
     end
-})
-cpu.widget:buttons(awful.util.table.join(
+}
+cpu_upd:emit_signal("timeout")
+cpu_text:buttons(awful.util.table.join(
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("htop -s PERCENT_CPU"))
     end)
@@ -282,15 +291,25 @@ cpu.widget:buttons(awful.util.table.join(
 -- }}}
 
 -- memory {{{
-local mem = lain.widget.mem({
-    settings = function()
-        widget:set_markup(markup.fontfg(widgets_nerdfont,
+local mem_text = wibox.widget.textbox()
+local mem_upd = gears.timer {
+    timeout   = 3,
+    autostart = true,
+    callback  = function()
+        awful.spawn.easy_async_with_shell("mem -u",
+            function(stdout)
+                mem_text:set_markup(
+                    markup.fontfg(widgets_nerdfont,
                                         widget_ram,
                                         nerdfont_memory) .. " " ..
-                          string.format("%4.2f GB", mem_now.used / 1000.0))
+                    string.format(stdout)
+                )
+            end
+        )
     end
-})
-mem.widget:buttons(awful.util.table.join(
+}
+mem_upd:emit_signal("timeout")
+mem_text:buttons(awful.util.table.join(
     awful.button({}, 3, function()
         awful.spawn(terminal_cmd("htop -s PERCENT_MEM"))
     end)
@@ -599,10 +618,10 @@ return {
         widget = bat.widget,
     },
     cpu = {
-        widget = cpu.widget,
+        widget = cpu_text,
     },
     mem = {
-        widget = mem.widget,
+        widget = mem_text,
     },
     imap = {
         widget = imap,
