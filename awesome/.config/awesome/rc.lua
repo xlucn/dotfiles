@@ -5,17 +5,11 @@
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
 local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 local naughty = require("naughty")
---local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
 -- menu
 local menu_utils = require("menubar.utils")
 local menu_gen = require("menubar.menu_gen")
@@ -49,10 +43,6 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
---beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
-
 -- This is used later as the default terminal and editor to run.
 local terminal = "st"
 local floating_terminal = "st -c st-float"
@@ -71,10 +61,9 @@ local function editor_cmd(file)
 end
 
 -- rofi (launcher tool) commands
-local rofi_basic = "rofi -modi drun,window,run"
-local rofi_drun = "rofi -theme launcher -show drun"
-local rofi_run = rofi_basic .. " -show run"
-local rofi_window = rofi_basic .. " -show window"
+local rofi_drun = "rofi -modi drun -theme launcher -show drun"
+local rofi_run = "rofi -show run"
+local rofi_window = "rofi -show window"
 
 -- maim (screenshot tool) commands
 local maim_basic = "maim"
@@ -110,21 +99,6 @@ local tag7 = " " .. beautiful.nerdfont_email     .. " "
 local tag8 = " " .. beautiful.nerdfont_terminal  .. " "
 local tag9 = " " .. beautiful.nerdfont_terminal  .. " "
 
--- }}}
-
--- {{{ Helper functions
-local function client_menu_toggle_fn()
-    local instance = nil
-
-    return function ()
-        if instance and instance.wibox.visible then
-            instance:hide()
-            instance = nil
-        else
-            instance = awful.menu.clients({ theme = { width = 250 } })
-        end
-    end
-end
 -- }}}
 
 -- {{{ Menu
@@ -252,7 +226,7 @@ local tasklist_buttons = gears.table.join(
                                   c:raise()
                               end
                           end),
-     awful.button({ }, 3, client_menu_toggle_fn()),
+     awful.button({ }, 3, function() awful.menu.clients() end),
      awful.button({ }, 4, function ()
                               awful.client.focus.byidx(1)
                           end),
