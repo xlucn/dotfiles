@@ -1,18 +1,51 @@
 #!/bin/sh
 
-if [ "$1" = -s ]
+usage()
+{
+    echo "Usage: $(basename "$0") [ -h ] [ -s ] [ -l | -r ]"
+    echo
+    echo "Information:"
+    echo "    default: show volume"
+    echo "    -s: show on/off status"
+    echo
+    echo "Channel:"
+    echo "    -l: show left channel"
+    echo "    -r: show right channel"
+}
+
+while getopts "hslr" arg; do
+    case "$arg" in
+        s) flag_stats=1;;
+        l) flag_left=1;;
+        r) flag_right=1;;
+        h) usage; exit 0;;
+        *) usage; exit 1;;
+    esac
+done
+
+info=$(amixer get Master)
+stat_right=$(echo "${info}" | grep Right: | grep -Eo '\[on\]|\[off\]')
+stat_left=$(echo "${info}" | grep Left: | grep -Eo '\[on\]|\[off\]')
+vol_right=$(echo "${info}" | grep Right: | grep -Eo '[[:digit:]]+%' | tr -d %)
+vol_left=$(echo "${info}" | grep Left: | grep -Eo '[[:digit:]]+%' | tr -d %)
+
+if [ "$flag_stats" = 1 ]
 then
-    stat_raw=$(amixer get Master | grep Right: | grep -Eo '\[on\]|\[off\]')
-    if [ "$stat_raw" = "[on]" ]
-    then
-        stat=1
+    if [ "$stat_left" = "[on]" ] && [ "$stat_right" = "[on]" ]; then
+        echo 1
+    elif [ "$flag_right" = 1 ] && [ "$stat_right" = "[on]" ]; then
+        echo 1
+    elif [ "$flag_left" = 1 ] && [ "$stat_left" = "[on]" ]; then
+        echo 1
     else
-        stat=0
+        echo 0
     fi
-    echo $stat
 else
-    voll=$(amixer get Master | grep Left: | grep -Eo '[[:digit:]]+%' | tr -d %)
-    volr=$(amixer get Master | grep Right: | grep -Eo '[[:digit:]]+%' | tr -d %)
-    vol=$(((volr + voll ) / 2))
-    echo $vol
+    if [ "$flag_left" = 1 ]; then
+        echo "$vol_left"
+    elif [ "$flag_right" = 1 ]; then
+        echo "$vol_right"
+    else
+        echo "$(((vol_right + vol_left ) / 2))"
+    fi
 fi
