@@ -1,4 +1,4 @@
--- luacheck: globals widget mpd_now volume_now bat_now net_now
+-- luacheck: globals mpd_now
 -- libraries {{{
 local awful = require("awful")
 local gears = require("gears")
@@ -77,36 +77,46 @@ local nerdfont_email                  = "" -- 
 -- }}}
 
 -- volume {{{
+local volume_channel = "Master"
+local volume_togglechannel = nil
+
+local volume_text = wibox.widget.textbox()
+local volume = wibox.widget.textbox()
 local volume_slider = wibox.widget {
     forced_width        = 64,
     widget              = wibox.widget.slider,
     visible             = false,
 }
 
-local volume_text = wibox.widget{ widget = wibox.widget.textbox }
-
-local volume = lain.widget.alsa({
+local volume_upd = gears.timer({
     timeout = 5,
-    settings = function ()
-        local state
-        if volume_now.status == "off" then
-            state = nerdfont_volume_mute
-        else
-            state = nerdfont_volume_high
-        end
-        widget:set_markup(markup.fontfg(widgets_nerdfont,
-                                        widget_alsa,
-                                        state))
-        volume_slider.value = tonumber(volume_now.level)
+    autostart = true,
+    callback = function ()
+        awful.spawn.easy_async_with_shell("vol -s; vol",
+            function(stdout)
+                local stat_icon
+                for stat, vol in string.gmatch(stdout, "(%d+)\n(%d+)") do
+                    if stat == "1" then
+                        stat_icon = nerdfont_volume_high
+                    else
+                        stat_icon = nerdfont_volume_mute
+                    end
+                    volume:set_markup(markup.fontfg(widgets_nerdfont,
+                                                    widget_alsa,
+                                                    stat_icon))
+                    volume_slider.value = tonumber(vol)
+                end
+            end
+        )
     end
 })
+volume_upd:emit_signal("timeout")
 
 -- audio functions
 local function volume_toggle()
-    os.execute(string.format("%s set %s toggle",
-                             volume.cmd,
-                             volume.togglechannel or volume.channel))
-    volume.update()
+    os.execute(string.format("amixer set %s toggle",
+                             volume_togglechannel or volume_channel))
+    volume_upd:emit_signal("timeout")
 end
 
 -- interacting first with the slider, and changing the system volume by
@@ -118,16 +128,15 @@ local function volume_down()
     volume_slider.value = volume_slider.value - 2
 end
 local function volume_set()
-    awful.spawn(string.format("%s set %s %f%%",
-                             volume.cmd,
-                             volume.channel,
+    awful.spawn(string.format("amixer set %s %f%%",
+                             volume_channel,
                              volume_slider.value), false)
     volume_text:set_text(string.format("%3.0f%%", volume_slider.value))
 end
 volume_slider:connect_signal('property::value', volume_set)
 
 -- button bindings
-volume.widget:buttons(awful.util.table.join(
+volume:buttons(awful.util.table.join(
     awful.button({}, 1, volume_toggle),     -- left click
     awful.button({}, 2, function()
         volume_slider.visible = not volume_slider.visible
@@ -237,31 +246,39 @@ light:buttons(awful.util.table.join(
 -- }}}
 
 -- battery {{{
-local bat = lain.widget.bat({
-    full_notify = "off",
-    notify = "off",
-    settings = function()
-        local state, color
-        local perc = tonumber(bat_now.perc)
-        if bat_now.ac_status == 1 then
-            state = nerdfont_bat_full_charging
-        elseif bat_now.status == "N/A" then
-            state = nerdfont_bat_unknown
-        else
-            state = nerdfont_batteries[(perc + 4) // 10 + 1]
-        end
-        if perc > 30 then
-            color = widget_bat_normal
-        elseif perc > 15 then
-            color = widget_bat_mid
-        else
-            color = widget_bat_low
-        end
-        widget:set_markup(
-            markup.fontfg(widgets_nerdfont, color, state) .. " " ..  perc .. "%"
+local bat_text = wibox.widget.textbox()
+local bat = gears.timer({
+    timeout = 30,
+    -- TODO: autostart and emit signal ?
+    autostart = true,
+    callback = function()
+        awful.spawn.easy_async_with_shell("battery; ac",
+            function(stdout)
+                local color, stat_icon
+                for level, state in string.gmatch(stdout, "(%d+)\n(%d+)") do
+                    level = tonumber(level)
+                    if state == "1" then
+                        stat_icon = nerdfont_bat_full_charging
+                    else
+                        stat_icon = nerdfont_batteries[(level + 4) // 10 + 1]
+                    end
+                    if level > 30 then
+                        color = widget_bat_normal
+                    elseif level > 15 then
+                        color = widget_bat_mid
+                    else
+                        color = widget_bat_low
+                    end
+                    bat_text:set_markup(
+                        markup.fontfg(widgets_nerdfont, color, stat_icon)
+                        .. " " ..  tostring(level) .. "%"
+                    )
+                end
+            end
         )
     end
 })
+bat:emit_signal("timeout")
 -- }}}
 
 -- cpu {{{
@@ -276,7 +293,7 @@ local cpu_upd = gears.timer {
                     markup.fontfg(widgets_nerdfont,
                                         widget_cpu,
                                         nerdfont_cpu) .. " " ..
-                    string.format("%2.0f%%", stdout)
+                    string.format("%2.0f%%", tonumber(stdout))
                 )
             end
         )
@@ -351,6 +368,7 @@ imap:buttons(awful.util.table.join(
 
 -- network {{{
 local net_status = wibox.widget.textbox()
+local net_speed = wibox.widget.textbox()
 -- format network speed
 local function format_netspeed(raw_speed)
     -- use 1000 here to keep under 3-digits
@@ -358,13 +376,13 @@ local function format_netspeed(raw_speed)
 
     if raw_speed < 1000 then
         speed = raw_speed
+        speed_unit = "B/s"
+    elseif raw_speed < 1000 * 1000 then
+        speed = raw_speed / 1000
         speed_unit = "KB/s"
-    elseif raw_speed < 1000 * 1024 then
-        speed = raw_speed / 1024
-        speed_unit = "MB/s"
     else
-        speed = raw_speed / 1024 / 1024
-        speed_unit = "GB/s"
+        speed = raw_speed / 1000 / 1000
+        speed_unit = "MB/s"
     end
 
     if speed < 10 then
@@ -373,72 +391,59 @@ local function format_netspeed(raw_speed)
         speed_str = string.format("%3.0f", speed)
     end
 
-    return speed_str, speed_unit
+    return speed_str .. ' ' .. speed_unit
 end
--- command to show active wifi SSID
--- nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2
-local lain_net = lain.widget.net({
-    wifi_state = "on",
-    eth_state = "on",
-    notify = "off",
-    settings = function()
-        local eth_icon, wlan_icon, ethernet_name, wlan_name
-        -- get wlan and ethernet interface name
+
+local net_upd = gears.timer {
+    timeout   = 3,
+    autostart = true,
+    callback  = function()
         awful.spawn.easy_async_with_shell(
-            "ip a | grep -E '^[1-9].*' | awk -F':[[:space:]]+' '{ print $2 }'",
-            function (stdout, _, _, _)
-                for name in string.gmatch(stdout, "(%w+)") do
-                    if string.sub(name, 1, 1) == "e" then
-                        ethernet_name = name
-                    elseif string.sub(name, 1, 1) == "w" then
-                        wlan_name = name
+            "network -w; network -e; network -ws; network -es",
+            function(stdout)
+                local eth_icon, wlan_icon
+                local lineno = 0
+                local upspeed = 0
+                local downspeed = 0
+                for num in string.gmatch(stdout, "(%d+)") do
+                    num = tonumber(num)
+                    if lineno == 0 then      -- wireless stat
+                        eth_icon = markup.fontfg(
+                            widgets_nerdfont,
+                            beautiful.fg_normal .. (num == 1 and '' or '40'),
+                            nerdfont_ethernet
+                        )
+                    elseif lineno == 1 then  -- ethernet stat
+                        wlan_icon = markup.fontfg(
+                            widgets_nerdfont,
+                            beautiful.fg_normal .. (num == 1 and '' or '40'),
+                            nerdfont_wifi_on
+                        )
+                    elseif lineno == 2 then  -- wireless download speed
+                        downspeed = downspeed + num
+                    elseif lineno == 3 then  -- wireless upload speed
+                        upspeed = upspeed + num
+                    elseif lineno == 4 then  -- ethernet download speed
+                        downspeed = downspeed + num
+                    elseif lineno == 5 then  -- ethernet upload speed
+                        upspeed = upspeed + num
                     end
+                    lineno = lineno + 1
                 end
-            end)
-
-        -- set ethernet status
-        local eth = net_now.devices[ethernet_name]
-        if eth and eth.ethernet then
-            eth_icon = markup.fontfg(widgets_nerdfont,
-                                     beautiful.fg_normal,
-                                     nerdfont_ethernet)
-        else
-            eth_icon = markup.fontfg(widgets_nerdfont,
-                                     beautiful.fg_normal .. '40',
-                                     nerdfont_ethernet)
-        end
-
-        -- set wlan status
-        local wifi = net_now.devices[wlan_name]
-        if wifi and wifi.wifi then
-            wlan_icon = markup.fontfg(widgets_nerdfont,
-                                     beautiful.fg_normal,
-                                     nerdfont_wifi_on)
-        else
-            wlan_icon = markup.fontfg(widgets_nerdfont,
-                                     beautiful.fg_normal .. '40',
-                                     nerdfont_wifi_on)
-        end
-
-        -- set widget content
-        net_status.markup = eth_icon .. " " .. wlan_icon
-
-        -- send and receive speed
-        local sent_str, sent_unit = format_netspeed(tonumber(net_now.sent))
-        local received_str, received_unit = format_netspeed(tonumber(net_now.received))
-        widget:set_markup(
-            markup.fg(widget_net_up, sent_str .. " " .. sent_unit)
-            .. " " ..
-            markup.fg(widget_net_down, received_str .. " " .. received_unit)
+                net_status:set_markup(eth_icon .. ' ' .. wlan_icon)
+                net_speed:set_markup(
+                    markup.fg(widget_net_up, format_netspeed(upspeed))
+                    .. " " ..
+                    markup.fg(widget_net_down, format_netspeed(downspeed))
+                    .. "  "
+                )
+            end
         )
     end
-})
-local net_speed = wibox.widget {
-    layout = wibox.container.margin,
-    right = 16,
-    lain_net.widget,
 }
-net_speed.visible = false  -- default to invisible
+net_upd:emit_signal("timeout")
+
+net_speed.visible = true  -- default to invisible
 net_status:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         net_speed.visible = not net_speed.visible
@@ -448,9 +453,9 @@ net_status:buttons(awful.util.table.join(
     end)
 ))
 local net = wibox.widget {
-    layout = wibox.layout.fixed.horizontal,
     net_speed,
     net_status,
+    layout = wibox.layout.fixed.horizontal,
 }
 -- }}}
 
@@ -615,7 +620,7 @@ return {
         toggle = volume_toggle,
     },
     bat = {
-        widget = bat.widget,
+        widget = bat_text,
     },
     cpu = {
         widget = cpu_text,
