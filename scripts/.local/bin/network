@@ -1,27 +1,35 @@
 #!/bin/sh
 # Script to show status, name and speed of network interfaces
 
-# TODO: provide an option that if neither -e nor -w is provided, print all names or speeds. (but at the same time there must be one of -n and -s)
 usage() {
-    printf "%s [-i interface] [-e/w] [-n/s]\n\n" "$(basename "$0")"
-    printf "Devices:\n"
-    printf "\t-e: show stats about all ethernet devices\n"
-    printf "\t-w: show stats about all wireless devices\n"
-    printf "\t-i <interface>: show stats about <interface>\n"
-    printf "Output:\n"
-    printf "\t-n: show device names\n"
-    printf "\t-s: show device RX/TX (a.k.a. DL/UL) speed\n"
-    printf "\tNo arguments: print device status, 1 for up, 0 for down\n"
+    echo "$(basename "$0") [ --help ] [ -h ] [ -i interface | -e | -w ] [ -n | -s ]"
+    echo
+    echo "Devices:"
+    echo "    -e: show stats about all ethernet devices"
+    echo "    -w: show stats about all wireless devices"
+    echo "    -i <interface>: show stats about <interface>"
+    echo
+    echo "Output:"
+    echo "    -n: show device names"
+    echo "    -s: show device RX/TX (a.k.a. DL/UL) speed"
+    echo "    default: print device status, 1 for up, 0 for down"
+    echo
+    echo "Format:"
+    echo "    -h: format speed with human readable units (B/s, KB/s, MB/s, etc)"
+    echo
+    echo "Note: the options can be put together, e.g."
+    echo "    $(basename "$0") -hni eth0"
 }
 
-if [ "$#" = 0 ]; then usage; exit; fi
-while getopts "i:webnsh" arg; do
+while getopts "i:webnsh-:" arg; do
     case "$arg" in
         i) interface="$OPTARG";;
         w) flag_wireless=1;;
         e) flag_ethernet=1;;
         n) flag_name=1;;
         s) flag_speed=1;;
+        h) flag_human_readable=1;;
+        -) [ "$OPTARG" = "help" ] && usage; exit;;
         *) usage; exit;;
     esac
 done
@@ -36,50 +44,82 @@ elif [ "$flag_ethernet" = 1 ]; then
     devices=$(find "$folder" -name "e*")
 elif [ "$flag_wireless" = 1 ]; then
     devices=$(find "$folder" -name "w*")
+elif [ -n "$flag_name" ]; then
+    devices=$(find "$folder" -name "[ew]*")
+else
+    usage
+    exit
 fi
+
+human_readable()
+{
+    while read -r speed; do
+        for unit in B/s KB/s MB/s GB/s TB/s PB/s; do
+            if [ "$speed" -lt 1000 ]; then
+                if [ -n "$decimal" ]; then
+                    echo "$speed.$decimal $unit"
+                else
+                    echo "$speed $unit"
+                fi
+                break
+            else
+                # TODO: wrong: zeros
+                decimal="$((speed % 1000))"
+                speed="$((speed / 1000))"
+            fi
+        done
+    done
+}
+
+show_speed()
+{
+    NANO_PER_SEC=1000000000
+    device="$1"
+    tmpfile=/tmp/$(basename "$device")_old
+    timens=$(date +"%s%N")
+    read -r rx_bytes < "$device"/statistics/rx_bytes
+    read -r tx_bytes < "$device"/statistics/tx_bytes
+
+    if [ -f "$tmpfile" ]; then
+        read -r timens_old rx_bytes_old tx_bytes_old < "$tmpfile"
+        timens_span=$((timens - timens_old))
+        receive_total=$((rx_bytes - rx_bytes_old))
+        transmit_total=$((tx_bytes - tx_bytes_old))
+    fi
+
+    if [ -z "$timens_span" ] || [ "$timens_span" -gt $((NANO_PER_SEC * 3)) ]; then
+        echo "$timens $rx_bytes $tx_bytes" > "$tmpfile"
+    fi
+    # TODO: possible inaccuracy
+    if [ -n "$timens_span" ] \
+        && [ "$timens_span" -gt $((NANO_PER_SEC * 1 / 10)) ] \
+        && [ "$timens_span" -lt $((NANO_PER_SEC * 5)) ]; then
+        echo $((receive_total * NANO_PER_SEC / timens_span))
+        echo $((transmit_total * NANO_PER_SEC / timens_span))
+    else
+        sleep 1
+        show_speed "$device"
+    fi
+}
 
 for device in $devices; do
     if [ "$flag_name" = 1 ]; then
         basename "$device"
-    fi
-    if [ "$flag_speed" = 1 ]; then
-        tmpfile=/tmp/$(basename "$device")_old
-        timens=$(date +"%s%N")
-        if [ -f "$tmpfile" ]; then
-            read -r timens_old rx_bytes_old tx_bytes_old < "$tmpfile"
-            time_span_ns=$((timens - timens_old))
-            # TODO: fix the dirty code below
-            # TODO: store two sets of data
-            if [ "$time_span_ns" -gt 10000000000 ]; then
-                timens_old=$(date +"%s%N")
-                read -r rx_bytes_old < "$device"/statistics/rx_bytes
-                read -r tx_bytes_old < "$device"/statistics/tx_bytes
-                sleep 3
-                timens=$(date +"%s%N")
-                time_span_ns=$((timens - timens_old))
-            fi
-            read -r rx_bytes < "$device"/statistics/rx_bytes
-            read -r tx_bytes < "$device"/statistics/tx_bytes
-            recieve_total=$((rx_bytes - rx_bytes_old))
-            transmission_total=$((tx_bytes - tx_bytes_old))
-            echo $((recieve_total * 1000000000 / time_span_ns))
-            echo $((transmission_total * 1000000000 / time_span_ns))
+    elif [ "$flag_speed" = 1 ]; then
+        if [ "$flag_human_readable" = 1 ]; then
+            show_speed "$device" | human_readable
         else
-            echo -
+            show_speed "$device"
         fi
-        # avoid frequent write
-        if [ ! -f "$tmpfile" ] || [ "$time_span_ns" -gt 1000000000 ]; then
-            echo "$timens $rx_bytes $tx_bytes" > "$tmpfile"
-        fi
-    fi
-    if [ -z "$flag_name" ] && [ -z "$flag_speed" ]; then
+    else
         read -r state < "$device"/operstate
         if [ "$state" = "up" ]; then
             echo 1
         elif [ "$state" = "down" ]; then
             echo 0
         else
-            echo -
+            echo "$state" >&2
+            exit 1
         fi
     fi
 done
