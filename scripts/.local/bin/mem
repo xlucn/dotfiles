@@ -1,9 +1,84 @@
 #!/bin/sh
-if [ $# = 0 ] || [ "$1" = -u ] || [ "$1" = --used ]
-then
-    free -h --si | grep Mem: | awk '{ print $3 }'
-fi
-if [ $# = 0 ] || [ "$1" = -t ] || [ "$1" = --total ]
-then
-    free -h --si | grep Mem: | awk '{ print $2 }'
+
+usage()
+{
+    echo "Usage: $(basename "$0") [ -S ] [ -B ] [ -t | -u | -f | -b | -c ]"
+    echo
+}
+
+while getopts "htufsbcaBS" arg; do
+    case "$arg" in
+        t) flag_total=1;;
+        u) flag_used=1;;
+        f) flag_free=1;;
+        b) flag_buff=1;;
+        c) flag_cache=1;;
+        a) flag_avail=1;;
+        B) flag_byte=1;;
+        S) flag_swap=1;;
+        h|*) usage; exit 0;;
+    esac
+done
+
+format()
+{
+    mem="$1"
+    if [ -z "$flag_byte" ]; then
+        for unit in KB MB GB TB; do
+            if [ "$mem" -lt 1000 ]; then
+                if [ -n "$decimal" ]; then
+                    printf "%d.%03d %s" "$mem" "$decimal" "$unit"
+                else
+                    echo "$mem $unit"
+                fi
+                break
+            else
+                decimal="$((mem % 1000))"
+                mem="$((mem / 1000))"
+            fi
+        done
+    else
+        echo "$mem"
+    fi
+}
+
+info()
+{
+    result=0
+    for keyword in "$@"; do
+        if [ "$keyword" != "${keyword#-*}" ]; then
+            temp="$(awk '/'"^${keyword#-*}:"'/{print $2}' /proc/meminfo)"
+            result="$((result - temp))"
+        else
+            temp="$(awk '/'"^$keyword:"'/{print $2}' /proc/meminfo)"
+            result="$((result + temp))"
+        fi
+    done
+    format "$result"
+}
+
+if [ "$flag_total" = 1 ]; then
+    if [ "$flag_swap" = 1 ]; then
+        info SwapTotal
+    else
+        info MemTotal
+    fi
+elif [ "$flag_free" = 1 ]; then
+    if [ "$flag_swap" = 1 ]; then
+        info SwapFree
+    else
+        info MemFree
+    fi
+elif [ "$flag_used" = 1 ]; then
+    if [ "$flag_swap" = 1 ]; then
+        info SwapTotal -SwapFree
+    else
+        info MemTotal -MemFree -Buffers -Cached -SReclaimable
+    fi
+elif [ "$flag_buff" = 1 ]; then
+    info Buffers
+elif [ "$flag_cache" = 1 ]; then
+    info Cached SReclaimable
+elif [ "$flag_avail" = 1 ]; then
+    info MemAvailable
 fi
