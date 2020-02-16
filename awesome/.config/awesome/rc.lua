@@ -131,7 +131,6 @@ local myawesomemenu = {
    { "quit", function() awesome.quit() end, shutdown_icon}
 }
 
-local result = {}
 local mymainmenu      = awful.menu()
 mymainmenu:add({ "awesome", myawesomemenu, beautiful.awesome_icon, })
 mymainmenu:add({ "open terminal (" .. terminal .. ")", terminal, terminal_icon })
@@ -140,6 +139,7 @@ mymainmenu:add({ "open file manager (".. filemanager .. ")", filemanager, fm_ico
 
 -- Modified from https://github.com/lcpz/awesome-freedesktop/blob/master/menu.lua
 menu_gen.generate(function(entries)
+    local result = {}
     -- Add categories
     for k, v in pairs(menu_gen.all_categories) do
         table.insert(result, { k, {}, v.icon })
@@ -669,17 +669,13 @@ awful.rules.rules = {
         }
     },
 
-    { -- borderless
-        rule = { class = "Nemo", instance = "file_progress" },
-        properties = { ontop = true }
-    },
-
     { -- Floating clients
         rule_any = {
             instance = {
               "DTA",                  -- Firefox addon DownThemAll.
               "copyq",                -- Includes session name in class.
               "Popup",
+              "file_progress",        -- Nemo file operation
             },
 
             name = {
@@ -768,22 +764,14 @@ client.connect_signal("manage", function (c)
     end
 
     -- set fallback icon
-    -- https://www.reddit.com/r/awesomewm/comments/b5rmeo/how_to_add_fallback_icon_to_the_tasklist/
     local t = {}
     t["URxvt"] = terminal_icon
     t["St"] = terminal_icon
     t["st-float"] = terminal_icon
-    -- fallback of fallback icon
     t["Others"] = fallback_icon
 
-    if c.icon == nil then
-        local icon = t[c.class]
-        if not icon then
-            icon = t["Others"]
-        end
-        icon = gears.surface(icon)
-        c.icon = icon and icon._native or nil
-    end
+    -- https://www.reddit.com/r/awesomewm/comments/b5rmeo/how_to_add_fallback_icon_to_the_tasklist/
+    c.icon = c.icon or gears.surface(t[c.class] or t["Others"])._native
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
@@ -803,11 +791,7 @@ client.connect_signal("request::titlebars", function(c)
     )
 
     awful.titlebar(c, {size = 12}) : setup {
-        { -- Left
-            --awful.titlebar.widget.iconwidget(c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
+        nil,
         { -- Middle
             --{ -- Title
                 --align  = "center",
@@ -823,7 +807,7 @@ client.connect_signal("request::titlebars", function(c)
             awful.titlebar.widget.minimizebutton (c),
             awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
+            layout = wibox.layout.fixed.horizontal
         },
         layout = wibox.layout.align.horizontal
     }
