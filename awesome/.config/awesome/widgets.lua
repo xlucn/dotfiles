@@ -1,9 +1,7 @@
--- luacheck: globals mpd_now
 -- libraries {{{
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local lain = require("lain")
 local beautiful = require("beautiful")
 -- local module
 local theme = require("theme")
@@ -15,7 +13,6 @@ local terminal = "st"
 local function terminal_cmd(cmd)
     return terminal .. " -e " .. cmd
 end
--- replace the markup util in lain
 local markup = {
     font = function(font, text)
         return string.format("<span font='%s'>%s</span>", font, text)
@@ -27,6 +24,7 @@ local markup = {
         return string.format("<span font='%s' foreground='%s'>%s</span>", font, color, text)
     end
 }
+local escape = awful.util.escape
 -- }}}
 
 -- font, colors, characters {{{
@@ -460,6 +458,8 @@ local net = wibox.widget {
 -- }}}
 
 -- mpd {{{
+local mpd_host = "localhost"
+local mpd_port = 6600
 local function fmt_time(seconds)
     if seconds == "N/A" then
         return "-"
@@ -497,48 +497,77 @@ local mpd_repeat = wibox.widget.textbox(
     markup.font(widgets_nerdfont, nerdfont_music_repeat_on)
 )
 local mpd_time = wibox.widget.textbox()
-local function mpd_seek()
+local mpd_seek = function()
     awful.spawn(string.format("mpc seek %f%%", mpd_slider.value))
 end
-local mpd_upd = lain.widget.mpd({
+local mpd_upd = gears.timer({
     timeout = 5,
-    notify = "off",
-    settings = function()
-        mpd_tooltip:set_text(string.format(
-            "File:\t%s\nArtist:\t%s\nAlbum:\t(%s) - %s\nTitle:\t%s",
-            mpd_now.file,
-            mpd_now.artist,
-            mpd_now.album,
-            mpd_now.date,
-            mpd_now.title
-        ))
-        local repeat_mode, state
-        -- state
-        if mpd_now.state == "play" then
-            state = nerdfont_music_pause
-        elseif mpd_now.state == "pause" then
-            state = nerdfont_music_play
-        else
-            state = nerdfont_music_stop
-        end
-        mpd_play.markup = markup.font(widgets_nerdfont, state)
-        -- time slider
-        mpd_slider:disconnect_signal("property::value", mpd_seek)
-        if mpd_now.state == "play" or mpd_now.state == "pause" then
-            mpd_slider.value = mpd_now.elapsed * 100 / mpd_now.time
-        else
-            mpd_slider.value = 0
-        end
-        mpd_slider:connect_signal("property::value", mpd_seek)
-        -- time text
-        mpd_time.text = fmt_time(mpd_now.elapsed) .. "/" .. fmt_time(mpd_now.time)
-        -- repeat mode
-        if mpd_now.single_mode == true then
-            repeat_mode = nerdfont_music_repeat_one
-        else
-            repeat_mode = nerdfont_music_repeat_on
-        end
-        mpd_repeat.markup = markup.font(widgets_nerdfont, repeat_mode)
+    autostart = true,
+    callback = function()
+        awful.spawn.easy_async_with_shell(
+            string.format(
+                "printf \"status\\ncurrentsong\\nclose\\n\" | curl telnet://%s:%d",
+                mpd_host, mpd_port
+            ),
+            function(stdout)
+                local mpd_now = {}
+                for k, v in string.gmatch(stdout, "(%w+):%s+([^\n]+)") do
+                    if     k == "state"          then mpd_now.state        = v
+                    elseif k == "file"           then mpd_now.file         = v
+                    elseif k == "Name"           then mpd_now.name         = escape(v)
+                    elseif k == "Artist"         then mpd_now.artist       = escape(v)
+                    elseif k == "Title"          then mpd_now.title        = escape(v)
+                    elseif k == "Album"          then mpd_now.album        = escape(v)
+                    elseif k == "Genre"          then mpd_now.genre        = escape(v)
+                    elseif k == "Track"          then mpd_now.track        = escape(v)
+                    elseif k == "Date"           then mpd_now.date         = escape(v)
+                    elseif k == "Time"           then mpd_now.time         = v
+                    elseif k == "elapsed"        then mpd_now.elapsed      = string.match(v, "%d+")
+                    elseif k == "song"           then mpd_now.pls_pos      = v
+                    elseif k == "playlistlength" then mpd_now.pls_len      = v
+                    elseif k == "repeat"         then mpd_now.repeat_mode  = v ~= "0"
+                    elseif k == "single"         then mpd_now.single_mode  = v ~= "0"
+                    elseif k == "random"         then mpd_now.random_mode  = v ~= "0"
+                    elseif k == "consume"        then mpd_now.consume_mode = v ~= "0"
+                    end
+                end
+                mpd_tooltip:set_text(string.format(
+                    "File:\t%s\nArtist:\t%s\nAlbum:\t(%s) - %s\nTitle:\t%s",
+                    mpd_now.file,
+                    mpd_now.artist,
+                    mpd_now.album,
+                    mpd_now.date,
+                    mpd_now.title
+                ))
+                local repeat_mode, state
+                -- state
+                if mpd_now.state == "play" then
+                    state = nerdfont_music_pause
+                elseif mpd_now.state == "pause" then
+                    state = nerdfont_music_play
+                else
+                    state = nerdfont_music_stop
+                end
+                mpd_play.markup = markup.font(widgets_nerdfont, state)
+                -- time slider
+                mpd_slider:disconnect_signal("property::value", mpd_seek)
+                if mpd_now.state == "play" or mpd_now.state == "pause" then
+                    mpd_slider.value = mpd_now.elapsed * 100 / mpd_now.time
+                else
+                    mpd_slider.value = 0
+                end
+                mpd_slider:connect_signal("property::value", mpd_seek)
+                -- time text
+                mpd_time.text = fmt_time(mpd_now.elapsed) .. "/" .. fmt_time(mpd_now.time)
+                -- repeat mode
+                if mpd_now.single_mode == true then
+                    repeat_mode = nerdfont_music_repeat_one
+                else
+                    repeat_mode = nerdfont_music_repeat_on
+                end
+                mpd_repeat.markup = markup.font(widgets_nerdfont, repeat_mode)
+            end
+        )
     end
 })
 mpd_slider:connect_signal("property::value", mpd_seek)
@@ -555,33 +584,33 @@ local mpd = wibox.widget {
 }
 local mpc_prev = function()
     awful.spawn.with_shell("mpc prev")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 local mpc_next = function()
     awful.spawn.with_shell("mpc next")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 local mpc_toggle = function()
     awful.spawn.with_shell("mpc && mpc toggle || systemctl --user start mpd")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 local mpc_stop = function()
     awful.spawn.with_shell("systemctl --user stop mpd")
 end
 local mpc_seek_forward = function()
     awful.spawn.with_shell("mpc seek +10")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 local mpc_seek_backward = function()
     awful.spawn.with_shell("mpc seek -10")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 local mpd_launch_client = function()
     awful.spawn(terminal_cmd("ncmpcpp"))
 end
 local mpc_toggle_single = function()
     awful.spawn.with_shell("mpc single")
-    mpd_upd.update()
+    mpd_upd:emit_signal("timeout")
 end
 mpd_tooltip:add_to_object(mpd)
 mpd_icon:buttons(awful.util.table.join(
@@ -608,7 +637,7 @@ mpd:buttons(awful.util.table.join(
     awful.button({}, 5, mpc_seek_backward),
     awful.button({}, 3, mpd_launch_client)
 ))
-mpd_upd.update()
+mpd_upd:emit_signal("timeout")
 -- }}}
 
 -- return {{{
