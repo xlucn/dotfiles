@@ -154,20 +154,20 @@ set -g status-right-length 120
 set -g status-right "\
 #[fg=colour13 ,bg=colour0] 﨧#(imap-tmux) \
 #[fg=colour172,bg=colour0] 祥#(up) \
-#[fg=colour201,bg=colour0] 龍#(cpu)% \
+#[fg=colour201,bg=colour0] 龍#(printf "%.2d" $(cpu))% \
 #[fg=colour9  ,bg=colour0] 力#(mem -u)/#(mem -t) \
 #[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
-#[fg=colour226,bg=colour0] 盛#(printf "%.0f" `light`)% \
+#[fg=colour226,bg=colour0] 盛#(printf "%.0f" $(light))% \
 #[fg=colour172,bg=colour0] 﨟%a %d/%m/%Y %R \
+#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}\
 #[fg=colour46 ,bg=colour0] #{?#(ac),,} #(battery)% \
 "
 #[fg=colour154,bg=colour0] #(wttr-tmux) \
-#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}#{?#(network -b),,}\
 #[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
 
 setw -g window-status-style fg=colour7,bg=colour0
 setw -g window-status-activity-style fg=colour1,bg=colour0
-setw -g window-status-current-style fg=colour190,bg=colour0
+setw -g window-status-current-style fg=colour46,bg=colour0
 setw -g window-status-format "#I#{?window_zoomed_flag,Z, }#W"
 setw -g window-status-current-format "#I#{?window_zoomed_flag,Z, }#W"
 setw -g window-status-separator "   "
