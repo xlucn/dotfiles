@@ -121,6 +121,7 @@ local restart_icon = menu_utils.lookup_icon("system-restart")
 local shutdown_icon = menu_utils.lookup_icon("system-shutdown")
 local shortcut_icon = menu_utils.lookup_icon("system-config-keyboard")
 local help_icon = menu_utils.lookup_icon("system-help")
+local fallback_icon = menu_utils.lookup_icon("applications-other")
 
 local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end, shortcut_icon },
@@ -773,7 +774,7 @@ client.connect_signal("manage", function (c)
     t["St"] = terminal_icon
     t["st-float"] = terminal_icon
     -- fallback of fallback icon
-    t["Others"] = "/usr/share/icons/Papirus/64x64/apps/application-default-icon.svg"
+    t["Others"] = fallback_icon
 
     if c.icon == nil then
         local icon = t[c.class]
