@@ -1,33 +1,33 @@
 #!/bin/sh
-# TODO: number not stable when frequently queried
+
 tmpfile="/tmp/tmux_cpu_info"
 
-# check the temp file is a file and created by the user
-if [ -e "$tmpfile" ]; then
-    if [ ! -f "$tmpfile" ] || [ "$(stat -c "%U" "$tmpfile")" != "$USER" ]; then
-        echo "err"
-        exit
+show_cpu()
+{
+    total=0
+    active=0
+    count=0
+    for i in $(grep "cpu " /proc/stat | tr -d cpu); do
+        total=$((total + i))
+        count=$((count + 1))
+        if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]; then
+            active=$((active + i))
+        fi
+    done
+
+    if [ -f "$tmpfile" ]; then
+        read -r active_old total_old < "$tmpfile"
+        active_inc=$((active - active_old))
+        total_inc=$((total - total_old))
     fi
-fi
+    echo "$active $total" > "$tmpfile"
 
-total=0
-active=0
-count=0
-for i in $(grep "cpu " /proc/stat | tr -d cpu)
-do
-    total=$((total + i))
-    count=$((count + 1))
-    if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]
-    then
-        active=$((active + i))
+    if [ -n "$total_inc" ] && [ "$total_inc" -gt 10 ]; then
+        echo $((active_inc * 100 / total_inc))
+    else
+        sleep 1
+        show_cpu
     fi
-done
+}
 
-if [ -f "$tmpfile" ]; then
-    read -r active_old total_old < "$tmpfile"
-    printf "%02s" $(((active - active_old) * 100 / (total - total_old)))
-else
-    echo '-'
-fi
-
-echo "$active $total" > "$tmpfile"
+show_cpu
