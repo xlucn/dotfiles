@@ -31,10 +31,10 @@ local escape = awful.util.escape
 -- font
 local widgets_nerdfont          = "Hack Nerd Font 12"
 -- colors
-local widget_music          = theme.purple
+local widget_music          = theme.yellow
 local widget_light          = theme.yellow
-local widget_ram            = theme.blue
-local widget_cpu            = theme.blue
+local widget_ram            = theme.yellow
+local widget_cpu            = theme.yellow
 local widget_alsa           = theme.yellow
 local widget_bat_normal     = theme.green
 local widget_bat_mid        = theme.yellow
@@ -58,20 +58,20 @@ local nerdfont_music_repeat_one       = "綾"
 -- local nerdfont_upspeed                = "祝"
 -- local nerdfont_downspeed              = ""
 -- local nerdfont_brightness             = ""
-local nerdfont_brightness_high        = ""
-local nerdfont_bat_unknown            = ""
+local nerdfont_brightness_high        = " "
+-- local nerdfont_bat_unknown            = ""
 local nerdfont_batteries              = { "", "", "", "", "", "", "", "", "", "", "" }
 local nerdfont_bat_full_charging      = ""
-local nerdfont_volume_mute            = "婢" -- ﱝ
+local nerdfont_volume_mute            = "婢 " -- ﱝ
 -- local nerdfont_volume_low             = "奄" -- 
 -- local nerdfont_volume_mid             = "奔" -- 
-local nerdfont_volume_high            = "墳" -- 
+local nerdfont_volume_high            = "墳 " -- 
 local nerdfont_memory                 = ""
 local nerdfont_cpu                    = "異" --  
-local nerdfont_wifi_on                = "直"
+local nerdfont_wifi_on                = "直 "
 local nerdfont_ethernet               = ""
 -- local nerdfont_calendar               = ""
-local nerdfont_email                  = "" -- 
+local nerdfont_email                  = " " -- 
 -- }}}
 
 -- volume {{{
@@ -372,10 +372,7 @@ local function format_netspeed(raw_speed)
     -- use 1000 here to keep under 3-digits
     local speed, speed_unit, speed_str
 
-    if raw_speed < 1000 then
-        speed = raw_speed
-        speed_unit = "B/s"
-    elseif raw_speed < 1000 * 1000 then
+    if raw_speed < 1000 * 1000 then
         speed = raw_speed / 1000
         speed_unit = "KB/s"
     else
