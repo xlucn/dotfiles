@@ -64,6 +64,8 @@ set clipboard=unnamedplus
 set autowrite
 set hidden
 set laststatus=2
+" fold
+set foldlevel=1
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
