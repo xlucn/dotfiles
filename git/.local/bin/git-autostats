@@ -7,11 +7,6 @@ while getopts "u" p; do
     esac
 done
 
-ahead=0
-behind=0
-conflict=0
-uptodate=0
-
 if [ -f "$HOME/.config/git-autofetch" ]; then
     if [ "$flag_update" != 1 ]; then
         printf "%s %s  %s\n" "ahead" "behind" "repo path"
@@ -37,6 +32,6 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
     done < "$HOME/.config/git-autofetch"
 
     if [ "$flag_update" = 1 ]; then
-        echo "$uptodate $ahead $behind $conflict" > /tmp/git-autostats
+        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0}" > /tmp/git-autostats
     fi
 fi
