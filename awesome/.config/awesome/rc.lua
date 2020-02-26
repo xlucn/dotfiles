@@ -684,6 +684,8 @@ awful.rules.rules = {
             },
             class = {
                 "Galculator",
+                "xpad",
+                "Screenkey",
             }
         },
         properties = {
