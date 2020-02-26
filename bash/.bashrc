@@ -99,7 +99,10 @@ __user_host() {
 
 __git_autostats() {
     if [ -f /tmp/git-autostats ]; then
+        OLDIFS=$IFS
+        unset IFS
         read -r uptodate ahead behind conflict < /tmp/git-autostats
+        IFS=$OLDIFS
         printf " ["
         [ "$uptodate" -gt 0 ] && printf "\[\e[34m\]%s=\[\e[0m\]" "$uptodate"
         [ "$ahead"    -gt 0 ] && printf "\[\e[32m\]%s+\[\e[0m\]" "$ahead"
