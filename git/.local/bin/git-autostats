@@ -1,21 +1,44 @@
 #!/bin/sh
 
-while getopts "u" p; do
+usage()
+{
+    echo "Usage: $(basename "$0") [ -u ] [ -s path ]"
+    echo "    -u: update the counts information of all repos"
+    echo "    -s: search and update repos in the path"
+}
+
+search_repos()
+{
+    find "$(realpath "$1")" -type d -name .git \
+        ! -path "*/.cache/*" \
+        ! -path "*/.vim/*" \
+        -exec dirname {} ';' | \
+    fzf -m --reverse --bind "ctrl-a:select-all" \
+        --header "Select the repos you want to track with git-autofetch
+Tab: toggle select  Ctrl+A: select all
+Enter: save to $CONFIG_FILE" > "$CONFIG_FILE"
+}
+
+CONFIG_FILE="$HOME/.config/git-autofetch"
+
+while getopts "hus:" p; do
     case "$p" in
         u) flag_update=1;;
-        *) ;;
+        s) search_repos "$OPTARG"; exit;;
+        h|*) usage; exit;;
     esac
 done
 
-if [ -f "$HOME/.config/git-autofetch" ]; then
+if [ -f "$CONFIG_FILE" ]; then
     if [ "$flag_update" != 1 ]; then
-        printf "%s %s  %s\n" "ahead" "behind" "repo path"
+        echo " ahead behind repo path"
     fi
+
     while read -r p; do
         upstream="$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")"
-        local="$(git -C "$p" branch --show-current)"
-        left="$(git -C "$p" rev-list --count --left-only "$local"..."$upstream")"
-        right="$(git -C "$p" rev-list --count --right-only "$local"..."$upstream")"
+        current="$(git -C "$p" branch --show-current)"
+        left="$(git -C "$p" rev-list --count --left-only "$current"..."$upstream")"
+        right="$(git -C "$p" rev-list --count --right-only "$current"..."$upstream")"
         if [ "$flag_update" = 1 ]; then
             if [ "$left" = 0 ] && [ "$right" = 0 ]; then
                 uptodate=$((uptodate + 1))
@@ -29,9 +52,13 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
         else
             printf "\e[$((left?34:0))m%6s \e[$((right?31:0))m%6s\e[0m %s\n" "+$left" "-$right" "$p"
         fi
-    done < "$HOME/.config/git-autofetch"
+    done < "$CONFIG_FILE"
 
     if [ "$flag_update" = 1 ]; then
         echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0}" > /tmp/git-autostats
     fi
+else
+    echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
+    echo "You can use \"$(basename "$0") -s <path>\" (need fzf) to do it more easily"
+    exit
 fi
