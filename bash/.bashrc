@@ -38,6 +38,15 @@ alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcen
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-plane=0"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
+# fzf integrate with pacman and yay
+fzfpacman()
+{
+    pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
+}
+fzfyay()
+{
+    yay -Slq | fzf -m -q "$*" --preview 'yay -Si {1}'| xargs -ro yay -S
+}
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
