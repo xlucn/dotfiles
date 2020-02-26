@@ -24,16 +24,11 @@ fi
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 
 # configure trackpad
-for id in $(xinput list --id-only)
-do
-    if xinput --list-props "$id" | grep "Tapping Enabled"
-    then
+for id in $(xinput list --id-only); do
+    if xinput --list-props "$id" | grep "Tapping Enabled"; then
         xinput set-prop "$id" "libinput Tapping Enabled" 1
         xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1
         xinput set-prop "$id" "libinput Accel Speed" 0.5
     fi
 done
 libinput-gestures-setup restart
-
-# start up applications
-pgrep -x urxvtd || urxvtd -q -f -o
