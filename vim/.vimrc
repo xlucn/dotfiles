@@ -87,12 +87,11 @@ set number
 set signcolumn=yes
 " enable mouse support in console
 set mouse=a
-" fix for urxvt
+" fix for urxvt and st
 if !has('nvim')
-    if $TERM == "rxvt-unicode-256color"
+    if $TERM =~ "rxvt-unicode"
         set ttymouse=urxvt
-    endif
-    if $TERM == "st-256color"
+    elseif $TERM == "st" || $TERM == "st-256color"
         set ttymouse=sgr
     endif
 endif
