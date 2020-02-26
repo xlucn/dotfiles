@@ -20,10 +20,8 @@ Config files for everything
 
 - fonts
   - [Hack](https://github.com/source-foundry/Hack)
-  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF):
-    for large font in linux console
-  - [Nerd Font](https://nerdfonts.com):
-    for awesome wm and fbterm
+  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF) for large font in linux console
+  - [Nerd Font](https://nerdfonts.com) for awesome wm and fbterm
 
 - curl for vim-plug auto install (in .vimrc) and a lot other scripts
 
@@ -33,7 +31,6 @@ Config files for everything
   - [gpg](https://gnupg.org/) for password-store and other encryptions
 
 - For Awesome WM:
-  - [lain](https://github.com/lcpz/lain) for widgets library
   - [nemo](https://github.com/linuxmint/nemo) for file manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [picom](https://github.com/yshui/picom) for compositing (a fork of [compton](https://github.com/chjj/compton))
@@ -42,28 +39,22 @@ Config files for everything
 ## Install
 
 Under every folder there are the files related to one program.
-The files can be linked to corresponding places relative to home directory
-with [stow](https://www.gnu.org/software/stow/)
+The files are organized in the same structure as they are relative to user's home directory
+and can be deployed with [stow](https://www.gnu.org/software/stow/)
 
 ```sh
 stow <package name>
 ```
 
-with `<package name>` being the folder name for a specific program except `system` which
-should be installed in root.
+with `<package name>` being the folder name for a specific program (except `system` which
+should be installed in root with `-t /` option).
 
 There is no `-t` or `-v` arguments because I am using `.stowrc` file, but note that only
 since version `2.3.0` can stow expand ~/$HOME in the rc file. If you are using stow
 with older versions, you have to specify the target dir argument with `-t ~` in
 the commands.
 
-There are some system files in `system` folder need to deploy to `/`:
-
-```sh
-sudo stow -t / system
-```
-
-Or use the makefile:
+Another way is to use the makefile:
 
 ```sh
 make install
@@ -76,12 +67,13 @@ sudo make install-system
 
 There is some programs that can work under linux console (tty) without X. After getting
 familiar with those programs, you can become quite efficient working without a DE/WM.
-And I configured a usable environment to make it more enjoyable.
+And I configured a usable environment to make it more enjoyable with the help of tmux and
+fbterm.
 
 To install configs specifically for them:
 
 ```sh
-stow -v -t ~ fbterm tmux scripts
+stow fbterm tmux scripts
 ```
 
 Those configs feature:
@@ -89,7 +81,7 @@ Those configs feature:
 - Configs for `fbterm`, a more powerful (e.g. show utf-8 glyphs, faster) terminal emulator in framebuffer
 - Tmux config specifically designed for using in fbterm, for details see [the readme](tmux/) in tmux folder.
 
-Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
+#### Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
 - framebuffer only
   - [fbcat](https://github.com/jwilk/fbcat) for taking screenshots
   - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
