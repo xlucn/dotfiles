@@ -18,7 +18,7 @@ export VISUAL=vim
 export NOTES_DIRECTORY="$HOME/Code/notes"
 # add mouse support after less version 550, to work with urxvt
 less_version=$(less -V | grep -E "^less [[:digit:]]+" | cut -d" " -f 2)
-if [ "$less_version" -ge 550 ] && [ "$TERM" == "rxvt-unicode-256color" ]
+if [ "$less_version" -ge 550 ] && [ "$TERM" = "rxvt-unicode-256color" ]
 then
     export LESS="-R --mouse --wheel-lines=5"
 else
@@ -123,8 +123,7 @@ __after_git() {
 }
 
 # use the prompt script somes with git
-if [ -z "$(type -t __git_ps1)" ]
-then
+if ! command -v __git_ps1; then
     . /usr/share/git/completion/git-prompt.sh
 fi
 export GIT_PS1_SHOWDIRTYSTATE=1
