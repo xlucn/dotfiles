@@ -394,7 +394,7 @@ local net_upd = gears.timer {
     autostart = true,
     callback  = function()
         awful.spawn.easy_async_with_shell(
-            "network -w; network -e; network -ws; network -es",
+            "network -e; network -w; network -es; network -ws",
             function(stdout)
                 local eth_icon, wlan_icon
                 local lineno = 0
@@ -458,7 +458,7 @@ local net = wibox.widget {
 local mpd_host = "localhost"
 local mpd_port = 6600
 local function fmt_time(seconds)
-    if seconds == "N/A" then
+    if seconds == nil then
         return "-"
     end
     local minites = seconds // 60
