@@ -65,13 +65,13 @@ local rofi_drun = "rofi -modi drun -theme launcher -show drun"
 local rofi_run = "rofi -show run"
 local rofi_window = "rofi -show window"
 
--- maim (screenshot tool) commands
-local maim_basic = "maim"
--- target
-local maim_selection = " -s"
--- location
-local maim_savefile = " ~/Pictures/Screenshot_$(date +%F_%H-%M-%S).png"
-local maim_clipboard = " | xclip -selection clipboard -t image/png"
+-- screenshot commands
+local scrot_basic = "scrot"
+-- select target/area with fix for window managers (sleep)
+local scrot_selection = "sleep 0.2; scrot -s"
+-- save destination
+local scrot_savefile = " ~/Pictures/Screenshot_%F_%H-%M-%S.png"
+local scrot_clipboard = " -o /dev/stdout | xclip -selection clipboard -t image/png"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -440,26 +440,18 @@ local globalkeys = gears.table.join(
               end,
               {description = "restore minimized", group = "client"}),
 
-    -- screen shot with maim
+    -- screen shot
     awful.key({                    }, "Print",
-              function ()
-                  awful.spawn.with_shell(maim_basic                   .. maim_savefile)
-              end,
+              function () awful.spawn.with_shell(scrot_basic     .. scrot_savefile) end,
               {description = "screenshot to file",                group = "screenshot"}),
     awful.key({            "Shift" }, "Print",
-              function ()
-                  awful.spawn.with_shell(maim_basic .. maim_selection .. maim_savefile)
-              end,
+              function () awful.spawn.with_shell(scrot_selection .. scrot_savefile) end,
               {description = "screenshot selection to file",      group = "screenshot"}),
     awful.key({ "Control"          }, "Print",
-              function ()
-                  awful.spawn.with_shell(maim_basic                   .. maim_clipboard)
-              end,
+              function () awful.spawn.with_shell(scrot_basic     .. scrot_clipboard) end,
               {description = "screenshot to clipboard",           group = "screenshot"}),
     awful.key({ "Control", "Shift" }, "Print",
-              function ()
-                  awful.spawn.with_shell(maim_basic .. maim_selection .. maim_clipboard)
-              end,
+              function () awful.spawn.with_shell(scrot_selection .. scrot_clipboard) end,
               {description = "screenshot selection to clipboard", group = "screenshot"}),
 
     -- Prompt
