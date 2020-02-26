@@ -32,7 +32,6 @@ Plug 'neomutt/neomutt.vim'
 Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
 Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 call plug#end()
