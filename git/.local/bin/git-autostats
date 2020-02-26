@@ -32,19 +32,7 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
                 conflict=$((conflict + 1))
             fi
         else
-            if [ "$left" -gt 0 ]; then
-                printf "\e[34m%5s\e[0m" "+$left"
-            else
-                printf "%5s" "+$left"
-            fi
-            printf "  "
-            if [ "$right" -gt 0 ]; then
-                printf "\e[31m%5s\e[0m" "-$right"
-            else
-                printf "%5s" "-$right"
-            fi
-            printf "  "
-            echo "$p"
+            printf "\e[$((left?34:0))m%6s \e[$((right?31:0))m%6s\e[0m %s\n" "+$left" "-$right" "$p"
         fi
     done < "$HOME/.config/git-autofetch"
 
