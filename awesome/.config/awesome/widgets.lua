@@ -438,7 +438,7 @@ local net_upd = gears.timer {
 }
 net_upd:emit_signal("timeout")
 
-net_speed.visible = true  -- default to invisible
+net_speed.visible = false  -- default to invisible
 net_status:buttons(awful.util.table.join(
     awful.button({}, 1, function()
         net_speed.visible = not net_speed.visible
@@ -567,6 +567,7 @@ local mpd_upd = gears.timer({
         )
     end
 })
+mpd_slider.visible = false
 mpd_slider:connect_signal("property::value", mpd_seek)
 local mpd = wibox.widget {
     mpd_icon,
