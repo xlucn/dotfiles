@@ -1,5 +1,5 @@
 configuration {
-    font                : "Hack 12";
+    font                : "Monospace 12";
     icon-theme          : "Papirus";
     sidebar-mode        : false;
     modi                : "drun";
@@ -20,56 +20,43 @@ configuration {
     padding             : 0;
     border              : 0;
     spacing             : 0;
-    background          : #000000b0;
-    background-alt      : #E5E9F047;
-    text-color          : #D8DEE9;
-    selected-text-color : #000000;
-    primary             : #A3BE8C;
-    urgent              : #BF616A;
+    /* some customized colors */
+    selected-background : #EEFFFF80;
+    selected-text-color : #212121;
+    background          : #21212180;
+    text-color          : #EEFFFF;
 }
 
 window {
     background-color : @background;
+    location         : east;
     width            : 100%;
     height           : 100%;
-    /* y-offset         : 32px; */
-    orientation     : horizontal;
-    /* children        : [mode-switcher, mainbox]; */
 }
 
 mainbox {
-    children        : [inputbar, message, listview];
-}
-
-mode-switcher {
-    orientation     : vertical;
+    children         : [inputbar, listview];
 }
 
 inputbar {
     children         : [entry];
-    padding          : 10% 40% 0 40%;
-}
-
-button {
-    expand          : false;
 }
 
 entry {
-    background-color : @background-alt;
-    border           : 0px;
-    font             : "Hack 16";
-    border-radius    : 12px;
+    background-color : @selected-background;
+    font             : "Monospace 16";
+    border-radius    : 16px;
     padding          : 16px;
+    margin           : 8% 36% 0% 36%;
 }
 
 listview {
-    margin           : 4% 12%;
+    margin           : 4% 8%;
     scrollbar        : false;
-    spacing          : 0px;
 }
 
 element {
-    border-radius    : 12px;
+    border-radius    : 16px;
     padding          : 2% 1%;
     orientation      : vertical;
 }
@@ -84,21 +71,16 @@ element-text {
     margin           : 5px 0px 0px 0px;
 }
 
-element normal.urgent, element alternate.urgent, element selected.urgent {
-    background-color:               @urgent;
-}
-
-element normal.active, element alternate.active {
-    background-color:               @background-alt;
-    color:                          @selected-text-color;
-}
-
 element normal.normal, element alternate.normal {
-    background-color:               #00000000;
+    background-color : #00000000;
 }
 
+element normal.urgent, element alternate.urgent, element selected.urgent {
+    background-color : @FF0000;
+}
+
+element normal.active, element alternate.active,
 element selected.normal, element selected.active {
-    background-color:               @background-alt;
-    color:                          @selected-text-color;
+    background-color : @selected-background;
+    color            : @selected-text-color;
 }
-
