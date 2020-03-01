@@ -127,7 +127,7 @@ __after_git() {
 }
 
 # use the prompt script somes with git
-if ! command -v __git_ps1; then
+if ! command -v __git_ps1 > /dev/null 2>&1; then
     . /usr/share/git/completion/git-prompt.sh
 fi
 export GIT_PS1_SHOWDIRTYSTATE=1
