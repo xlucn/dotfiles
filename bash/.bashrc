@@ -59,6 +59,7 @@ if [ "$TERM" = "linux" ]; then
         fi
         shift 2
     done
+    clear
 fi
 
 __cwd_trim() {
