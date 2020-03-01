@@ -1,14 +1,10 @@
 #!/bin/sh
-
-count=0
 for range in $(fc-match --format='%{charset}\n' "$1"); do
-    # start and end of each charset region "start-end"
     for n in $(seq "0x${range%-*}" "0x${range#*-}"); do
         n_hex=$(printf "%04x" "$n")
-        # using \U for even 5-hex-digets
-        printf "%-5s\U$n_hex\t" "$n_hex"
+        printf "%-5s\U$n_hex\t" "$n_hex"  # using \U for 8-hex-digits
         count=$((count + 1))
-        if [ $((count % 10)) = 0 ]; then  # exactly 80 chars
+        if [ $((count % 10)) = 0 ]; then
             printf "\n"
         fi
     done
