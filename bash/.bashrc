@@ -140,4 +140,3 @@ shopt -s histappend
 # Disable ctrl-s and ctrl-q
 stty -ixon
 # set vi mode keybinding
-set -o vi
