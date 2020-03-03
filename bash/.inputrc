@@ -1,3 +1,5 @@
+$include /etc/inputrc
+
 # use vi mode
 set editing-mode vi
 $if mode=vi
