@@ -1,16 +1,18 @@
-#! /bin/bash
+#!/bin/bash
 
-[ -d ~/.gem/ruby/ ] && export PATH="${PATH}:$HOME/.gem/ruby/2.6.0/bin"
-if [ -d ~/.local/bin ] && echo "$PATH" | grep -q ".local/bin"; then
-    export PATH="$HOME/.local/bin:${PATH}"
-fi
+for p in "$HOME/.gem/ruby" "$HOME/.local/bin"; do
+    if [ -d "$p" ] && ! echo "$PATH" | grep -q "$p"; then
+        export PATH="$p:${PATH}"
+    fi
+done
 
 if [ "$PS1" ] && [ -f /usr/share/bash-completion/bash_completion ]
 then
     . /usr/share/bash-completion/bash_completion
 fi
+
 # shellcheck source=/dev/null
-[ -f ~/.extend.bashrc ] && . "$HOME/.extend.bashrc"
+[ -f "$HOME/.extend.bashrc" ] && . "$HOME/.extend.bashrc"
 
 # Environments
 export EDITOR=vim
