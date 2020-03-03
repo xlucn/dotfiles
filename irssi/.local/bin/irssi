@@ -23,45 +23,53 @@
 #    P.S. Tmux can still be controlled by '/exec tmux' command inside irssi.
 
 if ! command -v pass > /dev/null 2>&1; then
-    echo "please install \`pass\` and store the passwords in irc/<network>/<foobar>"
-    exit 1
+    echo "Install \'pass\' if you want to use exported passwords in irssi"
+    echo "For more info, see the comment in this script"
+    NO_PASS=1
 else
     passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
 fi
 
 if ! command -v tmux > /dev/null 2>&1; then
-    echo "please install \`tmux\`"
-    exit 1
+    echo "Install \`tmux\` if you want to use windowlist or nicklist in tmux"
+    echo "For more info, see the comment in this script"
+    NO_TMUX=1
 fi
 
-if ! tmux -L irssi ls -F "#S" 2> /dev/null | grep -q irssi
-then
-    # Pass the passwords as shell environments into irssi
-    echo "exporting passwords ..."
-    for network in "$passdir"/irc/*
-    do
-        for nickname in "$network"/*
-        do
+# Pass the passwords as shell environments into irssi
+export_passwords()
+{
+    echo "Exporting passwords to subshell environments ..."
+    for network in "$passdir/irc/"*; do
+        for nickname in "$network/"*; do
             net=$(basename "$network")
             nick=$(basename "${nickname%.*}")
             passvar=pass_"$net"_"$nick"
-            eval "$passvar=$(pass show irc/"$net"/"$nick")"
-            eval export "$passvar"
+            eval "export $passvar=$(pass show irc/"$net"/"$nick")"
         done
     done
+}
 
-    tmux -L irssi -f /dev/null new -d -s irssi /usr/bin/irssi "$@"
-    # Disable all keybindings, let the irssi script deal with tmux
-    tmux -L irssi set -s -t irssi prefix None
-    tmux -L irssi unbind-key -a
-    # Leave a detach short cut, this is the same as abduco
-    tmux -L irssi bind-key -n C-\\ detach-client
+if [ -z $NO_TMUX ]; then
+    session=irssi
+    # Create the session for the first time
+    if ! tmux -L "$session" ls -F "#S" 2> /dev/null; then
+        if [ -z $NO_PASS ]; then export_passwords; fi
+        tmux -L "$session" -f /dev/null new -d -s "$session" /usr/bin/irssi "$@"
+        # Disable prefix and all keybindings, let the irssi scripts deal with tmux
+        tmux -L "$session" set -s -t irssi prefix None
+        tmux -L "$session" unbind-key -a
+        # Leave a detach short cut, this is the same as abduco
+        tmux -L "$session" bind-key -n C-\\ detach-client
+        # Set border color
+        tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=0
+        tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=0
+        # Hide status bar
+        tmux -L "$session" set -s -t irssi status off
+    fi
+    # Attach it
+    tmux -L "$session" attach -t "$session"
+else
+    if [ -z $NO_PASS ]; then export_passwords; fi
+    /usr/bin/irssi "$@"
 fi
-
-# Set border all as foreground color
-tmux -L irssi set -s -t irssi pane-border-style fg=7,bg=0
-tmux -L irssi set -s -t irssi pane-active-border-style fg=7,bg=0
-# Hide status bar
-tmux -L irssi set -s -t irssi status off
-# Attach it
-tmux -L irssi attach -t irssi
