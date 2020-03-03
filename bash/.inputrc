@@ -1,12 +1,12 @@
 # use vi mode
 set editing-mode vi
 $if mode=vi
-set keymap vi-command
-# these are for vi-command mode
-Control-l: clear-screen
-set keymap vi-insert
-# these are for vi-insert mode
-Control-l: clear-screen
+    # these are for vi-command mode
+    set keymap vi-command
+    Control-l: clear-screen
+    # these are for vi-insert mode
+    set keymap vi-insert
+    Control-l: clear-screen
 $endif
 
 # Make Tab autocomplete regardless of filename case
