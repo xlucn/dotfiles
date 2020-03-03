@@ -56,12 +56,13 @@ if [ "$TERM" = "linux" ]; then
     clear
 fi
 
+# shell prompt functions
 __cwd_trim() {
     limit=24
     cwd=$(basename "$PWD")
     if [ ${#cwd} -gt $limit ]
     then
-        printf "\[\e[1;33m\]%s...\[\e[0m\]" "${cwd:0:$limit}"
+        printf "\[\e[1;33m\]%s...\[\e[0m\]" "$(echo "$cwd" | cut -c -"$limit")"
     else
         printf "\[\e[1;33m\]%s\[\e[0m\]" "$cwd"
     fi
