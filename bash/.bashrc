@@ -18,14 +18,6 @@ fi
 export EDITOR=vim
 export VISUAL=vim
 export NOTES_DIRECTORY="$HOME/Code/notes"
-# add mouse support after less version 550, to work with urxvt
-less_version=$(less -V | grep -E "^less [[:digit:]]+" | cut -d" " -f 2)
-if [ "$less_version" -ge 550 ] && [ "$TERM" = "rxvt-unicode-256color" ]
-then
-    export LESS="-R --mouse --wheel-lines=5"
-else
-    unset LESS
-fi
 
 # Alias
 # auto color
