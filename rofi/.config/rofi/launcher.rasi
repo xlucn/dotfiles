@@ -15,12 +15,12 @@ configuration {
     background-color    : #00000000;
     line-margin         : 0;
     line-padding        : 0;
-    separator-style     : "none";
     margin              : 0;
     padding             : 0;
     border              : 0;
     spacing             : 0;
-    /* some customized colors */
+    separator-style     : "none";
+    /* some customized colors used after */
     selected-background : #EEFFFF80;
     selected-text-color : #212121;
     background          : #21212180;
@@ -29,7 +29,6 @@ configuration {
 
 window {
     background-color : @background;
-    location         : south east;
     width            : 100%;
     height           : 100%;
 }
@@ -76,16 +75,13 @@ element-text {
     margin           : 4px 0px 0px 0px;
 }
 
-element normal.normal, element alternate.normal {
+element normal.normal,
+element alternate.normal {
     background-color : #00000000;
 }
 
-element normal.urgent, element alternate.urgent, element selected.urgent {
-    background-color : @FF0000;
-}
-
-element normal.active, element alternate.active,
-element selected.normal, element selected.active {
+element selected.normal,
+element selected.active {
     background-color : @selected-background;
     color            : @selected-text-color;
 }
