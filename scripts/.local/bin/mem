@@ -27,7 +27,7 @@ format()
         for unit in KB MB GB TB; do
             if [ "$mem" -lt 1000 ]; then
                 if [ -n "$decimal" ]; then
-                    printf "%d.%03d %s" "$mem" "$decimal" "$unit"
+                    printf "%d.%03d %s\n" "$mem" "$decimal" "$unit"
                 else
                     echo "$mem $unit"
                 fi
