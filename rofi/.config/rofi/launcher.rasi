@@ -39,7 +39,11 @@ mainbox {
 }
 
 inputbar {
-    children         : [entry];
+    children         : [dummy, entry, dummy];
+}
+
+dummy {
+    expand           : true;
 }
 
 entry {
@@ -47,7 +51,9 @@ entry {
     font             : "Monospace 16";
     border-radius    : 16px;
     padding          : 16px;
-    margin           : 4% 36% 0% 36%;
+    margin           : 6% 0% 0% 0%;
+    expand           : false;
+    width            : 32em;
 }
 
 listview {
