@@ -1,4 +1,5 @@
 text/plain; vim %s;
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/html; html2text; copiousoutput;
+# text/html; w3m -I %{charset} -T text/html; copiousoutput;
 image/*; xdg-open %s &;
 application/*; xdg-open %s &;
