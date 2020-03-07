@@ -2,11 +2,10 @@
 #
 # Wrapping script around irssi featuring:
 # 1. Run irssi in a tmux session to work with some irssi scripts, e.g.
-#     - adv_windowlist.pl
-#     - tmux-nicklist-portable.pl
-# 2. Use tmux detach functionality (but nothing else like keybindings, etc.)
-# 3. Export irc passwords using 'pass' through shell environments that can be
-#    used in irssi config
+#    adv_windowlist.pl or tmux-nicklist-portable.pl
+# 2. Export irc passwords with 'pass' through shell environments so that they
+#    can be used in irssi config
+# 3. Detach with ctrl+\ (same as abduco)
 #
 # Note:
 # a. The passwords stored with 'pass' store should be under a 'irc' subfolder
@@ -15,7 +14,9 @@
 #      └── network
 #          └── nickname/key/etc.
 #    You can create it with `pass insert irc/network/nickname`
-#    The exported shell variable are named $pass_network_nickname
+#    The exported shell variable are named as $pass_network_nickname
+#    Use the variables in irssi config like
+#            autosendcmd = "/^msg nickserv identify ${pass_network_nickname}";
 # b. The script even starts tmux inside another tmux session.
 #    The side effect is tried to be minimized by unbinding all tmux keybindings
 #    and hiding the status bar in the nested session so that the outer tmux
