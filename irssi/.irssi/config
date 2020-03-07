@@ -417,7 +417,7 @@ keyboard = (
   { key = "meta->"; id = "change_window"; data = "79"; },
   { key = "meta-?"; id = "change_window"; data = "80"; },
   {
-    key = "^Z";
+    key = "^B";
     id = "command";
     data = "script exec Irssi::Script::tmux_nicklist_portable::toggle_nicklist";
   }
