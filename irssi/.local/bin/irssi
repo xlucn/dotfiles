@@ -1,46 +1,15 @@
 #!/bin/sh
 #
-# Wrapping script around irssi featuring:
-# 1. Run irssi in a tmux session to work with some irssi scripts, e.g.
-#    adv_windowlist.pl or tmux-nicklist-portable.pl
-# 2. Export irc passwords with 'pass' through shell environments so that they
-#    can be used in irssi config
-# 3. Detach with ctrl+\ (same as abduco)
-#
-# Note:
-# a. The passwords stored with 'pass' store should be under a 'irc' subfolder
-#    and have the file structure as:
-#      irc
-#      └── network
-#          └── nickname/key/etc.
-#    You can create it with `pass insert irc/network/nickname`
-#    The exported shell variable are named as $pass_network_nickname
-#    Use the variables in irssi config like
-#            autosendcmd = "/^msg nickserv identify ${pass_network_nickname}";
-# b. The script even starts tmux inside another tmux session.
-#    The side effect is tried to be minimized by unbinding all tmux keybindings
-#    and hiding the status bar in the nested session so that the outer tmux
-#    works like the nested session never exists.
-#    P.S. Tmux can still be controlled by '/exec tmux' command inside irssi.
+# readme: https://github.com/OliverLew/dotfiles/tree/master/irssi/README.md
+# usage: irssi [irssi options]
 
-if ! command -v pass > /dev/null 2>&1; then
-    echo "Install \'pass\' if you want to use exported passwords in irssi"
-    echo "For more info, see the comment in this script"
-    NO_PASS=1
-else
-    passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
-fi
+if ! command -v pass > /dev/null 2>&1; then NO_PASS=1; fi
+if ! command -v tmux > /dev/null 2>&1; then NO_TMUX=1; fi
 
-if ! command -v tmux > /dev/null 2>&1; then
-    echo "Install \`tmux\` if you want to use windowlist or nicklist in tmux"
-    echo "For more info, see the comment in this script"
-    NO_TMUX=1
-fi
-
-# Pass the passwords as shell environments into irssi
 export_passwords()
 {
     echo "Exporting passwords to subshell environments ..."
+    passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
     for network in "$passdir/irc/"*; do
         for nickname in "$network/"*; do
             net=$(basename "$network")
@@ -53,22 +22,16 @@ export_passwords()
 
 if [ -z $NO_TMUX ]; then
     session=irssi
-    # Create the session for the first time
     if ! tmux -L "$session" ls -F "#S" 2> /dev/null; then
         if [ -z $NO_PASS ]; then export_passwords; fi
         tmux -L "$session" -f /dev/null new -d -s "$session" /usr/bin/irssi "$@"
-        # Disable prefix and all keybindings, let the irssi scripts deal with tmux
         tmux -L "$session" set -s -t irssi prefix None
         tmux -L "$session" unbind-key -a
-        # Leave a detach short cut, this is the same as abduco
         tmux -L "$session" bind-key -n C-\\ detach-client
-        # Set border color
         tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=0
         tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=0
-        # Hide status bar
         tmux -L "$session" set -s -t irssi status off
     fi
-    # Attach it
     tmux -L "$session" attach -t "$session"
 else
     if [ -z $NO_PASS ]; then export_passwords; fi
