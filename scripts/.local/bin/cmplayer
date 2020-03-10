@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # A script to play video in framebuffer using mplayer and put it on the position
 # of current tmux pane if in a tmux session.
 # Environment:
@@ -7,7 +7,6 @@
 #   mplayer
 #   ffprobe (part of ffmpeg, should be installed if you have mplayer)
 #   tmux or fbset (at least one)
-#   bash (to run the script, sorry for using some non-POSIX features)
 
 # Note: you might need to modify this according to your vconsole font setting
 # or the terminal emulator you are using, e.g. fbterm.
@@ -40,9 +39,11 @@ then
     # <format> = <width>x<height>,<x>,<y>,(<id> or {<format>} or [<format>])
     #
     # We only need the ones with ids, which means they don't have child structures.
-    read -r w h x y < <(tmux display -p -F "#{window_visible_layout}" \
-        | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
-        | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
+    read -r w h x y << EOF
+    $(tmux display -p -F "#{window_visible_layout}" | \
+    grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" | \
+    awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
+EOF
     W=$((w * charw))
     H=$((h * charh))
     X=$((x * charw))
@@ -51,20 +52,23 @@ else
     # Use framebuffer size if not in tmux
     X=0
     Y=0
-    read -r W H < <(fbset | awk '/geometry/{ print $2, $3 }')
+    read -r W H << EOF
+    $(fbset | awk '/geometry/{ print $2, $3 }')
+EOF
 fi
 
 # Play each of the videos separately (deal with different video sizes)
 for video in "$@"
 do
     # Get the real size of the video
-    read -r width height sar_x sar_y < \
-    <(ffprobe "$video" \
+    read -r width height sar_x sar_y << EOF
+    $(ffprobe "$video" \
               -v error \
               -select_streams v:0 \
               -show_entries stream=width,height,sample_aspect_ratio \
               -of csv=s=x:p=0 |
-    awk -F'[x:]' '{ print $1, $2, $3, $4 }') || exit 1
+    awk -F'[x:]' '{ print $1, $2, $3, $4 }')
+EOF
 
     # Calculate the actual video dimension on screen that could fit in the pane
     vH="$H"
