@@ -1,99 +1,56 @@
-#!/bin/bash
+#!/bin/sh
+#
+# file: setmonitor
+# link: https://github.com/OliverLew/dotfiles
+#
+# A script to configure multiple displays with xrandr
+#
 
-XRANDR=$(command -v xrandr)
+while read -r name stat _; do
+    if [ "$stat" = "connected" ]; then
+        monitors="$monitors $name"
+    fi
+done << EOF
+    $(xrandr)
+EOF
 
-MONITORS=( $( ${XRANDR} | awk '( $2 == "connected" ){ print $1 }' ) )
-
-
-NUM_MONITORS=${#MONITORS[@]}
-
-TITLES=()
-COMMANDS=()
-
-
-function gen_xrandr_only()
-{
-    selected=$1
-
-    cmd="xrandr --output ${MONITORS[$selected]} --auto "
-
-    for entry in $(seq 0 $((NUM_MONITORS - 1)))
-    do
-        if [ "$selected" != "$entry" ]
-        then
-            cmd="$cmd --output ${MONITORS[$entry]} --off"
-        fi
-    done
-
-    echo "$cmd"
+add_opt() {
+    index=$((index + 1))
+    options="${options}$index $1\n"
 }
 
-
-
-declare -i index=0
-TILES[$index]="Cancel"
-COMMANDS[$index]="true"
-index+=1
-
-
-for entry in $(seq 0 $((NUM_MONITORS - 1)))
-do
-    TILES[$index]="Only ${MONITORS[$entry]}"
-    COMMANDS[$index]=$(gen_xrandr_only "$entry")
-    index+=1
-done
-
-##
-# Dual screen options
-##
-for entry_a in $(seq 0 $((NUM_MONITORS - 1)))
-do
-    for entry_b in $(seq 0 $((NUM_MONITORS - 1)))
-    do
-        if [ "$entry_a" != "$entry_b" ]
-        then
-            TILES[$index]="Dual Screen ${MONITORS[$entry_a]} -> ${MONITORS[$entry_b]}"
-            COMMANDS[$index]="xrandr --output ${MONITORS[$entry_a]} --auto \
-                              --output ${MONITORS[$entry_b]} --auto --left-of ${MONITORS[$entry_a]}"
-
-            index+=1
-        fi
-    done
-done
-
-
-##
-# Clone monitors
-##
-for entry_a in $(seq 0 $((NUM_MONITORS - 1)))
-do
-    for entry_b in $(seq 0 $((NUM_MONITORS - 1)))
-    do
-        if [ "$entry_a" != "$entry_b" ]
-        then
-            TILES[$index]="Clone Screen ${MONITORS[$entry_a]} -> ${MONITORS[$entry_b]}"
-            COMMANDS[$index]="xrandr --output ${MONITORS[$entry_a]} --auto \
-                              --output ${MONITORS[$entry_b]} --auto --same-as ${MONITORS[$entry_a]}"
-
-            index+=1
-        fi
-    done
-done
-
-
-##
-#  Generate entries, where first is key.
-##
-function gen_entries()
-{
-    for a in $(seq 0 $(( ${#TILES[@]} -1 )))
-    do
-        echo "$a" "${TILES[a]}"
-    done
+add_cmd() {
+    eval "command_$index=\"$*\""
 }
 
-# Call menu
-SEL=$( gen_entries | rofi -dmenu -p "Monitor Setup:" -a 0 -no-custom  | awk '{print $1}' )
+# Cancel
+add_opt "Cancel"
+add_cmd true
+# Single Monitor
+for m in $monitors; do
+    add_opt "Single\t$m"
+    add_cmd xrandr --output "$m" --auto --primary
+done
+# Dual monitor
+for m in $monitors; do
+    for n in $monitors; do
+        if [ "$m" != "$n" ]; then
+            add_opt "Dual  \t$m -> $n"
+            add_cmd xrandr --output "$m" --auto --primary \
+                           --output "$n" --auto --same-as "$n"
+        fi
+    done
+    for n in $monitors; do
+        if [ "$m" != "$n" ]; then
+            add_opt "Mirror\t$m -> $n"
+            add_cmd xrandr --output "$m" --auto --primary \
+                           --output "$n" --auto --right-of "$n"
+        fi
+    done
+done
 
-# Call xrandr
-$( ${COMMANDS[$SEL]} )
+choice=$(printf "%s$options" "" \
+    | dmenu -i -l 10 -p "Choose a monitor configuration" \
+    | cut -d " " -f 1)
+
+eval "\$command_$choice"
