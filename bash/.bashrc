@@ -46,14 +46,13 @@ fzfyay()
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
-    # shellcheck disable=SC2046
-    set $(sed -n "$_SEDCMD" "$HOME/.Xresources")
-    while [ $# -gt 0 ]; do
-        if [ "$1" -lt 16 ]; then
-            printf "\e]P%X%s" "$1" "$2"
+    while read -r n color; do
+        if [ "$n" -lt 16 ]; then
+            printf "\e]P%X%s" "$n" "$color"
         fi
-        shift 2
-    done
+    done <<- EOF
+		$(sed -n "$_SEDCMD" "$HOME/.Xresources")
+	EOF
     clear
 fi
 
