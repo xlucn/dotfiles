@@ -4,28 +4,23 @@ Wrapping script around irssi featuring:
 
 - Run irssi in a tmux session to work with some irssi scripts, e.g.
   `adv_windowlist.pl` or `tmux-nicklist-portable.pl`
-- Export irc passwords with `pass` through shell environments so that they
-  can be used in irssi config (so no hard coded credentials in irssi config)
+- Export irc passwords with [`pass`](passwordstore.org/) through shell environments so that they
+  can be used in irssi config (so no hard coded passwords in irssi config)
 - Detach with ctrl+\ (same as abduco)
-- Should take any irssi argument as if you are using /usr/bin/irssi
+- You should be able to use the `irssi` script with any arguments that
+  `/usr/bin/irssi` accept with no problem.
   However they won't work if you are attaching a existing session
 
-Requirements (optional):
+### Requirements (optional):
 
-- Install 'pass' if you want to use exported passwords
-- Install 'tmux' if you want to use detachable sessions and windowlist or
-  nicklist scripts
+- [`pass`](passwordstore.org/) for exporting passwords
+- `tmux` for detachable sessions and windowlist/nicklist scripts
 
-Note:
+### Note:
 
-1. The passwords stored with 'pass' store should be under a 'irc' subfolder
-   and have the file structure as (actually it does not matter):
-   ```
-   irc
-   └── network
-       └── nickname/key/etc
-   ```
-   You can create it with
+1. The passwords stored with 'pass' should be under a 'irc' subfolder
+   and has two more levels (recommend them to be network name and nick/etc),
+   e.g. you can create one password for a nick in some network with
    ```sh
    pass insert irc/network/nickname
    ```
@@ -36,7 +31,8 @@ Note:
    ```
 
 2. The script even starts tmux inside another tmux session.
-   The side effect is tried to be minimized by unbinding all tmux keybindings
-   and hiding the status bar in the nested session so that the outer tmux
+   The inner tmux session is almost undetectable since all tmux keybindings
+   are unbound and the status bar is hidden so that the outer tmux session
    works like the nested session never exists.
+
    P.S. Tmux can still be controlled by `/exec tmux` command inside irssi.
