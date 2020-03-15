@@ -18,6 +18,7 @@ fi
 export EDITOR=vim
 export VISUAL=vim
 export NOTES_DIRECTORY="$HOME/Code/notes"
+export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
 # Alias
 # auto color
