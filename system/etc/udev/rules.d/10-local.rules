@@ -1,0 +1,5 @@
+# map caps key to escape for all keyboards with capslock
+SUBSYSTEM=="leds",KERNEL=="input[0-9]*::capslock",ACTION=="add",SUBSYSTEMS=="input",RUN+="/usr/local/bin/udev-signal capslock"
+# power on/off notify
+SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="1",RUN+="/usr/local/bin/udev-signal ac-on"
+SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="0",RUN+="/usr/local/bin/udev-signal ac-off"

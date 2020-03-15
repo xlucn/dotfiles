@@ -1,0 +1,9 @@
+#!/bin/sh
+FIFO="/tmp/udev.fifo"
+
+if [ ! -p $FIFO ]; then
+    rm "$FIFO"
+    mkfifo "$FIFO"
+fi
+
+echo "$1" > "$FIFO"

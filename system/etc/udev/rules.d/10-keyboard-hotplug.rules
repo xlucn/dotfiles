@@ -1,2 +1,0 @@
-# IKBC C87
-SUBSYSTEM=="input",ACTION=="add",ATTRS{idProduct}=="4042",ATTRS{idVendor}=="04b4",RUN+="/usr/local/bin/caps2esc"

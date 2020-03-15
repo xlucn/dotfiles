@@ -1,0 +1,23 @@
+#!/bin/sh
+while true; do
+    while read -r p; do
+        notify-send "debug: $p"
+        case "$p" in
+            "capslock")
+                notify-send "New keyboard" "Detected new keyboard pluged in."
+                # xmodmap won't work on new keyboard without this delay
+                sleep 1
+                notify-send "New keyboard" "Mapping CapsLock key to Escape."
+                /usr/bin/xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'
+                ;;
+            "ac-on")
+                notify-send "Power supply" "AC adpater pluged in"
+                ;;
+            "ac-off")
+                notify-send "Power supply" "AC adpater unpluged"
+                ;;
+            *)
+                ;;
+        esac
+    done < /tmp/udev.fifo
+done
