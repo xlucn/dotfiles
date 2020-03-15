@@ -4,6 +4,7 @@
     name = Oliver Lew
     email = oliver_lew@outlook.com
 [core]
+    pager = "less -x1,5 --mouse --wheel-lines=3"
     editor = vim
     filemode = true
 [gui]
@@ -16,3 +17,5 @@
     b = branch
 [http]
     proxy = "socks5h://localhost:1080"
+[tig]
+    tab-size = 4
