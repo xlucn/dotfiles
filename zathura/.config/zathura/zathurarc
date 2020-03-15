@@ -1,4 +1,3 @@
-# TODO: all the colors
 # Keymappings
 map h scroll left
 map j scroll down
@@ -32,10 +31,10 @@ set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
 
 # User interface
-set guioptions "vhs"
+set guioptions "vh"
 set highlight-transparency 0.2
 
-# Colors
+# Colors TODO: all the colors
 set default-fg "#EEFFFF"
 set default-bg "#212121"
 set statusbar-bg "#212121"
@@ -55,4 +54,5 @@ set adjust-open "width"
 
 # window properties
 set window-title-basename true
+set window-title-page true
 set window-icon-document false
