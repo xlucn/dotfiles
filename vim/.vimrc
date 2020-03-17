@@ -296,6 +296,7 @@ let g:which_key_map.g = {
 let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
+let g:gitgutter_max_signs = 1000
 " }}}
 " ALE {{{
 " automatically pop up completion candidates
