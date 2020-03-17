@@ -9,7 +9,6 @@ endif
 " begin vim-plug
 call plug#begin('~/.vim/bundle')
 Plug 'VundleVim/Vundle.vim'
-Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -195,8 +194,8 @@ autocmd InsertEnter * call Fcitx("enter")
 " Vim Which Key {{{
 let g:which_key_use_floating_win = 0
 let g:which_key_map = {
-  \ 'c' : { 'name' : '+commenting' },
-  \ 'q' : [ ':q', 'quit'],
+  \ 'c' : [ 'gcc', 'comment'],
+  \ 'q' : [ ':q',  'quit'],
   \ 'Q' : [ ':qa', 'quit all'],
   \ 'd' : [ ':bd', 'close buffer'],
   \ 'w' : [ ':w',  'save'],
