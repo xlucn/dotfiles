@@ -177,11 +177,11 @@ autocmd FileType sh let b:ale_lsp_root="./"
 function! Fcitx(mode)
     if system('fcitx-remote') != 0
         if a:mode == 'leave'
-            let b:toggle = system('fcitx-remote') - 1
+            let b:status = system('fcitx-remote')
             call system('fcitx-remote -c')
         endif
         if a:mode == 'enter'
-            if exists('b:toggle') && b:toggle == 1
+            if exists('b:status') && b:status == 2
                 call system('fcitx-remote -o')
             endif
         endif
