@@ -4,13 +4,12 @@ no-keepaspect-window
 
 # Screenshot
 screenshot-format=jpg
-screenshot-png-compression=2
 screenshot-directory=~/Pictures
 
 # OSD
 osd-font="DejaVu Sans"
-osd-color=1.0/1.0/1.0/0.2
-osd-border-color=0.0/0.0/0.0/0.4
+osd-color=1.0/1.0/1.0/0.6
+osd-border-color=1.0/1.0/1.0/0.0
 osd-on-seek="msg-bar"
 # osd in terminal
 term-osd-bar=yes
