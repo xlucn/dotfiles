@@ -198,6 +198,7 @@ let g:which_key_map = {
   \ 'c' : { 'name' : '+commenting' },
   \ 'q' : [ ':q', 'quit'],
   \ 'Q' : [ ':qa', 'quit all'],
+  \ 'd' : [ ':bd', 'close buffer'],
   \ 'w' : [ ':w',  'save'],
   \ 'e' : [ ':e',  'edit (reload)'],
   \ 'x' : [ ':x',  'save and quit'],
