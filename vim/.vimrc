@@ -377,8 +377,20 @@ let g:vimtex_compiler_latexmk = {
 let g:mma_candy = 2
 " }}}
 " vim-slime {{{
-if $TERM == "screen-256color"
+let g:slime_no_mappings = 1
+xmap <leader>ss <Plug>SlimeRegionSend
+nmap <leader>ss <Plug>SlimeParagraphSend
+let g:which_key_map.s = {
+    \ "name" : "slime",
+    \ "s" : "send text with slime",
+    \ "c" : [ "<Plug>SlimeConfig", "configure slime" ],
+    \ }
+if len($TMUX) != 0
     let g:slime_target = "tmux"
+elseif match($TERM, "screen") != -1
+    let g:slime_target = "screen"
+else
+    let g:slime_target = "vimterminal"
 endif
 " set config to use the pane on the right by default
 let g:slime_default_config = {
@@ -389,7 +401,7 @@ let g:slime_default_config = {
 let g:slime_vimterminal_config = {
     \ "vertical": 1
     \ }
-let g:slime_dont_ask_default = 1
+let g:slime_dont_ask_default = 0
 " use temp file
 let g:slime_paste_file = tempname()
 " ipython specific setting
