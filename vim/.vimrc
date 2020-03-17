@@ -168,7 +168,7 @@ nnoremap <space> za
 autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
 autocmd BufNewFile,BufRead *.wl,*.wls setfiletype mma
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
-autocmd BufWritePost *Xresources :!xrdb %
+autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
 autocmd FileType sh let b:ale_lsp_root="./"
