@@ -25,6 +25,6 @@ set trash = "+Deleted"
 set copy = no
 
 # signature file
-set signature = "~/.config/mutt/signature_work"
+set signature = "~/.config/neomutt/$my_email.signature"
 
 account-hook $folder "set imap_user=$imap_user imap_pass=$imap_pass"

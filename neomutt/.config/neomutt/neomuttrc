@@ -1,10 +1,12 @@
-source ~/.config/neomutt/accounts.personal.muttrc
-folder-hook $folder 'source ~/.config/neomutt/accounts.personal.muttrc'
-macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts.personal.muttrc<enter><change-folder>!<enter>'
+set my_email1 = "2869761396@qq.com"
+source ~/.config/neomutt/$my_email1.muttrc
+folder-hook $folder 'source ~/.config/neomutt/$my_email1.muttrc'
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email1.muttrc<enter><change-folder>!<enter>'
 
-source ~/.config/neomutt/accounts.work.muttrc
-folder-hook $folder 'source ~/.config/neomutt/accounts.work.muttrc'
-macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts.work.muttrc<enter><change-folder>!<enter>'
+set my_email2 = "oliver_lew@outlook.com"
+source ~/.config/neomutt/$my_email2.muttrc
+folder-hook $folder 'source ~/.config/neomutt/$my_email2.muttrc'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email2.muttrc<enter><change-folder>!<enter>'
 
 # editor, use vim
 set editor = "vim"
