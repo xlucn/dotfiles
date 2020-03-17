@@ -85,12 +85,15 @@ __jobs_count() {
     fi
 }
 
-__ssh_indicator() {
-    [ -n "$SSH_CLIENT" ] && printf "\[\e[36m\][SSH]\[\e[0m\] "
-}
-
 __user_host() {
     printf "\[\e[35m\]%s@%s\[\e[0m\] " "$(whoami)" "$(hostname)"
+}
+
+__ssh_indicator() {
+    if [ -n "$SSH_CLIENT" ]; then
+        printf "\[\e[36m\][SSH]\[\e[0m\] "
+        __user_host
+    fi
 }
 
 __git_autostats() {
@@ -112,7 +115,6 @@ __git_autostats() {
 
 __before_git() {
     __ssh_indicator
-    __user_host
     __cwd_trim
     __jobs_count
     __git_autostats
