@@ -39,7 +39,7 @@ color message cyan default
 color markers red white
 color attachment white default
 color search brightmagenta default
-color status brightyellow black
+color status brightyellow default
 color quoted green default
 color quoted1 blue default
 color quoted2 cyan default
