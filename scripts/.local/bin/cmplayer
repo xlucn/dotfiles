@@ -10,15 +10,13 @@
 
 # Note: you might need to modify this according to your vconsole font setting
 # or the terminal emulator you are using, e.g. fbterm.
-# Character width and height
+# Character width and height in pixels
 charw=10
 charh=20
 
-usage="usage: $(basename "$0") video [video ...]"
-
 if [ $# = 0 ]
 then
-    echo "$usage"
+    echo "usage: $(basename "$0") video [ video ... ]"
     exit
 fi
 
@@ -36,24 +34,26 @@ then
     # 2. Locate the current pane by its pane id
     # 3. Get the pane's location and size (in unit of characters)
     #
-    # The format is loosely summarised as:
+    # The format is loosely summarised recursively as:
     # <format> = <width>x<height>,<x>,<y>,(<id> or {<format>} or [<format>])
     #
     # We only need the ones with ids, which means they don't have child structures.
     read -r w h x y << EOF
-    $(tmux display -p -F "#{window_visible_layout}" | \
-    grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" | \
-    awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }')
+    $(
+        tmux display -p -F "#{window_visible_layout}" \
+        | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
+        | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }'
+    )
 EOF
-    W=$((w * charw))
-    H=$((h * charh))
-    X=$((x * charw))
-    Y=$((y * charh))
+    pane_w=$((w * charw))
+    pane_h=$((h * charh))
+    pane_x=$((x * charw))
+    pane_y=$((y * charh))
 else
     # Use framebuffer size if not in tmux
-    X=0
-    Y=0
-    read -r W H << EOF
+    pane_x=0
+    pane_y=0
+    read -r pane_w pane_h << EOF
     $(fbset | awk '/geometry/{ print $2, $3 }')
 EOF
 fi
@@ -71,25 +71,30 @@ do
     awk -F'[x:]' '{ print $1, $2, $3, $4 }')
 EOF
 
-    # Calculate the actual video dimension on screen that could fit in the pane
-    vH="$H"
-    vW="$W"
-    if [ $((width * H - height * W)) -gt 0 ]
+    # fix the aspect ratio, sar might be absent in some videos
+    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]
     then
-        vH=$((height * W / width))
-    else
-        vW=$((width * H / height))
+        width=$((width * sar_x / sar_y))
     fi
 
-    # fix the aspect ratio, sar might be absent in some videos
-    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] || [ -n "$sar_y" ]
+    # Calculate the actual video dimension on screen that could fit in the pane
+    # Also center the video if pane/screen is wider than video
+    if [ $((width * pane_h - height * pane_w)) -gt 0 ]
     then
-        vW=$((vW * sar_x / sar_y))
+        video_w=$pane_w
+        video_h=$((height * pane_w / width))
+        video_x=$pane_x
+        video_y=$pane_y
+    else
+        video_w=$((width * pane_h / height))
+        video_h=$pane_h
+        video_x=$((pane_x +  pane_w / 2 - video_w / 2))
+        video_y=$pane_y
     fi
 
     mplayer "$video" -msglevel all=-1 -nolirc -noconfig user \
             -vo fbdev2 \
-            -vf scale=$vW:$vH \
-            -geometry $X:$Y || exit 1
+            -vf scale="$video_w":"$video_h" \
+            -geometry $video_x:$video_y || exit 1
     clear
 done
