@@ -23,7 +23,7 @@ show_cpu()
     echo "$active $total" > "$tmpfile"
 
     if [ -n "$total_inc" ] && [ "$total_inc" -gt 10 ]; then
-        echo $((active_inc * 100 / total_inc))
+        printf "%2s" $((active_inc * 100 / total_inc))
     else
         sleep 1
         show_cpu
