@@ -22,9 +22,10 @@ then
     exit
 fi
 
-# Deal with some exit signals (still can't process KILL signal, good luck with that)
-trap 'clear; tput cnorm' INT TERM
-trap 'tput cnorm' QUIT EXIT
+# Hide the cursor and texts
+clear; tput civis
+# Clean upon quit (still can't process KILL signal, good luck with that)
+trap 'clear; tput cnorm' INT TERM QUIT EXIT
 
 # Calculate position and available size
 if tmux display -p -F "#S" > /dev/null 2>&1
@@ -86,15 +87,9 @@ EOF
         vW=$((vW * sar_x / sar_y))
     fi
 
-    # Hide the cursor in case it blinks in the video region
-    tput civis
-    # Play the video
-    clear
     mplayer "$video" -msglevel all=-1 -nolirc -noconfig user \
             -vo fbdev2 \
             -vf scale=$vW:$vH \
             -geometry $X:$Y || exit 1
     clear
-    # Show the cursor
-    tput cnorm
 done
