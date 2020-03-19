@@ -90,7 +90,7 @@ EOF
     tput civis
     # Play the video
     clear
-    mplayer "$video" -msglevel all=-1 -nolirc \
+    mplayer "$video" -msglevel all=-1 -nolirc -noconfig user \
             -vo fbdev2 \
             -vf scale=$vW:$vH \
             -geometry $X:$Y || exit 1
