@@ -2,11 +2,14 @@
 
 usage()
 {
-    echo "Usage: $(basename "$0") [ -S ] [ -B ] [ -t | -u | -f | -b | -c ]"
+    # TODO: full usage
+    echo "Usage: $(basename "$0") [ -S ] [ -B ] [ -bcftu ] [ -123 ]"
+    echo ""
     echo
 }
 
-while getopts "htufsbcaBS" arg; do
+# TODO: CAPS for swap?
+while getopts "123htufsbcaBST:" arg; do
     case "$arg" in
         t) flag_total=1;;
         u) flag_used=1;;
@@ -16,6 +19,8 @@ while getopts "htufsbcaBS" arg; do
         a) flag_avail=1;;
         B) flag_byte=1;;
         S) flag_swap=1;;
+        T) test=$OPTARG;;
+        1|2|3) precision=$arg;;
         h|*) usage; exit 0;;
     esac
 done
@@ -25,16 +30,18 @@ format()
     mem="$1"
     if [ -z "$flag_byte" ]; then
         for unit in KB MB GB TB; do
-            if [ "$mem" -lt 1000 ]; then
+            if [ "$mem" -lt 1024 ]; then
                 if [ -n "$decimal" ]; then
-                    printf "%d.%03d %s\n" "$mem" "$decimal" "$unit"
+                    printf "%d.%s %s\n" "$mem" "$decimal" "$unit"
                 else
                     echo "$mem $unit"
                 fi
                 break
             else
-                decimal="$((mem % 1000))"
-                mem="$((mem / 1000))"
+                # TODO: rounding
+                decimal=$((mem % 1024 * 1000 / 1024))
+                decimal=$(printf "%03d" "$decimal" | cut -c -"${precision:-3}")
+                mem=$((mem / 1024))
             fi
         done
     else
@@ -47,17 +54,20 @@ info()
     result=0
     for keyword in "$@"; do
         if [ "$keyword" != "${keyword#-*}" ]; then
-            temp="$(awk '/'"^${keyword#-*}:"'/{print $2}' /proc/meminfo)"
-            result="$((result - temp))"
+            temp=$(awk '/'"^${keyword#-*}:"'/{print $2}' /proc/meminfo)
+            result=$((result - temp))
         else
-            temp="$(awk '/'"^$keyword:"'/{print $2}' /proc/meminfo)"
-            result="$((result + temp))"
+            temp=$(awk '/'"^$keyword:"'/{print $2}' /proc/meminfo)
+            result=$((result + temp))
         fi
     done
     format "$result"
 }
 
-if [ "$flag_total" = 1 ]; then
+if [ -n "$test" ]; then
+    format "$test"
+    exit
+elif [ "$flag_total" = 1 ]; then
     if [ "$flag_swap" = 1 ]; then
         info SwapTotal
     else
