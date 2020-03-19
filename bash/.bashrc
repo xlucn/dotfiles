@@ -34,25 +34,23 @@ alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-pl
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # fzf integrate with pacman and yay
-fzfpacman()
-{
+fzfpacman() {
     pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
 }
-fzfyay()
-{
+fzfyay() {
     yay -Slq | fzf -m -q "$*" --preview 'yay -Si {1}'| xargs -ro yay -S
 }
 
 # Console color theme, reuse .Xresources definitions
+# Use wal generated if not defined in .Xresources
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
-    while read -r n color; do
+    sed -n "$_SEDCMD" "$HOME/.cache/wal/colors.Xresources" "$HOME/.Xresources" \
+    | while read -r n color; do
         if [ "$n" -lt 16 ]; then
             printf "\e]P%X%s" "$n" "$color"
         fi
-    done <<- EOF
-		$(sed -n "$_SEDCMD" "$HOME/.Xresources")
-	EOF
+    done
     clear
 fi
 
