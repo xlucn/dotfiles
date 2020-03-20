@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# helper script to show urls in dmenu from piped content
+
+# first line to concatenate urls in mutt
+sed 's/.*│//g' | tr -d '\n' \
+| grep -aEo '((https?|ftp|gopher)://|(mailto|magnet):|www.)[^[:space:],;\">\\)]*[^][:space:],.;:\">\\)}]' \
+| uniq | dmenu -i -p 'Select url to open:' -l 10 | xargs -r xdg-open
+
+# Original url regex from Luke Smith
+# "grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./@&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'|"
