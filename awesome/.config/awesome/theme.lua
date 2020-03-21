@@ -1,3 +1,4 @@
+-- luacheck: globals awesome
 -- Libraries {{{
 local gears = require("gears")
 local beautiful = require("beautiful")
@@ -8,12 +9,6 @@ local config = require("config")
 -- }}}
 
 local theme = {}
-
--- helper function {{{
-local function fg(color, text)
-    return string.format("<span foreground='%s'>%s</span>", color, text)
-end
--- }}}
 
 -- Colorscheme files from Xresources {{{
 local xresources_theme = beautiful.xresources.get_current_theme()
@@ -69,13 +64,10 @@ theme.menu_font                = theme.fontname .. " 12"
 
 -- Window {{{
 theme.useless_gap           = dpi(8)
-theme.gap_single_client     = false
 theme.border_width          = dpi(0)
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = theme.bg_focus
 theme.border_marked         = theme.bg_urgent
-theme.titlebar_bg           = theme.fg_normal
-theme.titlebar_fg           = theme.bg_normal
 -- }}}
 
 -- Taglist {{{
@@ -100,21 +92,19 @@ theme.tasklist_icon_margin  = dpi(4)
 -- Slider and progressbar {{{
 theme.slider_bar_border_width = 0
 theme.slider_handle_border_width = 0
-theme.slider_handle_border_color = theme.blue
-theme.slider_handle_width = dpi(24)
-theme.slider_handle_shape = gears.shape.circle
-theme.slider_handle_color = theme.light
+theme.slider_handle_width = 0
 theme.slider_bar_shape = gears.shape.rounded_bar
-theme.slider_bar_height = dpi(6)
+theme.slider_bar_height = dpi(24)
 theme.slider_bar_color = theme.grey
+theme.slider_bar_active_color = theme.fg_normal
+theme.slider_bar_margins = { top = 12, bottom = 12 }
 theme.progressbar_bg = theme.grey
 theme.progressbar_fg = theme.fg_normal
 theme.progressbar_shape = gears.shape.rounded_bar
 theme.progressbar_border_width = 0
 theme.progressbar_bar_shape = gears.shape.rectangle
 theme.progressbar_bar_border_width = 0
--- theme.progressbar_bar_border_color
--- theme.progressbar_margins
+theme.progressbar_margins = 12
 -- theme.progressbar_paddings
 -- }}}
 
@@ -181,127 +171,150 @@ local function add_icon_to_theme(icon_table, theme_table)
             theme_table[k] = {}
             add_icon_to_theme(v, theme_table[k])
         else
-            theme_table[k] = { v[1], find_symbolic_icon(v[2]), v[3], v[4] }
+            theme_table[k] = {
+                v[1],
+                find_symbolic_icon(v[2]),
+                v[3], v[4],
+                color = v.color or theme.fg
+            }
         end
     end
 end
 -- }}}
 
 -- Icons {{{
+-- Icon theme
+theme.icon_theme = config.icon_theme
+-- Icon size
+awesome.set_preferred_icon_size(theme.preferred_icon_size)
 -- The icons are used only by *icon_button* function in widgets.lua
 -- The table elements are
 --  1: Font character.
 --  2: Icon name, default to symbolic icons "icon_name_symbolic.svg".
 --  3: Font margin fix, applied to right margin, optional.
 --     Specify this if the character is not center aligned.
+--  Note: Nerd Font need this fix but "Material Design Icons" does not, I might remove this
+--     in favour of the latter font.
 --  4: Icon margin fix, applied to all margins on top of button_imagemargin, optional.
 --     Specify this if the icon is too large.
+--  Note: the mdi font seem great, maybe I will remove svg icons, too?
 -- The tables are passed to add_icon_to_theme function only to replace the
 --     second element to the corresponding icon path
 add_icon_to_theme({
-        layout_floating = { "穀", "view-restore" },
-        layout_tile = { "﬿", "view-grid" },
-        layout_max = { "", "view-fullscreen" },
+        layout_floating       = { "󰕕", "focus-windows" },
+        layout_tile           = { "󰙀", "view-grid" },
+        layout_max            = { "󰄮", "view-fullscreen" },
 
-        menuicon = { "", "view-app-grid" }, -- start-here
-        sidebar_open = { "", "pan-end" }, -- 
-        sidebar_close = { "", "pan-start" },
-        closebutton = { "", "window-close" },
-        newterm = { "樂", "list-add", nil, 8 },
+        menuicon              = { "󰀻", "view-app-grid" }, -- start-here
+        sidebar_open          = { "󰄾", "pan-end" },
+        sidebar_close         = { "󰄽", "pan-start" },
+        closebutton           = { "󰅖", "window-close" },
+        newterm               = { "󰐕", "list-add", nil, 8 },
+        icon_tray_show        = { "󰅃", "pan-up" },
+        icon_tray_hide        = { "󰅀", "pan-down" },
 
-        nerdfont_music = { "", "audio-x-generic" },
-        nerdfont_music_state = { -- state is opposite to action
-            play  = { "", "media-playback-pause" },
-            pause = { "契", "media-playback-start" },
-            stop  = { "栗", "media-playback-stop" },
-        },
-        nerdfont_music_next = { "怜", "media-skip-forward" },
-        nerdfont_music_prev = { "玲", "media-skip-backward" },
-        nerdfont_music_forward = { "淪", "media-seek-forward" },
-        nerdfont_music_backward = { "倫", "media-seek-backward" },
-        nerdfont_music_random_on = { "列", "media-playlist-shuffle" },
-        nerdfont_music_random_off = { "劣", "media-playlist-consecutive" },
-        nerdfont_music_repeat_on = { "凌", "media-playlist-repeat" },
-        nerdfont_music_repeat_one = { "綾", "media-playlist-repeat-one" },
+        icon_music            = { "󰎇", "audio-x-generic" },
+        icon_music_state      = { -- state is opposite to action(in icon name)
+            play              = { "󰏤", "media-playback-pause" },
+            pause             = { "󰐊", "media-playback-start" },
+            stop              = { "󰓛", "media-playback-stop" } },
+        icon_music_next       = { "󰒭", "media-skip-forward" },
+        icon_music_prev       = { "󰒮", "media-skip-backward" },
+        icon_music_forward    = { "󰶻", "media-seek-forward" },
+        icon_music_backward   = { "󰶺", "media-seek-backward" },
+        icon_music_random     = {
+            on                = { "󰒝", "media-playlist-shuffle" },
+            off               = { "󰒞", "media-playlist-consecutive" } },
+        icon_music_repeat     = {
+            on                = { "󰑖", "media-playlist-repeat" },
+            off               = { "󰑘", "media-playlist-repeat-one" } },
 
-        nerdfont_volume_mute = { "ﱝ", "audio-volume-muted" },
-        nerdfont_volume_low = { "奄", "audio-volume-low" },
-        nerdfont_volume_mid = { "奔", "audio-volume-medium" },
-        nerdfont_volume_high = { "墳", "audio-volume-high" },
+        icon_volume_mute      = { "󰝟", "audio-volume-muted" },
+        icon_volume_low       = { "󰕿", "audio-volume-low", 10 },
+        icon_volume_mid       = { "󰖀", "audio-volume-medium", 6 },
+        icon_volume_high      = { "󰕾", "audio-volume-high" },
+        icon_volume_stack     = { "󰕾", "audio-volume-high", color = theme.fg .. "40" },
 
-        nerdfont_brightness = { "", "display-brightness", 8 }, -- ﯦ
-        nerdfont_memory = { "", "", 4 },
-        nerdfont_cpu = { "異", "" }, --   --
+        icon_brightness       = { "󰃟", "display-brightness" },
+        icon_memory           = { "󰍛", "media-floppy" },
+        icon_cpu              = { "󰑣", "utilities-system-monitor" },
+        icon_disk             = { "󰋊", "drive-harddisk" },
 
-        nerdfont_batteries = {
-            { fg(theme.red,    ""), "battery-level-0" },
-            { fg(theme.red,    ""), "battery-level-10" },
-            { fg(theme.yellow, ""), "battery-level-20" },
-            {                  "",  "battery-level-30" },
-            {                  "",  "battery-level-40" },
-            {                  "",  "battery-level-50" },
-            {                  "",  "battery-level-60" },
-            {                  "",  "battery-level-70" },
-            {                  "",  "battery-level-80" },
-            {                  "",  "battery-level-90" },
-            {                  "",  "battery-level-100" },
-        },
-        nerdfont_batteries_charging = {
-            { fg(theme.red,    ""), "battery-level-0-charging"  }, -- 20 icon
-            { fg(theme.red,    ""), "battery-level-10-charging" }, -- 20 icon
-            { fg(theme.yellow, ""), "battery-level-20-charging" },
-            {                  "",  "battery-level-30-charging" },
-            {                  "",  "battery-level-40-charging" }, -- 30 icon
-            {                  "",  "battery-level-50-charging" }, -- 40 icon
-            {                  "",  "battery-level-60-charging" },
-            {                  "",  "battery-level-70-charging" }, -- 60 icon
-            {                  "",  "battery-level-80-charging" },
-            {                  "",  "battery-level-90-charging" },
-            {                  "",  "battery-level-100-charged" },
-        },
-        nerdfont_battery_charging = { "", "battery-charging" },
-        nerdfont_battery_unknown = { "", "battery-missing" },
-        nerdfont_upspeed = { "祝", "go-up" },
-        nerdfont_downspeed = { "", "go-down" },
+        icon_battery          = {{"󰂎", "battery-level-0", color = theme.red },
+                                { "󰁺", "battery-level-10", color = theme.red },
+                                { "󰁻", "battery-level-20", color = theme.yellow },
+                                { "󰁼", "battery-level-30" },
+                                { "󰁽", "battery-level-40" },
+                                { "󰁾", "battery-level-50" },
+                                { "󰁿", "battery-level-60" },
+                                { "󰂀", "battery-level-70" },
+                                { "󰂁", "battery-level-80" },
+                                { "󰂂", "battery-level-90" },
+                                { "󰁹", "battery-level-100" }},
+        icon_battery_charging = {{"󰢟", "battery-level-0-charging", color = theme.red  },
+                                { "󰢜", "battery-level-10-charging", color = theme.red },
+                                { "󰂆", "battery-level-20-charging", color = theme.yellow },
+                                { "󰂇", "battery-level-30-charging" },
+                                { "󰂈", "battery-level-40-charging" },
+                                { "󰢝", "battery-level-50-charging" },
+                                { "󰂉", "battery-level-60-charging" },
+                                { "󰢞", "battery-level-70-charging" },
+                                { "󰂊", "battery-level-80-charging" },
+                                { "󰂋", "battery-level-90-charging" },
+                                { "󰂅", "battery-level-100-charged" }},
+        -- icon_battery_charging = { "󰂄", "battery-charging" },
+        icon_battery_unknown  = { "󰂑", "battery-missing" },
+        icon_upspeed          = { "󰕒", "go-up" },
+        icon_downspeed        = { "󰇚", "go-down" },
 
-        nerdfont_wireless = { "直", "network-wireless", 8 },
-        nerdfont_wireless_off = { fg(theme.fg_normal .. "40", "直", 8),
-                                  "network-wireless-offline" },
-        nerdfont_wired = { "", "network-wired" },
-        nerdfont_wired_off = { fg(theme.fg_normal .. "40", ""),
-                               "network-wired-offline" },
+        icon_wireless_level   = {{"󰤯", "network-wireless-signal-none" },
+                                { "󰤟", "network-wireless-signal-weak" },
+                                { "󰤢", "network-wireless-signal-ok" },
+                                { "󰤥", "network-wireless-signal-good" },
+                                { "󰤨", "network-wireless-signal-excellent" }},
+        icon_wireless         = { "󰤨", "network-wireless" },
+        icon_wireless_off     = { "󰤮", "network-wireless-offline" },
+        icon_wired            = { "󰈀", "network-wired" },
+        icon_wired_off        = { "󰈀", "network-wired-offline", color = theme.fg .. "40" },
 
-        nerdfont_email_unread = { "", "mail-unread", 4 },
-        nerdfont_email_read = { "", "mail-read", 4 },
-        nerdfont_browser  = { "爵", "web-browser" },
-        nerdfont_terminal = { "", "utilities-terminal" },
-        nerdfont_book     = { "", "accessories-text-editor" },
-        nerdfont_work     = { "ﲂ", "applications-science" },
-        nerdfont_files    = { "", "folder" }, -- 
-        nerdfont_movie    = { "ﱘ", "applications-multimedia" },
-        nerdfont_email    = { "", "mail-unread" },
+        icon_email_unread     = { "󰇮", "mail-unread" },
+        icon_email_read       = { "󰇰", "mail-read" },
+        icon_email_sync       = { "󱋈", "mail-read" },
+
+        icon_cal_prev_year    = { "󰄽", "pan-start" },
+        icon_cal_next_year    = { "󰄾", "pan-end" },
+        icon_cal_prev_month   = { "󰅁", "pan-start" },
+        icon_cal_next_month   = { "󰅂", "pan-end" },
+
+        -- possibly for tag icons
+        icon_browser          = { "󰈹", "web-browser" },
+        icon_terminal         = { "󰲌", "utilities-terminal" },
+        icon_book             = { "󰷉", "accessories-text-editor" },
+        icon_work             = { "󰂖", "applications-science" },
+        icon_files            = { "󰉖", "folder" },
+        icon_movie            = { "󰝚", "applications-multimedia" },
+        icon_email            = { "󰇰", "mail-unread" },
     },
     theme
 )
 
+-- use theme.iconname since they are added to theme table just now
 theme.tag_icons = {
-    theme.nerdfont_terminal,
-    theme.nerdfont_browser,
-    theme.nerdfont_book,
-    theme.nerdfont_work,
-    theme.nerdfont_files,
-    theme.nerdfont_movie,
-    theme.nerdfont_email,
-    theme.nerdfont_terminal,
-    theme.nerdfont_terminal
+    theme.icon_terminal,
+    theme.icon_browser,
+    theme.icon_book,
+    theme.icon_work,
+    theme.icon_files,
+    theme.icon_movie,
+    theme.icon_email,
+    theme.icon_terminal,
+    theme.icon_terminal
 }
--- Icon theme
-theme.icon_theme = config.icon_theme
--- Icon size
-awesome.set_preferred_icon_size(theme.preferred_icon_size)
 -- }}}
 
--- Titlebar buttons {{{
+-- Titlebar {{{
+theme.titlebar_bg           = theme.fg_normal
+theme.titlebar_fg           = theme.bg_normal
 theme.titlebar_font = theme.fontname .. " 12"
 theme.titlebar_height = dpi(32)
 
@@ -313,12 +326,12 @@ local function button(color)
 end
 
 local button_colors = {
-    close = theme.red,
+    close     = theme.red,
     maximized = theme.green,
-    minimize = theme.yellow,
-    ontop = theme.blue,
-    sticky = theme.purple,
-    floating = theme.cyan
+    minimize  = theme.yellow,
+    ontop     = theme.blue,
+    sticky    = theme.purple,
+    floating  = theme.cyan
 }
 
 -- naming: titlebar_<name>_button_(focos|normal)_(active|inactive)[_(hover|press)]
@@ -334,9 +347,9 @@ for b, c in pairs(button_colors) do
                     elseif h == "_press" then
                         theme[button_name] = button(c .. "E8")
                     elseif f == "normal" then
-                        theme[button_name] = button(theme.bg_focus)
+                        theme[button_name] = button(theme.titlebar_fg .. "40")
                     elseif a == "_inactive" then
-                        theme[button_name] = button(theme.bg_focus)
+                        theme[button_name] = button(theme.titlebar_fg .. "40")
                     else
                         theme[button_name] = button(c .. "D0")
                     end

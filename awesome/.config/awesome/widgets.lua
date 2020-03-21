@@ -1,8 +1,8 @@
+-- luacheck: globals mouse
 -- libraries {{{
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local naughty = require("naughty")
 local beautiful = require("beautiful")
 -- my local config file
 local config = require("config")
@@ -10,6 +10,10 @@ local modkey = config.modkey
 -- }}}
 
 -- helper function {{{
+local function fontfg(fn, color, text)
+    return string.format("<span font='%s' foreground='%s'>%s</span>", fn, color, text)
+end
+
 local function font(fn, text)
     return string.format("<span font='%s'>%s</span>", fn, text)
 end
@@ -29,34 +33,50 @@ end
 -- }}}
 
 -- font/image buttons {{{
-local function icon_button(icon, use_font)
-    if use_font == nil then
-        use_font = config.use_font_icon
+local function icon_button(icon, args)
+    args = args or {}
+    local use_font = args.use_font or config.use_font_icon
+
+    local function check_icon(i)
+        if type(i) == "table" then
+            return i
+        elseif type(i) == "string" then
+            if i:find("^/") then
+                use_font = false
+                return { nil, i }
+            else
+                use_font = true
+                return { i, nil }
+            end
+        else
+            return { nil, nil }
+        end
     end
-    -- TODO: less compromise
-    if type(icon) == "string" and not icon:find("^/") then
-        use_font = true
-    end
-    local c, image, button, margin
+
+    icon = check_icon(icon)
+
+    local c, image, button, margin, color
     if use_font then
-        c = type(icon) == "table" and icon[1] or icon
-        margin = type(icon) == "table" and icon[3] or 0
+        c = icon[1]
+        margin = icon[3] or 0
+        color = icon.color or beautiful.fg
         button = wibox.widget {
             {
                 id = "text_role",
                 align = "center",
                 valign = "center",
-                markup = c and font(beautiful.fontname .. " 20", c) or nil,
+                markup = c and fontfg(config.icon_font .. " 20", color, c) or nil,
                 widget = wibox.widget.textbox,
             },
             right = margin,
+            buttons = args.buttons,
             forced_width = beautiful.wibox_height,
             forced_height = beautiful.wibox_height,
             widget = wibox.container.margin
         }
     else
-        image = type(icon) == "table" and icon[2] or icon
-        margin = type(icon) == "table" and icon[4] or 0
+        image = icon[2]
+        margin = icon[4] or 0
         button = wibox.widget {
             {
                 id = "image_role",
@@ -64,20 +84,25 @@ local function icon_button(icon, use_font)
                 widget = wibox.widget.imagebox,
             },
             margins = beautiful.button_imagemargin + margin,
+            buttons = args.buttons,
+            forced_width = beautiful.wibox_height,
+            forced_height = beautiful.wibox_height,
             widget = wibox.container.margin,
         }
     end
     function button:set_icon(newicon)
+        newicon = check_icon(newicon)
         if use_font then
-            c = type(newicon) == "table" and newicon[1] or newicon
+            c = newicon[1]
+            color = newicon.color or beautiful.fg
             local textbox = self:get_children_by_id("text_role")[1]
-            textbox:set_markup(font(beautiful.fontname .. " 20", c))
-            self.right = (type(newicon) == "table" and newicon[3] or 0)
+            textbox:set_markup(fontfg(config.icon_font .. " 20", color, c))
+            self.right = newicon[3] or 0
         else
-            image = type(newicon) == "table" and newicon[2] or newicon
+            image = newicon[2]
             local imagebox = self:get_children_by_id("image_role")[1]
             imagebox:set_image(image)
-            self.margins = (type(newicon) == "table" and newicon[4] or 0) + beautiful.button_imagemargin
+            self.margins = (newicon[4] or 0) + beautiful.button_imagemargin
         end
     end
     return button
@@ -85,264 +110,282 @@ end
 -- }}}
 
 -- alsa {{{
-local volume_channel = config.alsa_channel
+local function alsa()
+    local volume_color_unmuted = beautiful.fg_normal
+    local volume_color_muted = beautiful.grey
+    local volume_text = wibox.widget.textbox()
+    local volume_icon = icon_button()
+    local volume_slider =  wibox.widget.slider()
 
-local volume_color_unmuted = beautiful.slider_handle_color
-local volume_color_muted = beautiful.grey
-local volume_text = wibox.widget.textbox()
-local volume = icon_button()
-local volume_slider = wibox.widget {
-    forced_height = 32,
-    widget = wibox.widget.slider,
-}
-
-local function volume_update(t)
-    local stat_icon
-    if volume_slider.handle_color == volume_color_muted then
-        stat_icon = beautiful.nerdfont_volume_mute
-    elseif volume_slider.value > 50 then
-        stat_icon = beautiful.nerdfont_volume_high
-    elseif volume_slider.value > 20 then
-        stat_icon = beautiful.nerdfont_volume_mid
-    else
-        stat_icon = beautiful.nerdfont_volume_low
+    local function volume_update(t)
+        local stat_icon
+        if volume_slider.handle_color == volume_color_muted then
+            stat_icon = beautiful.icon_volume_mute
+        elseif volume_slider.value > 50 then
+            stat_icon = beautiful.icon_volume_high
+        elseif volume_slider.value > 20 then
+            stat_icon = beautiful.icon_volume_mid
+        else
+            stat_icon = beautiful.icon_volume_low
+        end
+        volume_icon:set_icon(stat_icon)
+        volume_text:set_text(string.format("%3.0f%%", volume_slider.value))
+        -- NOTE: these two must be seperated otherwise the time lag between the two signal
+        -- calls and awful spawn calls therein can cause some troubles.
+        if t == "level" then
+            awful.spawn(string.format("amixer -q set %s %f%%",
+                                      config.alsa_channel,
+                                      volume_slider.value), false)
+        elseif t == "stat" then
+            awful.spawn(string.format("amixer -q set %s %s",
+                                      config.alsa_channel,
+                                      volume_slider.handle_color == volume_color_muted and "mute" or "unmute"), false)
+        end
     end
-    volume:set_icon(stat_icon)
-    volume_text:set_text(string.format("%3.0f%%", volume_slider.value))
-    -- NOTE: these two must be seperated otherwise the time lag between the two signal
-    -- calls and awful spawn calls therein can cause some troubles.
-    if t == "level" then
-        awful.spawn(string.format("amixer -q set %s %f%%",
-                                  volume_channel,
-                                  volume_slider.value), false)
-    elseif t == "stat" then
-        awful.spawn(string.format("amixer -q set %s %s",
-                                  volume_channel,
-                                  volume_slider.handle_color == volume_color_muted and
-                                                                "mute" or "unmute"), false)
+    local volume_upd = gears.timer({
+        timeout = 5,
+        autostart = true,
+        callback = function ()
+            awful.spawn.easy_async_with_shell("vol -s; vol",
+                function(stdout)
+                    local stat, vol = string.match(stdout, "(%d)\n(%d+)")
+                    volume_slider.value = tonumber(vol)
+                    volume_slider.handle_color = stat ~= "0" and
+                                                 volume_color_unmuted or
+                                                 volume_color_muted
+                end
+            )
+        end
+    })
+    volume_upd:emit_signal("timeout")
+
+    -- interacting with the slider only, then change the system volume in signals
+    local function volume_toggle()
+        volume_slider.handle_color = volume_slider.handle_color == volume_color_muted and
+                                     volume_color_unmuted or volume_color_muted
     end
-end
-local volume_upd = gears.timer({
-    timeout = 5,
-    autostart = true,
-    callback = function ()
-        awful.spawn.easy_async_with_shell("vol -s; vol",
-            function(stdout)
-                local stat, vol = string.match(stdout, "(%d)\n(%d+)")
-                volume_slider.value = tonumber(vol)
-                volume_slider.handle_color = stat ~= "0" and
-                                             volume_color_unmuted or
-                                             volume_color_muted
-            end
-        )
+    local function volume_up()
+        volume_slider.value = volume_slider.value + 2
     end
-})
-volume_upd:emit_signal("timeout")
+    local function volume_down()
+        volume_slider.value = volume_slider.value - 2
+    end
+    volume_slider:connect_signal('property::value', function() volume_update("level") end)
+    volume_slider:connect_signal('property::handle_color', function() volume_update("stat") end)
 
--- interacting with the slider only, then change the system volume in signals
-local function volume_toggle()
-    volume_slider.handle_color = volume_slider.handle_color == volume_color_muted and
-                                 volume_color_unmuted or volume_color_muted
-end
-local function volume_up()
-    volume_slider.value = volume_slider.value + 2
-end
-local function volume_down()
-    volume_slider.value = volume_slider.value - 2
-end
-volume_slider:connect_signal('property::value', function() volume_update("level") end)
-volume_slider:connect_signal('property::handle_color', function() volume_update("stat") end)
+    -- button bindings
+    volume_icon:buttons({
+        awful.button({}, 1, volume_toggle),
+        awful.button({}, 3, function()          -- right click
+            awful.spawn(config.terminal_run("alsamixer"))
+        end),
+    })
+    local volume_stack_icon = wibox.widget {
+        volume_icon,
+        icon_button(beautiful.icon_volume_stack),
+        layout = wibox.layout.stack
+    }
 
--- button bindings
-volume:buttons(awful.util.table.join(
-    awful.button({}, 1, volume_toggle)
-))
-
-local alsa = wibox.widget {
-    clickable(volume),
-    volume_text,
-    layout = wibox.layout.fixed.horizontal
-}
-alsa:buttons(awful.util.table.join(
-    awful.button({}, 3, function()          -- right click
-        awful.spawn(config.terminal_cmd("alsamixer"))
-    end),
-    awful.button({}, 4, volume_up),         -- scroll up
-    awful.button({}, 5, volume_down)        -- scroll down
-))
-awful.keyboard.append_global_keybindings({
-    awful.key({}, "XF86AudioMute", volume_toggle,
-              {description = "toggle mute", group = "Media"}),
-    awful.key({}, "XF86AudioRaiseVolume", volume_up,
-              {description = "volume up", group = "Media"}),
-    awful.key({}, "XF86AudioLowerVolume", volume_down,
-              {description = "volume down", group = "Media"}),
-    awful.key({ modkey }, "\\", volume_toggle,
-              {description = "toggle mute", group = "Media"}),
-    awful.key({ modkey }, "]", volume_up,
-              {description = "volume up", group = "Media"}),
-    awful.key({ modkey }, "[", volume_down,
-              {description = "volume down", group = "Media"}),
-})
+    local alsa_widget = wibox.widget {
+        clickable(config.use_font_icon and volume_stack_icon or volume_icon),
+        volume_text,
+        clickable(volume_slider),
+        forced_height = beautiful.wibox_height,
+        layout = wibox.layout.fixed.horizontal
+    }
+    alsa_widget.indicator =
+        clickable(config.use_font_icon and volume_stack_icon or volume_icon)
+    alsa_widget:buttons({
+        awful.button({}, 4, volume_up),         -- scroll up
+        awful.button({}, 5, volume_down)        -- scroll down
+    })
+    awful.keyboard.append_global_keybindings({
+        awful.key({}, "XF86AudioMute", volume_toggle,
+                  {description = "toggle mute", group = "Media"}),
+        awful.key({}, "XF86AudioRaiseVolume", volume_up,
+                  {description = "volume up", group = "Media"}),
+        awful.key({}, "XF86AudioLowerVolume", volume_down,
+                  {description = "volume down", group = "Media"}),
+        awful.key({ modkey }, "\\", volume_toggle,
+                  {description = "toggle mute", group = "Media"}),
+        awful.key({ modkey }, "]", volume_up,
+                  {description = "volume up", group = "Media"}),
+        awful.key({ modkey }, "[", volume_down,
+                  {description = "volume down", group = "Media"}),
+    })
+    return alsa_widget
+end
 -- }}}
 
 -- brightness {{{
--- Note: using percentage format in `light` command will cause problematic feedbacks.
--- That is, when the accuracy of the controller is not exactly 1%, you will not be
--- setting the value to exact x% by simply `light -S x`.
--- The loss is due to the precision when switching between percentage and raw format.
-local light_text = wibox.widget.textbox()
-local light_slider = wibox.widget {
-    forced_height = 32,
-    widget              = wibox.widget.slider,
-}
--- modify the slider's maximum value to the estimated maximum raw value
-awful.spawn.easy_async_with_shell("light -G; light -Gr; light -Pr",
-    function(stdout)
-        local perc, raw, min = string.match(stdout, "(%d*%.?%d+)\n(%d+)\n(%d+)")
-        -- calculate the maximum raw level (0.5 is for rounding the result)
-        if tonumber(raw) > 0 then
-            light_slider.maximum = math.floor(raw * 100 / perc + 0.5)
+local function light()
+    -- Note: using percentage format in `light` command will cause problematic feedbacks.
+    -- That is, when the accuracy of the controller is not exactly 1%, you will not be
+    -- setting the value to exact x% by simply `light -S x`.
+    -- The loss is due to the precision when switching between percentage and raw format.
+    local light_text = wibox.widget.textbox()
+    local light_slider = wibox.widget.slider()
+    local light_icon = icon_button(beautiful.icon_brightness)
+
+    -- modify the slider's maximum value to the estimated maximum raw value
+    awful.spawn.easy_async_with_shell("light -G; light -Gr; light -Pr",
+        function(stdout)
+            local perc, raw, min = string.match(stdout, "(%d*%.?%d+)\n(%d+)\n(%d+)")
+            -- calculate the maximum raw level (0.5 is for rounding the result)
+            if tonumber(raw) > 0 then
+                light_slider.maximum = math.floor(raw * 100 / perc + 0.5)
+            end
+            light_slider.minimum = tonumber(min)
+            light_slider.value = tonumber(raw)
+            light_text:set_text(string.format("%3.0f%%", perc))
         end
-        light_slider.minimum = tonumber(min)
-        light_slider.value = tonumber(raw)
-        light_text:set_text(string.format("%3.0f%%", perc))
+    )
+    -- light commands
+    local function brightness_down()
+        light_slider.value = light_slider.value - 10
     end
-)
--- light commands
-local function brightness_down()
-    light_slider.value = light_slider.value - 10
-end
-local function brightness_up()
-    light_slider.value = light_slider.value + 10
-end
-local function brightness_set()
-    awful.spawn(string.format("light -Sr %f", light_slider.value), false)
-    light_text:set_text(string.format("%3.0f%%", 100 * light_slider.value / light_slider.maximum))
-end
-
-local backlight = gears.timer {
-    timeout   = 5,
-    autostart = true,
-    callback  = function()
-        awful.spawn.easy_async_with_shell("light -Gr",
-            function(stdout) light_slider.value = tonumber(stdout) end
-        )
+    local function brightness_up()
+        light_slider.value = light_slider.value + 10
     end
-}
+    local function brightness_set()
+        awful.spawn(string.format("light -Sr %f", light_slider.value), false)
+        light_text:set_text(string.format("%3.0f%%", 100 * light_slider.value / light_slider.maximum))
+    end
 
-light_slider:connect_signal('property::value', brightness_set)
+    local backlight = gears.timer {
+        timeout   = 5,
+        autostart = true,
+        callback  = function()
+            awful.spawn.easy_async_with_shell("light -Gr",
+                function(stdout) light_slider.value = tonumber(stdout) end
+            )
+        end
+    }
 
--- TODO: offset
-local light_icon = icon_button(beautiful.nerdfont_brightness)
+    light_slider:connect_signal('property::value', brightness_set)
+    backlight:emit_signal("timeout")
 
-local light = wibox.widget {
-    clickable(light_icon),
-    light_text,
-    layout = wibox.layout.fixed.horizontal
-}
+    -- bindings
+    awful.keyboard.append_global_keybindings({
+        awful.key({}, "XF86MonBrightnessDown", brightness_down,
+                  {description = "brightness down", group = "Media"}),
+        awful.key({}, "XF86MonBrightnessUp", brightness_up,
+                  {description = "brightness up", group = "Media"}),
+        awful.key({ modkey }, "-", brightness_down,
+                  {description = "brightness down", group = "Media"}),
+        awful.key({ modkey }, "=", brightness_up,
+                  {description = "brightness up", group = "Media"}),
+    })
 
-backlight:emit_signal("timeout")
--- bindings
-light:buttons(awful.util.table.join(
-    awful.button({}, 5, brightness_down),
-    awful.button({}, 4, brightness_up)
-))
-awful.keyboard.append_global_keybindings({
-    awful.key({}, "XF86MonBrightnessDown", brightness_down,
-              {description = "brightness down", group = "Media"}),
-    awful.key({}, "XF86MonBrightnessUp", brightness_up,
-              {description = "brightness up", group = "Media"}),
-    awful.key({ modkey }, "-", brightness_down,
-              {description = "brightness down", group = "Media"}),
-    awful.key({ modkey }, "=", brightness_up,
-              {description = "brightness up", group = "Media"}),
-})
+    local light_widget = wibox.widget{
+        clickable(light_icon),
+        light_text,
+        clickable(light_slider),
+        forced_height = beautiful.wibox_height,
+        layout = wibox.layout.fixed.horizontal,
+    }
+    light_widget:buttons(awful.util.table.join(
+        awful.button({}, 5, brightness_down),
+        awful.button({}, 4, brightness_up)
+    ))
+    light_widget.indicator = clickable(light_icon)
+    light_widget.indicator:buttons(awful.util.table.join(
+        awful.button({}, 5, brightness_down),
+        awful.button({}, 4, brightness_up)
+    ))
+
+    return light_widget
+end
 -- }}}
 
 -- battery {{{
-local bat_icon = icon_button()
-local bat_text = wibox.widget.textbox()
-local bat = gears.timer({
-    timeout = 3,
-    autostart = true,
-    callback = function()
-        awful.spawn.easy_async_with_shell("battery; ac",
-            function(stdout)
-                local level, state = string.match(stdout, "(%d+)\n(%d)")
-                local  stat_icon
-                level = tonumber(level)
-                if state == "1" then
-                    stat_icon = beautiful.nerdfont_batteries_charging[(level + 4) // 10 + 1]
-                else
-                    stat_icon = beautiful.nerdfont_batteries[(level + 4) // 10 + 1]
+local function battery()
+    local bat_icon = icon_button()
+    local bat_text = wibox.widget.textbox()
+    local bat_bar = wibox.widget.progressbar()
+    local bat = gears.timer({
+        timeout = 3,
+        autostart = true,
+        callback = function()
+            awful.spawn.easy_async_with_shell("battery; ac",
+                function(stdout)
+                    local level, state = string.match(stdout, "(%d+)\n(%d)")
+                    local  stat_icon
+                    level = tonumber(level)
+                    if state == "1" then
+                        stat_icon = beautiful.icon_battery_charging[(level + 4) // 10 + 1]
+                    else
+                        stat_icon = beautiful.icon_battery[(level + 4) // 10 + 1]
+                    end
+                    bat_text:set_text(tostring(level) .. "%")
+                    bat_icon:set_icon(stat_icon)
+                    bat_bar.value = level / 100.0
                 end
-                bat_text:set_text(tostring(level) .. "%")
-                bat_icon:set_icon(stat_icon)
-            end
-        )
-    end
-})
-bat:emit_signal("timeout")
+            )
+        end
+    })
+    bat:emit_signal("timeout")
+    local bat_widget = wibox.widget {
+        clickable(bat_icon),
+        bat_text,
+        bat_bar,
+        forced_height = beautiful.wibox_height,
+        layout = wibox.layout.fixed.horizontal
+    }
+    bat_widget.indicator = clickable(bat_icon)
+    return bat_widget
+end
 -- }}}
 
 -- cpu {{{
 local function cpu()
-    local cpu_icon = icon_button(nil, true)
+    local cpu_icon = icon_button()
     local cpu_text = wibox.widget.textbox()
-    local cpu_bar = wibox.widget {
-        forced_height = 32,
-        widget = wibox.widget.progressbar,
-    }
+    local cpu_bar = wibox.widget.progressbar()
     local cpu_upd = gears.timer {
         timeout   = 3,
         autostart = true,
         callback  = function()
             awful.spawn.easy_async_with_shell("cpu",
                 function(stdout)
-                    cpu_icon:set_icon(beautiful.nerdfont_cpu)
-                    cpu_text:set_text(string.format("%2.0f%%", tonumber(stdout)))
+                    cpu_icon:set_icon(beautiful.icon_cpu)
+                    cpu_text:set_text(string.format("%3.0f%%", tonumber(stdout)))
                     cpu_bar.value = tonumber(stdout) / 100
                 end
             )
         end
     }
-    cpu_upd:emit_signal("timeout")
-    cpu_text:buttons(awful.util.table.join(
+    cpu_icon:buttons(awful.util.table.join(
         awful.button({}, 3, function()
-            awful.spawn(config.terminal_cmd("htop -s PERCENT_CPU"))
+            awful.spawn(config.terminal_run("htop -s PERCENT_CPU"))
         end)
     ))
-    return {
+    cpu_upd:emit_signal("timeout")
+    local cpu_widget = wibox.widget {
         clickable(cpu_icon),
         cpu_text,
-        {
-            cpu_bar,
-            margins = 8,
-            layout = wibox.container.margin
-        },
+        cpu_bar,
+        forced_height = beautiful.wibox_height,
         layout = wibox.layout.fixed.horizontal
     }
+    return cpu_widget
 end
 -- }}}
 
 -- memory {{{
 local function memory()
-    local mem_icon = icon_button(nil, true)
+    local mem_icon = icon_button()
     local mem_text = wibox.widget.textbox()
-    local mem_bar = wibox.widget {
-        forced_height = 32,
-        widget = wibox.widget.progressbar,
-    }
+    local mem_bar = wibox.widget.progressbar()
     local mem_upd = gears.timer {
         timeout   = 3,
         autostart = true,
         callback  = function()
             awful.spawn.easy_async_with_shell("mem -u; mem -Bu; mem -Bt",
                 function(stdout)
-                    local u, ub, tb = string.match(stdout, "([^\n]+)\n(%d+)\n(%d+)")
-                    mem_icon:set_icon(beautiful.nerdfont_memory)
-                    mem_text:set_text(u)
+                    local _, ub, tb = string.match(stdout, "([^\n]+)\n(%d+)\n(%d+)")
+                    mem_icon:set_icon(beautiful.icon_memory)
+                    mem_text:set_text(string.format("%3.0f%%", tonumber(ub) / tonumber(tb) * 100))
                     mem_bar.value = tonumber(ub) / tonumber(tb)
                 end
             )
@@ -351,38 +394,38 @@ local function memory()
     mem_upd:emit_signal("timeout")
     mem_icon:buttons(awful.util.table.join(
         awful.button({}, 3, function()
-            awful.spawn(config.terminal_cmd("htop -s PERCENT_MEM"))
+            awful.spawn(config.terminal_run("htop -s PERCENT_MEM"))
         end)
     ))
-    return {
+    local mem_widget = wibox.widget {
         clickable(mem_icon),
         mem_text,
-        {
-            mem_bar,
-            margins = 8,
-            layout = wibox.container.margin
-        },
+        mem_bar,
+        forced_height = beautiful.wibox_height,
         layout = wibox.layout.fixed.horizontal
     }
+    return mem_widget
 end
 -- }}}
 
 -- {{{ mail
-local function imap(email)
+local function imap_each(email)
     local imap_icon = icon_button()
     local imap_count = wibox.widget.textbox()
 
     local imap_upd = gears.timer {
-        timeout   = 60,
+        timeout   = 120,
         autostart = true,
         callback  = function()
             awful.spawn.easy_async(string.format("imap %s", email),
                 function(stdout)
                     local count = string.match(stdout, "(%d+)")
-                    if count == "0" or count == nil then
-                        imap_icon:set_icon(beautiful.nerdfont_email_read)
+                    if count == nil then
+                        imap_icon:set_icon(beautiful.icon_email_sync)
+                    elseif count == "0" then
+                        imap_icon:set_icon(beautiful.icon_email_read)
                     else
-                        imap_icon:set_icon(beautiful.nerdfont_email_unread)
+                        imap_icon:set_icon(beautiful.icon_email_unread)
                     end
                     imap_count:set_text(count or "")
                 end
@@ -393,7 +436,7 @@ local function imap(email)
     imap_upd:emit_signal("timeout")
     imap_icon:buttons(awful.util.table.join(
         awful.button({}, 3, function()
-            awful.spawn(config.terminal_cmd(
+            awful.spawn(config.terminal_run(
                 string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
                               config.mutt, config.mutt, email)
             ))
@@ -405,65 +448,83 @@ local function imap(email)
         layout = wibox.layout.fixed.horizontal
     }
 end
+local function imap()
+    local imap_widget = {}
+    imap_widget.indicator= wibox.widget{
+        spacing = 16,
+        layout = wibox.layout.fixed.horizontal
+    }
+    for _, email in pairs(config.imap_emails) do
+        imap_widget.indicator:add(imap_each(email))
+    end
+    return imap_widget
+end
 -- }}}
 
 -- network {{{
-local net_status = icon_button()
-local net_speed = wibox.widget.textbox()
--- format network speed
-local function format_netspeed(raw_speed)
-    -- use 1000 here to keep under 3-digits
-    local speed, speed_unit, speed_str
+local function network()
+    local net_icon = icon_button()
+    local net_speed = wibox.widget.textbox()
+    -- format network speed
+    local function format_netspeed(raw_speed)
+        -- use 1000 here to keep under 3-digits
+        local speed, speed_unit, speed_str
 
-    if raw_speed < 1000 * 1000 then
-        speed = raw_speed / 1000
-        speed_unit = "KB/s"
-    else
-        speed = raw_speed / 1000 / 1000
-        speed_unit = "MB/s"
+        if raw_speed < 1000 * 1000 then
+            speed = raw_speed / 1000
+            speed_unit = "KB/s"
+        else
+            speed = raw_speed / 1000 / 1000
+            speed_unit = "MB/s"
+        end
+
+        if speed < 10 then
+            speed_str = string.format("%3.1f", speed)
+        else
+            speed_str = string.format("%3.0f", speed)
+        end
+
+        return speed_str .. ' ' .. speed_unit
     end
 
-    if speed < 10 then
-        speed_str = string.format("%3.1f", speed)
-    else
-        speed_str = string.format("%3.0f", speed)
-    end
-
-    return speed_str .. ' ' .. speed_unit
-end
-
-local net_upd = gears.timer {
-    timeout   = 3,
-    autostart = true,
-    callback  = function()
-        awful.spawn.easy_async_with_shell(
-            "network -e; network -w; network -es; network -ws",
-            function(stdout)
-                local e, w, ed, eu, wd, wu = string.match(stdout, "(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)")
-                local upspeed = tonumber(eu) + tonumber(wu)
-                local downspeed = tonumber(ed) + tonumber(wd)
-                if w == "1" then
-                    net_status:set_icon(beautiful.nerdfont_wireless)
-                elseif e == "1" then
-                    net_status:set_icon(beautiful.nerdfont_wired)
-                else
-                    net_status:set_icon(beautiful.nerdfont_wireless_off)
+    local net_upd = gears.timer {
+        timeout   = 3,
+        autostart = true,
+        callback  = function()
+            awful.spawn.easy_async_with_shell(
+                "network -e; network -w; network -es; network -ws",
+                function(stdout)
+                    local e, w, ed, eu, wd, wu = string.match(stdout, "(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)")
+                    local upspeed = tonumber(eu) + tonumber(wu)
+                    local downspeed = tonumber(ed) + tonumber(wd)
+                    if w == "1" then
+                        net_icon:set_icon(beautiful.icon_wireless)
+                    elseif e == "1" then
+                        net_icon:set_icon(beautiful.icon_wired)
+                    else
+                        net_icon:set_icon(beautiful.icon_wireless_off)
+                    end
+                    net_speed:set_text(
+                        string.format("祝 %s\n %s", format_netspeed(upspeed), format_netspeed(downspeed))
+                    )
                 end
-                net_speed:set_text(
-                    string.format("祝 %s  %s", format_netspeed(upspeed), format_netspeed(downspeed))
-                )
-            end
-        )
-    end
-}
-net_upd:emit_signal("timeout")
+            )
+        end
+    }
+    net_upd:emit_signal("timeout")
 
-net_speed.visible = false  -- default to invisible
-
-net_status:buttons(awful.util.table.join(
-    awful.button({}, 1, function() net_speed.visible = not net_speed.visible end),
-    awful.button({}, 3, function() awful.spawn(config.terminal_cmd("nmtui-connect")) end)
-))
+    net_icon:buttons(awful.util.table.join(
+        awful.button({}, 1, function() awful.spawn(config.terminal_run("nmtui-connect")) end)
+    ))
+    local network_widget = wibox.widget {
+        clickable(net_icon),
+        net_speed,
+        forced_height = beautiful.wibox_height,
+        layout = wibox.layout.fixed.horizontal,
+    }
+    network_widget.indicator = clickable(net_icon)
+    return network_widget
+end
 -- }}}
 
 -- mpd {{{
@@ -482,17 +543,14 @@ local function mpd()
         end
     end
     local mpd_info = wibox.widget.textbox()
-    local mpd_slider = wibox.widget {
-        forced_height = 32,
-        widget = wibox.widget.slider,
-    }
-    local mpd_icon = icon_button(beautiful.nerdfont_music)
-    local mpd_stop = icon_button(beautiful.nerdfont_music_state["stop"])
-    local mpd_play = icon_button(beautiful.nerdfont_music_state["pause"])
-    local mpd_prev = icon_button(beautiful.nerdfont_music_prev)
-    local mpd_next = icon_button(beautiful.nerdfont_music_next)
-    local mpd_repeat = icon_button(beautiful.nerdfont_music_repeat_on)
-    local mpd_random = icon_button(beautiful.nerdfont_music_random_on)
+    local mpd_slider = wibox.widget.slider()
+    local mpd_icon = icon_button(beautiful.icon_music)
+    local mpd_stop = icon_button(beautiful.icon_music_state["stop"])
+    local mpd_play = icon_button(beautiful.icon_music_state["pause"])
+    local mpd_prev = icon_button(beautiful.icon_music_prev)
+    local mpd_next = icon_button(beautiful.icon_music_next)
+    local mpd_repeat = icon_button(beautiful.icon_music_repeat_on)
+    local mpd_random = icon_button(beautiful.icon_music_random_on)
     local mpd_time = wibox.widget.textbox()
     local mpd_seek = function()
         awful.spawn(string.format("mpc -q seek %f%%", mpd_slider.value))
@@ -504,7 +562,7 @@ local function mpd()
         callback = function()
             awful.spawn.easy_async_with_shell(
                 "printf \"status\\ncurrentsong\\nclose\\n\" | curl telnet://" .. config.mpd_host,
-                function(stdout)
+                function(stdout, _)
                     -- mpd_now (possible) available keys:
                     -- (status result)
                     -- volume repeat random single consume playlist playlistlength
@@ -512,6 +570,7 @@ local function mpd()
                     -- (currentsong result)
                     -- file artist albumartist title album track date genre time duration pos id
                     mpd_now = {}
+                    -- Put whatever key-value pair mpd gives into the table
                     for k, v in string.gmatch(stdout, "(%w+):%s*([^\n]+)") do
                         mpd_now[k:lower()] = v
                     end
@@ -528,7 +587,7 @@ local function mpd()
                         mpd_now.title
                     )))
                     -- state
-                    mpd_play:set_icon(beautiful.nerdfont_music_state[mpd_now.state or "pause"])
+                    mpd_play:set_icon(beautiful.icon_music_state[mpd_now.state or "pause"])
                     -- time slider
                     mpd_slider:disconnect_signal("property::value", mpd_seek)
                     if mpd_now.state == "play" or mpd_now.state == "pause" then
@@ -541,17 +600,9 @@ local function mpd()
                     mpd_time.text = fmt_time(mpd_now.elapsed) .. "/" .. fmt_time(mpd_now.duration)
                     -- repeat mode
                     local repeat_icon, random_icon
-                    if mpd_now.single ~= "0" then
-                        repeat_icon = beautiful.nerdfont_music_repeat_one
-                    else
-                        repeat_icon = beautiful.nerdfont_music_repeat_on
-                    end
+                    repeat_icon = beautiful.icon_music_repeat[mpd_now.single ~= "0" and "off" or "on"]
                     mpd_repeat:set_icon(repeat_icon)
-                    if mpd_now.random ~= "0" then
-                        random_icon = beautiful.nerdfont_music_random_on
-                    else
-                        random_icon = beautiful.nerdfont_music_random_off
-                    end
+                    random_icon = beautiful.icon_music_random[mpd_now.random == "0" and "off" or "on"]
                     mpd_random:set_icon(random_icon)
                 end
             )
@@ -572,7 +623,7 @@ local function mpd()
     local mpc_single = mpc_spawn_update("mpc -q single")
     local mpc_random = mpc_spawn_update("mpc -q random")
     local mpd_launch_client = function()
-        awful.spawn(config.terminal_cmd("ncmpcpp"))
+        awful.spawn(config.terminal_run("ncmpcpp"))
     end
     mpd_icon  :buttons(awful.util.table.join(awful.button({}, 1, mpd_launch_client)))
     mpd_stop  :buttons(awful.util.table.join(awful.button({}, 1, mpc_stop)))
@@ -622,13 +673,103 @@ local function mpd()
 end
 -- }}}
 
--- clock {{{
-local textclock = wibox.widget {
-    align = "center",
-    format = font(beautiful.fontname .. " 11", "%b\n%d\n%a\n\n") ..
-             font(beautiful.fontname .. " Bold 14", "%H\n%M"),
-    widget = wibox.widget.textclock
-}
+-- textclock {{{
+local function datetime()
+    local clock = wibox.widget {
+        align = "center",
+        format = font(beautiful.fontname .. " 11", "%b\n%d\n%a\n\n") ..
+                 font(beautiful.fontname .. " Bold 14", "%H\n%M"),
+        widget = wibox.widget.textclock
+    }
+    local month_offset = 0
+    local year_offset = 0
+    local calendar_textbox = wibox.widget {
+        align = "center",
+        valign = "center",
+        font = beautiful.fontname .. " 16",
+        widget = wibox.widget.textbox
+    }
+    local function calendar_update(e)
+        if e == "0" or e == nil then
+            year_offset = 0
+            month_offset = 0
+        elseif e == "+m" then
+            month_offset = month_offset + 1
+        elseif e == "-m" then
+            month_offset = month_offset - 1
+        elseif e == "+y" then
+            year_offset = year_offset + 1
+        elseif e == "-y" then
+            year_offset = year_offset - 1
+        end
+        awful.spawn.easy_async_with_shell(
+            string.format("date -d \"%d month %d year\" +\"%%m %%Y\" | xargs cal",
+                          month_offset, year_offset),
+            function(stdout) calendar_textbox:set_text(stdout) end
+        )
+    end
+    calendar_update()
+    local function cal_button(icon, e)
+        return clickable(icon_button(icon, {
+            buttons = { awful.button( {}, 1, function() calendar_update(e) end) }
+        }))
+    end
+    local calendar_popup = wibox ({
+        widget = {
+            {
+                {
+                    {
+                        cal_button(beautiful.icon_cal_prev_year, "-y"),
+                        cal_button(beautiful.icon_cal_prev_month, "-m"),
+                        layout = wibox.layout.fixed.horizontal
+                    },
+                    {
+                        text = "reset",
+                        align = "center",
+                        valign = "center",
+                        buttons = { awful.button( {}, 1, function() calendar_update() end ) },
+                        widget = wibox.widget.textbox
+                    },
+                    {
+                        cal_button(beautiful.icon_cal_next_month, "+m"),
+                        cal_button(beautiful.icon_cal_next_year, "+y"),
+                        layout = wibox.layout.fixed.horizontal
+                    },
+                    layout = wibox.layout.align.horizontal
+                },
+                {
+                    {
+                        calendar_textbox,
+                        margins = 32,
+                        layout = wibox.container.margin
+                    },
+                    bg     = beautiful.bg_focus,
+                    -- shape  = gears.shape.rounded_rect,
+                    widget = wibox.container.background
+                },
+                layout = wibox.layout.fixed.vertical,
+            },
+            -- margins = 16,
+            valign = "center",
+            halign = "center",
+            layout = wibox.container.place
+        },
+        visible = false,
+        ontop = true,
+        type = "normal"
+    })
+    clock:buttons(gears.table.join(
+        awful.button( {}, 1, function()
+            local cal_width, cal_height = calendar_textbox:get_preferred_size(1)
+            calendar_popup.width = cal_width + 96
+            calendar_popup.height = cal_height + 96 + beautiful.wibox_height
+            calendar_popup.x = mouse.screen.leftbar.x + beautiful.wibox_height
+            calendar_popup.y = mouse.screen.geometry.height - calendar_popup.height
+            calendar_popup.visible = not calendar_popup.visible
+        end)
+    ))
+    return clock
+end
 -- }}}
 
 -- systray {{{
@@ -636,31 +777,40 @@ local function systray()
     local tray = wibox.widget.systray()
     tray.base_size = beautiful.systray_height
     tray.horizontal = false
+    tray.visible = false
+
+    local hide_button = icon_button(beautiful.icon_tray_show)
+    hide_button:buttons (gears.table.join(
+        awful.button({}, 1, function()
+            tray.visible = not tray.visible
+            hide_button:set_icon(tray.visible and beautiful.icon_tray_hide
+                                              or  beautiful.icon_tray_show)
+        end)
+    ))
     return wibox.widget {
-        tray,
-        right  = (beautiful.wibox_height - beautiful.systray_height) / 2,
-        left   = (beautiful.wibox_height - beautiful.systray_height) / 2,
-        layout = wibox.container.margin
+        {
+            tray,
+            right  = (beautiful.wibox_height - beautiful.systray_height) / 2,
+            left   = (beautiful.wibox_height - beautiful.systray_height) / 2,
+            layout = wibox.container.margin
+        },
+        clickable(hide_button),
+        layout = wibox.layout.fixed.vertical
     }
 end
 --}}}
 
 -- layoutbox {{{
-local function updatelayoutbox(layoutbox, s)
-    local layout_name = awful.layout.getname(awful.layout.get(s))
-    layoutbox:set_icon(beautiful["layout_" .. layout_name])
-end
 local function layoutbox(s)
-    local box = icon_button(nil)
-    box.right = beautiful.button_textmargin -- fix text align
-    updatelayoutbox(box, s)
+    local box = icon_button()
+    function box:update()
+        local layout_name = awful.layout.getname(awful.layout.get(s))
+        self:set_icon(beautiful["layout_" .. layout_name])
+    end
+    box:update()
 
-    awful.tag.attached_connect_signal(s, "property::selected", function ()
-        updatelayoutbox(box, s)
-    end)
-    awful.tag.attached_connect_signal(s, "property::layout", function ()
-        updatelayoutbox(box, s)
-    end)
+    awful.tag.attached_connect_signal(s, "property::selected", function () box:update() end)
+    awful.tag.attached_connect_signal(s, "property::layout", function () box:update() end)
 
     box:buttons(gears.table.join(
         awful.button({ }, 1, function () awful.layout.inc( 1) end),
@@ -677,6 +827,18 @@ end
 -- }}}
 
 -- launcher {{{
+local function launcher_rofi_cmd(s)
+    -- run rofi with top and left margins
+    local h = beautiful.wibox_height
+    local width = s.geometry.width - h - (s.leftbar.x - s.geometry.x)
+    local height = s.geometry.height - h - (s.topbar.y - s.geometry.y)
+    return "rofi -modi drun -show drun -theme launcher"
+                .. " -theme-str \"#window {"
+                .. "    location: south east;"
+                .. "    width: " .. width .. "px;"
+                .. "    height: " .. height .. "px;"
+                .. "}\""
+end
 local function launcher(s)
     local button = wibox.widget {
         icon_button(beautiful.menuicon),
@@ -684,21 +846,7 @@ local function launcher(s)
         widget = wibox.container.background,
     }
     button:buttons(awful.util.table.join(
-        -- awful.button({ }, 3, function() myawesomemenu:toggle() end),
-        awful.button({ }, 1, function() -- run rofi with top and left margins
-            local h = beautiful.wibox_height
-            local width = s.geometry.width - h - (s.leftbar.x - s.geometry.x)
-            local height = s.geometry.height - h - (s.topbar.y - s.geometry.y)
-            -- TODO: dup setup for rofi command from rc.lua
-            os.execute("rofi -modi drun -show drun"
-                .. " -theme launcher"
-                .. " -theme-str \"#window {"
-                .. "    location: south east;"
-                .. "    width: " .. width .. "px;"
-                .. "    height: " .. height .. "px;"
-                .. "}\""
-            )
-        end),
+        awful.button({ }, 1, function() awful.spawn(launcher_rofi_cmd(s)) end),
         awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
         awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
     ))
@@ -708,44 +856,49 @@ end
 
 -- new term button {{{
 local function newterm_button()
-    local button = clickable(icon_button(beautiful.newterm))
+    local button = icon_button(beautiful.newterm)
     button:buttons({ awful.button({}, 1, function() awful.spawn(config.terminal) end) })
-    return button
+    return clickable(button)
 end
 -- }}}
 
 -- topbar {{{
+local battery_widget = battery()
+local cpu_widget = cpu()
+local light_widget = light()
+local alsa_widget = alsa()
+local mem_widget = memory()
+local imap_widget = imap()
+local net_widget = network()
+local mpd_widget = mpd()
 local function topbar(s)
     local bar = wibox {
         screen = s,
         x = s.geometry.x + beautiful.wibox_height,
         y = s.geometry.y,
-        height = beautiful.wibox_height,
         width = s.geometry.width - beautiful.wibox_height,
+        height = beautiful.wibox_height,
+        bg = beautiful.bg_normal .. "80",
         visible = true,
         ontop = true,
         type = "dock",
     }
     bar:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        {
             layout = wibox.layout.fixed.horizontal,
             s.mytasklist,
             newterm_button(),
+            -- forced_width = 1200,
         },
-        -- Middle widget
         nil,
-        { -- Right widgets
+        {
             layout = wibox.layout.fixed.horizontal,
-            spacing = 16,
-            alsa,
-            light,
-            imap("oliver_lew@outlook.com"),
-            imap("2869761396@qq.com"),
-            net_speed,
-            clickable(net_status),
-            clickable(bat_icon),
-            bat_text,
+            alsa_widget.indicator,
+            light_widget.indicator,
+            imap_widget.indicator,
+            net_widget.indicator,
+            battery_widget.indicator,
             layoutbox(s),
         },
     }
@@ -762,6 +915,7 @@ local function leftbar(s)
         y = s.geometry.y,
         width = beautiful.wibox_height,
         height = s.geometry.height,
+        bg = beautiful.bg_normal .. "80",
         visible = true,
         ontop = true,
         type = "dock",
@@ -775,7 +929,7 @@ local function leftbar(s)
         nil,
         {
             systray(),
-            textclock,
+            datetime(),
             s.leftpanel.toggle_button,
             spacing = 16,
             layout = wibox.layout.fixed.vertical,
@@ -795,28 +949,20 @@ local function leftpanel(s)
         y = s.geometry.y,
         width = beautiful.wibox_height * 8,
         height = s.geometry.height,
+        bg = beautiful.bg_normal .. "80",
         visible = false,
         ontop = true,
         type = "dock",
     }
     panel:setup {
         {
-            cpu(),
-            memory(),
-            {
-                alsa,
-                clickable(volume_slider),
-                forced_height = beautiful.wibox_height,
-                layout = wibox.layout.fixed.horizontal,
-            },
-            {
-                light,
-                clickable(light_slider),
-                forced_height = beautiful.wibox_height,
-                layout = wibox.layout.fixed.horizontal,
-            },
-            mpd(),
-            -- anti_aliased_wibox,
+            battery_widget,
+            cpu_widget,
+            mem_widget,
+            alsa_widget,
+            light_widget,
+            net_widget,
+            mpd_widget,
             spacing = 16,
             layout = wibox.layout.fixed.vertical,
         },
@@ -832,12 +978,12 @@ local function leftpanel(s)
                 widget = clickable,
             },
             clickable(icon_button("1")),
-            clickable(icon_button("1")),
-            clickable(icon_button("1")),
-            clickable(icon_button("1")),
-            clickable(icon_button("1")),
-            clickable(icon_button("1")),
-            clickable(icon_button("1")),
+            clickable(icon_button()),
+            clickable(icon_button()),
+            clickable(icon_button()),
+            clickable(icon_button()),
+            clickable(icon_button()),
+            clickable(icon_button()),
             layout = wibox.layout.flex.horizontal,
         },
         layout = wibox.layout.align.vertical
@@ -869,6 +1015,7 @@ end
 
 -- return {{{
 return {
+    launcher_rofi_cmd = launcher_rofi_cmd,
     clickable = clickable,
     icon_button = icon_button,
     leftpanel = leftpanel,

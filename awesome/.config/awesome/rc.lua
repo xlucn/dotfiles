@@ -1,12 +1,12 @@
 -- luacheck: globals awesome client root screen mouse button drawin drawable tag key
 
+-- Libraries {{{
 -- timing, monitor this within Xephyr
 os.execute("echo start: ; date +%s.%N")
-
--- Libraries {{{
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+local ruled = require("ruled")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
@@ -16,9 +16,9 @@ beautiful.init(require("theme"))
 -- local modules
 local mywidgets = require("widgets")
 local config = require("config")
+os.execute("echo loaded libraries: ; date +%s.%N")
 -- }}}
 
-os.execute("echo loaded libraries: ; date +%s.%N")
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -76,6 +76,28 @@ awful.screen.connect_for_each_screen(function(s)
         })
     end
 
+    local function test_templ()
+        return config.use_font_icon and
+        {
+            {
+                id = "text_role",
+                align = "center",
+                valign = "center",
+                widget = wibox.widget.textbox,
+            },
+            forced_width = beautiful.wibox_height,
+            forced_height = beautiful.wibox_height,
+            widget = wibox.container.margin
+        } or {
+            {
+                id     = 'icon_role',
+                widget = wibox.widget.imagebox,
+            },
+            margins = beautiful.wibox_height * 0.3,
+            widget = wibox.container.margin,
+        }
+    end
+
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen = s,
@@ -94,27 +116,8 @@ awful.screen.connect_for_each_screen(function(s)
             awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
         ),
         widget_template = { -- TODO: use icon_button
-            {
-                config.use_font_icon and
-                {
-                    {
-                        id     = 'text_role',
-                        align  = 'center',
-                        valign = 'center',
-                        forced_height = beautiful.wibox_height,
-                        widget = wibox.widget.textbox,
-                    },
-                    right = beautiful.taglist_textmargin, -- fix text align
-                    widget = wibox.container.margin,
-                } or
-                {
-                    {
-                        id     = 'icon_role',
-                        widget = wibox.widget.imagebox,
-                    },
-                    margins = beautiful.wibox_height * 0.3,
-                    widget = wibox.container.margin,
-                },
+            { -- this provides 'icon_role' and 'text_role'
+                test_templ(),
                 widget = mywidgets.clickable,
             },
             id     = 'background_role',
@@ -141,8 +144,8 @@ awful.screen.connect_for_each_screen(function(s)
                     c:raise()
                 end
             end),
-            awful.button({ }, 4, function () awful.client.focus.byidx(-1) end),
-            awful.button({ }, 5, function () awful.client.focus.byidx(1) end)
+            awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
+            awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
         ),
         -- Notice that there is *NO* wibox.wibox prefix, it is a template,
         -- not a widget instance.
@@ -164,8 +167,6 @@ awful.screen.connect_for_each_screen(function(s)
                         {
                             id = 'close_role',
                             mywidgets.icon_button(beautiful.closebutton),
-                            forced_width = beautiful.wibox_height / 2,
-                            forced_height = beautiful.wibox_height / 2,
                             shape = gears.shape.circle,
                             widget = mywidgets.clickable,
                         },
@@ -186,15 +187,15 @@ awful.screen.connect_for_each_screen(function(s)
             },
             widget = mywidgets.clickable,
             create_callback = function(self, c, _, _)
-                self.tooltip = awful.tooltip({
-                  objects = { self },
-                  delay_show = 0.4,
-                  margin_leftright = beautiful.tooltip_marginv,
-                  margin_topbottom = beautiful.tooltip_marginh,
-                  timer_function = function() return c.name end,
-                })
-                self.tooltip.mode = "outside"
-                self.tooltip.preferred_alignments = {"middle", "front", "back"}
+                -- self.tooltip = awful.tooltip({
+                --   objects = { self },
+                --   delay_show = 0.4,
+                --   margin_leftright = beautiful.tooltip_marginv,
+                --   margin_topbottom = beautiful.tooltip_marginh,
+                --   timer_function = function() return c.name end,
+                -- })
+                -- self.tooltip.mode = "outside"
+                -- self.tooltip.preferred_alignments = {"middle", "front", "back"}
 
                 local closebutton = self:get_children_by_id("close_role")[1]
                 closebutton:buttons(awful.util.table.join(
@@ -211,9 +212,9 @@ awful.screen.connect_for_each_screen(function(s)
     s.leftpanel = mywidgets.leftpanel(s)
     s.leftbar = mywidgets.leftbar(s)
 end)
+os.execute("echo loaded panels: ; date +%s.%N")
 -- }}}
 
-os.execute("echo loaded panels: ; date +%s.%N")
 -- {{{ Key bindings
 awful.keyboard.append_global_keybindings({
     awful.key({ modkey            }, "b", function () mouse.screen.topbar.visible = not mouse.screen.topbar.visible end,
@@ -299,9 +300,9 @@ awful.keyboard.append_global_keybindings({
               {description = "save selection to clipboard", group = "screenshot"}),
 
     -- Prompt
-    awful.key({ modkey,           }, "d", function () awful.spawn(config.rofi_drun) end,
+    awful.key({ modkey,           }, "d", function () awful.spawn(mywidgets.launcher_rofi_cmd(mouse.screen)) end,
               {description = "application launcher", group = "launcher"}),
-    awful.key({ modkey,           }, "x", function () awful.spawn(config.rofi_run) end,
+    awful.key({ modkey,           }, "x", function () awful.spawn("rofi -show run") end,
               {description = "run command", group = "launcher"}),
     awful.key({ modkey }, "p", function() awful.spawn("setmonitor") end,
               {description = "set display", group = "screen"}),
@@ -309,9 +310,9 @@ awful.keyboard.append_global_keybindings({
               {description = "set display", group = "screen"}),
 
     -- Application launching
-    awful.key({ modkey }, "r", function () awful.spawn(config.terminal_cmd("ranger")) end,
+    awful.key({ modkey }, "r", function () awful.spawn(config.terminal_run("ranger")) end,
               {description = "launch file manager", group = "launcher"}),
-    awful.key({ modkey }, "e", function () awful.spawn(config.terminal_cmd("neomutt")) end,
+    awful.key({ modkey }, "e", function () awful.spawn(config.terminal_run("neomutt")) end,
               {description = "launch email client", group = "launcher"})
 })
 
@@ -397,7 +398,7 @@ local clientbuttons = gears.table.join(
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules = {
+ruled.client.append_rules {
     { -- All clients will match this rule.
         rule = { },
         properties = {
@@ -409,7 +410,7 @@ awful.rules.rules = {
             buttons = clientbuttons,
             screen = awful.screen.preferred,
             size_hints_honor = true,
-            shape = gears.shape.rounded_rect,
+            shape = config.client_shape,
             placement = awful.placement.no_overlap+awful.placement.no_offscreen
         }
     },
@@ -465,11 +466,11 @@ awful.rules.rules = {
         callback = function(c) c:move_to_screen() end
     },
 
-    { -- Set Firefox to always map on the tag 2.
+    { -- Set Firefox (browser) to always map on the tag 2.
         rule = {
             class = "firefox",
-            -- role = "browser",
-            -- instance = "Navigator"
+            role = "browser",
+            instance = "Navigator"
         },
         properties = {
             tag = beautiful.tag_icons[2][1],
@@ -488,6 +489,7 @@ awful.rules.rules = {
             ontop = true,
             sticky = true,
             floating = true,
+            shape = gears.shape.rectangle,
             placement = awful.placement.bottom_right
         },
     },
@@ -593,32 +595,42 @@ client.connect_signal("focus", fullscreen_toggle)
 client.connect_signal("unfocus", fullscreen_toggle)
 client.connect_signal("property::fullscreen", fullscreen_toggle)
 
+client.connect_signal("property::fullscreen", function(c)
+    if c.fullscreen then
+        c.shape = gears.shape.rectangle
+    else
+        c.shape = config.client_shape
+    end
+end)
+
 naughty.connect_signal("request::display", function(n)
     naughty.layout.box { notification = n }
 end)
 -- }}}
 
 -- Log {{{
-local logfile = io.open("/tmp/awesomelog", "a")
-local t = gears.timer({ timeout = 60 })
-t:connect_signal("timeout", function()
-  collectgarbage()
-  logfile:write(os.date(), "\nLua memory usage:", collectgarbage("count"), "\n")
-  logfile:write("Objects alive:\n")
-  for name, obj in pairs{ button = button,
-                          client = client,
-                          drawable = drawable,
-                          drawin = drawin,
-                          key = key,
-                          screen = screen,
-                          tag = tag } do
-    logfile:write(name, ": ", obj.instances(), "\n")
-  end
-  logfile:flush()
-end)
-t:start()
+collectgarbage('setpause', 100)
+local t = gears.timer({
+    timeout = 5,
+    autostart = true,
+    callback = function()
+        collectgarbage()
+        collectgarbage()
+        -- print(os.date(), "\nLua memory usage:", collectgarbage("count"))
+        -- print("Objects alive:")
+        -- for name, obj in pairs{ button = button,
+        --                         client = client,
+        --                         drawable = drawable,
+        --                         drawin = drawin,
+        --                         key = key,
+        --                         screen = screen,
+        --                         tag = tag } do
+        --     print(name, ": ", obj.instances())
+        -- end
+    end
+})
 t:emit_signal("timeout")
+os.execute("echo end: ; date +%s.%N")
 -- }}}
 
-os.execute("echo end: ; date +%s.%N")
 -- vim:foldmethod=marker:foldlevel=0
