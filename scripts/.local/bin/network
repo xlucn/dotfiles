@@ -102,6 +102,17 @@ show_speed()
     fi
 }
 
+if [ -z "$devices" ]; then
+    if [ "$flag_name" = 1 ]; then
+        echo No device
+    elif [ "$flag_speed" = 1 ]; then
+        echo 0
+        echo 0
+    else
+        echo 0
+    fi
+fi
+
 for device in $devices; do
     if [ "$flag_name" = 1 ]; then
         basename "$device"
