@@ -84,7 +84,11 @@ EOF
         video_w=$pane_w
         video_h=$((height * pane_w / width))
         video_x=$pane_x
-        video_y=$pane_y
+        if [ $((pane_w - pane_h)) -gt 0 ]; then
+            video_y=$((pane_y + pane_h / 2 - video_h / 2))
+        else # Only not vertical center if pane if "tall"
+            video_y=$pane_y
+        fi
     else
         video_w=$((width * pane_h / height))
         video_h=$pane_h
