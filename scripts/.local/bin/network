@@ -2,7 +2,7 @@
 # Script to show status, name and speed of network interfaces
 
 usage() {
-    echo "$(basename "$0") [ --help ] [ -h ] [ -i interface | -e | -w ] [ -n | -s ]"
+    echo "$(basename "$0") [ -h ] [ -iew ] [ -cns ]"
     echo
     echo "Devices:"
     echo "    -e: show stats about all ethernet devices"
@@ -10,6 +10,7 @@ usage() {
     echo "    -i <interface>: show stats about <interface>"
     echo
     echo "Output:"
+    echo "    -c: show basic connection infomation: name and signal strength if available"
     echo "    -n: show device names"
     echo "    -s: show device RX/TX (a.k.a. DL/UL) speed"
     echo "    default: print device status, 1 for up, 0 for down"
@@ -17,15 +18,16 @@ usage() {
     echo "Format:"
     echo "    -h: format speed with human readable units (B/s, KB/s, MB/s, etc)"
     echo
-    echo "Note: the options can be put together, e.g."
-    echo "    $(basename "$0") -hni eth0"
+    echo "Note: the options can be put together, e.g. show network speed for eth0"
+    echo "    $(basename "$0") -hns eth0"
 }
 
-while getopts "i:webnsh-:" arg; do
+while getopts "i:webcnsh-:" arg; do
     case "$arg" in
         i) interface="$OPTARG";;
         w) flag_wireless=1;;
         e) flag_ethernet=1;;
+        c) flag_connection=1;;
         n) flag_name=1;;
         s) flag_speed=1;;
         h) flag_human_readable=1;;
@@ -74,7 +76,7 @@ human_readable()
 show_speed()
 {
     NANO_PER_SEC=1000000000
-    device="$1"
+    device=$1
     tmpfile=/tmp/$(basename "$device")_old
     timens=$(date +"%s%N")
     read -r rx_bytes < "$device"/statistics/rx_bytes
@@ -93,7 +95,7 @@ show_speed()
     # TODO: possible inaccuracy
     if [ -n "$timens_span" ] \
         && [ "$timens_span" -gt $((NANO_PER_SEC * 1 / 10)) ] \
-        && [ "$timens_span" -lt $((NANO_PER_SEC * 5)) ]; then
+        && [ "$timens_span" -lt $((NANO_PER_SEC * 10)) ]; then
         echo $((receive_total * NANO_PER_SEC / timens_span))
         echo $((transmit_total * NANO_PER_SEC / timens_span))
     else
@@ -122,6 +124,15 @@ for device in $devices; do
         else
             show_speed "$device"
         fi
+    elif [ "$flag_connection" = 1 ]; then
+        nmcli -f GENERAL,AP dev show "$(basename "$device")" \
+            | grep -A 8 -E "(AP[^*]*\*|GENERAL.CONNECTION)" \
+            | awk '/\.(CONNECTION|SIGNAL):/{ print $2 }' \
+            | { read -r connection;
+                read -r signal;
+                echo "${connection:---}"
+                echo "${signal:-0}"
+            }
     else
         read -r state < "$device"/operstate
         if [ "$state" = "up" ]; then
