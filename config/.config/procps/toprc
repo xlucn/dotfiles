@@ -1,6 +1,6 @@
 top's Config File (Linux processes with windows)
 Id:i, Mode_altscr=1, Mode_irixps=1, Delay_time=3.0, Curwin=0
-Mem	fieldscur=¥&(º»<½¾¿ÀAMBNCÄ34·'Å)*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
+Mem	fieldscur=¥&(»<½¾¿ÀºAMBNC·Ä34'Å)*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
 	winflags=720820, sortindx=21, maxtasks=0, graph_cpus=1, graph_mems=1
 	summclr=6, msgsclr=3, headclr=2, taskclr=6
 Cpu	fieldscur=¥¨³´;½@Ä·º¹Å&')*+,-./012568<>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
