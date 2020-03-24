@@ -24,45 +24,45 @@ bind   pager          <home>   top
 bind   pager          <end>    bottom
 bind   pager          g        top
 bind   pager          G        bottom
-bind   generic,alias,attach,index,browser,compose   <up>     previous-entry
-bind   generic,alias,attach,index,browser,compose   <down>   next-entry
-bind   generic,alias,attach,index,browser,compose   k        previous-entry
-bind   generic,alias,attach,index,browser,compose   j        next-entry
-bind   generic,alias,attach,index,browser,compose   K        previous-line
-bind   generic,alias,attach,index,browser,compose   J        next-line
-bind   generic,alias,attach,index,browser,compose   g        first-entry
-bind   generic,alias,attach,index,browser,compose   G        last-entry
-bind   generic,alias,attach,index,browser,compose   <home>   first-entry
-bind   generic,alias,attach,index,browser,compose   <end>    last-entry
-bind   generic,alias,attach,index,browser,compose,pager   <pageup>     previous-page
-bind   generic,alias,attach,index,browser,compose,pager   <pagedown>   next-page
-bind   generic,alias,attach,index,browser,compose,pager   \Cd          next-page
-bind   generic,alias,attach,index,browser,compose,pager   \Cu          previous-page
+bind   generic,index   <up>     previous-entry
+bind   generic,index   <down>   next-entry
+bind   generic,index   k        previous-entry
+bind   generic,index   j        next-entry
+bind   generic,index   K        previous-line
+bind   generic,index   J        next-line
+bind   generic,index   g        first-entry
+bind   generic,index   G        last-entry
+bind   generic,index   <home>   first-entry
+bind   generic,index   <end>    last-entry
+bind   generic,index,pager   <pageup>     previous-page
+bind   generic,index,pager   <pagedown>   next-page
+bind   generic,index,pager   \Cd          next-page
+bind   generic,index,pager   \Cu          previous-page
 
 # enter and exit with left/right h/l enter/q
 macro  index <left> "c?\t" "Go back to the list of mailboxes"
 macro  index h      "c?\t" "Go back to the list of mailboxes"
-bind   generic,pager,attach,index q      exit
-bind   generic,pager,attach <left> exit
-bind   generic,pager,attach h      exit
-bind   browser     <left> goto-parent
-bind   browser     h      goto-parent
-bind   generic,browser,alias  l          select-entry
-bind   generic,browser,alias  <return>   select-entry
-bind   generic,browser,alias  <enter>    select-entry
-bind   generic,browser,alias  <right>    select-entry
-bind   index             l          display-message
-bind   index             <return>   display-message
-bind   index             <enter>    display-message
-bind   index             <right>    display-message
-bind   pager             l          view-attachments
-bind   pager             <right>    view-attachments
-bind   pager             <return>   view-attachments
-bind   pager             <enter>    view-attachments
-bind   attach            l          view-attach
-bind   attach            <right>    view-attach
-bind   attach            <return>   view-attach
-bind   attach            <enter>    view-attach
+bind   generic,pager,index q      exit
+bind   generic,pager <left> exit
+bind   generic,pager h      exit
+bind   browser  <left>    goto-parent
+bind   browser  h         goto-parent
+bind   generic  l         select-entry
+bind   generic  <return>  select-entry
+bind   generic  <enter>   select-entry
+bind   generic  <right>   select-entry
+bind   index    l         display-message
+bind   index    <return>  display-message
+bind   index    <enter>   display-message
+bind   index    <right>   display-message
+bind   pager    l         view-attachments
+bind   pager    <right>   view-attachments
+bind   pager    <return>  view-attachments
+bind   pager    <enter>   view-attachments
+bind   attach   l         view-attach
+bind   attach   <right>   view-attach
+bind   attach   <return>  view-attach
+bind   attach   <enter>   view-attach
 
 # sidebar
 bind   generic,index,pager \ck sidebar-prev
@@ -73,9 +73,9 @@ bind   generic,index,pager B sidebar-toggle-visible
 
 # macros
 macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
-macro  generic,index,browser,pager \cr ":source ~/.config/neomutt/neomuttrc\n" "Reload mutt's configuration file"
-macro  pager \cb "|urlscan\n\n" "call urlscan to extract URLs out of a message"
-macro  generic,index,browser,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
+macro  generic,index,pager \cr ":source ~/.config/neomutt/neomuttrc\n" "Reload mutt's configuration file"
+macro  pager \cb "|urlscan\n" "call urlscan to extract URLs out of a message"
+macro  generic,index,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
 
 # index navigation
 bind   index \t next-new-then-unread
