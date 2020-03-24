@@ -14,9 +14,23 @@
 charw=10
 charh=20
 
-if [ $# = 0 ]
+if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]
 then
-    echo "usage: $(basename "$0") video [ video ... ]"
+    echo "Usage: $(basename "$0") video [ video ... ]"
+    echo
+    echo "Note0: You need to change the character size in this script if the font size"
+    echo "       you are using is different from the preset"
+    echo
+    echo "Note1: This script is meant to be used under framebuffer (e.g. tty), don't"
+    echo "       use it in a graphical environment."
+    echo
+    echo "Note2: Use Ctrl-C to stop when playing more than one videos"
+    exit
+fi
+
+if ! command -v mplayer > /dev/null 2>&1
+then
+    echo Please install mplayer
     exit
 fi
 
@@ -78,7 +92,7 @@ EOF
     fi
 
     # Calculate the actual video dimension on screen that could fit in the pane
-    # Also center the video if pane/screen is wider than video
+    # Also center the video appropriately
     if [ $((width * pane_h - height * pane_w)) -gt 0 ]
     then
         video_w=$pane_w
@@ -92,13 +106,14 @@ EOF
     else
         video_w=$((width * pane_h / height))
         video_h=$pane_h
-        video_x=$((pane_x +  pane_w / 2 - video_w / 2))
+        video_x=$((pane_x + pane_w / 2 - video_w / 2))
         video_y=$pane_y
     fi
 
+    # Finally what we wanted to do!
+    # Mute all output / disable user config in case of conflicts
+    # Ctrl-C to stop during multiple videos (that's what the `exit 1` is for)
     mplayer "$video" -msglevel all=-1 -nolirc -noconfig user \
-            -vo fbdev2 \
-            -vf scale="$video_w":"$video_h" \
+            -vo fbdev2 -vf scale="$video_w":"$video_h" \
             -geometry $video_x:$video_y || exit 1
-    clear
 done
