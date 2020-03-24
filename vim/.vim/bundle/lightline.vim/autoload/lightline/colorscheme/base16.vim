@@ -1,42 +1,31 @@
-" =============================================================================
-" Filename: autoload/lightline/colorscheme/base16.vim
-" Author: OliverLew
-" License: MIT License
-" Last Change: 2019/11/19 23:23:27.
-" =============================================================================
-let s:base03 = [ '#151513', 233 ] " not used
-let s:base02 = [ '#30302c', 0 ]
-let s:base01 = [ '#4e4e43', 8 ] " 239 ]
-let s:base00 = [ '#666656', 242  ] " not used
-let s:base0 = [ '#808070', 7 ] " 244 ]
-let s:base1 = [ '#949484', 7 ] " 246 ]
-let s:base2 = [ '#a8a897', 248 ] " not used
-let s:base3 = [ '#e8e8d3', 15 ] " 253 ]
-let s:yellow = [ '#d8af5f', 3 ] " not used
-let s:orange = [ '#d7875f', 3 ] " 216 ]
-let s:red = [ '#d68787', 1 ] " 131 ]
-let s:magenta = [ '#df5f87', 5 ] " 168 ]
-let s:peach = [ '#d7afaf', 3 ] " 181 ]
-let s:blue = [ '#87afaf', 4 ] " 109 ]
-let s:cyan = [ '#87d7d7', 6 ] " 23 ]
-let s:green = [ '#87af87', 2 ] " 108 ]
-let s:white = [ '#d0d0d0', 252 ] " not used
+" source "$HOME/.cache/wal/colors-wal.vim"
+
+let s:bg      = [ '#212121', 'NONE' ]
+let s:black   = [ '#212121', 0 ]
+let s:red     = [ '#d68787', 1 ]
+let s:green   = [ '#87af87', 2 ]
+let s:yellow  = [ '#d7875f', 3 ]
+let s:blue    = [ '#87afaf', 4 ]
+let s:magenta = [ '#df5f87', 5 ]
+let s:cyan    = [ '#87d7d7', 6 ]
+let s:white   = [ '#808070', 7 ]
+let s:grey    = [ '#4e4e43', 8 ]
 
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-let s:p.normal.left = [ [ s:base02, s:cyan ], [ s:base3, s:base01 ] ]
-let s:p.normal.right = [ [ s:base02, s:base1 ], [ s:base2, s:base01 ] ]
-let s:p.inactive.right = [ [ s:base02, s:base00 ], [ s:base0, s:base02 ] ]
-let s:p.inactive.left =  [ [ s:base0, s:base02 ], [ s:base00, s:base02 ] ]
-let s:p.insert.left = [ [ s:base02, s:green ], [ s:base3, s:base01 ] ]
-let s:p.replace.left = [ [ s:base02, s:magenta ], [ s:base3, s:base01 ] ]
-let s:p.visual.left = [ [ s:base02, s:peach ], [ s:base3, s:base01 ] ]
-let s:p.normal.middle = [ [ s:base0, s:base02 ] ]
-let s:p.inactive.middle = [ [ s:base00, s:base02 ] ]
-let s:p.tabline.left = [ [ s:base3, s:base02 ] ]
-let s:p.tabline.tabsel = [ [ s:base02, s:base1 ] ]
-let s:p.tabline.middle = [ [ s:base01, s:base02 ] ]
-let s:p.tabline.right = copy(s:p.normal.right)
-let s:p.normal.error = [ [ s:base02, s:red ] ]
-let s:p.normal.warning = [ [ s:base02, s:orange ] ]
+let s:p.normal.left     = [ [ s:black, s:cyan    ], [ s:white, s:grey ] ]
+let s:p.normal.right    = [ [ s:black, s:white   ], [ s:white, s:grey ] ]
+let s:p.inactive.right  = [ [ s:black, s:grey    ], [ s:white, s:bg   ] ]
+let s:p.inactive.left   = [ [ s:white, s:bg      ], [ s:grey,  s:bg   ] ]
+let s:p.insert.left     = [ [ s:black, s:green   ], [ s:white, s:grey ] ]
+let s:p.replace.left    = [ [ s:black, s:magenta ], [ s:white, s:grey ] ]
+let s:p.visual.left     = [ [ s:black, s:yellow  ], [ s:white, s:grey ] ]
+let s:p.normal.middle   = [ [ s:white, s:bg      ] ]
+let s:p.normal.error    = [ [ s:black, s:red     ] ]
+let s:p.normal.warning  = [ [ s:black, s:yellow  ] ]
+let s:p.inactive.middle = [ [ s:grey,  s:bg      ] ]
+let s:p.tabline.left    = [ [ s:white, s:bg      ] ]
+let s:p.tabline.tabsel  = [ [ s:black, s:white   ] ]
+let s:p.tabline.middle  = [ [ s:grey,  s:bg      ] ]
+let s:p.tabline.right   = copy(s:p.normal.right)
 
 let g:lightline#colorscheme#base16#palette = lightline#colorscheme#flatten(s:p)

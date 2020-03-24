@@ -228,7 +228,7 @@ let g:mkdp_browser = 'firefox'
 " the base256 and base16 colorscheme are not from any vim plugins, find them
 " in my repo
 let g:lightline = {
-    \ 'colorscheme': 'base256',
+    \ 'colorscheme': 'base16',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly' ],
