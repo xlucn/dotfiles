@@ -1,8 +1,10 @@
-" Some rules for vi init file: .exrc
-" Starting a comment line with ", apparently :)
-" No empty lines
+" file: .exrc
 "
-" Vi options only (might be marked red in vim):
+" Some rules for vi init file:
+" - Starting a comment line with \", apparently :)
+" - No empty lines
+"
+" VI only option
 set noflash
 "
 " Options
@@ -29,20 +31,32 @@ set showmode
 set noremap
 "
 "
-" Mappings with , as <leader>. Don't know why exactly this could work,
+" Mappings with , as <leader>. Quit, edit(reload), save and more.
+"
+" Don't know why exactly this could work,
 "   since the manual only specify one character as lhs (here are two).
 "   According to 'An introduction to display editing with vi', the lhs
 "   only need to be entered within 1 second when timeout is set.
-"
-" Quit, edit(reload) and save
 map ,q :q
+map ,z :q!
 map ,e :e
 map ,w :w
+map ,x :wq
 " Reload .exrc file in $HOME
 map ,r :source ~/.exrc
-" Other mappings
-" Make backspace delete as expected, this works for all situations
-map!  sa
-map!  sa
-" Copied a macro somewhere, complete with last word
+"
+" Other ! mappings, does not work well for last one or two characters
+" Default commented, delete and navigate in normal mode instead
+"
+" Make backspace delete as expected
+" map!  sa
+" map!  sa
+" Bad hacks for arrow heys
+" map! OA ka
+" map! OB ja
+" map! OD ha
+" map! OC la
+"
+" Complicated example, copied from somewhere
+" Complete with last word
 " map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
