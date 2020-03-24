@@ -15,104 +15,104 @@
 
 ## Source the common configs
 source ~/.tmux.conf
+bind r source-file ~/.tmux.conf.fbterm
+bind C-a send-prefix
 # unbind root keybindings, usually mouse events
-unbind-key -T root -a
+# unbind-key -T root -a
 
 ## Layout
 # Use this layout to simulate stack layout
-default_layout=main-vertical
-bind -n M-r select-layout $default_layout
+stack=main-vertical
 # Hooks for reload(keep) layout
-set-hook -g pane-exited "select-layout $default_layout"
-set-hook -g after-split-window "select-layout $default_layout"
-# Always keep the main pane width half the window width
-set-hook -g client-resized 'run "tmux set -g main-pane-width \"$(expr \"#{window_width}\" / 2)\"" ; select-layout $default_layout'
+set-hook -g pane-exited         "select-layout $stack \; select-layout -E"
+set-hook -g after-kill-pane     "select-layout $stack \; select-layout -E" # remove panes
+set-hook -g after-split-window  "select-layout $stack \; select-layout -E" # create panes
+set-hook -g window-pane-changed "select-layout $stack \; select-layout -E" # moving panes
+set-hook -g client-resized      "select-layout $stack \; select-layout -E" # window resize, de/attach
 
 ## Manage panes
-# Goto pane up and down
-bind -n M-j select-pane -t +
-bind -n M-k select-pane -t -
-# Move pane up and down
-bind -n M-J swap-pane -t + \; select-pane -t +
-bind -n M-K swap-pane -t - \; select-pane -t -
-# Adjust master pane width
-bind -n M-h resize-pane -L 4
-bind -n M-l resize-pane -R 4
-# Adjust stack pane height
-bind -n M-H resize-pane -U 2
-bind -n M-L resize-pane -D 2
-# Move current pane to master
-bind -n M-Space swap-pane -d -t 0
-# Zoom(maximize) pane
-bind -n M-m resize-pane -Z
-# Create new pane in current directory
-bind -n M-Enter split-window -t :.0 -c "#{pane_current_path}" \; swap-pane -s :.0 -t :.1
+# Navigate
+bind -N "Go to the pane below" -n M-j select-pane -t +
+bind -N "Go to the pane above" -n M-k select-pane -t -
+bind -N "Go to the last pane"  -n M-Tab select-pane -t !
+# Resize
+bind -N "Resize the master pane left by 4 rows"  -n M-h resize-pane -L 4
+bind -N "Resize the master pane right by 4 rows" -n M-l resize-pane -R 4
+bind -N "Resize the slave pane up by 2 lines"    -n M-H resize-pane -U 2
+bind -N "Resize the slave pane down by 2 lines"  -n M-L resize-pane -D 2
+# Manipulate
+bind -N "Move the pane down"      -n M-J swap-pane -d -t +
+bind -N "Move the pane up"        -n M-K swap-pane -d -t -
+bind -N "Move the pane to master" -n M-Space swap-pane -d -t 0
+bind -N "Maximize the pane"       -n M-m resize-pane -Z
+bind -N "Create a new slave pane in current path" \
+     -n M-Enter split-window -t {bottom-right} -c "#{pane_current_path}"
 
 ## Manage windows
-# Choose tree (like activity view)
-bind -n M-a choose-tree -Zw
-# Change windows
-bind -n M-. next-window
-bind -n M-, previous-window
-bind -n M-Escape last-window
+bind -N "Go to the last window"     -n M-Escape last-window
+bind -N "Go to the next window"     -n M-. next-window
+bind -N "Go to the previous window" -n M-, previous-window
+bind -N "Go to window 1" -n M-1 select-window -t :1
+bind -N "Go to window 2" -n M-2 select-window -t :2
+bind -N "Go to window 3" -n M-3 select-window -t :3
+bind -N "Go to window 4" -n M-4 select-window -t :4
+bind -N "Go to window 5" -n M-5 select-window -t :5
+bind -N "Go to window 6" -n M-6 select-window -t :6
+bind -N "Go to window 7" -n M-7 select-window -t :7
+bind -N "Go to window 8" -n M-8 select-window -t :8
+bind -N "Go to window 9" -n M-9 select-window -t :9
+# Add shift to above ones, you get:
 # Move pane to prev/next window
-bind -n M-< if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :- \; select-layout $default_layout \; select-layout -t :! $default_layout
-bind -n M-> if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :+ \; select-layout $default_layout \; select-layout -t :! $default_layout
-# Go directly to windows
-bind -n M-1 select-window -t :1
-bind -n M-2 select-window -t :2
-bind -n M-3 select-window -t :3
-bind -n M-4 select-window -t :4
-bind -n M-5 select-window -t :5
-bind -n M-6 select-window -t :6
-bind -n M-7 select-window -t :7
-bind -n M-8 select-window -t :8
-bind -n M-9 select-window -t :9
-# Move to a window
-bind -n M-'!' if "test #I != 1 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 1" "move-pane -t :1 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'@' if "test #I != 2 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 2" "move-pane -t :2 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'#' if "test #I != 3 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 3" "move-pane -t :3 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'$' if "test #I != 4 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 4" "move-pane -t :4 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'%' if "test #I != 5 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 5" "move-pane -t :5 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'^' if "test #I != 6 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 6" "move-pane -t :6 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'&' if "test #I != 7 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 7" "move-pane -t :7 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'*' if "test #I != 8 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 8" "move-pane -t :8 \; select-layout $default_layout \; select-layout -t :! $default_layout"
-bind -n M-'(' if "test #I != 9 -a #{window_panes} -eq 1" "split-window -d" \; if "test #I != 9" "move-pane -t :9 \; select-layout $default_layout \; select-layout -t :! $default_layout"
+bind -N "Move the pane to previous window" -n M-< if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :-
+bind -N "Move the pane to next window"     -n M-> if "test #{window_panes} -eq 1" "split-window -d" \; move-pane -t :+
+# Move pane to a window
+bind -N "Move the pane to window 1" -n M-'!' if "test #I != 1 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :1
+bind -N "Move the pane to window 2" -n M-'@' if "test #I != 2 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :2
+bind -N "Move the pane to window 3" -n M-'#' if "test #I != 3 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :3
+bind -N "Move the pane to window 4" -n M-'$' if "test #I != 4 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :4
+bind -N "Move the pane to window 5" -n M-'%' if "test #I != 5 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :5
+bind -N "Move the pane to window 6" -n M-'^' if "test #I != 6 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :6
+bind -N "Move the pane to window 7" -n M-'&' if "test #I != 7 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :7
+bind -N "Move the pane to window 8" -n M-'*' if "test #I != 8 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :8
+bind -N "Move the pane to window 9" -n M-'(' if "test #I != 9 -a #{window_panes} -eq 1" "split-window -d" \; move-pane -t :9
+# Choose tree (like activity view)
+bind -N "Open tree view" -n M-a choose-tree -Zw
 
 ## UI
 # Toggle status line
-bind -n M-b set-option status
+bind -N "Toggle the status bar" -n M-b set-option status
 
-## Lock screen / more like screensaver
-bind -n M-C-l lock-session
+## Lock screen ( more like screensaver ), see lock-command
+bind -N "Open screen saver" -n M-C-l lock-session
 set -g lock-after-time 600
 # Set tty-clock as screensaver, make it fullscreen, exit upon any keypress
-set -g lock-command "tmux set status off; tmux resize-pane -Z; tty-clock -csSa 100000000 -d 0; tmux set status on; tmux resize-pane -Z"
+set -g lock-command "tmux set status off; tmux resize-pane -Z; \
+                     tty-clock -csSa 100000000 -d 0; \
+                     tmux set status on; tmux resize-pane -Z"
 
 ## Multimedia
 # Change brightness
-bind -n M-- run-shell -b "light -U 5"\; refresh-client -S
-bind -n M-= run-shell -b "light -A 5"\; refresh-client -S
+bind -N "Turn brightness down 5%" -n M-- run-shell -b "light -U 5"\; refresh-client -S
+bind -N "Turn brightness up 5%"   -n M-= run-shell -b "light -A 5"\; refresh-client -S
 # Change volume
-bind -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client -S
-bind -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client -S
-bind -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client -S
+bind -N "Turn volume down 4%" -n M-[ run-shell -b "amixer -q set Master 4%-"\; refresh-client -S
+bind -N "Turn volume up 4%"   -n M-] run-shell -b "amixer -q set Master 4%+"\; refresh-client -S
+bind -N "Toggle volume"       -n M-\\ run-shell -b "amixer -q set Master toggle"\; refresh-client -S
 # mpd operations, 5 keybinds above + Shift
-bind -n M-_ run-shell -b "mpc -q seek -10"
-bind -n M-+ run-shell -b "mpc -q seek +10"
-bind -n M-\{ run-shell -b "mpc -q prev"
-bind -n M-\} run-shell -b "mpc -q next"
-bind -n M-| run-shell -b "mpc -q toggle"
+bind -N "Mpd: seek backward 10s" -n M-_ run-shell -b "mpc -q seek -10"
+bind -N "Mpd: seek forward 10s"  -n M-+ run-shell -b "mpc -q seek +10"
+bind -N "Mpd: presious song"     -n M-\{ run-shell -b "mpc -q prev"
+bind -N "Mpd: next song"         -n M-\} run-shell -b "mpc -q next"
+bind -N "Mpd: toggle pause/play" -n M-| run-shell -b "mpc -q toggle"
 
 ## A hack to keep the last pane of a window alive together
 # TODO: use the new 'empty pane' feature in tmux 3.0
 # Do not close pane when exit (e.g. after exit bash)
 set -g remain-on-exit on
 # After exit, kill pane only when there is more than one remaining. So the last one won't close
-set-hook -g pane-died 'if "test #{window_panes} -eq 1" "respawn-pane $SHELL" "kill-pane \; select-layout $default_layout"'
+set-hook -g pane-died 'if "test #{window_panes} -eq 1" "respawn-pane $SHELL" kill-pane'
 # Kill pane if it's not the last one in the window
-# TODO: after-kill-pane available since tmux 3.0, replace the following with it later.
-bind -n M-q if "test #{window_panes} -gt 1" "kill-pane \; select-layout $default_layout"
+bind -N "Kill pane" -n M-q if "test #{window_panes} -gt 1" kill-pane
 
 ## Use fancy font characters as window names with the idea of saving space
 # (with the loss of not showing the current running program)
@@ -120,7 +120,7 @@ set -g automatic-rename on
 set -g automatic-rename-format "謹"
 # Automatically create 6 more windows at start (the chars are fbterm friendly)
 # neww -d \; neww -d -n 漣 \; neww -d -n 拾 \;
-set-hook -g session-created "neww -d \; neww -d -n 爵 \; neww -d -n 輸"
+set-hook -g session-created "neww \; neww -n 爵 \; neww -n 輸 \; select-window -t :1 \; select-window -t :2"
 
 # Launchers
 bind -n M-e split-window "neomutt"
@@ -129,47 +129,34 @@ bind -n M-w split-window "elinks"
 bind -n M-i split-window "irssi"
 
 # copy and paste
-bind -n M-c copy-mode
-bind -n M-v paste-buffer
-bind -T copy-mode-vi v send-keys -X begin-selection
-bind -T copy-mode-vi V send-keys -X select-line
-bind -T copy-mode-vi C-v send-keys -X rectangle-toggle \; send-keys -X begin-selection
-bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+bind -N "Enter copy mode" -n M-c copy-mode
+bind -N "Paste" -n M-v paste-buffer
 bind -T copy-mode-vi Space send-keys -X page-down
 bind -T copy-mode-vi BSpace send-keys -X page-up
 
 # Screenshot
 bind -n M-p run "fbgrab ~/Pictures/Fbterm_$(date +%F_%H-%M-%S).png &"
 
-# Session-wide. Rebind some prefix hotkeys
-bind C-a send-prefix
-bind -n M-C-r source-file ~/.tmux.conf.fbterm
-bind r source-file ~/.tmux.conf.fbterm
-bind -n M-Q detach-client
-bind -n M-C-q confirm-before -p "Quit this session? (the session will be killed) y/n" kill-session
-bind -n M-s list-keys -T root
+# Session-wide
+bind -N "Reload config file" -n M-C-r source-file ~/.tmux.conf.fbterm
+bind -N "Detach client"      -n M-Q detach-client
+bind -N "Quit session"       -n M-C-q confirm-before -p "Quit this session? y/n" kill-session
+bind -N "List keybindings"   -n M-s list-keys -N -P "root " -T root
 
 # Status bar the commands below are scripts in my repo
 set -g status-right-length 120
 set -g status-right "\
-#[fg=colour13 ,bg=colour0] 﨧#(imap-tmux) \
-#[fg=colour172,bg=colour0] 祥#(up) \
-#[fg=colour201,bg=colour0] 龍#(cpu)% \
-#[fg=colour9  ,bg=colour0] 力#(mem -1u)/#(mem -1t) \
-#[fg=colour51 ,bg=colour0] #{?#(vol -s),墳,婢}#(vol)% \
-#[fg=colour226,bg=colour0] 盛#(printf "%.0f" $(light))% \
-#[fg=colour172,bg=colour0] 﨟%b %d %a %R \
-#[fg=colour46 ,bg=colour0] #{?#(network -w),直,睊}#{?#(network -e),囹,}\
-#[fg=colour46 ,bg=colour0] #{?#(ac),,} #(printf "%3.0f" $(battery))% \
+#[fg=colour13 ] 﨧#(imap-tmux) \
+#[fg=colour172] 祥#(up) \
+#[fg=colour201] 龍#(cpu)% \
+#[fg=colour9  ] 力#(mem -1u)/#(mem -1t) \
+#[fg=colour51 ] #{?#(vol -s),墳,婢}#(vol)% \
+#[fg=colour226] 盛#(printf "%.0f" $(light))% \
+#[fg=colour172] 﨟%b %d %a %R \
+#[fg=colour46 ] #{?#(network -w),直,睊}#{?#(network -e),囹,}\
+#[fg=colour46 ] #{?#(ac),,} #(printf "%3.0f" $(battery))% \
 "
 #[fg=colour154,bg=colour0] #(wttr-tmux) \
 #[fg=colour2  ,bg=colour0] #{?#(fcitx-remote),韛,}\
-
-setw -g window-status-style fg=colour7,bg=colour0
-setw -g window-status-activity-style fg=colour1,bg=colour0
-setw -g window-status-current-style fg=colour46,bg=colour0
-setw -g window-status-format "#I#{?window_zoomed_flag,Z, }#W"
-setw -g window-status-current-format "#I#{?window_zoomed_flag,Z, }#W"
-setw -g window-status-separator "   "
 
 # vim: ft=tmux
