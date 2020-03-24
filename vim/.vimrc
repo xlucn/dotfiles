@@ -319,8 +319,8 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters = {
   \ 'c': ['ccls'],
   \ 'python': ['pyls'],
-  \ 'lua': ['luacheck']
   \ 'sh': ['language_server', 'shellcheck'],
+  \ 'lua': ['luacheck']
   \ }
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
