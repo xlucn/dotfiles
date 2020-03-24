@@ -95,6 +95,10 @@ if !has('nvim')
         set ttymouse=sgr
     endif
 endif
+" cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
+let &t_SI = "\e[6 q"
+let &t_SR = "\e[4 q"
+let &t_EI = "\e[2 q"
 " shows what you are typing as a command
 set showcmd
 " turn on wild menu on :e <Tab>
