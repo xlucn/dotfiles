@@ -175,7 +175,6 @@ autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
-autocmd FileType sh let b:ale_lsp_root="./"
 " }}}
 " fcitx {{{
 function! Fcitx(mode)
@@ -323,7 +322,7 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters = {
   \ 'c': ['ccls'],
   \ 'python': ['pyls'],
-  \ 'sh': ['language_server', 'shellcheck'],
+  \ 'sh': ['shellcheck'],
   \ 'lua': ['luacheck']
   \ }
 let g:ale_fixers = {
