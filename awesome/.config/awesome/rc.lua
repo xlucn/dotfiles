@@ -12,8 +12,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menu_utils = require("menubar.utils")
 require("awful.autofocus")
-beautiful.init(require("theme"))
 -- local modules
+beautiful.init(require("theme"))
 local mywidgets = require("widgets")
 local config = require("config")
 os.execute("echo loaded libraries: ; date +%s.%N")
@@ -77,24 +77,24 @@ awful.screen.connect_for_each_screen(function(s)
     end
 
     local function test_templ()
-        return config.use_font_icon and
+        return config.use_image_icon and
         {
+            {
+                id     = 'icon_role',
+                widget = wibox.widget.imagebox,
+            },
+            margins = beautiful.bar_size * 0.3,
+            widget = wibox.container.margin,
+        } or {
             {
                 id = "text_role",
                 align = "center",
                 valign = "center",
                 widget = wibox.widget.textbox,
             },
-            forced_width = beautiful.wibox_height,
-            forced_height = beautiful.wibox_height,
+            forced_width = beautiful.bar_size,
+            forced_height = beautiful.bar_size,
             widget = wibox.container.margin
-        } or {
-            {
-                id     = 'icon_role',
-                widget = wibox.widget.imagebox,
-            },
-            margins = beautiful.wibox_height * 0.3,
-            widget = wibox.container.margin,
         }
     end
 
@@ -111,9 +111,7 @@ awful.screen.connect_for_each_screen(function(s)
             awful.button({ }, 3, awful.tag.viewtoggle),
             awful.button({ modkey }, 3, function(t)
                              if client.focus then client.focus:toggle_tag(t) end
-                         end),
-            awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
-            awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
+                         end)
         ),
         widget_template = { -- TODO: use icon_button
             { -- this provides 'icon_role' and 'text_role'
@@ -174,7 +172,7 @@ awful.screen.connect_for_each_screen(function(s)
                         right = beautiful.tasklist_icon_vmargin,
                         widget = wibox.container.margin,
                     },
-                    forced_height = beautiful.wibox_height - 2,
+                    forced_height = beautiful.bar_size - 2,
                     layout = wibox.layout.align.horizontal,
                 },
                 {
@@ -260,8 +258,7 @@ awful.keyboard.append_global_keybindings({
                     if config.terminal == "st" then
                         awful.spawn("st -c St-float")
                     else
-                        awful.spawn(config.terminal,
-                                    { properties = { floating = true } })
+                        awful.spawn(config.terminal, { properties = { floating = true } })
                     end
                 end,
               {description = "open a floating terminal", group = "launcher"}),
@@ -300,7 +297,7 @@ awful.keyboard.append_global_keybindings({
               {description = "save selection to clipboard", group = "screenshot"}),
 
     -- Prompt
-    awful.key({ modkey,           }, "d", function () awful.spawn(mywidgets.launcher_rofi_cmd(mouse.screen)) end,
+    awful.key({ modkey,           }, "d", function () awful.spawn(config.launcher_rofi_cmd(mouse.screen)) end,
               {description = "application launcher", group = "launcher"}),
     awful.key({ modkey,           }, "x", function () awful.spawn("rofi -show run") end,
               {description = "run command", group = "launcher"}),

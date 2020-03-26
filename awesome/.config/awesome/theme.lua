@@ -46,10 +46,10 @@ end
 -- }}}
 
 -- Sizes {{{
-theme.preferred_icon_size       = dpi(48)
-theme.wibox_height              = dpi(48)
-theme.systray_icon_spacing      = dpi(8)
-theme.systray_height            = dpi(24)
+theme.preferred_icon_size   = dpi(48)
+theme.bar_size              = dpi(config.bar_size)
+theme.systray_icon_spacing  = dpi(8)
+theme.systray_icon_size     = dpi(24)
 -- }}}
 
 -- Fonts {{{
@@ -72,10 +72,8 @@ theme.border_marked         = theme.bg_urgent
 
 -- Taglist {{{
 theme.taglist_bg_focus = theme.bg_focus
-theme.taglist_squares_sel   = gears.surface.load_from_shape (2, theme.wibox_height, gears.shape.rectangle, theme.blue)
-theme.taglist_squares_unsel = gears.surface.load_from_shape (2, theme.wibox_height, gears.shape.rectangle, theme.blue)
-theme.taglist_textmargin = dpi(8)
-theme.button_textmargin = dpi(4)
+theme.taglist_squares_sel   = gears.surface.load_from_shape (2, theme.bar_size, gears.shape.rectangle, theme.blue)
+theme.taglist_squares_unsel = gears.surface.load_from_shape (2, theme.bar_size, gears.shape.rectangle, theme.blue)
 theme.button_imagemargin = dpi(8)
 -- }}}
 
@@ -97,7 +95,7 @@ theme.slider_bar_shape = gears.shape.rounded_bar
 theme.slider_bar_height = dpi(24)
 theme.slider_bar_color = theme.grey
 theme.slider_bar_active_color = theme.fg_normal
-theme.slider_bar_margins = { top = 12, bottom = 12 }
+theme.slider_bar_margins = 12 -- { top = 12, bottom = 12 }
 theme.progressbar_bg = theme.grey
 theme.progressbar_fg = theme.fg_normal
 theme.progressbar_shape = gears.shape.rounded_bar
@@ -110,7 +108,7 @@ theme.progressbar_margins = 12
 
 -- Tooltip {{{
 theme.tooltip_align = "top_left"
-theme.tooltip_shape = gears.shape.rounded_rect
+theme.tooltip_shape = gears.shape.rectangle
 theme.tooltip_marginv = dpi(16)
 theme.tooltip_marginh = dpi(8)
 -- }}}
@@ -171,12 +169,8 @@ local function add_icon_to_theme(icon_table, theme_table)
             theme_table[k] = {}
             add_icon_to_theme(v, theme_table[k])
         else
-            theme_table[k] = {
-                v[1],
-                find_symbolic_icon(v[2]),
-                v[3], v[4],
-                color = v.color or theme.fg
-            }
+            theme_table[k] = v
+            theme_table[k][2] = find_symbolic_icon(v[2])
         end
     end
 end
@@ -191,27 +185,31 @@ awesome.set_preferred_icon_size(theme.preferred_icon_size)
 -- The table elements are
 --  1: Font character.
 --  2: Icon name, default to symbolic icons "icon_name_symbolic.svg".
---  3: Font margin fix, applied to right margin, optional.
+--  font_margin:
+--     Font margin fix, applied to right margin, optional.
 --     Specify this if the character is not center aligned.
---  Note: Nerd Font need this fix but "Material Design Icons" does not, I might remove this
+--     Note: Nerd Font need this fix but "Material Design Icons" does not, I might remove this
 --     in favour of the latter font.
---  4: Icon margin fix, applied to all margins on top of button_imagemargin, optional.
+--  image_margin:
+--     Icon margin fix, applied to all margins on top of button_imagemargin, optional.
 --     Specify this if the icon is too large.
---  Note: the mdi font seem great, maybe I will remove svg icons, too?
+--     Note: the mdi font seem great, maybe I will remove svg icons, too?
+--  color:
+--     change color for font character, svg image does not support this
 -- The tables are passed to add_icon_to_theme function only to replace the
 --     second element to the corresponding icon path
 add_icon_to_theme({
         layout_floating       = { "󰕕", "focus-windows" },
         layout_tile           = { "󰙀", "view-grid" },
-        layout_max            = { "󰄮", "view-fullscreen" },
+        layout_max            = { "󰄮", "zoom-fit-best" },
 
         menuicon              = { "󰀻", "view-app-grid" }, -- start-here
         sidebar_open          = { "󰄾", "pan-end" },
         sidebar_close         = { "󰄽", "pan-start" },
-        closebutton           = { "󰅖", "window-close" },
-        newterm               = { "󰐕", "list-add", nil, 8 },
-        icon_tray_show        = { "󰅃", "pan-up" },
-        icon_tray_hide        = { "󰅀", "pan-down" },
+        closebutton           = { "󰅖", "window-close", image_margin = 4 },
+        newterm               = { "󰐕", "list-add", image_margin = 8 },
+        icon_tray = { [true]  = { "󰅀", "pan-down" },
+                      [false] = { "󰅃", "pan-up" } },
 
         icon_music            = { "󰎇", "audio-x-generic" },
         icon_music_state      = { -- state is opposite to action(in icon name)
@@ -223,15 +221,15 @@ add_icon_to_theme({
         icon_music_forward    = { "󰶻", "media-seek-forward" },
         icon_music_backward   = { "󰶺", "media-seek-backward" },
         icon_music_random     = {
-            on                = { "󰒝", "media-playlist-shuffle" },
-            off               = { "󰒞", "media-playlist-consecutive" } },
+            [true]            = { "󰒝", "media-playlist-shuffle" },
+            [false]           = { "󰒞", "media-playlist-consecutive" } },
         icon_music_repeat     = {
-            on                = { "󰑖", "media-playlist-repeat" },
-            off               = { "󰑘", "media-playlist-repeat-one" } },
+            [true]            = { "󰑖", "media-playlist-repeat" },
+            [false]           = { "󰑘", "media-playlist-repeat-one" } },
 
         icon_volume_mute      = { "󰝟", "audio-volume-muted" },
-        icon_volume_low       = { "󰕿", "audio-volume-low", 10 },
-        icon_volume_mid       = { "󰖀", "audio-volume-medium", 6 },
+        icon_volume_low       = { "󰕿", "audio-volume-low", font_margin = 10 },
+        icon_volume_mid       = { "󰖀", "audio-volume-medium", font_margin = 6 },
         icon_volume_high      = { "󰕾", "audio-volume-high" },
         icon_volume_stack     = { "󰕾", "audio-volume-high", color = theme.fg .. "40" },
 
@@ -343,15 +341,15 @@ for b, c in pairs(button_colors) do
                 local button_name = string.format("titlebar_%s_button_%s%s%s", b, f, a, h)
                 if theme[button_name] == nil then
                     if h == "_hover" then
-                        theme[button_name] = button(c .. "FF")
+                        theme[button_name] = button(c .. "A0")
                     elseif h == "_press" then
-                        theme[button_name] = button(c .. "E8")
+                        theme[button_name] = button(c .. "FF")
                     elseif f == "normal" then
                         theme[button_name] = button(theme.titlebar_fg .. "40")
                     elseif a == "_inactive" then
                         theme[button_name] = button(theme.titlebar_fg .. "40")
                     else
-                        theme[button_name] = button(c .. "D0")
+                        theme[button_name] = button(c .. "FF")
                     end
                 end
             end
