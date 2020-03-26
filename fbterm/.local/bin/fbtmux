@@ -50,5 +50,5 @@ fi
 
 # Everything set, start fbterm!
 cd "${HOME}" || exit
-fbterm -- tmux -L fbterm -f ~/.tmux.conf.fbterm "$@" new -A -s fbterm
+fbterm -- tmux -L fbterm -f ~/.config/tmux/tmux.fbterm.conf "$@" new -A -s fbterm
 tput cnorm
