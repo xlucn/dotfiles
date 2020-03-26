@@ -16,15 +16,22 @@ charh=20
 
 if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]
 then
-    echo "Usage: $(basename "$0") video [ video ... ]"
-    echo
-    echo "Note0: You need to change the character size in this script if the font size"
-    echo "       you are using is different from the preset"
-    echo
-    echo "Note1: This script is meant to be used under framebuffer (e.g. tty), don't"
-    echo "       use it in a graphical environment."
-    echo
-    echo "Note2: Use Ctrl-C to stop when playing more than one videos"
+    cat << EOF
+Usage: $(basename "$0") video [ video ... ]
+
+Note: You need to change the character size in this script if the font size
+      you are using is different from the preset (10, 20).
+
+Note: This script is meant to be used under framebuffer (e.g. tty), don't
+      use it in a graphical environment.
+      If you are in tty and a tmux session that was started in X11, it will
+      have DISPLAY env variable. unset it with \`unset DISPLAY\` or
+
+      $ DISPLAY= $(basename "$0") video
+
+Note: Use Ctrl-C to stop when playing more than one videos, 'q' will only
+      stop the current video and continues the next in list.
+EOF
     exit
 fi
 
