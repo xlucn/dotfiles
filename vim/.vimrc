@@ -175,23 +175,9 @@ autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
-" }}}
-" fcitx {{{
-function! Fcitx(mode)
-    if system('fcitx-remote') != 0
-        if a:mode == 'leave'
-            let b:status = system('fcitx-remote')
-            call system('fcitx-remote -c')
-        endif
-        if a:mode == 'enter'
-            if exists('b:status') && b:status == 2
-                call system('fcitx-remote -o')
-            endif
-        endif
-    endif
-endfunction
-autocmd InsertLeave * call Fcitx("leave")
-autocmd InsertEnter * call Fcitx("enter")
+" fcitx: restore input method state when enter insert mode
+autocmd InsertLeave * let b:fcitx = system('fcitx-remote') | call system('fcitx-remote -c')
+autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system('fcitx-remote -o') | endif
 " }}}
 " }}}
 " Plugin Settings {{{
