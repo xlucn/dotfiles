@@ -6,46 +6,36 @@
 # A script to configure multiple displays with xrandr
 #
 
-while read -r name stat _; do
-    if [ "$stat" = "connected" ]; then
-        monitors="$monitors $name"
-    fi
-done << EOF
-    $(xrandr)
-EOF
+monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
 
-add_opt() {
-    index=$((index + 1))
-    options="${options}$index $1\n"
-}
-
-add_cmd() {
-    eval "command_$index=\"$*\""
-}
+add_opt() { index=$((index + 1)); options="${options}$index $1\n"; }
+add_cmd() { eval "command_$index=\"$*\""; }
 
 # Cancel
 add_opt "Cancel"
 add_cmd true
+
 # Single Monitor
 for m in $monitors; do
     add_opt "Single\t$m"
-    add_cmd xrandr --output "$m" --auto --primary
+    cmd="xrandr --output $m --auto --primary"
+    for n in $monitors; do
+        [ "$n" = "$m" ] && continue
+        cmd="$cmd --output $n --off"
+    done
+    add_cmd "$cmd"
 done
+
 # Dual monitor
 for m in $monitors; do
     for n in $monitors; do
-        if [ "$m" != "$n" ]; then
-            add_opt "Dual  \t$m -> $n"
-            add_cmd xrandr --output "$m" --auto --primary \
-                           --output "$n" --auto --same-as "$n"
-        fi
-    done
-    for n in $monitors; do
-        if [ "$m" != "$n" ]; then
-            add_opt "Mirror\t$m -> $n"
-            add_cmd xrandr --output "$m" --auto --primary \
-                           --output "$n" --auto --right-of "$n"
-        fi
+        [ "$m" = "$n" ] && continue
+        add_opt "Dual  \t$m -> $n"
+        add_cmd xrandr --output "$m" --auto --primary \
+                       --output "$n" --auto --right-of "$m"
+        add_opt "Mirror\t$m -> $n"
+        add_cmd xrandr --output "$m" --auto --primary \
+                       --output "$n" --auto --same-as "$m"
     done
 done
 
