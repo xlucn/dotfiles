@@ -2,7 +2,7 @@
 # Script to show status, name and speed of network interfaces
 
 usage() {
-    echo "$(basename "$0") [ -h ] [ -iew ] [ -cns ]"
+    echo "$(basename "$0") [ -h ] [ -ew -i <name> ] [ -cns ]"
     echo
     echo "Devices:"
     echo "    -e: show stats about all ethernet devices"
@@ -19,7 +19,7 @@ usage() {
     echo "    -h: format speed with human readable units (B/s, KB/s, MB/s, etc)"
     echo
     echo "Note: the options can be put together, e.g. show network speed for eth0"
-    echo "    $(basename "$0") -hns eth0"
+    echo "    $(basename "$0") -hs -i eth0"
 }
 
 while getopts "i:webcnsh-:" arg; do
