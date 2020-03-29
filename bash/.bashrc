@@ -20,6 +20,38 @@ export VISUAL=vim
 export NOTES_DIRECTORY="$HOME/Code/notes"
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
+# XDG base directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export LESSHISTFILE=-
+export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME/Mathematica"
+export PASSWORD_STORE_DIR="$XDG_CONFIG_HOME/password-store"
+export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
+export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+export GRIPHOME="$XDG_CONFIG_HOME/grip"
+export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
+export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
+export HISTFILE="$XDG_DATA_HOME/bash/history"
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
+export EXINIT=":source $XDG_CONFIG_HOME/ex/exrc"
+export VIMINIT=":source $XDG_CONFIG_HOME/vim/vimrc"
+export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export RANDFILE="$XDG_CACHE_HOME/openssl_rnd"
+
 # Alias
 # auto color
 alias ls="ls --color=auto"

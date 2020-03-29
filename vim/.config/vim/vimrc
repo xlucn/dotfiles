@@ -1,13 +1,18 @@
 " Plugin Manager {{{
 " Vim-Plug {{{
+" vim basic settings
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+set viminfo="$HOME/.cache/vim/viminfo"
+" set vim folder
+" let $VIM=$XDG_CONFIG_HOME/vim
 " automatic installation
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob("$XDG_CONFIG_HOME/vim/autoload/plug.vim"))
+  silent !curl -fLo $XDG_CONFIG_HOME/vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 " begin vim-plug
-call plug#begin('~/.vim/bundle')
+call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
 Plug 'VundleVim/Vundle.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
@@ -51,8 +56,6 @@ filetype plugin on
 filetype indent on
 " auto reload files
 set autoread
-" set vim folder
-let $VIM='~/.vim/'
 " set encoding
 set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
