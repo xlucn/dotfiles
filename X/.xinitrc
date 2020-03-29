@@ -3,8 +3,8 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
-fcitx -d
-pgrep -x picom || picom &
+fcitx -d > /dev/null 2>&1
+pgrep -x picom || picom --experimental-backends &
 pgrep -x udiskie || udiskie -s &
 pgrep -x nm-applet || nm-applet &
 pgrep -x redshift-gtk || redshift-gtk &
