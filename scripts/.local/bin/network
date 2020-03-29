@@ -58,14 +58,10 @@ human_readable()
     while read -r speed; do
         for unit in B/s KB/s MB/s GB/s TB/s PB/s; do
             if [ "$speed" -lt 1000 ]; then
-                if [ -n "$decimal" ]; then
-                    echo "$speed.$decimal $unit"
-                else
-                    echo "$speed $unit"
-                fi
+                echo "$speed.${decimal:-0} $unit"
                 break
             else
-                # TODO: wrong: zeros
+                # TODO: wrong: zeros (I forgot what this means ...)
                 decimal="$((speed % 1000))"
                 speed="$((speed / 1000))"
             fi
