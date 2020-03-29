@@ -8,39 +8,55 @@
 
 monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
 
-add_opt() { index=$((index + 1)); options="${options}$index $1\n"; }
-add_cmd() { eval "command_$index=\"$*\""; }
+# This is the core part. Without functionalities like lists in bash, we store
+# the commands beforehand in variable names corresponding to the each option.
+# In other words, if we choose option "N foo bar", the executed command will
+# be "$command_N"
+add_cmd()
+{
+    options="${options}${index:-0} $1\n"
+    eval "command_${index:-0}=\"$2\""
+    index=$((index + 1))
+}
+
+# Disable any other monitors that's *not* in the function arguments
+args_disable_others()
+{
+    for m in $monitors; do
+        unset enabled
+        for n in "$@"; do
+            [ "$m" = "$n" ] && enabled=1
+        done
+        [ -z "$enabled" ] && printf " --output %s --off" "$m"
+    done
+}
 
 # Cancel
-add_opt "Cancel"
-add_cmd true
+add_cmd "Cancel" true
 
 # Single Monitor
 for m in $monitors; do
-    add_opt "Single\t$m"
-    cmd="xrandr --output $m --auto --primary"
-    for n in $monitors; do
-        [ "$n" = "$m" ] && continue
-        cmd="$cmd --output $n --off"
-    done
-    add_cmd "$cmd"
+    cmd="xrandr --output $m --auto --primary $(args_disable_others "$m")"
+    add_cmd "Single    $m" "$cmd"
 done
 
 # Dual monitor
 for m in $monitors; do
     for n in $monitors; do
         [ "$m" = "$n" ] && continue
-        add_opt "Dual  \t$m -> $n"
-        add_cmd xrandr --output "$m" --auto --primary \
-                       --output "$n" --auto --right-of "$m"
-        add_opt "Mirror\t$m -> $n"
-        add_cmd xrandr --output "$m" --auto --primary \
-                       --output "$n" --auto --same-as "$m"
+        add_cmd "Dual      $m -> $n" \
+                "xrandr --output $m --auto --primary
+                        --output $n --auto --right-of $m
+                        $(args_disable_others "$m" "$n")"
+        add_cmd "Mirror    $m -> $n" \
+                "xrandr --output $m --auto --primary
+                        --output $n --auto --same-as $m
+                        $(args_disable_others "$m" "$n")"
     done
 done
 
 choice=$(printf "%s$options" "" \
-    | dmenu -i -l 10 -p "Choose a monitor configuration" \
+    | dmenu -i -l 10 -p "Choose a monitor configuration:" \
     | cut -d " " -f 1)
 
-eval "\$command_$choice"
+[ -n "$choice" ] && eval "\$command_$choice"
