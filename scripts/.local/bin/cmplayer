@@ -35,11 +35,11 @@ EOF
     exit
 fi
 
-if ! command -v mplayer > /dev/null 2>&1
-then
-    echo Please install mplayer
-    exit
-fi
+command -v mplayer > /dev/null 2>&1 || { echo Please install mplayer; exit; }
+
+# Use 'q' to quit mplayer with a non-zero exit code so we can quit this script
+MPLAYER_INPUT_CONF="/tmp/mplayer_input.conf"
+rm -f $MPLAYER_INPUT_CONF && echo "q quit 129" > $MPLAYER_INPUT_CONF
 
 # Hide the cursor and texts
 clear; tput civis
@@ -51,7 +51,7 @@ if tmux display -p -F "#S" > /dev/null 2>&1
 then
     pane_id=$(tmux display -p -F "#D" | tr -d %)
     # The following command does the steps:
-    # 1. Output the layout of all the panes
+    # 1. Output the visible layout of all the panes
     # 2. Locate the current pane by its pane id
     # 3. Get the pane's location and size (in unit of characters)
     #
@@ -119,8 +119,10 @@ EOF
 
     # Finally what we wanted to do!
     # Mute all output / disable user config in case of conflicts
-    # Ctrl-C to stop during multiple videos (that's what the `exit 1` is for)
-    mplayer "$video" -msglevel all=-1 -nolirc -noconfig user \
-            -vo fbdev2 -vf scale="$video_w":"$video_h" \
-            -geometry $video_x:$video_y || exit 1
+    # And play the video with correct position and size
+    mplayer "$video" -vo fbdev2 \
+            -msglevel all=-1 -nolirc -noconfig user \
+            -vf scale="$video_w":"$video_h" \
+            -geometry $video_x:$video_y \
+            -input conf=$MPLAYER_INPUT_CONF || exit
 done
