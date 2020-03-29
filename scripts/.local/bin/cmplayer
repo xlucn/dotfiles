@@ -82,6 +82,8 @@ fi
 # Play each of the videos separately (deal with different video sizes)
 for video in "$@"
 do
+    # only play video
+    file --mime-type "$video" | grep -q "application/\|video/" || continue
     # Get the real size of the video
     read -r width height sar_x sar_y << EOF
     $(ffprobe "$video" \
