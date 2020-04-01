@@ -23,11 +23,8 @@ add_cmd()
 args_disable_others()
 {
     for m in $monitors; do
-        unset enabled
-        for n in "$@"; do
-            [ "$m" = "$n" ] && enabled=1
-        done
-        [ -z "$enabled" ] && printf " --output %s --off" "$m"
+        for n in "$@"; do [ "$m" = "$n" ] && enabled="$m"; done
+        [ "$m" != "$enabled" ] && printf " --output %s --off" "$m"
     done
 }
 
@@ -36,27 +33,21 @@ add_cmd "Cancel" true
 
 # Single Monitor
 for m in $monitors; do
-    cmd="xrandr --output $m --auto --primary $(args_disable_others "$m")"
-    add_cmd "Single    $m" "$cmd"
+    add_cmd "Single    $m" "xrandr --output $m --auto --primary
+        $(args_disable_others "$m")"
 done
 
 # Dual monitor
 for m in $monitors; do
     for n in $monitors; do
         [ "$m" = "$n" ] && continue
-        add_cmd "Dual      $m -> $n" \
-                "xrandr --output $m --auto --primary
-                        --output $n --auto --right-of $m
-                        $(args_disable_others "$m" "$n")"
-        add_cmd "Mirror    $m -> $n" \
-                "xrandr --output $m --auto --primary
-                        --output $n --auto --same-as $m
-                        $(args_disable_others "$m" "$n")"
+        add_cmd "Dual      $m -> $n" "xrandr --output $m --auto --primary
+            --output $n --auto --right-of $m $(args_disable_others "$m" "$n")"
+        add_cmd "Mirror    $m -> $n" "xrandr --output $m --auto --primary
+            --output $n --auto --same-as $m $(args_disable_others "$m" "$n")"
     done
 done
 
-choice=$(printf "%s$options" "" \
-    | dmenu -i -l 10 -p "Choose a monitor configuration:" \
-    | cut -d " " -f 1)
+choice=$(printf "%s$options" "" | dmenu -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
 [ -n "$choice" ] && eval "\$command_$choice"
