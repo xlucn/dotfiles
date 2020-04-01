@@ -6,5 +6,5 @@ Exec=st /usr/bin/vim %F
 Icon-Name=vim
 EscapeSpaces=true
 Selection=notnone
-Mimetypes=text/plain;
+Mimetypes=text/*;application/vnd.wolfram.wls;
 Dependencies=vim;st;

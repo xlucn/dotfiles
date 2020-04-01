@@ -6,5 +6,5 @@ Exec=st nvim %F
 Icon-Name=nvim
 EscapeSpaces=true
 Selection=notnone
-Mimetypes=text/plain;
+Mimetypes=text/*;application/vnd.wolfram.wls;
 Dependencies=nvim;st;
