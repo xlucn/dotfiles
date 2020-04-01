@@ -74,10 +74,9 @@ fzfyay() {
 }
 
 # Console color theme, reuse .Xresources definitions
-# Use wal generated if not defined in .Xresources
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
-    sed -n "$_SEDCMD" "$HOME/.cache/wal/colors.Xresources" "$HOME/.Xresources" \
+    sed -n "$_SEDCMD" "$HOME/.Xresources" \
     | while read -r n color; do
         if [ "$n" -lt 16 ]; then
             printf "\e]P%X%s" "$n" "$color"
