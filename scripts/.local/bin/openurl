@@ -3,11 +3,11 @@
 # Helper script to show urls in dmenu from piped content i.e.
 #   cat urls | this script -> show urls in dmenu
 
-# First line to concatenate urls in mutt if sidebar is shown
 # Url supported: http, ftp, mailto, magnet link, local file
-sed 's/.*│//g' | tr -d '\n' \
-| grep -aEo '((https?|ftp|file)://|(mailto|magnet):|www.)[^[:space:],;\">\\)]*[^][:space:],.;:\">\\)}]' \
+grep -aEo '((https?|ftp|file)://|(mailto|magnet):|www.)[^[:space:],;\">\\)]*[^][:space:],.;:\">\\)}]' \
 | uniq | dmenu -i -p 'Select url to open:' -l 10 | xargs -r xdg-open
 
+# First line to concatenate urls in mutt if sidebar is shown
+# sed 's/.*│//g' | tr -d '\n' \
 # Original url regex from Luke Smith
 # "grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./@&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'|"
