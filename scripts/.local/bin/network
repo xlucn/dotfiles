@@ -106,6 +106,9 @@ if [ -z "$devices" ]; then
     elif [ "$flag_speed" = 1 ]; then
         echo 0
         echo 0
+    elif [ "$flag_connection" = 1 ]; then
+        echo --
+        echo 0
     else
         echo 0
     fi
@@ -123,7 +126,7 @@ for device in $devices; do
     elif [ "$flag_connection" = 1 ]; then
         nmcli -f GENERAL,AP dev show "$(basename "$device")" \
             | grep -A 8 -E "(AP[^*]*\*|GENERAL.CONNECTION)" \
-            | awk '/\.(CONNECTION|SIGNAL):/{ print $2 }' \
+            | awk -F ": *" '/\.(CONNECTION|SIGNAL):/{ print $2 }' \
             | { read -r connection;
                 read -r signal;
                 echo "${connection:---}"

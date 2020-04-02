@@ -529,8 +529,8 @@ local function network()
             awful.spawn.easy_async_with_shell(
                 "network -e; network -w; network -es; network -ws; network -wc; network -ec",
                 function(stdout)
-                    local e, w, ed, eu, wd, wu, _, ws, _ = string.match(stdout,
-                        "(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%S+)\n(%d+)\n(%S+)")
+                    local e, w, ed, eu, wd, wu, _, ws, _, es = string.match(stdout,
+                        "(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n([^\n]+)\n(%d+)\n([^\n]+)\n(%d+)")
                     ws = tonumber(ws)
                     local upspeed = tonumber(eu) + tonumber(wu)
                     local downspeed = tonumber(ed) + tonumber(wd)
