@@ -9,17 +9,15 @@ local dpi = beautiful.xresources.apply_dpi
 local config = require("config")
 local modkey = config.modkey
 -- }}}
-
--- helper function {{{
-local function fontfg(fn, color, text)
-    return string.format("<span font='%s' foreground='%s'>%s</span>", fn, color, text)
-end
-
-local function font(fn, text)
-    return string.format("<span font='%s'>%s</span>", fn, text)
+-- markup function {{{
+local function markup(text, fn, color)
+    if color then
+        return string.format("<span font='%s' foreground='%s'>%s</span>", fn, color, text)
+    else
+        return string.format("<span font='%s'>%s</span>", fn, text)
+    end
 end
 -- }}}
-
 -- clickable {{{
 local function clickable(widget)
     local bg = beautiful.fg_normal
@@ -31,74 +29,85 @@ local function clickable(widget)
     return click
 end
 -- }}}
-
 -- font/image buttons {{{
-local function icon_button(icon, args)
+-- The method is basically copied from AwesomeWM library files, I have no idea why it works
+local icon_button_widget = {}
+function icon_button_widget:set_shape(shape)
+    self._private.container.shape = shape
+end
+function icon_button_widget:set_buttons(buttons)
+    self._private.container:get_children_by_id("margin_role")[1].buttons = buttons
+end
+function icon_button_widget:set_image_margin(margin)
+    self._private.image_margin = margin
+    if not self._private.use_font then
+        self._private.container:get_children_by_id("margin_role")[1].margins = margin
+    end
+end
+function icon_button_widget:set_font_margin(margin)
+    self._private.font_margin = margin
+    if self._private.use_font then
+        self._private.container:get_children_by_id("margin_role")[1].right = margin
+    end
+end
+function icon_button_widget:set_icon(icon, args)
+    local function check_icon(i)
+        return type(i) == "table" and i or ( self._private.use_font and { i, nil } or { nil, i } )
+    end
+
+    args = args or {}
+    icon = check_icon(icon)
+    if self._private.use_font then
+        self._private.container:get_children_by_id("text_role")[1]:
+            set_markup(markup(icon[1] or "",
+                              config.icon_font .. " " .. (args.font_size or "20"),
+                              icon.color or beautiful.fg_normal))
+        if not self._private.font_margin then
+            self:set_font_margin(icon.font_margin or 0)
+        end
+    else
+        self._private.container:get_children_by_id("image_role")[1]:set_image(icon[2])
+        if not self._private.image_margin then
+            self:set_image_margin(beautiful.button_imagemargin + (icon.image_margin or 0))
+        end
+    end
+end
+local function icon_button_build(icon, args)
     args = args or {}
     local use_font = args.use_font or not config.use_image_icon
 
-    local function check_icon(i)
-        return type(i) == "table" and i or ( use_font and { i, nil } or { nil, i } )
-        -- return i or {}
-    end
+    local clickable_widget = clickable()
+    local button = wibox.widget.base.make_widget(clickable_widget, nil, {enable_properties = true})
+    gears.table.crush(button, icon_button_widget, true)
+    button._private.container = clickable_widget
+    button._private.use_font = use_font
 
-    icon = check_icon(icon)
-    -- print(use_font, icon and tostring(icon[1]) .. tostring(icon[2]))
-
-    local button = wibox.widget {
+    clickable_widget:setup {
         use_font and {
-            {
-                id = "text_role",
-                align = "center",
-                valign = "center",
-                markup = fontfg(config.icon_font .. " " .. (args.font_size or "20"),
-                                icon.color or beautiful.fg,
-                                icon[1] or ""),
-                widget = wibox.widget.textbox,
-            },
-            right = icon.font_margin or 0,
-            buttons = args.buttons,
-            forced_width = beautiful.bar_size,
-            forced_height = beautiful.bar_size,
-            widget = wibox.container.margin
+            id = "text_role",
+            align = "center",
+            valign = "center",
+            widget = wibox.widget.textbox,
         } or {
-            {
-                id = "image_role",
-                image = icon[2],
-                widget = wibox.widget.imagebox,
-            },
-            margins = beautiful.button_imagemargin + (icon.image_margin or 0),
-            buttons = args.buttons,
-            forced_width = beautiful.bar_size,
-            forced_height = beautiful.bar_size,
-            widget = wibox.container.margin,
+            id = "image_role",
+            widget = wibox.widget.imagebox,
         },
-        widget = clickable
+        id = "margin_role",
+        forced_width = beautiful.bar_size,
+        forced_height = beautiful.bar_size,
+        widget = wibox.container.margin,
     }
 
-    function button:set_icon(newicon, newargs)
-        -- print(use_font, newicon and tostring(newicon[1]) .. tostring(newicon[2]))
-        newargs = newargs or {}
-        newicon = check_icon(newicon)
-        if use_font then
-            local textbox = self:get_children_by_id("text_role")[1]
-            textbox:set_markup(fontfg(config.icon_font .. " " .. (newargs.font_size or "20"),
-                                      newicon.color or beautiful.fg_normal,
-                                      newicon[1] or ""))
-            self.right = newicon.font_margin or 0
-        else
-            local imagebox = self:get_children_by_id("image_role")[1]
-            imagebox:set_image(newicon[2])
-            self.margins = beautiful.button_imagemargin + (newicon.image_margin or 0)
-        end
-    end
+    button:set_icon(icon, args)
 
     return button
 end
+local icon_button = setmetatable(icon_button_widget, {
+    __call = function(_, ...) return icon_button_build(...) end
+})
 -- }}}
-
 -- OSD {{{
-local test_popup = awful.popup {
+local osd_popup = awful.popup {
     widget = {
         {
             icon_button(),
@@ -121,25 +130,21 @@ local test_popup = awful.popup {
     visible     = false,
     ontop       = true,
 }
-test_popup:buttons(gears.table.join(
-    awful.button({}, 1, function(t) t.visible = false end)
-))
-local test_timer = gears.timer {
+osd_popup:buttons { awful.button({}, 1, function() osd_popup.visible = false end) }
+local osd_timer = gears.timer {
     timeout = 2,
     autostart = true,
     single_shot = true,
-    callback = function()
-        test_popup.visible = false
-    end
+    callback = function() osd_popup.visible = false end
 }
 local function osd_show(icon, value)
-    test_popup.widget:get_children_by_id("progressbar")[1].value = value
-    test_popup.widget:get_children_by_id("icon_button")[1].children[1]:set_icon(icon, { font_size = 160 })
-    test_popup.visible = true
-    test_timer:again()
+    osd_popup.widget:get_children_by_id("progressbar")[1].value = value
+    osd_popup.widget:get_children_by_id("icon_button")[1].children[1]:set_icon(icon, { font_size = 120 })
+    osd_popup.screen = mouse.screen
+    osd_popup.visible = true
+    osd_timer:again()
 end
 -- }}}
-
 -- alsa {{{
 local function alsa()
     local color_unmuted = beautiful.fg_normal
@@ -161,8 +166,10 @@ local function alsa()
         end
         icon:set_icon(stat_icon)
         text:set_text(string.format("%3.0f%%", slider.value))
-        -- NOTE: these two must be seperated otherwise the time lag between the two signal
-        -- calls and awful spawn calls therein can cause some troubles.
+        -- NOTE: these two must be seperated instead of combined to one command
+        -- otherwise the awful spawn call will be executed twice some time after
+        -- the two signals (the problem is you don't know in exactly what
+        -- sequence) therein can cause some troubles.
         if t == "level" then
             awful.spawn(string.format("amixer -q set %s %f%%",
                                       config.alsa_channel,
@@ -181,9 +188,7 @@ local function alsa()
                 function(stdout)
                     local stat, vol = string.match(stdout, "(%d)\n(%d+)")
                     slider.value = tonumber(vol)
-                    slider.handle_color = stat ~= "0" and
-                                                 color_unmuted or
-                                                 color_muted
+                    slider.handle_color = stat ~= "0" and color_unmuted or color_muted
                 end
             )
         end
@@ -208,14 +213,14 @@ local function alsa()
     slider:connect_signal('property::handle_color', function() volume_update("stat") end)
 
     -- button bindings
-    icon:buttons({
+    icon:buttons {
         awful.button({}, 1, volume_toggle),
         awful.button({}, 3, function()          -- right click
-            awful.spawn(config.terminal_run("alsamixer"))
+            awful.spawn(config.terminal_run("alsamixer", true))
         end),
         awful.button({}, 4, volume_up),         -- scroll up
         awful.button({}, 5, volume_down)        -- scroll down
-    })
+    }
     local stack_icon = wibox.widget {
         icon,
         icon_button(beautiful.icon_volume_stack),
@@ -230,10 +235,10 @@ local function alsa()
         layout = wibox.layout.fixed.horizontal
     }
     alsa_widget.indicator = config.use_image_icon and icon or stack_icon
-    alsa_widget:buttons({
+    alsa_widget:buttons{
         awful.button({}, 4, volume_up),         -- scroll up
         awful.button({}, 5, volume_down)        -- scroll down
-    })
+    }
     awful.keyboard.append_global_keybindings({
         awful.key({}, "XF86AudioMute", volume_toggle,
                   {description = "toggle mute", group = "Media"}),
@@ -251,13 +256,12 @@ local function alsa()
     return alsa_widget
 end
 -- }}}
-
 -- brightness {{{
+-- Note: using percentage format in `light` command will cause problems.
+-- That is, when the accuracy of the controller is not exactly 1%, you will not
+-- be setting the value to exact x% by simply `light -S x`. The loss is due to
+-- the cut off when switching between percentage and raw format.
 local function light()
-    -- Note: using percentage format in `light` command will cause problematic feedbacks.
-    -- That is, when the accuracy of the controller is not exactly 1%, you will not be
-    -- setting the value to exact x% by simply `light -S x`.
-    -- The loss is due to the precision when switching between percentage and raw format.
     local light_text = wibox.widget.textbox()
     local light_slider = wibox.widget.slider()
     local light_icon = icon_button(beautiful.icon_brightness)
@@ -323,20 +327,19 @@ local function light()
         forced_height = beautiful.bar_size,
         layout = wibox.layout.fixed.horizontal,
     }
-    light_widget:buttons(awful.util.table.join(
+    light_widget:buttons {
         awful.button({}, 5, brightness_down),
         awful.button({}, 4, brightness_up)
-    ))
+    }
     light_widget.indicator = light_icon
-    light_widget.indicator:buttons(awful.util.table.join(
+    light_widget.indicator:buttons {
         awful.button({}, 5, brightness_down),
         awful.button({}, 4, brightness_up)
-    ))
+    }
 
     return light_widget
 end
 -- }}}
-
 -- battery {{{
 local function battery()
     local bat_icon = icon_button()
@@ -357,7 +360,7 @@ local function battery()
                     else
                         stat_icon = beautiful.icon_battery[(level + 4) // 10 + 1]
                     end
-                    bat_text:set_text(tostring(level) .. "%")
+                    bat_text:set_text(string.format("%3.0f%%", level))
                     bat_icon:set_icon(stat_icon)
                     bat_bar.value = level / 100.0
                 end
@@ -375,7 +378,6 @@ local function battery()
     return bat_widget
 end
 -- }}}
-
 -- cpu {{{
 local function cpu()
     local cpu_icon = icon_button()
@@ -397,11 +399,9 @@ local function cpu()
         end
     }
 
-    cpu_icon:buttons(awful.util.table.join(
-        awful.button({}, 3, function()
-            awful.spawn(config.terminal_run("htop -s PERCENT_CPU"))
-        end)
-    ))
+    cpu_icon:buttons { awful.button({}, 3, function()
+        awful.spawn(config.terminal_run("htop -s PERCENT_CPU"))
+    end) }
 
     local cpu_widget = wibox.widget {
         cpu_icon,
@@ -414,7 +414,6 @@ local function cpu()
     return cpu_widget
 end
 -- }}}
-
 -- memory {{{
 local function memory()
     local mem_icon = icon_button()
@@ -435,11 +434,9 @@ local function memory()
         end
     }
     mem_upd:emit_signal("timeout")
-    mem_icon:buttons(awful.util.table.join(
-        awful.button({}, 3, function()
-            awful.spawn(config.terminal_run("htop -s PERCENT_MEM"))
-        end)
-    ))
+    mem_icon:buttons { awful.button({}, 3, function()
+        awful.spawn(config.terminal_run("htop -s PERCENT_MEM"))
+    end) }
     local mem_widget = wibox.widget {
         mem_icon,
         mem_text,
@@ -450,7 +447,6 @@ local function memory()
     return mem_widget
 end
 -- }}}
-
 -- {{{ mail
 local function imap_each(email)
     local imap_icon = icon_button()
@@ -477,14 +473,12 @@ local function imap_each(email)
     }
 
     imap_upd:emit_signal("timeout")
-    imap_icon:buttons(awful.util.table.join(
-        awful.button({}, 3, function()
-            awful.spawn(config.terminal_run(
-                string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
-                              config.mutt, config.mutt, email)
-            ))
-        end)
-    ))
+    imap_icon:buttons { awful.button({}, 3, function()
+        awful.spawn(config.terminal_run(
+            string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
+                          config.mutt, config.mutt, email)
+        ))
+    end) }
     return {
         imap_icon,
         imap_count,
@@ -494,7 +488,6 @@ end
 local function imap()
     local imap_widget = {}
     imap_widget.indicator= wibox.widget{
-        spacing = 16,
         layout = wibox.layout.fixed.horizontal
     }
     for _, email in pairs(config.imap_emails) do
@@ -503,7 +496,6 @@ local function imap()
     return imap_widget
 end
 -- }}}
-
 -- network {{{
 local function network()
     local net_icon = icon_button()
@@ -559,9 +551,9 @@ local function network()
     }
     net_upd:emit_signal("timeout")
 
-    net_icon:buttons(awful.util.table.join(
-        awful.button({}, 1, function() awful.spawn(config.terminal_run("nmtui-connect")) end)
-    ))
+    net_icon:buttons { awful.button({}, 1, function()
+        awful.spawn(config.terminal_run("nmtui-connect", true))
+    end) }
     local network_widget = wibox.widget {
         net_icon,
         net_speed,
@@ -572,7 +564,6 @@ local function network()
     return network_widget
 end
 -- }}}
-
 -- mpd {{{
 local function mpd()
     local function fmt_time(seconds)
@@ -610,7 +601,7 @@ local function mpd()
             awful.spawn.easy_async_with_shell(
                 "printf \"status\\ncurrentsong\\nclose\\n\" | curl telnet://" .. config.mpd_host,
                 function(stdout, _)
-                    -- mpd_now (possible) available keys:
+                    -- mpd_now available keys:
                     -- See file:///usr/share/doc/mpd/html/protocol.html#tags
                     --  or file:///usr/share/doc/mpd/html/protocol.html#querying-mpd-s-status
                     mpd_now = {}
@@ -620,15 +611,9 @@ local function mpd()
                     end
                     mpd_info:set_text(awful.util.escape(string.format(
                         "(%s) %s/%s %s\nFile:\t%s\nArtist:\t%s\nAlbum:\t(%s)\nDate:\t%s\nTitle:\t%s",
-                        mpd_now.pos,
-                        mpd_now.id,
-                        mpd_now.playlistlength,
+                        mpd_now.pos, mpd_now.id, mpd_now.playlistlength,
                         mpd_now.elapsed and "" or "(File might be misssing)",
-                        mpd_now.file,
-                        mpd_now.artist,
-                        mpd_now.album,
-                        mpd_now.date,
-                        mpd_now.title
+                        mpd_now.file, mpd_now.artist, mpd_now.album, mpd_now.date, mpd_now.title
                     )))
                     -- state
                     mpd_play:set_icon(beautiful.icon_music_state[mpd_now.state or "pause"])
@@ -668,15 +653,15 @@ local function mpd()
     local mpc_random = mpc_spawn_update("mpc -q random")
     local mpd_launch_client = function() awful.spawn(config.terminal_run("ncmpcpp")) end
 
-    mpd_icon  :buttons({awful.button({}, 1, mpd_launch_client)})
-    mpd_stop  :buttons({awful.button({}, 1, mpc_stop)})
-    mpd_prev  :buttons({awful.button({}, 1, mpc_prev)})
-    mpd_play  :buttons({awful.button({}, 1, mpc_toggle)})
-    mpd_next  :buttons({awful.button({}, 1, mpc_next)})
-    mpd_repeat:buttons({awful.button({}, 1, mpc_single)})
-    mpd_random:buttons({awful.button({}, 1, mpc_random)})
-    mpd_slider:buttons({awful.button({}, 4, mpc_forward),
-                        awful.button({}, 5, mpc_backward)})
+    mpd_icon:buttons   { awful.button({}, 1, mpd_launch_client) }
+    mpd_stop:buttons   { awful.button({}, 1, mpc_stop) }
+    mpd_prev:buttons   { awful.button({}, 1, mpc_prev) }
+    mpd_play:buttons   { awful.button({}, 1, mpc_toggle) }
+    mpd_next:buttons   { awful.button({}, 1, mpc_next) }
+    mpd_repeat:buttons { awful.button({}, 1, mpc_single) }
+    mpd_random:buttons { awful.button({}, 1, mpc_random) }
+    mpd_slider:buttons { awful.button({}, 4, mpc_forward),
+                         awful.button({}, 5, mpc_backward) }
 
     awful.keyboard.append_global_keybindings({
         awful.key({ modkey, "Shift" }, "-", mpc_prev,
@@ -698,43 +683,34 @@ local function mpd()
             layout = wibox.layout.fixed.horizontal
         },
         {
-            mpd_stop,
-            mpd_prev,
-            mpd_play,
-            mpd_next,
-            mpd_random,
-            mpd_repeat,
-            mpd_time,
+            mpd_stop, mpd_prev, mpd_play, mpd_next, mpd_random, mpd_repeat, mpd_time,
             forced_height = beautiful.bar_size,
             layout = wibox.layout.fixed.horizontal
         },
         mpd_info,
-        spacing = 16,
         layout = wibox.layout.fixed.vertical,
     }
     return mpd_widget
 end
 -- }}}
-
 -- textclock {{{
 local function datetime()
     local clock = wibox.widget {
         {
             align = "center",
-            format = font(beautiful.fontname .. " 11", "%b\n%d\n%a\n\n") ..
-                     font(beautiful.fontname .. " Bold 14", "%H\n%M"),
+            format = markup("%b\n%d\n%a\n\n", beautiful.fontname .. " 11") ..
+                     markup("%H\n%M", beautiful.fontname .. " 14"),
             widget = wibox.widget.textclock
         },
-        margins = { top = 16, bottom = 16 },
+        margins = { top = beautiful.bar_size / 3, bottom = beautiful.bar_size / 3 },
         widget = wibox.container.margin
     }
-    local grid_width = 7 * beautiful.bar_size
-    local grid_height = 7 * beautiful.bar_size
-    local month_offset
-    local year_offset
+    local month_offset = 0 -- only use month offset
+    local row, col, today, firstday, tile
     local calendar_title = wibox.widget {
         align = "center",
         valign = "center",
+        font = beautiful.fontname .. " 13",
         widget = wibox.widget.textbox
     }
     local calendar_grid = wibox.widget {
@@ -743,46 +719,40 @@ local function datetime()
         expand = true,
         homogeneous = true,
         orientation = "horizontal",
-        forced_height = grid_height,
-        forced_width = grid_width,
+        forced_height = 7 * beautiful.bar_size, -- weekday names + at most 6 weeks
+        forced_width = 7 * beautiful.bar_size, -- 7 days a week
         layout = wibox.layout.grid
     }
-    for _ = 1, 7 do  -- week number + weeks * 6
-        for _ = 1, 7 do  -- 7 days a week
-            calendar_grid:add(wibox.widget {
-                {
-                    align = "center",
-                    valign = "center",
-                    widget = wibox.widget.textbox
-                },
-                widget = wibox.container.background
-            })
-        end
+    for _ = 1, 7 * 7 do
+        calendar_grid:add(wibox.widget {
+            {
+                align = "center",
+                valign = "center",
+                font = beautiful.fontname .. " 13",
+                widget = wibox.widget.textbox
+            },
+            widget = wibox.container.background
+        })
     end
     local function calendar_update(e)
-        if e == "+m" then month_offset = month_offset + 1
-        elseif e == "-m" then month_offset = month_offset - 1
-        elseif e == "+y" then year_offset = year_offset + 1
-        elseif e == "-y" then year_offset = year_offset - 1
-        else year_offset, month_offset = 0, 0
-        end
+        month_offset = e and (month_offset + e) or 0
         awful.spawn.easy_async_with_shell(
+            -- the $(date +%%Y-%%m-1) is for acquiring the correct month in case of invalid dates
+            -- (e.g. march 31 -1 month -> march 1, see 'info date')
             string.format("date +\"%%d\";" ..  -- today
                           -- Day of week for the first day of the month, required for right align
-                          "date -d \"1 $(date -d \"%d month %d year\" +\"%%B %%Y\")\" +\"%%w\";" ..
-                          "date -d \"%d month %d year\" +\"%%m %%Y\" | xargs cal",
-                          month_offset, year_offset, month_offset, year_offset),
+                          "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%w\";" ..
+                          -- The calendar of the month
+                          "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%m %%Y\" | xargs cal",
+                          month_offset, month_offset),
             function(stdout)
-                local row, col, today, firstday, tile = 1
+                row = 1
                 for s in string.gmatch(stdout, "([^\n]+)") do
-                    if row == 1 then
-                        today = s
-                    elseif row == 2 then
-                        firstday = tonumber(s + 1)
-                    elseif row == 3 then      -- month year
-                        calendar_title:set_text(s:match("^%s*(.-)%s*$"))
+                    if row == 1 then today = s
+                    elseif row == 2 then firstday = tonumber(s + 1)
+                    elseif row == 3 then calendar_title:set_text(s:match("^%s*(.-)%s*$"))
                     else
-                        -- TODO: use find to improve the procedure here
+                        -- TODO: use find to improve the procedure here (reduce the code duplications)
                         -- ( hint: find items one by one within two for loops )
                         col = 1
                         -- right align the first week, set empty before the first day
@@ -797,7 +767,7 @@ local function datetime()
                         for d in string.gmatch(s, "(%S+)") do
                             tile = calendar_grid:get_widgets_at(row - 3, col)[1]
                             tile.children[1]:set_text(d)
-                            if d == today and year_offset == 0 and month_offset == 0 then
+                            if d == today and month_offset == 0 then
                                 tile.bg = beautiful.bg_focus .. "80"
                             else
                                 tile.bg = "#00000000"
@@ -818,22 +788,24 @@ local function datetime()
         )
     end
     local function cal_button(icon, e)
-        return icon_button(icon, {
-            buttons = { awful.button( {}, 1, function() calendar_update(e) end) }
-        })
+        return wibox.widget{
+            icon = icon,
+            buttons = { awful.button( {}, 1, function() calendar_update(e) end) },
+            widget = icon_button
+        }
     end
     local calendar_popup = wibox ({
         widget = {
             {
                 {
-                    cal_button(beautiful.icon_cal_prev_year, "-y"),
-                    cal_button(beautiful.icon_cal_prev_month, "-m"),
+                    cal_button(beautiful.icon_cal_prev_year, -12),
+                    cal_button(beautiful.icon_cal_prev_month, -1),
                     layout = wibox.layout.fixed.horizontal
                 },
                 clickable(calendar_title),
                 {
-                    cal_button(beautiful.icon_cal_next_month, "+m"),
-                    cal_button(beautiful.icon_cal_next_year, "+y"),
+                    cal_button(beautiful.icon_cal_next_month, 1),
+                    cal_button(beautiful.icon_cal_next_year, 12),
                     layout = wibox.layout.fixed.horizontal
                 },
                 layout = wibox.layout.align.horizontal
@@ -848,23 +820,18 @@ local function datetime()
         height = calendar_grid.forced_height + beautiful.bar_size
     })
 
-    clock:buttons(gears.table.join(
-        awful.button( {}, 1, function()
-            calendar_popup.x = mouse.screen.leftbar.x + beautiful.bar_size
-            calendar_popup.y = mouse.screen.geometry.height - calendar_popup.height
-            calendar_popup.visible = not calendar_popup.visible
-            calendar_update()
-        end)
-    ))
-    calendar_title.buttons = { awful.button( {}, 1, function() calendar_update() end ) }
-    calendar_grid:buttons(gears.table.join(
-        awful.button( {}, 4, function() calendar_update("-m") end),
-        awful.button( {}, 5, function() calendar_update("+m") end)
-    ))
+    clock:buttons { awful.button( {}, 1, function()
+        calendar_popup.x = mouse.screen.leftbar.x + beautiful.bar_size
+        calendar_popup.y = mouse.screen.geometry.height - calendar_popup.height
+        calendar_popup.visible = not calendar_popup.visible
+        calendar_update()
+    end) }
+    calendar_title:buttons { awful.button( {}, 1, function() calendar_update() end ) }
+    calendar_grid:buttons { awful.button( {}, 4, function() calendar_update(1) end),
+                            awful.button( {}, 5, function() calendar_update(-1) end) }
     return clickable(clock)
 end
 -- }}}
-
 -- systray {{{
 local function systray()
     local tray = wibox.widget {
@@ -874,12 +841,10 @@ local function systray()
         widget = wibox.widget.systray,
     }
     local hide_button = icon_button(beautiful.icon_tray[tray.visible])
-    hide_button:buttons (gears.table.join(
-        awful.button({}, 1, function()
-            tray.visible = not tray.visible
-            hide_button:set_icon(beautiful.icon_tray[tray.visible])
-        end)
-    ))
+    hide_button:buttons { awful.button({}, 1, function()
+        tray.visible = not tray.visible
+        hide_button:set_icon(beautiful.icon_tray[tray.visible])
+    end) }
     return wibox.widget {
         {
             tray,
@@ -891,7 +856,6 @@ local function systray()
     }
 end
 --}}}
-
 -- layoutbox {{{
 local function layoutbox(s)
     local box = icon_button()
@@ -904,20 +868,15 @@ local function layoutbox(s)
     awful.tag.attached_connect_signal(s, "property::selected", function () box:update() end)
     awful.tag.attached_connect_signal(s, "property::layout", function () box:update() end)
 
-    box:buttons(gears.table.join(
+    box:buttons {
         awful.button({ }, 1, function () awful.layout.inc( 1) end),
         awful.button({ }, 3, function () awful.layout.inc(-1) end),
-        awful.button({ }, 4, function ()
-                                 if s.selected_tag.gap > 8 then
-                                     awful.tag.incgap(-8)
-                                 end
-                             end),
+        awful.button({ }, 4, function () awful.tag.incgap(-8) end),
         awful.button({ }, 5, function () awful.tag.incgap( 8) end)
-    ))
+    }
     return box
 end
 -- }}}
-
 -- launcher {{{
 local function launcher(s)
     local button = wibox.widget {
@@ -925,21 +884,21 @@ local function launcher(s)
         bg = beautiful.blue,
         widget = wibox.container.background,
     }
-    button:buttons(awful.util.table.join(
-        awful.button({ }, 1, function() awful.spawn(config.launcher_rofi_cmd(s)) end)
-    ))
+    button:buttons { awful.button({ }, 1, function()
+        awful.spawn(config.launcher_rofi_cmd(s))
+    end) }
     return button
 end
 -- }}}
-
 -- new term button {{{
 local function newterm_button()
     local button = icon_button(beautiful.newterm)
-    button:buttons({ awful.button({}, 1, function() awful.spawn(config.terminal) end) })
+    button:buttons { awful.button({}, 1, function()
+        awful.spawn(config.terminal)
+    end) }
     return button
 end
 -- }}}
-
 -- topbar {{{
 local battery_widget = battery()
 local cpu_widget = cpu()
@@ -956,7 +915,7 @@ local function topbar(s)
         y = s.geometry.y,
         width = s.geometry.width - beautiful.bar_size,
         height = beautiful.bar_size,
-        bg = beautiful.bg_normal .. "80",
+        bg = beautiful.bg_normal,
         visible = true,
         ontop = true,
         type = "dock",
@@ -967,7 +926,7 @@ local function topbar(s)
             layout = wibox.layout.fixed.horizontal,
             s.mytasklist,
             newterm_button(),
-            -- forced_width = 1200,
+            -- forced_width = bar.width - 5 * config.basic_size,
         },
         nil,
         {
@@ -981,10 +940,18 @@ local function topbar(s)
         },
     }
     bar:struts({ top = beautiful.bar_size })
+    function bar:toggle()
+        if self.visible then
+            self.flag_hidden = true
+            self.visible = false
+        else
+            self.flag_hidden = false
+            self.visible = true
+        end
+    end
     return bar
 end
 -- }}}
-
 -- leftbar {{{
 local function leftbar(s)
     local bar = wibox {
@@ -993,15 +960,15 @@ local function leftbar(s)
         y = s.geometry.y,
         width = beautiful.bar_size,
         height = s.geometry.height,
-        bg = beautiful.bg_normal .. "80",
+        bg = beautiful.bg_normal,
         visible = true,
         ontop = true,
         type = "dock",
     }
-    bar:buttons(awful.util.table.join(
+    bar:buttons {
         awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
         awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
-    ))
+    }
     bar:setup {
         {
             launcher(s),
@@ -1021,7 +988,6 @@ local function leftbar(s)
     return bar
 end
 -- }}}
-
 -- leftpanel {{{
 local function leftpanel(s)
     local panel = wibox {
@@ -1044,15 +1010,17 @@ local function leftpanel(s)
             light_widget,
             net_widget,
             mpd_widget,
-            spacing = 16,
+            -- spacing = 24,
             layout = wibox.layout.fixed.vertical,
         },
         nil,
         {
-            icon_button(beautiful.closebutton, {buttons = {
-                awful.button({}, 1, function() panel:toggle() end)
-            }}),
-            icon_button("1", { use_font = true }),
+            wibox.widget{
+                icon = beautiful.closebutton,
+                buttons = { awful.button({}, 1, function() panel:toggle() end) },
+                widget = icon_button
+            },
+            icon_button(),
             icon_button(),
             icon_button(),
             icon_button(),
@@ -1080,14 +1048,11 @@ local function leftpanel(s)
         end
     end
 
-    toggle_button:buttons(awful.util.table.join(
-        awful.button({}, 1, function() panel:toggle() end)
-    ))
+    toggle_button:buttons { awful.button({}, 1, function() panel:toggle() end) }
     panel.toggle_button = toggle_button
     return panel
 end
 -- }}}
-
 -- return {{{
 return {
     clickable = clickable,
@@ -1097,5 +1062,4 @@ return {
     topbar = topbar,
 }
 -- }}}
-
 -- vim:foldmethod=marker:foldlevel=0

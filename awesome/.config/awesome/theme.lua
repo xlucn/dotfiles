@@ -7,9 +7,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- my local config
 local config = require("config")
 -- }}}
-
 local theme = {}
-
 -- Colorscheme files from Xresources {{{
 local xresources_theme = beautiful.xresources.get_current_theme()
 theme.dark   = xresources_theme.color0
@@ -21,21 +19,19 @@ theme.purple = xresources_theme.color5
 theme.cyan   = xresources_theme.color6
 theme.light  = xresources_theme.color7
 theme.grey   = xresources_theme.color8
-theme.fg     = xresources_theme.foreground
-theme.bg     = xresources_theme.background
+theme.fg     = xresources_theme.foreground  -- ? better not use this, use light instead
+theme.bg     = xresources_theme.background  -- ? better not use this, use dark instead
 -- }}}
-
 -- Basic Colors {{{
 theme.bg_normal             = theme.bg
 theme.bg_focus              = theme.grey
-theme.bg_urgent             = theme.purple
-theme.bg_minimize           = theme.red
+theme.bg_urgent             = theme.purple .. "80"
+theme.bg_minimize           = theme.red .. "80"
 theme.fg_normal             = theme.fg
 theme.fg_focus              = theme.fg
 theme.fg_urgent             = theme.bg
 theme.fg_minimize           = theme.grey
 -- }}}
-
 -- wallpaper {{{
 local wallpaper = gears.filesystem.get_xdg_data_home() .. "backgrounds/wallpaper.jpg"
 if gears.filesystem.file_readable(wallpaper) then
@@ -44,14 +40,12 @@ else
     theme.wallpaper = theme.grey
 end
 -- }}}
-
 -- Sizes {{{
 theme.preferred_icon_size   = dpi(48)
 theme.bar_size              = dpi(config.bar_size)
 theme.systray_icon_spacing  = dpi(8)
 theme.systray_icon_size     = dpi(24)
 -- }}}
-
 -- Fonts {{{
 theme.fontname                 = config.fontname
 theme.font                     = theme.fontname .. " 11"
@@ -60,8 +54,8 @@ theme.tooltip_font             = theme.fontname .. " 12"
 theme.hotkeys_font             = theme.fontname .. " 14"
 theme.hotkeys_description_font = theme.fontname .. " 11"
 theme.menu_font                = theme.fontname .. " 12"
+theme.titlebar_font = theme.fontname .. " 12"
 -- }}}
-
 -- Window {{{
 theme.useless_gap           = dpi(8)
 theme.border_width          = dpi(0)
@@ -69,16 +63,14 @@ theme.border_normal         = theme.bg_normal
 theme.border_focus          = theme.bg_focus
 theme.border_marked         = theme.bg_urgent
 -- }}}
-
 -- Taglist {{{
-theme.taglist_bg_focus = theme.bg_focus
+theme.taglist_bg_focus = theme.bg_focus .. "80"
 theme.taglist_squares_sel   = gears.surface.load_from_shape (2, theme.bar_size, gears.shape.rectangle, theme.blue)
 theme.taglist_squares_unsel = gears.surface.load_from_shape (2, theme.bar_size, gears.shape.rectangle, theme.blue)
 theme.button_imagemargin = dpi(8)
 -- }}}
-
 -- Tasklist {{{
-theme.tasklist_bg_normal    = theme.bg_normal
+theme.tasklist_bg_normal    = theme.bg_focus .. "40"
 theme.tasklist_fg_focus     = theme.fg_focus
 theme.tasklist_bg_focus     = theme.blue
 theme.tasklist_bg_minimize  = theme.bg_minimize
@@ -86,17 +78,16 @@ theme.tasklist_spacing      = dpi(0)
 theme.tasklist_icon_vmargin = dpi(16)
 theme.tasklist_icon_margin  = dpi(4)
 -- }}}
-
 -- Slider and progressbar {{{
 theme.slider_bar_border_width = 0
 theme.slider_handle_border_width = 0
 theme.slider_handle_width = 0
 theme.slider_bar_shape = gears.shape.rounded_bar
 theme.slider_bar_height = dpi(24)
-theme.slider_bar_color = theme.grey
+theme.slider_bar_color = theme.grey .. "80"
 theme.slider_bar_active_color = theme.fg_normal
 theme.slider_bar_margins = 12 -- { top = 12, bottom = 12 }
-theme.progressbar_bg = theme.grey
+theme.progressbar_bg = theme.grey .. "80"
 theme.progressbar_fg = theme.fg_normal
 theme.progressbar_shape = gears.shape.rounded_bar
 theme.progressbar_border_width = 0
@@ -105,14 +96,12 @@ theme.progressbar_bar_border_width = 0
 theme.progressbar_margins = 12
 -- theme.progressbar_paddings
 -- }}}
-
 -- Tooltip {{{
 theme.tooltip_align = "top_left"
 theme.tooltip_shape = gears.shape.rectangle
 theme.tooltip_marginv = dpi(16)
 theme.tooltip_marginh = dpi(8)
 -- }}}
-
 -- Hotkey {{{
 theme.hotkeys_fg               = theme.fg_normal
 theme.hotkeys_bg               = theme.bg_normal
@@ -121,45 +110,44 @@ theme.hotkeys_border_color     = theme.bg_normal
 theme.hotkeys_border_width     = dpi(16)
 theme.hotkeys_group_margin     = dpi(16)
 -- }}}
-
 -- Icons related functions {{{
-local function find_symbolic_icon_in_dir(dir, name)
+local function find_icon_in_dir(dir, name, scalable)
     if not gears.filesystem.dir_readable(dir) then return nil end
 
     local theme_file = dir .. "/index.theme"
     if not gears.filesystem.file_readable(theme_file) then return nil end
 
+    local s, icon_file
     for line in io.lines(theme_file) do
-        local sub_dirs = line:match('^Directories=(.+)');
-        if sub_dirs then
-            for sub_dir in string.gmatch(sub_dirs, '([^,%s]+)') do
-                if string.find(sub_dir, "symbolic") or
-                    string.find(sub_dir, "scalable") then
-                    local icon_file = string.format("%s/%s/%s.svg", dir, sub_dir, name)
-                    if gears.filesystem.file_readable(icon_file) then
-                        return icon_file
-                    end
+        s = line:match('%[(.+)%]')
+        if s and ((scalable and (s:find("symbolic") or s:find("scalable"))) or
+            (not scalable and s:find(theme.preferred_icon_size))) then
+            for _, ext in ipairs { "svg", "png" } do
+                icon_file = string.format("%s/%s/%s.%s", dir, s, name, ext)
+                if gears.filesystem.file_readable(icon_file) then
+                    return icon_file
                 end
             end
         end
     end
 end
-local function find_symbolic_icon(icon_name)
+function theme.find_icon(icon_name, scalable)
     if icon_name == nil then return nil end
-    if not icon_name:find("symbolic") then
+    if scalable == nil then scalable = true end
+    if scalable and not icon_name:find("symbolic") then
         icon_name = icon_name .. "-symbolic"
+    elseif not scalable and icon_name:find("symbolic") then
+        scalable = true
     end
     -- naughty.notify { text = "finding " .. icon_name }
     local data_dirs = { gears.filesystem.get_xdg_data_home(),
                         table.unpack(gears.filesystem.get_xdg_data_dirs()) }
-    local icon_themes = { config.icon_theme, "Adwaita", "hicolor" }
+    local icon_themes = { config.icon_theme, "Adwaita"}
     for _, data_dir in ipairs(data_dirs) do
         for _, icon_theme in ipairs(icon_themes) do
             local icon_theme_dir = string.format("%s/icons/%s", data_dir, icon_theme)
-            local icon = find_symbolic_icon_in_dir(icon_theme_dir, icon_name)
-            if icon then
-                return icon
-            end
+            local icon = find_icon_in_dir(icon_theme_dir, icon_name, scalable)
+            if icon then return icon end
         end
     end
 end
@@ -170,12 +158,11 @@ local function add_icon_to_theme(icon_table, theme_table)
             add_icon_to_theme(v, theme_table[k])
         else
             theme_table[k] = v
-            theme_table[k][2] = find_symbolic_icon(v[2])
+            theme_table[k][2] = theme.find_icon(v[2])
         end
     end
 end
 -- }}}
-
 -- Icons {{{
 -- Icon theme
 theme.icon_theme = config.icon_theme
@@ -204,10 +191,10 @@ add_icon_to_theme({
         layout_max            = { "󰄮", "zoom-fit-best" },
 
         menuicon              = { "󰀻", "view-app-grid" }, -- start-here
-        sidebar_open          = { "󰄾", "pan-end" },
-        sidebar_close         = { "󰄽", "pan-start" },
-        closebutton           = { "󰅖", "window-close", image_margin = 4 },
-        newterm               = { "󰐕", "list-add", image_margin = 8 },
+        sidebar_open          = { "󰄾", "pan-end" }, -- "pane-hide"
+        sidebar_close         = { "󰄽", "pan-start" }, -- "pane-show"
+        closebutton           = { "󰅖", "window-close", image_margin = 12 },
+        newterm               = { "󰐕", "list-add", image_margin = 6 },
         icon_tray = { [true]  = { "󰅀", "pan-down" },
                       [false] = { "󰅃", "pan-up" } },
 
@@ -235,7 +222,7 @@ add_icon_to_theme({
 
         icon_brightness       = { "󰃟", "display-brightness" },
         icon_memory           = { "󰍛", "media-floppy" },
-        icon_cpu              = { "󰑣", "utilities-system-monitor" },
+        icon_cpu              = { "󰑣", "system-run" }, -- "utilities-system-monitor"
         icon_disk             = { "󰋊", "drive-harddisk" },
 
         icon_battery          = {{"󰂎", "battery-level-0", color = theme.red },
@@ -260,7 +247,6 @@ add_icon_to_theme({
                                 { "󰂊", "battery-level-80-charging" },
                                 { "󰂋", "battery-level-90-charging" },
                                 { "󰂅", "battery-level-100-charged" }},
-        -- icon_battery_charging = { "󰂄", "battery-charging" },
         icon_battery_unknown  = { "󰂑", "battery-missing" },
         icon_upspeed          = { "󰕒", "go-up" },
         icon_downspeed        = { "󰇚", "go-down" },
@@ -279,10 +265,10 @@ add_icon_to_theme({
         icon_email_read       = { "󰇰", "mail-read" },
         icon_email_sync       = { "󱋈", "mail-read" },
 
-        icon_cal_prev_year    = { "󰄽", "pan-start" },
-        icon_cal_next_year    = { "󰄾", "pan-end" },
-        icon_cal_prev_month   = { "󰅁", "pan-start" },
-        icon_cal_next_month   = { "󰅂", "pan-end" },
+        icon_cal_prev_year    = { "󰄽", "go-first" }, -- "pan-start"
+        icon_cal_next_year    = { "󰄾", "go-last" }, -- "pan-end"
+        icon_cal_prev_month   = { "󰅁", "go-previous" }, -- "pan-start"
+        icon_cal_next_month   = { "󰅂", "go-next" }, -- "pan-end"
 
         -- possibly for tag icons
         icon_browser          = { "󰈹", "web-browser" },
@@ -309,12 +295,11 @@ theme.tag_icons = {
     theme.icon_terminal
 }
 -- }}}
-
 -- Titlebar {{{
-theme.titlebar_bg           = theme.fg_normal
-theme.titlebar_fg           = theme.bg_normal
-theme.titlebar_font = theme.fontname .. " 12"
-theme.titlebar_height = dpi(32)
+theme.titlebar_bg     = theme.light
+theme.titlebar_fg     = theme.bg_normal
+theme.titlebar_height = dpi(28)
+theme.titlebar_button_size = dpi(16)
 
 local function button(color)
     local height = theme.titlebar_height
@@ -337,7 +322,7 @@ for b, c in pairs(button_colors) do
     for _, f in ipairs({"focus", "normal"}) do
         for _, a in ipairs({"_active", "_inactive"}) do
             for _, h in ipairs({"", "_hover", "_press"}) do
-                a = (b == "close" or b == "minimize") and "" or a
+                if b == "close" or b == "minimize" then a = "" end
                 local button_name = string.format("titlebar_%s_button_%s%s%s", b, f, a, h)
                 if theme[button_name] == nil then
                     if h == "_hover" then
@@ -357,20 +342,17 @@ for b, c in pairs(button_colors) do
     end
 end
 -- }}}
-
 -- Notifications {{{
 naughty.config.padding = dpi(8)
 naughty.config.spacing = dpi(8)
 naughty.config.defaults.margin       = dpi(16)
 naughty.config.defaults.timeout      = 10
 naughty.config.defaults.border_width = 0
-naughty.config.defaults.font         = theme.fontname .. " Bold 12"
+naughty.config.defaults.font         = config.fontname .. " Bold 12"
 naughty.config.defaults.icon_size    = 48
 naughty.config.defaults.shape        = gears.shape.rounded_rect
 naughty.config.defaults.opacity      = 0.8
 naughty.config.defaults.bg           = theme.grey
 -- }}}
-
 return theme
-
 -- vim:foldmethod=marker:foldlevel=0

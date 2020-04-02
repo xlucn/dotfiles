@@ -8,6 +8,7 @@ local config = {}
 --
 ------------------------------------------------------------
 
+-- Mod4: Super key or Win key; Mod1: Alt
 config.modkey = "Mod4"
 config.terminal = "st"
 config.terminal_editor = "vim"
@@ -19,26 +20,32 @@ config.fontname = "Hack Bold"
 
 ---- Appearences
 --
--- Bars width / height and also the basic size of a lot of other widgets
--- This value will be applied current the dpi value so don't do it here
-config.bar_size = 48
+-- The basic size for a lot of other widgets.
+-- This value will be applied dpi so don't do it here
+config.basic_size = 48
+-- Bars width or height
+config.bar_size = config.basic_size
 -- The width of side panel
-config.panel_size = config.bar_size * 8
+config.panel_size = config.basic_size * 8
+
+-- Colorscheme: use colors from gtk theme or Xresources
+--      true: use colors from gtk theme
+--      false: use colors from xresource
+config.use_gtk_theme = false
 
 ---- Icons
--- Use font or images for icons, see theme.lua for all icons choices
+-- Use font or images, see theme.lua for all icons in bars and panels
 --      true: svg icons from system icon theme
---      false: use font characters (currently mdi icon fonts from nerdfont)
+--      false: use font characters
 config.use_image_icon = true
 
--- Icon theme for
--- 1. beautiful.icon_theme, which affects menu, tasklist icons, etc.
--- 2. widget icons will use this icon theme if config.use_font_icon = false
+-- Icon theme if use_image_icon is true
+-- Note: beautiful.icon_theme will also be set to this, which affects menu, tasklist icons, etc.
 config.icon_theme = "Papirus-Dark"
 
--- Icon Font for widgets
--- The font characters set in theme.lua should match this font,
---     if you want to use another font, you have to change all the icons
+-- Icon Font if use_image_icon is false
+-- Note: The font characters set in theme.lua should match this font,
+--     if you want to use another font, you have to change all the icons there
 config.icon_font = "Material Design Icons"
 
 
@@ -86,10 +93,22 @@ config.scrot_clip = " -o /dev/stdout | xclip -selection clipboard -t image/png"
 ------------------------------------------------------------
 
 
+-- Command to spawn a floating terminal (for st)
+-- If the terminal support startup notifications (that is, if you can use
+--     'properties' in 'awful.spawn' to make them floating), there is no need to
+--     change the command.
+-- There is a hack in rules to float any window with class name "floating_terminal"
+if config.terminal == "st" then
+    config.floating_terminal = "st -c floating_terminal"
+else
+    config.floating_terminal = config.terminal
+end
+
+
 -- change it if your terminal does not work
 -- e.g. termite needs quotes around command
-config.terminal_run = function(cmd)
-    return config.terminal .. " -e " .. cmd
+config.terminal_run = function(cmd, floating)
+    return (floating and config.floating_terminal or config.terminal) .. " -e " .. cmd
 end
 
 config.editor_cmd = function(file)
@@ -119,7 +138,7 @@ end
 -- Default client shape
 -- The shape always change to rectangle in the following cases:
 --      fullscreen
---      maximazed
+--      maximized
 --      firefox main window, you can add/change other browsers in rules.
 config.client_shape = gears.shape.rounded_rect
 

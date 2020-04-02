@@ -1,5 +1,4 @@
--- luacheck: globals awesome client root screen mouse button drawin drawable tag key
-
+-- luacheck: globals awesome client screen mouse tag
 -- Libraries {{{
 -- timing, monitor this within Xephyr
 os.execute("echo start: ; date +%s.%N")
@@ -10,15 +9,14 @@ local ruled = require("ruled")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local menu_utils = require("menubar.utils")
 require("awful.autofocus")
 -- local modules
 beautiful.init(require("theme"))
 local mywidgets = require("widgets")
 local config = require("config")
 os.execute("echo loaded libraries: ; date +%s.%N")
+-- gears.debug.dump(beautiful.gtk.get_theme_variables ())
 -- }}}
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -30,7 +28,6 @@ naughty.connect_signal("request::display_error", function(message, startup)
     }
 end)
 -- }}}
-
 -- {{{ Variable definitions
 -- Default modkey
 local modkey = config.modkey or "Mod4"
@@ -43,17 +40,12 @@ awful.layout.append_default_layouts {
     awful.layout.suit.floating,
 }
 -- }}}
-
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
 screen.connect_signal("request::wallpaper", function(s)
     -- Wallpaper
     if beautiful.wallpaper then
         local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
         if wallpaper:find("^#") then
             gears.wallpaper.set(wallpaper)
         else
@@ -62,7 +54,11 @@ screen.connect_signal("request::wallpaper", function(s)
     end
 end)
 
-awful.screen.connect_for_each_screen(function(s)
+screen.connect_signal("request::desktop_decoration", function(s)
+    -- Only create tags, bars and panels for primary screen
+    -- TODO: will there be any default tags for other screens?
+    if s ~= screen.primary then return end
+
     -- Each screen has its own tag table.
     -- use font glyph for tag names or icons for, well, icons
     for index = 1, 9 do
@@ -71,31 +67,8 @@ awful.screen.connect_for_each_screen(function(s)
             index = index,
             gap_single_client = index ~= 2,
             selected = index == 1,
-            icon = beautiful.tag_icons[index][2],
             layout = awful.layout.layouts[1],
         })
-    end
-
-    local function test_templ()
-        return config.use_image_icon and
-        {
-            {
-                id     = 'icon_role',
-                widget = wibox.widget.imagebox,
-            },
-            margins = beautiful.bar_size * 0.3,
-            widget = wibox.container.margin,
-        } or {
-            {
-                id = "text_role",
-                align = "center",
-                valign = "center",
-                widget = wibox.widget.textbox,
-            },
-            forced_width = beautiful.bar_size,
-            forced_height = beautiful.bar_size,
-            widget = wibox.container.margin
-        }
     end
 
     -- Create a taglist widget
@@ -103,23 +76,28 @@ awful.screen.connect_for_each_screen(function(s)
         screen = s,
         layout = wibox.layout.fixed.vertical,
         filter = awful.widget.taglist.filter.all,
-        buttons = gears.table.join(
+        buttons = {
             awful.button({ }, 1, function(t) t:view_only() end),
             awful.button({ modkey }, 1, function(t)
-                             if client.focus then client.focus:move_to_tag(t) end
-                         end),
+                if client.focus then client.focus:move_to_tag(t) end
+            end),
             awful.button({ }, 3, awful.tag.viewtoggle),
             awful.button({ modkey }, 3, function(t)
-                             if client.focus then client.focus:toggle_tag(t) end
-                         end)
-        ),
-        widget_template = { -- TODO: use icon_button
-            { -- this provides 'icon_role' and 'text_role'
-                test_templ(),
-                widget = mywidgets.clickable,
+                if client.focus then client.focus:toggle_tag(t) end
+            end)
+        },
+        widget_template = {
+            {
+                id = "icon_button",
+                image_margin = beautiful.bar_size / 4,
+                widget = mywidgets.icon_button,
             },
             id     = 'background_role',
             widget = wibox.container.background,
+            create_callback = function(self, _, index, _)
+                self:get_children_by_id("icon_button")[1]
+                    :set_icon(beautiful.tag_icons[index])
+            end
         },
     }
 
@@ -127,7 +105,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen   = s,
         filter   = awful.widget.tasklist.filter.currenttags,
-        buttons  = gears.table.join(
+        buttons  = {
             awful.button({ }, 1, function (c)
                 if c == client.focus then
                     c.minimized = true
@@ -144,7 +122,7 @@ awful.screen.connect_for_each_screen(function(s)
             end),
             awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
             awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
-        ),
+        },
         -- Notice that there is *NO* wibox.wibox prefix, it is a template,
         -- not a widget instance.
         widget_template = {
@@ -164,22 +142,23 @@ awful.screen.connect_for_each_screen(function(s)
                     {
                         {
                             id = 'close_role',
-                            mywidgets.icon_button(beautiful.closebutton),
+                            icon = beautiful.closebutton,
                             shape = gears.shape.circle,
-                            widget = mywidgets.clickable,
+                            forced_width = beautiful.bar_size - 12,
+                            widget = mywidgets.icon_button
                         },
                         left = beautiful.tasklist_icon_vmargin,
                         right = beautiful.tasklist_icon_vmargin,
+                        top = beautiful.tasklist_icon_margin,
+                        bottom = beautiful.tasklist_icon_margin,
                         widget = wibox.container.margin,
                     },
                     forced_height = beautiful.bar_size - 2,
                     layout = wibox.layout.align.horizontal,
                 },
                 {
-                    wibox.widget.base.make_widget(),
-                    -- forced_height = 4,
-                    id            = 'background_role',
-                    widget        = wibox.container.background,
+                    id     = 'background_role',
+                    widget = wibox.container.background,
                 },
                 layout = wibox.layout.align.vertical,
             },
@@ -195,27 +174,21 @@ awful.screen.connect_for_each_screen(function(s)
                 -- self.tooltip.mode = "outside"
                 -- self.tooltip.preferred_alignments = {"middle", "front", "back"}
 
-                local closebutton = self:get_children_by_id("close_role")[1]
-                closebutton:buttons(awful.util.table.join(
-                    awful.button({}, 1, function()
-                        c:kill()
-                    end)
-                ))
+                local close_button = self:get_children_by_id("close_role")[1]
+                close_button:buttons { awful.button({}, 1, function() c:kill() end) }
             end,
         },
     }
-
-    -- Create the bars and panels
     s.topbar = mywidgets.topbar(s)
+
     s.leftpanel = mywidgets.leftpanel(s)
     s.leftbar = mywidgets.leftbar(s)
 end)
 os.execute("echo loaded panels: ; date +%s.%N")
 -- }}}
-
 -- {{{ Key bindings
 awful.keyboard.append_global_keybindings({
-    awful.key({ modkey            }, "b", function () mouse.screen.topbar.visible = not mouse.screen.topbar.visible end,
+    awful.key({ modkey            }, "b", function () mouse.screen.topbar:toggle() end,
               {description = "toggle topbar", group="awesome"}),
     awful.key({ modkey,           }, "a", function() mouse.screen.leftpanel:toggle() end,
               {description = "toggle side panel", group="awesome"}),
@@ -255,14 +228,10 @@ awful.keyboard.append_global_keybindings({
     awful.key({ modkey,           }, "Return",  function () awful.spawn(config.terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Shift"   }, "Return",  function ()
-                    if config.terminal == "st" then
-                        awful.spawn("st -c St-float")
-                    else
-                        awful.spawn(config.terminal, { properties = { floating = true } })
-                    end
+                    awful.spawn(config.floating_terminal, { properties = { floating = true } })
                 end,
               {description = "open a floating terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "l",  function () awful.spawn("dm-tool switch-to-greeter") end,
+    awful.key({ modkey, "Control" }, "l",  function () awful.spawn("slock") end,
               {description = "lock screen", group = "awesome"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
@@ -301,9 +270,9 @@ awful.keyboard.append_global_keybindings({
               {description = "application launcher", group = "launcher"}),
     awful.key({ modkey,           }, "x", function () awful.spawn("rofi -show run") end,
               {description = "run command", group = "launcher"}),
-    awful.key({ modkey }, "p", function() awful.spawn("setmonitor") end,
+    awful.key({ modkey }, "p", function() awful.spawn("setmonitor", false) end,
               {description = "set display", group = "screen"}),
-    awful.key({ }, "XF86Display", function() awful.spawn("setmonitor") end,
+    awful.key({ }, "XF86Display", function() awful.spawn("setmonitor", false) end,
               {description = "set display", group = "screen"}),
 
     -- Application launching
@@ -333,8 +302,6 @@ local clientkeys = gears.table.join(
               function (c) c.ontop = not c.ontop end,
               {description = "toggle ontop", group = "client"}),
     awful.key({ modkey,           }, "n",
-              -- The client currently has the input focus, so it cannot be
-              -- minimized, since minimized clients can't have the focus.
               function (c) c.minimized = true end ,
               {description = "minimize", group = "client"}),
     awful.key({ modkey,           }, "m",
@@ -386,13 +353,12 @@ awful.keyboard.append_global_keybindings({
     }
 })
 
-local clientbuttons = gears.table.join(
+local clientbuttons = {
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize)
-)
+}
 -- }}}
-
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 ruled.client.append_rules {
@@ -470,6 +436,8 @@ ruled.client.append_rules {
             instance = "Navigator"
         },
         properties = {
+            -- The flag_ignore_shape is not a client property, it is just a flag
+            flag_ignore_shape = true,
             tag = beautiful.tag_icons[2][1],
             shape = gears.shape.rectangle,
             titlebars_enabled = false,
@@ -495,7 +463,7 @@ ruled.client.append_rules {
       -- TODO: not perfect. E.g. change from floating to tiling, then restart awesome, it will be floating again
       -- https://github.com/awesomeWM/awesome/issues/2517#issuecomment-578724877
         rule = {
-            class = "St-float"
+            class = "floating_terminal"
         },
         properties = {
             floating = true,
@@ -505,7 +473,6 @@ ruled.client.append_rules {
     },
 }
 -- }}}
-
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c)
@@ -521,17 +488,12 @@ client.connect_signal("manage", function (c)
     end
 
     -- set fallback icon
-    -- TODO: lookup_icon only looks in apps and one or two more folders, not legacy, actions, mimetypes or others
-    --       so maybe extend my find_symbolic_icon to find any icon as well?
-    local t = {}
-    local default_icon = menu_utils.lookup_icon("application-default-icon")  -- application-x-executable
-    local terminal_icon = menu_utils.lookup_icon("utilities-terminal")
-    t["URxvt"] = terminal_icon
-    t["St"] = terminal_icon
-    t["St-float"] = terminal_icon
-
     -- https://www.reddit.com/r/awesomewm/comments/b5rmeo/how_to_add_fallback_icon_to_the_tasklist/
-    c.icon = c.icon or gears.surface(t[c.class] or default_icon)._native
+    local default_icon = beautiful.find_icon("application-x-executable", false)
+    local terminal_icon = beautiful.find_icon("utilities-terminal", false)
+    -- Windows with one of these class names will have 'terminal_icon'
+    local t = { URxvt = true, St = true, floating_terminal = true }
+    c.icon = c.icon or gears.surface(t[c.class] and terminal_icon or default_icon)._native
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
@@ -548,8 +510,8 @@ client.connect_signal("request::titlebars", function(c)
 
     awful.titlebar(c, { size = beautiful.titlebar_height, }):setup {
         nil,
-        { -- Middle
-            { -- Title
+        {
+            {
                 align  = "center",
                 font = beautiful.titlebar_font,
                 widget = awful.titlebar.widget.titlewidget(c)
@@ -557,7 +519,7 @@ client.connect_signal("request::titlebars", function(c)
             buttons = buttons,
             layout  = wibox.layout.flex.horizontal
         },
-        { -- Right
+        {
             {
                 awful.titlebar.widget.floatingbutton (c),
                 awful.titlebar.widget.stickybutton   (c),
@@ -568,32 +530,47 @@ client.connect_signal("request::titlebars", function(c)
                 spacing = beautiful.titlebar_height / 2,
                 layout = wibox.layout.fixed.horizontal
             },
-            margins = beautiful.titlebar_height / 4,
+            top = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
+            bottom = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
+            left = beautiful.titlebar_button_size / 2,
+            right = beautiful.titlebar_button_size / 2,
             layout = wibox.container.margin,
         },
         layout = wibox.layout.align.horizontal
     }
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
 -- hide bars for fullscreen windows
 local function fullscreen_toggle(c)
     for _, panel in ipairs({c.screen.topbar, c.screen.leftbar}) do
         if (c.active and c.fullscreen == panel.visible)  -- has focus
         or (not c.active and c.fullscreen and not panel.visible) then -- losing focus
-            panel.visible = not panel.visible
+            -- the flag_hidden is not a widget property, it was set by me
+            if panel.flag_hidden then
+                panel.visible = false
+            else
+                panel.visible = not panel.visible
+            end
         end
     end
 end
--- when change either focus or fullscreen state (I guess that covers all, but might be resource consuming?)
+-- when change either focus or fullscreen state
 client.connect_signal("focus", fullscreen_toggle)
 client.connect_signal("unfocus", fullscreen_toggle)
 client.connect_signal("property::fullscreen", fullscreen_toggle)
 
 client.connect_signal("property::fullscreen", function(c)
-    if c.fullscreen then
+    -- The flag_ignore_shape is not a client property, it was set by me
+    if c.fullscreen or c.flag_ignore_shape then
+        c.shape = gears.shape.rectangle
+    else
+        c.shape = config.client_shape
+    end
+end)
+
+client.connect_signal("property::maximized", function(c)
+    -- The flag_ignore_shape is not a client property, it was set by me
+    if c.maximized or c.flag_ignore_shape then
         c.shape = gears.shape.rectangle
     else
         c.shape = config.client_shape
@@ -604,29 +581,17 @@ naughty.connect_signal("request::display", function(n)
     naughty.layout.box { notification = n }
 end)
 -- }}}
-
--- Log {{{
+-- Garbage collect {{{
 collectgarbage('setpause', 100)
-local t = gears.timer({
-    timeout = 5,
+gears.timer({
+    timeout   = 60,
     autostart = true,
-    callback = function()
+    call_now  = true,
+    callback  = function()
         collectgarbage()
         collectgarbage()
-        -- print(os.date(), "\nLua memory usage:", collectgarbage("count"))
-        -- print("Objects alive:")
-        -- for name, obj in pairs{ button = button,
-        --                         client = client,
-        --                         drawable = drawable,
-        --                         drawin = drawin,
-        --                         key = key,
-        --                         screen = screen,
-        --                         tag = tag } do
-        --     print(name, ": ", obj.instances())
-        -- end
     end
 })
-t:emit_signal("timeout")
 os.execute("echo end: ; date +%s.%N")
 -- }}}
 
