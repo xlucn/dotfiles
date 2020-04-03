@@ -3,8 +3,6 @@
 " vim basic settings
 set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 set viminfo="$HOME/.cache/vim/viminfo"
-" set vim folder
-" let $VIM=$XDG_CONFIG_HOME/vim
 " automatic installation
 if empty(glob("$XDG_CONFIG_HOME/vim/autoload/plug.vim"))
   silent !curl -fLo $XDG_CONFIG_HOME/vim/autoload/plug.vim --create-dirs
@@ -14,21 +12,19 @@ endif
 " begin vim-plug
 call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
 Plug 'VundleVim/Vundle.vim'
-Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 Plug 'liuchengxu/vim-which-key'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
-Plug 'ervandew/supertab'
 Plug 'lervag/vimtex'
 Plug 'VoldikSS/vim-mma'
 Plug 'jpalardy/vim-slime'
@@ -56,6 +52,8 @@ filetype plugin on
 filetype indent on
 " auto reload files
 set autoread
+" set vim folder
+let $VIM = "/home/oliver/.config/vim"
 " set encoding
 set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
@@ -68,6 +66,8 @@ set hidden
 set laststatus=2
 " fold
 set foldlevel=1
+" conceal
+" set conceallevel=2
 " time out for key code delays, decide how long to wait for key code
 " sequence and how long leader guide (if installed) will pop up.
 set timeoutlen=300
@@ -173,7 +173,6 @@ nnoremap <space> za
 " }}}
 " Autocmd {{{
 autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
-autocmd BufNewFile,BufRead *.wl,*.wls setfiletype mma
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
@@ -181,6 +180,22 @@ autocmd FileType tex,markdown,gitcommit setlocal spell
 " fcitx: restore input method state when enter insert mode
 autocmd InsertLeave * let b:fcitx = system('fcitx-remote') | call system('fcitx-remote -c')
 autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system('fcitx-remote -o') | endif
+" }}}
+" Netrw {{{
+" Make Netrw function like NerdTree
+let g:netrw_banner            = 0 " disable banner
+let g:netrw_browse_split      = 4 " open file in previous (CTRL-W_p) window
+let g:netrw_liststyle         = 3 " tree style listing
+let g:netrw_winsize           = 30
+" nnoremap <Tab> :Lexplore<CR>  " This generates empty buffers, bad
+nnoremap <C-N> :call ToggleNetRW()<CR>
+function ToggleNetRW()
+    if exists("g:netrw_buffer")
+        exe "bd".g:netrw_buffer | unlet g:netrw_buffer
+    else
+        Vexplore | let g:netrw_buffer=bufnr("%")
+    endif
+endfunction
 " }}}
 " }}}
 " Plugin Settings {{{
@@ -208,7 +223,6 @@ call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
 " }}}
 " Markdown {{{
-"set conceallevel=2
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
@@ -261,30 +275,6 @@ if $TERM == 'linux'
     let g:lightline.colorscheme = 'base16'
 endif
 " }}}
-" Fugitive {{{
-" show the log in a pretty way
-function! GitRepoLogAll()
-    silent Git log --all --decorate --oneline --graph --date-order
-    redraw!
-endfunction
-" key bindings
-let g:which_key_map.g = {
-  \ 'name' : '+git-operation',
-  \ 'b' : [ '!git branch -a', 'git show branch' ],
-  \ 'd' : [ ':Gvdiff', 'git diff' ],
-  \ 'c' : [ ':Gcommit -v', 'git commit' ],
-  \ 's' : [ ':Gstatus', 'git status' ],
-  \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
-  \ 'u' : [ ':Gpush', 'git push' ],
-  \ 'f' : [ ':Gpull', 'git pull' ],
-  \ 't' : {
-    \ 'name' : '+stash',
-    \ 's' : [ ':Git stash', 'git stash' ],
-    \ 'p' : [ ':Git stash pop', 'git stash pop' ],
-    \ 'l' : [ ':Git stash list', 'git stash list' ]
-    \ }
-  \ }
-" }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
@@ -332,22 +322,6 @@ let g:which_key_map.a = {
   \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ 'h' : [ '<Plug>(ale_hover)' , 'show hover info' ],
   \ }
-" }}}
-" Nerdtree {{{
-let NERDTreeShowBookmarks=1
-let NERDTreeMinimalUI=1
-" let NERDTreeDirArrowExpandable="\u00a0"
-" let NERDTreeDirArrowCollapsible="\u00a0"
-nnoremap <C-N> :NERDTreeToggle<CR>
-let NERDTreeMapUpdir='h'
-let NERDTreeMapUpdirKeepOpen='H'
-let NERDTreeMapChangeRoot='l'
-let g:DevIconsEnableFoldersOpenClose = 1
-" }}}
-" Nerd commenter{{{
-let g:NERDDefaultAlign = 'left'
-let g:NERDSpaceDelims = 1
-let g:NERDRemoveExtraSpaces = 1
 " }}}
 " Vim Tex {{{
 " enable vimtex fold
