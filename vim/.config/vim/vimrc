@@ -271,9 +271,6 @@ let g:lightline = {
     \   'gitbranch': 'fugitive#head'
     \ },
     \ }
-if $TERM == 'linux'
-    let g:lightline.colorscheme = 'base16'
-endif
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns

@@ -4,12 +4,4 @@
 ## site-packages/matplotlib/mpl-data/matplotlibrc
 
 #### LaTeX customizations. See http://wiki.scipy.org/Cookbook/Matplotlib/UsingTex
-text.usetex         : True  ## use latex for all text handling. The following fonts
-                              ## are supported through the usual rc parameter settings:
-                              ## new century schoolbook, bookman, times, palatino,
-                              ## zapf chancery, charter, serif, sans-serif, helvetica,
-                              ## avant garde, courier, monospace, computer modern roman,
-                              ## computer modern sans serif, computer modern typewriter
-                              ## If another font is desired which can loaded using the
-                              ## LaTeX \usepackage command, please inquire at the
-                              ## matplotlib mailing list
+text.usetex: True

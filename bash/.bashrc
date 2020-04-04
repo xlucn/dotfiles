@@ -11,9 +11,6 @@ then
     . /usr/share/bash-completion/bash_completion
 fi
 
-# shellcheck source=/dev/null
-[ -f "$HOME/.extend.bashrc" ] && . "$HOME/.extend.bashrc"
-
 # Environments
 export EDITOR=vim
 export VISUAL=vim
