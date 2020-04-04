@@ -1,34 +1,5 @@
 #!/bin/sh
-# TODO: seperate backend (imap query operations)
-
-# Minimal time interval between two imap queries
-query_interval=120
-
-# email accounts
-accounts="oliver_lew@outlook.com 2869761396@qq.com"
-
-counts=""
-time_now="$(date +%s)"
-for account in $accounts
+for account in oliver_lew@outlook.com 2869761396@qq.com
 do
-    tempfile="/tmp/imap_$account"
-    if [ -f "$tempfile" ]
-    then
-        read -r time_last count < "$tempfile"
-        if [ $((time_now - time_last)) -gt "$query_interval" ]
-        then
-            flag_update=1
-        fi
-        counts="$counts $count"
-    else
-        flag_update=1
-        counts="$counts -"
-    fi
-
-    if [ "$flag_update" = 1 ]
-    then
-        echo "$time_now $(imap "$account")" > "$tempfile"
-    fi
+    printf " %s" "$(imap "$account")"
 done
-
-echo "$counts"

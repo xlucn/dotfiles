@@ -84,11 +84,33 @@ if [ -z "$password" ]; then
     exit 1
 fi
 
-if ! curl -fsm 30 --connect-timeout 30 \
-          --url "imaps://$server:$port" \
-          --user "$email:$password" \
-          --request "STATUS Inbox (UNSEEN)" | grep -oE "[0-9]*"
+# Minimal time interval between two imap queries
+query_interval=120
+
+time_now="$(date +%s)"
+tempfile="/tmp/imap_$email"
+if [ ! -f "$tempfile" ]
 then
-    echo Requesting imap server failed. >&2
-    exit 1
+    flag_update=1
+else
+    read -r time_last count < "$tempfile"
+    if [ $((time_now - time_last)) -gt "$query_interval" ]
+    then
+        flag_update=1
+    elif [ -z "$count" ]; then
+        flag_update=1
+    fi
 fi
+
+if [ "$flag_update" = 1 ]
+then
+    count=$(curl -fsm 30 --connect-timeout 30 \
+         --url "imaps://$server:$port" \
+         --user "$email:$password" \
+         --request "STATUS Inbox (UNSEEN)" \
+         | grep -oE "[0-9]*")
+    printf "%s " "$time_now" > "$tempfile"
+    echo "$count" >> "$tempfile"
+fi
+
+echo "$count"
