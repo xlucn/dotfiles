@@ -1,15 +1,28 @@
-" source "$HOME/.cache/wal/colors-wal.vim"
+let s:Xcolors = { '0': 'NONE',
+  \ '1': 'NONE', '2': 'NONE', '3': 'NONE', '4': 'NONE',
+  \ '5': 'NONE', '6': 'NONE', '7': 'NONE', '8': 'NONE',
+  \ }
+" Load colors from Xresources
+if has('gui_running')
+    let s:regex = '.*\*color\(\d*\):.*\(#[0-9a-fA-F]\{6\}\).*'
+    for line in systemlist("xrdb -query")
+        let s:color = matchlist(line, s:regex)
+        if s:color != []
+            let s:Xcolors[s:color[1]] = s:color[2]
+        endif
+    endfor
+endif
 
-let s:bg      = [ '#212121', 'NONE' ]
-let s:black   = [ '#212121', 0 ]
-let s:red     = [ '#d68787', 1 ]
-let s:green   = [ '#87af87', 2 ]
-let s:yellow  = [ '#d7875f', 3 ]
-let s:blue    = [ '#87afaf', 4 ]
-let s:magenta = [ '#df5f87', 5 ]
-let s:cyan    = [ '#87d7d7', 6 ]
-let s:white   = [ '#808070', 7 ]
-let s:grey    = [ '#4e4e43', 8 ]
+let s:bg      = [ 'NONE', 'NONE' ]
+let s:black   = [ s:Xcolors['0'], 0 ]
+let s:red     = [ s:Xcolors['1'], 1 ]
+let s:green   = [ s:Xcolors['2'], 2 ]
+let s:yellow  = [ s:Xcolors['3'], 3 ]
+let s:blue    = [ s:Xcolors['4'], 4 ]
+let s:magenta = [ s:Xcolors['5'], 5 ]
+let s:cyan    = [ s:Xcolors['6'], 6 ]
+let s:white   = [ s:Xcolors['7'], 7 ]
+let s:grey    = [ s:Xcolors['8'], 8 ]
 
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
 let s:p.normal.left     = [ [ s:black, s:cyan    ], [ s:white, s:grey ] ]
