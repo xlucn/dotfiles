@@ -81,8 +81,8 @@ set completeopt=menuone,noinsert,longest
 " UI basic {{{
 " clear sign column highlight
 highlight clear SignColumn
-" gui options
-set guioptions=ci
+" gui options: dark, tab, icon, scrollbar
+set guioptions=deir
 set guifont=Hack\ 12
 " show line number
 set number
