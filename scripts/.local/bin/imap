@@ -9,16 +9,14 @@ usage()
 {
     echo "Usage: $(basename "$0") [-s server] [-p port] [-P password] [-h] email"
     echo
-    echo "Server information:"
+    echo "Options:"
     echo "    -s: server address of email provider"
     echo "    -p: imap port"
+    echo "    -P: imap password"
     echo "Note:"
     echo "    The script has a few pre-configured server-port status for auto-detection."
-    echo "    The server options can be omitted for these email providers:"
+    echo "    The server options are not needed for these email providers:"
     echo "        gmail, outlook, qqmail"
-    echo
-    echo "Password:"
-    echo "    -P: imap password"
     echo "Note:"
     echo "    This script by default looks for email password with the command:"
     echo "        pass mail/<email>"
@@ -39,8 +37,7 @@ shift $((OPTIND - 1))
 if [ $# = 1 ]; then
     email=$1
 else
-    echo Only one email address as positional argument. See "$(basename "$0")" -h for help.
-    exit 1
+    usage; exit 1
 fi
 
 # Some predefined server and ports

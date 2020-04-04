@@ -33,8 +33,8 @@ set noremap
 "
 " Mappings with , as <leader>. Quit, edit(reload), save and more.
 "
-" Don't know why exactly this could work,
-"   since the manual only specify one character as lhs (here are two).
+" Don't know why exactly this could work, possible reason:
+"   The manual only specify one character as lhs (here are two).
 "   According to 'An introduction to display editing with vi', the lhs
 "   only need to be entered within 1 second when timeout is set.
 map ,q :q

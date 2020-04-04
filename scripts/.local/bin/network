@@ -2,7 +2,7 @@
 # Script to show status, name and speed of network interfaces
 
 usage() {
-    echo "$(basename "$0") [ -h ] [ -ew -i <name> ] [ -cns ]"
+    echo "$(basename "$0") [ -h ] [ -ew -i <interface> ] [ -cns ]"
     echo
     echo "Devices:"
     echo "    -e: show stats about all ethernet devices"
@@ -32,7 +32,7 @@ while getopts "i:webcnsh-:" arg; do
         s) flag_speed=1;;
         h) flag_human_readable=1;;
         -) [ "$OPTARG" = "help" ] && usage; exit;;
-        *) usage; exit;;
+        *) usage; exit 1;;
     esac
 done
 shift "$((OPTIND - 1))"
