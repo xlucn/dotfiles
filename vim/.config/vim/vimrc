@@ -185,7 +185,6 @@ autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system('fcitx-
 " Make Netrw function like NerdTree
 let g:netrw_banner            = 0 " disable banner
 let g:netrw_browse_split      = 4 " open file in previous (CTRL-W_p) window
-let g:netrw_liststyle         = 3 " tree style listing
 let g:netrw_winsize           = 30
 " nnoremap <Tab> :Lexplore<CR>  " This generates empty buffers, bad
 nnoremap <C-N> :call ToggleNetRW()<CR>
