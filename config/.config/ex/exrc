@@ -1,3 +1,4 @@
+" vim: ft=vim
 " file: .exrc
 "
 " Some rules for vi init file:
@@ -5,7 +6,7 @@
 " - No empty lines
 "
 " VI only option
-set noflash
+" set noflash
 "
 " Options
 " Vi will show tab as ^I, literally. It's not good looking.
@@ -49,14 +50,14 @@ map ,r :source ~/.exrc
 " Default commented, delete and navigate in normal mode instead
 "
 " Make backspace delete as expected
-" map!  sa
-" map!  sa
-" Bad hacks for arrow heys
+map!  sa
+map!  sa
+" Bad hacks for arrow heys, lag when pressing escape
 " map! OA ka
 " map! OB ja
 " map! OD ha
 " map! OC la
 "
-" Complicated example, copied from somewhere
-" Complete with last word
-" map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
+" Complete words, famous vi macros
+map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
+map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
