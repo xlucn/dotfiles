@@ -6,6 +6,7 @@ Interesting tools
 
 - **`cmplayer`**: play video inside tmux panes with `mplayer` in framebuffer(tty)
 - **`lschars`**: print code points and characters from a font in a nice format
+- **`setmonitor`**: `rofi`/`dmenu` script for managing monitors
 
 Other tools
 
@@ -13,8 +14,9 @@ Other tools
 - `pdfgrep`: grep for pdf files
 - `psg`: grep for `ps` command / enhanced `pgrep`
 - `sdu`: enhanced `du`, only the first level and sort by size (human readable)
-- `setmonitor`: `rofi`/`dmenu` script for managing monitors
-
+- `openurl`: scan for urls in piped texts and open them in dmenu
+- `color256test`: print all 256 colors
+- `colortermtest`: print all color/style combinations with shell escape sequence (`\e[$i;${fg};${bg}m`)
 
 Some system info scripts
 
@@ -25,6 +27,7 @@ Some system info scripts
 - `mem`: various memory info (single number)
 - `network`: network name/speed for specified/found interface
 - `vol`: volume status and level
+- `up`: system up time
 
 Tmux helper scripts
 
