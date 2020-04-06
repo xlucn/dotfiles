@@ -1,113 +1,106 @@
 #!/bin/sh
-# TODO: grab header with
-# curl "imaps://imap.qq.com:993/JUNK" --user "user:pass" -X "FETCH 3 (BODY[HEADER.FIELDS (DATE FROM SUBJECT)])" -v
-# echo UmU6IOeglOeptueUn+WvkuWBh+aUvuWBh+WPiuWuieWFqOaPkOmGkg== | base64 -d
-# echo 中 | iconv -f utf-8 -t gbk
-# echo 中 | iconv -f utf-8 -t gbk | iconv -t utf-8 -f gbk
+# Reference: https://tools.ietf.org/html/rfc5092
 
 usage()
 {
-    echo "Usage: $(basename "$0") [-s server] [-p port] [-P password] [-h] email"
-    echo
-    echo "Options:"
-    echo "    -s: server address of email provider"
-    echo "    -p: imap port"
-    echo "    -P: imap password"
-    echo "Note:"
-    echo "    The script has a few pre-configured server-port status for auto-detection."
-    echo "    The server options are not needed for these email providers:"
-    echo "        gmail, outlook, qqmail"
-    echo "Note:"
-    echo "    This script by default looks for email password with the command:"
-    echo "        pass mail/<email>"
+    cat >&2 << EOF
+Usage: $(basename "$0") [-s server] [-p port] [-P password] [ -n N ] [-h] email
+
+Options:
+    -s: server address of email provider
+    -p: imap port
+    -P: imap password
+    -n: output the latest N email info (date, subject, from)
+Note:
+    The script has a few pre-configured server-port status for auto-detection.
+    The server options are not needed for these email providers:
+        gmail, outlook, qqmail
+Note:
+    This script by default looks for email password with the command:
+        pass mail/<email>
+EOF
 }
 
 # Get the server and port if provided
-while getopts hs:p:P: param; do
+while getopts hn:s:p:P: param; do
     case "$param" in
-        s) _server="$OPTARG";;
-        p) _port="$OPTARG";;
-        P) _password="$OPTARG";;
+        s) _server=$OPTARG;;
+        p) _port=$OPTARG;;
+        P) _password=$OPTARG;;
+        n) _number=$OPTARG;;
         h|*) usage; exit;;
     esac
 done
 shift $((OPTIND - 1))
 
 # Get the email
-if [ $# = 1 ]; then
-    email=$1
-else
-    usage; exit 1
-fi
+if [ $# = 1 ]; then email=$1; else usage; exit 1; fi
 
 # Some predefined server and ports
-case "${email#*@}" in
-    outlook.com)
-        server=imap-mail.outlook.com
-        port=993
-        ;;
-    qq.com)
-        server=imap.qq.com
-        port=993
-        ;;
-    gmail)
-        server=imap.gmail.com
-        port=993
-        ;;
-    *)
-        ;;
+port=993
+case "${email##*@}" in
+    outlook.com) server=imap-mail.outlook.com ;;
+    qq.com)      server=imap.qq.com ;;
+    gmail)       server=imap.gmail.com ;;
+    *) ;;
 esac
 
-if [ -n "$_server" ]; then
-    server="$_server"
-fi
-if [ -n "$_port" ]; then
-    port="$_port"
-fi
+# CLI arguments take precedence
+[ -n "$_server" ] && server="$_server"
+[ -n "$_port" ] && port="$_port"
 
-if [ -z "$server" ] || [ -z "$port" ]; then
-    echo Server or port not set. >&2
-    exit 1
-fi
-
-password=$(pass show mail/"$email" 2> /dev/null)
-
-if [ -n "$_password" ]; then
-    password="$_password"
-fi
-
-if [ -z "$password" ]; then
-    echo Password not set. >&2
-    exit 1
-fi
+[ -z "$server" ] && { echo Server not set. >&2; exit 1; }
+[ -z "$port" ] && { echo Port not set. >&2; exit 1; }
 
 # Minimal time interval between two imap queries
-query_interval=120
+query_interval=60
 
-time_now="$(date +%s)"
 tempfile="/tmp/imap_$email"
-if [ ! -f "$tempfile" ]
-then
-    flag_update=1
-else
-    read -r time_last count < "$tempfile"
-    if [ $((time_now - time_last)) -gt "$query_interval" ]
-    then
-        flag_update=1
-    elif [ -z "$count" ]; then
-        flag_update=1
-    fi
+touch "$tempfile"
+read -r time_last count < "$tempfile"
+time_now="$(date +%s)"
+if [ -n "$count" ] && [ $((time_now - time_last)) -lt "$query_interval" ]; then
+    echo "$count"
+    exit
 fi
 
-if [ "$flag_update" = 1 ]
-then
-    count=$(curl -fsm 30 --connect-timeout 30 \
-         --url "imaps://$server:$port" \
-         --user "$email:$password" \
-         --request "STATUS Inbox (UNSEEN)" \
-         | grep -oE "[0-9]*")
-    printf "%s " "$time_now" > "$tempfile"
-    echo "$count" >> "$tempfile"
-fi
+# Password operations are slow, put it after using cached results
+password=$(pass show mail/"$email" 2> /dev/null)
+[ -n "$_password" ] && password="$_password"
+[ -z "$password" ] && { echo Password not set. >&2; exit 1; }
+
+unseen=$(curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
+         --url "imaps://$server:$port/INBOX" --request "UID SEARCH UNSEEN" \
+         | cut -d " " -f 3- | tr -d "\r")
+count=$(echo "$unseen" | wc -w)
+echo "$time_now $count" > "$tempfile"
 
 echo "$count"
+
+base64_decode() {
+    encode=$1; base64=$2; string=$3
+    if [ "$base64" = 'B' ] || [ "$base64" = 'b' ]; then
+        echo "$string" | base64 -d | iconv -f "$encode" -t "utf-8"
+    fi
+}
+
+parse_envelope() {
+    base64_regex='\"=?\([^?]*\)?\(.\)?\([^?]*\)?=\"' # contains 3 matches
+    quoted_regex='\"\([^\"]*\)\"' # contains 1 match
+    while IFS=\| read -r date sub_encode sub_base64 sub_string from_encode from_base64 from_string user host; do
+        date -d "$date" +"%Y-%m-%d %r"
+        base64_decode "$sub_encode" "$sub_base64" "$sub_string"; echo
+        base64_decode "$from_encode" "$from_base64" "$from_string"
+        echo " <$user@$host>"
+    done << EOF
+    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*/\1|\2|\3|\4|\5|\6|\7|\8|\9/")
+EOF
+}
+
+if [ -n "$_number" ] && [ "$count" -gt 0 ]; then
+    [ "$count" -ge "$_number" ] && start_pos=$((count - _number + 1))
+    query_list="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
+    curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
+        --url "imaps://$server:$port/INBOX" -X "UID FETCH $query_list (ENVELOPE)" \
+    | parse_envelope
+fi
