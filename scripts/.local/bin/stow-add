@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ "$#" != 2 ] && { echo "$(basename "$0") filename taraget"; exit; }
+
+filename=$1
+target=$2
+folder=$(dirname "$(realpath "$filename")")
+folder="${folder#$HOME}"
+
+[ -z "$folder" ] && exit
+
+mkdir -p "$target/$folder"
+mv "$filename" "$target/$folder"
