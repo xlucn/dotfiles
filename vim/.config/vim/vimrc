@@ -178,8 +178,9 @@ autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
 " fcitx: restore input method state when enter insert mode
-autocmd InsertLeave * let b:fcitx = system('fcitx-remote') | call system('fcitx-remote -c')
-autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system('fcitx-remote -o') | endif
+let s:fcitx_cmd = executable("fcitx5-remote") ? "fcitx5-remote" : "fcitx-remote"
+autocmd InsertLeave * let b:fcitx = system(s:fcitx_cmd) | call system(s:fcitx_cmd.' -c')
+autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx_cmd.' -o') | endif
 " }}}
 " Netrw {{{
 " Make Netrw function like NerdTree
