@@ -1,6 +1,7 @@
 #!/bin/bash
 
-for p in "$HOME/.gem/ruby" "$HOME/.local/bin"; do
+for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"
+do
     if [ -d "$p" ] && ! echo "$PATH" | grep -q "$p"; then
         export PATH="$p:${PATH}"
     fi
@@ -26,6 +27,7 @@ export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
 export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME/Mathematica"
 export PASSWORD_STORE_DIR="$XDG_CONFIG_HOME/password-store"
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
