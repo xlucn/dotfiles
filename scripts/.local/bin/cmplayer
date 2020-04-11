@@ -59,11 +59,8 @@ if [ -n "$TMUX_PANE" ]; then
     #
     # We only need the ones with ids, which means they don't have child structures.
     read -r w h x y << EOF
-    $(
-        tmux display -p -F "#{window_visible_layout}" \
-        | grep -oE "[0-9]+x[0-9]+,[0-9]+,[0-9]+,[0-9]+" \
-        | awk -F'[x,]' '{ if($5 == '"$pane_id"') print $1, $2, $3, $4 }'
-    )
+    $(tmux display -p -F "#{window_visible_layout}" \
+    | sed "s/.*[[{,]\([0-9]*\)x\([0-9]*\),\([0-9]*\),\([0-9]*\),${TMUX_PANE#%}[]},]\?.*/\1 \2 \3 \4/")
 EOF
     pane_w=$((w * charw))
     pane_h=$((h * charh))
@@ -73,9 +70,7 @@ else
     # Use framebuffer size if not in tmux
     pane_x=0
     pane_y=0
-    read -r pane_w pane_h << EOF
-    $(fbset | awk '/geometry/{ print $2, $3 }')
-EOF
+    IFS=, read -r pane_w pane_h < "/sys/class/graphics/$FB/virtual_size"
 fi
 
 # Play each of the videos separately (deal with different video sizes)
@@ -85,12 +80,9 @@ do
     file --mime-type "$video" | grep -q "application/\|video/" || continue
     # Get the real size of the video
     read -r width height sar_x sar_y << EOF
-    $(ffprobe "$video" \
-              -v error \
-              -select_streams v:0 \
-              -show_entries stream=width,height,sample_aspect_ratio \
-              -of csv=s=x:p=0 |
-    awk -F'[x:]' '{ print $1, $2, $3, $4 }')
+    $(ffprobe "$video" -v error -select_streams v:0 -of csv=s=,:p=0 \
+        -show_entries stream=width,height,sample_aspect_ratio \
+    | sed 's/\([0-9]*\),\([0-9]*\),\([0-9]*\):\([0-9]*\)/\1 \2 \3 \4/')
 EOF
 
     # fix the aspect ratio, sar might be absent in some videos
