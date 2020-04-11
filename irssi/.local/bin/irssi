@@ -28,8 +28,8 @@ if [ -z $NO_TMUX ]; then
         tmux -L "$session" set -s -t irssi prefix None
         tmux -L "$session" unbind-key -a
         tmux -L "$session" bind-key -n C-\\ detach-client
-        tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=0
-        tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=0
+        tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=default
+        tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=default
         tmux -L "$session" set -s -t irssi status off
     fi
     tmux -L "$session" attach -t "$session"

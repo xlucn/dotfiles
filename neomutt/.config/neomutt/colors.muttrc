@@ -19,7 +19,7 @@ color index_subject brightcyan default "~N"
 color index_number blue default
 color index_date magenta default
 
-# Header colors:
+# Header colors (you have to put hdrdefault before others):
 color hdrdefault brightgreen default
 color header brightred default "^(Subject)"
 color header brightmagenta default "^(From)"
@@ -29,7 +29,7 @@ color header brightwhite default "^(Date):"
 
 # Sidebar color
 color sidebar_highlight brightred default
-color sidebar_divider brightblack black
+color sidebar_divider brightblack default
 color sidebar_flagged cyan default
 color sidebar_new green black
 color sidebar_indicator black brightblack
