@@ -20,20 +20,15 @@ def math2text(math):
 
 if __name__ == "__main__":
     string = sys.stdin.read()
-    xml = ET.fromstring(string)
-    for title in xml.iter("title"):
-        while True:
-            math_start = title.text.find("<math")
-            math_end = title.text.find("</math>", math_start)
-            if math_start == -1 or math_end == -1:
-                break
-            math = title.text[math_start:math_end + 7]
-            mathxml = ET.fromstring(math)
-            title.text = title.text.replace(math, math2text(mathxml))
-        title.text = title.text.replace("<em>", "")
-        title.text = title.text.replace("</em>", "")
-        title.text = title.text.replace("<sub>", "_")
-        title.text = title.text.replace("</sub>", "")
-        title.text = title.text.replace("<sup>", "^")
-        title.text = title.text.replace("</sup>", "")
-    print(str(ET.tostring(xml), encoding='utf-8'))
+    while True:
+        math_start = string.find("<math")
+        math_end = string.find("</math>", math_start)
+        if math_start == -1 or math_end == -1:
+            break
+        math = string[math_start:math_end + 7]
+        math_text = math2text(ET.fromstring(math))
+        string = string.replace(math, math_text)
+    string = string.replace("<em>", "").replace("</em>", "")
+    string = string.replace("<sub>", "_").replace("</sub>", "")
+    string = string.replace("<sup>", "^").replace("</sup>", "")
+    print(string)
