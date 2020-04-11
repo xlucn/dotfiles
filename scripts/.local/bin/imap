@@ -78,22 +78,22 @@ echo "$time_now $count" > "$tempfile"
 echo "$count"
 
 base64_decode() {
-    encode=$1; base64=$2; string=$3
+    encode=${1%\?*}; base64=${1#*\?}; string=$2
     if [ "$base64" = 'B' ] || [ "$base64" = 'b' ]; then
         echo "$string" | base64 -d | iconv -f "$encode" -t "utf-8"
     fi
 }
 
 parse_envelope() {
-    base64_regex='\"=?\([^?]*\)?\(.\)?\([^?]*\)?=\"' # contains 3 matches
+    base64_regex='\"=?\([^?]*?.\)?\([^?]*\)?=\"' # contains 2 matches
     quoted_regex='\"\([^\"]*\)\"' # contains 1 match
-    while IFS=\| read -r date sub_encode sub_base64 sub_string from_encode from_base64 from_string user host; do
+    while IFS=\| read -r date subject_enc subject from_enc from user host; do
         date -d "$date" +"%Y-%m-%d %r"
-        base64_decode "$sub_encode" "$sub_base64" "$sub_string"; echo
-        base64_decode "$from_encode" "$from_base64" "$from_string"
-        echo " <$user@$host>"
+        base64_decode "$subject_enc" "$subject"; echo
+        base64_decode "$from_enc" "$from"
+        echo " $user@$host"
     done << EOF
-    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*/\1|\2|\3|\4|\5|\6|\7|\8|\9/")
+    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*))/\1|\2|\3|\4|\5|\6|\7/")
 EOF
 }
 
