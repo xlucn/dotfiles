@@ -47,14 +47,13 @@ clear; tput civis
 trap 'clear; tput cnorm' INT TERM QUIT EXIT
 
 # Calculate position and available size
-if tmux display -p -F "#S" > /dev/null 2>&1
-then
     pane_id=$(tmux display -p -F "#D" | tr -d %)
     # The following command does the steps:
     # 1. Output the visible layout of all the panes
     # 2. Locate the current pane by its pane id
     # 3. Get the pane's location and size (in unit of characters)
     #
+if [ -n "$TMUX_PANE" ]; then
     # The format is loosely summarised recursively as:
     # <format> = <width>x<height>,<x>,<y>,(<id> or {<format>} or [<format>])
     #
