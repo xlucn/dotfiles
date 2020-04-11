@@ -28,6 +28,12 @@ bind-key \ toggle-show-read-feeds
 feedlist-format "%4i%S%n %11u %t"
 
 # Colors
+highlight article "^(Feed|Title|Author|Link|Date):" yellow default bold
+highlight articlelist "lens" cyan default bold
+color listnormal          white   default
+color listfocus           white   blue    bold
+color listnormal_unread   yellow  default
+color listfocus_unread    yellow  blue    bold
 
 # Filters
 define-filter "Empty feeds" "total_count = 0"
