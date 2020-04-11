@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import sys
+import xml.etree.ElementTree as ET
+
+
+def math2text(math):
+    if list(math) == []:
+        return math.text if math.text else ""
+    else:
+        texts = [math2text(i) for i in list(math)]
+        if math.tag == "msup":
+            return texts[0] + "^" + texts[1]
+        elif math.tag == "msub":
+            return texts[0] + "_" + texts[1]
+        elif math.tag == "msubsup":
+            return texts[0] + "_" + texts[1] + "^" + texts[2]
+        else:
+            return "".join(texts)
+
+
+if __name__ == "__main__":
+    string = sys.stdin.read()
+    xml = ET.fromstring(string)
+    for title in xml.iter("title"):
+        while True:
+            math_start = title.text.find("<math")
+            math_end = title.text.find("</math>", math_start)
+            if math_start == -1 or math_end == -1:
+                break
+            math = title.text[math_start:math_end + 7]
+            mathxml = ET.fromstring(math)
+            title.text = title.text.replace(math, math2text(mathxml))
+        title.text = title.text.replace("<em>", "")
+        title.text = title.text.replace("</em>", "")
+        title.text = title.text.replace("<sub>", "_")
+        title.text = title.text.replace("</sub>", "")
+        title.text = title.text.replace("<sup>", "^")
+        title.text = title.text.replace("</sup>", "")
+    print(str(ET.tostring(xml), encoding='utf-8'))

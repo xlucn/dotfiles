@@ -1,0 +1,32 @@
+# Settings
+reload-threads 8
+download-retries 3
+download-timeout 60
+reload-only-visible-feeds yes
+
+# Keys
+unbind-key j
+unbind-key k
+bind-key ^Y up
+bind-key ^E down
+bind-key j down
+bind-key k up
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key l open
+bind-key h quit
+bind-key \ toggle-show-read-feeds
+# source ~/.config/newsboat/config
+
+# Formats
+# articlelist-format
+# articlelist-title-format n/a
+# feedlist-title-format
+feedlist-format "%4i%S%n %11u %t"
+
+# Colors
+
+# Filters
+define-filter "Empty feeds" "total_count = 0"
