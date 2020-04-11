@@ -1,36 +1,33 @@
 #!/bin/sh
+#
 # A script to play video in framebuffer using mplayer and put it on the position
 # of current tmux pane if in a tmux session.
-# Environment:
-#   framebuffer, e.g. in tty or fbterm
+#
 # Requirement:
-#   mplayer
-#   ffprobe (part of ffmpeg, should be installed if you have mplayer)
-#   tmux or fbset (at least one)
+#   framebuffer(i.e. in tty), sed, mplayer, ffprobe, tmux(optional)
+#
+# TODO:
+#   pass mplayer options
 
-# Note: you might need to modify this according to your vconsole font setting
-# or the terminal emulator you are using, e.g. fbterm.
 # Character width and height in pixels
 charw=10
 charh=20
+# The framebuffer device name under /dev/
+FB=fb0
+# This temp file will be created
+MPLAYER_INPUT_CONF="/tmp/mplayer_input.conf"
 
-if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]
-then
+if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
 Usage: $(basename "$0") video [ video ... ]
 
 Note: You need to change the character size in this script if the font size
       you are using is different from the preset (10, 20).
 
-Note: This script is meant to be used under framebuffer (e.g. tty), don't
-      use it in a graphical environment.
-      If you are in tty and a tmux session that was started in X11, it will
-      have DISPLAY env variable. unset it with \`unset DISPLAY\` or
-
+Note: This script is meant to be used under framebuffer (e.g. tty).
+      If you are in tty inside a tmux session which was started in X11, it will
+      have a \$DISPLAY environment variable. unset it with \`unset DISPLAY\` or
       $ DISPLAY= $(basename "$0") video
-
-Note: Use Ctrl-C to stop when playing more than one videos, 'q' will only
-      stop the current video and continues the next in list.
 EOF
     exit
 fi
@@ -38,25 +35,18 @@ fi
 command -v mplayer > /dev/null 2>&1 || { echo Please install mplayer; exit; }
 
 # Use 'q' to quit mplayer with a non-zero exit code so we can quit this script
-MPLAYER_INPUT_CONF="/tmp/mplayer_input.conf"
 rm -f $MPLAYER_INPUT_CONF && echo "q quit 129" > $MPLAYER_INPUT_CONF
 
 # Hide the cursor and texts
 clear; tput civis
-# Clean upon quit (still can't process KILL signal, good luck with that)
+# Clean upon quit
 trap 'clear; tput cnorm' INT TERM QUIT EXIT
 
 # Calculate position and available size
-    pane_id=$(tmux display -p -F "#D" | tr -d %)
-    # The following command does the steps:
-    # 1. Output the visible layout of all the panes
-    # 2. Locate the current pane by its pane id
-    # 3. Get the pane's location and size (in unit of characters)
-    #
 if [ -n "$TMUX_PANE" ]; then
-    # The format is loosely summarised recursively as:
-    # <format> = <width>x<height>,<x>,<y>,(<id> or {<format>} or [<format>])
-    #
+    # The following command get the pane's location and size (in unit of characters)
+    # The format of #{window_visible_layout} is loosely summarised recursively as:
+    #   <format> = <width>x<height>,<x>,<y>(,<id>|{<format>}|[<format>])
     # We only need the ones with ids, which means they don't have child structures.
     read -r w h x y << EOF
     $(tmux display -p -F "#{window_visible_layout}" \
@@ -74,9 +64,8 @@ else
 fi
 
 # Play each of the videos separately (deal with different video sizes)
-for video in "$@"
-do
-    # only play video
+for video in "$@"; do
+    # Only play video
     file --mime-type "$video" | grep -q "application/\|video/" || continue
     # Get the real size of the video
     read -r width height sar_x sar_y << EOF
@@ -86,36 +75,29 @@ do
 EOF
 
     # fix the aspect ratio, sar might be absent in some videos
-    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]
-    then
+    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]; then
         width=$((width * sar_x / sar_y))
     fi
 
     # Calculate the actual video dimension on screen that could fit in the pane
     # Also center the video appropriately
-    if [ $((width * pane_h - height * pane_w)) -gt 0 ]
-    then
-        video_w=$pane_w
-        video_h=$((height * pane_w / width))
-        video_x=$pane_x
-        if [ $((pane_w - pane_h)) -gt 0 ]; then
-            video_y=$((pane_y + pane_h / 2 - video_h / 2))
-        else # Only not vertical center if pane if "tall"
-            video_y=$pane_y
-        fi
+    video_w=$pane_w
+    video_h=$pane_h
+    video_x=$pane_x
+    video_y=$pane_y
+    if [ $((width * pane_h - height * pane_w)) -gt 0 ]; then
+        video_h=$((pane_w * height / width))
+        [ "$pane_w" -gt "$pane_h" ] && video_y=$((pane_y + (pane_h - video_h) / 2))
     else
-        video_w=$((width * pane_h / height))
-        video_h=$pane_h
-        video_x=$((pane_x + pane_w / 2 - video_w / 2))
-        video_y=$pane_y
+        video_w=$((pane_h * width / height))
+        video_x=$((pane_x + (pane_w - video_w) / 2))
     fi
 
     # Finally what we wanted to do!
-    # Mute all output / disable user config in case of conflicts
-    # And play the video with correct position and size
-    mplayer "$video" -vo fbdev2 \
-            -msglevel all=-1 -nolirc -noconfig user \
-            -vf scale="$video_w":"$video_h" \
-            -geometry $video_x:$video_y \
+    # - Mute all output / disable user config in case of conflicts
+    # - And play the video with correct position and size
+    # - Use the keybinding trick to quit the whole script on 'q'
+    mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
+            -vf scale="$video_w":"$video_h" -geometry $video_x:$video_y \
             -input conf=$MPLAYER_INPUT_CONF || exit
 done
