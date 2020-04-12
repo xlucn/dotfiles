@@ -64,8 +64,8 @@ password=$(pass show mail/"$email" 2> /dev/null)
 [ -z "$password" ] && { echo Password not set. >&2; exit 1; }
 
 unseen=$(curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
-         --url "imaps://$server:$port/INBOX" --request "UID SEARCH UNSEEN" \
-         | cut -d " " -f 3- | tr -d "\r")
+         --url "imaps://$server:$port/INBOX" --request "UID SEARCH UNSEEN" || exit)
+unseen=$(echo "$unseen" | cut -d " " -f 3- | tr -d "\r")
 count=$(echo "$unseen" | wc -w)
 echo "$time_now $count" > "$tempfile"
 
