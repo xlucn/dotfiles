@@ -4,24 +4,18 @@
 usage()
 {
     cat >&2 << EOF
-Usage: $(basename "$0") [-s server] [-p port] [-P password] [ -n N ] [-h] email
+Usage: $(basename "$0") [-s server] [-p port] [-P password] [-n N] [-h] email
 
 Options:
-    -s: server address of email provider
-    -p: imap port
-    -P: imap password
-    -n: output the latest N email info (date, subject, from)
-Note:
-    The script has a few pre-configured server-port status for auto-detection.
-    The server options are not needed for these email providers:
-        gmail, outlook, qqmail
-Note:
-    This script by default looks for email password with the command:
-        pass mail/<email>
+    -s: Server address of email provider. For the following email providers this
+        option is not needed: gmail, outlook, qqmail
+    -p: Imap port, default is 993
+    -P: Imap password. If not provided, the output of this command is used:
+            pass show mail/<email>
+    -n: Output the latest N emails' info (date, subject, from one in each line)
 EOF
 }
 
-# Get the server and port if provided
 while getopts hn:s:p:P: param; do
     case "$param" in
         s) _server=$OPTARG;;
@@ -59,12 +53,12 @@ tempfile="/tmp/imap_$email"
 touch "$tempfile"
 read -r time_last count < "$tempfile"
 time_now="$(date +%s)"
+# TODO: -n N option not working here
 if [ -n "$count" ] && [ $((time_now - time_last)) -lt "$query_interval" ]; then
-    echo "$count"
-    exit
+    echo "$count"; exit
 fi
 
-# Password operations are slow, put it after using cached results
+# Password operations are slow, put it after using cached results above
 password=$(pass show mail/"$email" 2> /dev/null)
 [ -n "$_password" ] && password="$_password"
 [ -z "$password" ] && { echo Password not set. >&2; exit 1; }
@@ -76,6 +70,8 @@ count=$(echo "$unseen" | wc -w)
 echo "$time_now $count" > "$tempfile"
 
 echo "$count"
+
+# fetch email envelope
 
 base64_decode() {
     encode=${1%\?*}; base64=${1#*\?}; string=$2
@@ -100,6 +96,7 @@ EOF
 if [ -n "$_number" ] && [ "$count" -gt 0 ]; then
     [ "$count" -ge "$_number" ] && start_pos=$((count - _number + 1))
     query_list="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
+    # https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
     curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
         --url "imaps://$server:$port/INBOX" -X "UID FETCH $query_list (ENVELOPE)" \
     | parse_envelope
