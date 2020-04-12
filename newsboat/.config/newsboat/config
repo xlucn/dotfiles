@@ -12,6 +12,8 @@ bind-key ^Y up
 bind-key ^E down
 bind-key j down
 bind-key k up
+bind-key SPACE pagedown
+bind-key b pageup
 bind-key J next-feed articlelist
 bind-key K prev-feed articlelist
 bind-key G end
@@ -34,6 +36,7 @@ color listnormal          white   default
 color listfocus           white   blue    bold
 color listnormal_unread   yellow  default
 color listfocus_unread    yellow  blue    bold
+color info                cyan    default bold
 
 # Filters
 define-filter "Empty feeds" "total_count = 0"
