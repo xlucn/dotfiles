@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Environments
 export EDITOR=vim
@@ -373,12 +373,7 @@ ln=:\
 or=:\
 "
 
-if [[ -f ~/.bashrc ]]
-then
-    . ~/.bashrc
-fi
-
-if [[ -f ~/.extend.bash_profile ]]
-then
-    . ~/.extend.bash_profile
-fi
+# shellcheck disable=SC1090
+[ -f ~/.bashrc ] && . ~/.bashrc
+# shellcheck disable=SC1090
+[ -f ~/.extend.bash_profile ] && . ~/.extend.bash_profile
