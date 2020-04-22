@@ -22,6 +22,8 @@ alias cp="cp -i"
 alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcent,target"
 # mpv under virtual console using drm
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-plane=0"
+# ranger under tty
+alias cranger="ranger --cmd='set preview_images_method w3m'"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # fzf integrate with pacman and yay
