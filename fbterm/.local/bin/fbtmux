@@ -1,40 +1,43 @@
 #! /bin/sh
+# Script to start tmux in fbterm
+#
+# Requirement:
+#   fbterm,
+#   tmux,
+#   fbv(optional, for setting wallpaper),
+#   convert(optional, for darkening and blurring wallpaper)
+#
+# If you don't want to use fbterm, simply start tmux with this config
+#   ~/.config/tmux/tmux.fbterm.conf
 
 # Only start in tty
-if ! tty | grep -q tty; then echo "not in tty"; exit; fi
+tty | grep -q tty || { echo "not in tty"; exit; }
 
 # Check commands
-if ! command -v fbterm > /dev/null 2>&1; then echo please install fbterm; exit; fi
-if ! command -v tmux > /dev/null 2>&1; then echo please install tmux; exit; fi
-if ! command -v fbv > /dev/null 2>&1; then echo no fbv installed, won\'t be using wallpaper; sleep 1; fi
-if ! command -v convert > /dev/null 2>&1; then echo no convert\(from pachage imagemagick\), won\'t be darkening wallpaper; sleep 1; fi
+command -v fbterm > /dev/null 2>&1 || { echo please install fbterm; exit; }
+command -v tmux > /dev/null 2>&1 || { echo please install tmux; exit; }
 
 # Configure wallpaper
 bg_dir="$HOME/.local/share/backgrounds"
 bg_wallpaper=$(find "$bg_dir" -name 'wallpaper*' | head -1)
-ext=${bg_wallpaper##*.}
-bg_fbterm=$bg_dir/fbterm.$ext
+bg_fbterm=$bg_dir/fbterm.${bg_wallpaper##*.}
 
 # Set wallpaper with fbv
-if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1
-then
+if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1; then
     # regenerate darkened image for fbterm with convert
-    if command -v convert > /dev/null 2>&1
-    then
+    if command -v convert > /dev/null 2>&1; then
         # Compare modified time, only update when needed
         # use stat instead of test -nt/-ot command, test will dereference links
         script_time=$(stat -Lc %Y "$0")
         bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
-        if [ -e "$bg_fbterm" ]
-        then
+        if [ -e "$bg_fbterm" ]; then
             bg_fbterm_time=$(stat -c %Y "$bg_fbterm")
         fi
-        if [ ! -e "$bg_fbterm" ] || \
-            [ "$bg_fbterm_time" -lt "$bg_wallpaper_time" ] || \
-            [ "$bg_fbterm_time" -lt "$script_time" ]
-        then
-            # the parameters after -modulate: brightness and saturation
-            convert "$bg_wallpaper" -modulate 20,10 "$bg_fbterm"
+        if [ ! -e "$bg_fbterm" ] \
+        || [ "$bg_fbterm_time" -lt "$bg_wallpaper_time" ] \
+        || [ "$bg_fbterm_time" -lt "$script_time" ]; then
+            # the arguments of -modulate are: brightness, saturation
+            convert "$bg_wallpaper" -modulate 30,20 -blur 0x4 "$bg_fbterm"
         fi
     else
         bg_fbterm=$bg_wallpaper
@@ -51,4 +54,4 @@ fi
 # Everything set, start fbterm!
 cd "${HOME}" || exit
 fbterm -- tmux -L fbterm -f ~/.config/tmux/tmux.fbterm.conf "$@" new -A -s fbterm
-tput cnorm
+tput cnorm # show cursor
