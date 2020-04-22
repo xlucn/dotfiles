@@ -29,10 +29,10 @@ alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # quiet newsboat
 alias newsboat="newsboat -q"
 # fzf integrate with pacman and yay
-fzfpacman() {
+fzf_pacman() {
     pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
 }
-fzfyay() {
+fzf_yay() {
     yay -Slq | fzf -m -q "$*" --preview 'yay -Si {1}'| xargs -ro yay -S
 }
 
