@@ -8,7 +8,7 @@
 
 monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
 
-# This is the core part. Without functionalities like lists in bash, we store
+# This is the core part. Without functionalities like lists, we store
 # the commands beforehand in variable names corresponding to the each option.
 # In other words, if we choose option "N foo bar", the executed command will
 # be "$command_N"
