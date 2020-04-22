@@ -4,10 +4,5 @@
 #   cat urls | this script -> show urls in dmenu
 
 # Url supported: http, ftp, mailto, magnet link, local file
-grep -aEo '((https?|ftp|file)://|(mailto|magnet):|www.)[^[:space:],;\">\\)]*[^][:space:],.;:\">\\)}]' \
+grep -aEo "((https?|ftp|file)://|(mailto|magnet):|www.)[^[:space:],;'\">\\)]*[^][:space:],.;:'\">\\)}]" \
 | uniq | dmenu -i -p 'Select url to open:' -l 10 | xargs -r xdg-open
-
-# First line to concatenate urls in mutt if sidebar is shown
-# sed 's/.*│//g' | tr -d '\n' \
-# Original url regex from Luke Smith
-# "grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./@&%?$#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'|"
