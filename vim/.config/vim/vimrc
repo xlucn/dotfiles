@@ -222,6 +222,18 @@ vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
 " }}}
+" My own goyo mode {{{
+function Goyo()
+    if exists("g:goyo_status")
+        unlet g:goyo_status
+        set number signcolumn=auto showtabline=2 laststatus=2
+    else
+        let g:goyo_status = 1
+        set nonumber signcolumn=no showtabline=0 laststatus=0
+    endif
+endfunction
+let g:which_key_map.g = [ ':call Goyo()', 'Goyo mode']
+" }}}
 " Markdown {{{
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
