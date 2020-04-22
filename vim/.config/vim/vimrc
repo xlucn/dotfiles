@@ -13,7 +13,6 @@ endif
 call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
 Plug 'VundleVim/Vundle.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
@@ -66,6 +65,8 @@ set hidden
 set laststatus=2
 " fold
 set foldlevel=1
+let g:markdown_folding = 1
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 " conceal
 " set conceallevel=2
 " time out for key code delays, decide how long to wait for key code
