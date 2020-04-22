@@ -26,6 +26,8 @@ alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-pl
 alias cranger="ranger --cmd='set preview_images_method w3m'"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
+# quiet newsboat
+alias newsboat="newsboat -q"
 # fzf integrate with pacman and yay
 fzfpacman() {
     pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
