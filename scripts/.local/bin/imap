@@ -1,5 +1,6 @@
 #!/bin/sh
 # Reference: https://tools.ietf.org/html/rfc5092
+#            https://tools.ietf.org/html/rfc3501
 
 usage()
 {
@@ -16,6 +17,10 @@ Options:
 EOF
 }
 
+# Minimal time interval between two imap queries
+query_interval=120
+
+# CLI arguments
 while getopts hn:s:p:P: param; do
     case "$param" in
         s) _server=$OPTARG;;
@@ -46,9 +51,7 @@ esac
 [ -z "$server" ] && { echo Server not set. >&2; exit 1; }
 [ -z "$port" ] && { echo Port not set. >&2; exit 1; }
 
-# Minimal time interval between two imap queries
-query_interval=60
-
+# Read possible cached results
 tempfile="/tmp/imap_$email"
 touch "$tempfile"
 read -r time_last count < "$tempfile"
@@ -63,16 +66,18 @@ password=$(pass show mail/"$email" 2> /dev/null)
 [ -n "$_password" ] && password="$_password"
 [ -z "$password" ] && { echo Password not set. >&2; exit 1; }
 
-unseen=$(curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
-         --url "imaps://$server:$port/INBOX" --request "UID SEARCH UNSEEN" || exit)
+# Fetch and cache
+unseen=$(curl -f -s -m 30 --connect-timeout 30 -u "$email:$password" \
+         --url "imaps://$server:$port/INBOX" -X "UID SEARCH UNSEEN" \
+         || exit)
 unseen=$(echo "$unseen" | cut -d " " -f 3- | tr -d "\r")
 count=$(echo "$unseen" | wc -w)
 echo "$time_now $count" > "$tempfile"
 
+# Output
 echo "$count"
 
 # fetch email envelope
-
 base64_decode() {
     encode=${1%\?*}; base64=${1#*\?}; string=$2
     if [ "$base64" = 'B' ] || [ "$base64" = 'b' ]; then
@@ -81,6 +86,7 @@ base64_decode() {
 }
 
 parse_envelope() {
+    # https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
     base64_regex='\"=?\([^?]*?.\)?\([^?]*\)?=\"' # contains 2 matches
     quoted_regex='\"\([^\"]*\)\"' # contains 1 match
     while IFS=\| read -r date subject_enc subject from_enc from user host; do
@@ -95,9 +101,8 @@ EOF
 
 if [ -n "$_number" ] && [ "$count" -gt 0 ]; then
     [ "$count" -ge "$_number" ] && start_pos=$((count - _number + 1))
-    query_list="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
-    # https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
-    curl -f -s --max-time 30 --connect-timeout 30 --user "$email:$password" \
-        --url "imaps://$server:$port/INBOX" -X "UID FETCH $query_list (ENVELOPE)" \
+    uids="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
+    curl -f -s -m 30 --connect-timeout 30 -u "$email:$password" \
+        --url "imaps://$server:$port/INBOX" -X "UID FETCH $uids (ENVELOPE)" \
     | parse_envelope
 fi
