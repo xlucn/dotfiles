@@ -126,6 +126,7 @@ PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
 HISTSIZE=-1
 HISTFILESIZE=-1
 HISTCONTROL=ignoredups:erasedups
+HISTFILE="$XDG_DATA_HOME/bash_history"
 shopt -s histappend
 
 # Disable ctrl-s and ctrl-q
