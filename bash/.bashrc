@@ -1,7 +1,6 @@
 #!/bin/bash
 
-for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"
-do
+for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"; do
     if [ -d "$p" ] && ! echo "$PATH" | grep -q "$p"; then
         export PATH="$p:${PATH}"
     fi
@@ -36,11 +35,8 @@ fzfyay() {
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
-    sed -n "$_SEDCMD" "$HOME/.Xresources" \
-    | while read -r n color; do
-        if [ "$n" -lt 16 ]; then
-            printf "\e]P%X%s" "$n" "$color"
-        fi
+    sed -n "$_SEDCMD" "$HOME/.Xresources" | while read -r n color; do
+        [ "$n" -lt 16 ] && printf "\e]P%X%s" "$n" "$color"
     done
     clear
 fi
@@ -49,8 +45,7 @@ fi
 __cwd_trim() {
     limit=20
     cwd=$(basename "$PWD")
-    if [ ${#cwd} -gt $limit ]
-    then
+    if [ ${#cwd} -gt $limit ]; then
         printf "\[\e[1;33m\]%s ...\[\e[0m\]" "$(echo "$cwd" | cut -c -"$((limit - 4))")"
     else
         printf "\[\e[1;33m\]%s\[\e[0m\]" "$cwd"
@@ -64,8 +59,7 @@ __jobs_count() {
     count_done=$(echo "$jobs_info" | grep -Ec "Done")
     count_kill=$(echo "$jobs_info" | grep -Ec "Killed|Terminated")
     count=$(( count_stop + count_run + count_done + count_kill ))
-    if [ $count -gt 0 ]
-    then
+    if [ $count -gt 0 ]; then
         printf " "
         [ "$count_stop" -gt 0 ] && printf "\[\e[33m\]S%s\[\e[0m\]" "$count_stop"
         [ "$count_run"  -gt 0 ] && printf "\[\e[32m\]R%s\[\e[0m\]" "$count_run"
@@ -87,10 +81,7 @@ __ssh_indicator() {
 
 __git_autostats() {
     if [ -f /tmp/git-autostats ]; then
-        OLDIFS=$IFS
-        unset IFS
         read -r uptodate ahead behind conflict < /tmp/git-autostats
-        IFS=$OLDIFS
         printf " ["
         [ "$uptodate" -gt 0 ] && printf "\[\e[34m\]%s=\[\e[0m\]" "$uptodate"
         [ "$ahead"    -gt 0 ] && printf "\[\e[32m\]%s+\[\e[0m\]" "$ahead"
