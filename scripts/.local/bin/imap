@@ -87,9 +87,9 @@ parse_envelope() {
         date -d "$date" +"%Y-%m-%d %r"
         base64_decode "$subject_enc" "$subject"; echo
         base64_decode "$from_enc" "$from"
-        echo " $user@$host"
+        echo " <$user@$host>"
     done << EOF
-    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*))/\1|\2|\3|\4|\5|\6|\7/")
+    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*))/\1|\2|\3|\4|\5|\6|\7/" | tr -d '\r')
 EOF
 }
 
