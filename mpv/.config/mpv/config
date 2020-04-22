@@ -30,4 +30,4 @@ hwdec-codecs=h264,vc1,hevc,vp9
 # HDR settings
 tone-mapping=reinhard
 tone-mapping-param=0.5
-tone-mapping-desaturate=0.9
+tone-mapping-desaturate=1.0
