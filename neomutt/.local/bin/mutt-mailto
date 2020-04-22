@@ -1,29 +1,13 @@
 #!/bin/sh
 
-if command -v st
-then
-    TERMINAL=st
-elif command -v urxvtc
-then
-    TERMINAL=urxvtc
-elif command -v termite
-then
-    TERMINAL=termite
-elif command -v xterm
-then
-    TERMINAL=xterm
-else
-    notify-send "no available terminal emulator, please modify the script"
-fi
+for term in xterm termite urxvt st; do
+    command -v "$term" > /dev/null 2>&1 && TERMINAL=$term
+done
+[ -z "$TERMINAL" ] && notify-send "No available terminal emulator"
 
-if command -v neomutt
-then
-    MUTT=neomutt
-elif command -v neomutt
-then
-    MUTT=mutt
-else
-    notify-send "mutt/neomutt not installed"
-fi
+for client in mutt neomutt; do
+    command -v "$client" > /dev/null 2>&1 && MUTT=$client
+done
+[ -z "$MUTT" ] && notify-send "mutt/neomutt not installed"
 
-exec $TERMINAL -e $MUTT "$@"
+$TERMINAL -e $MUTT "$1"
