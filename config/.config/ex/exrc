@@ -50,6 +50,7 @@ map ,r :source ~/.exrc
 " Default commented, delete and navigate in normal mode instead
 "
 " Make backspace delete as expected
+map  h
 map!  sa
 map!  sa
 " Bad hacks for arrow heys, lag when pressing escape
