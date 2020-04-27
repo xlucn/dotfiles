@@ -14,8 +14,8 @@
 #       q quit 1 (or anything that is not 0)
 
 # Character width and height in pixels
-charw=10
-charh=20
+charw=${CHARW-8}
+charh=${CHARH-16}
 # The framebuffer device name under /dev/
 FB=fb0
 
