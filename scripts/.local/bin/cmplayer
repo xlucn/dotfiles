@@ -4,7 +4,7 @@
 # of current tmux pane if in a tmux session.
 #
 # Requirement:
-#   framebuffer(i.e. in tty), sed, mplayer, ffprobe, tmux(optional)
+#   framebuffer(i.e. in tty), mplayer, ffprobe, tmux(optional)
 #
 # TODO:
 #   pass mplayer options
@@ -48,9 +48,9 @@ if [ -n "$TMUX_PANE" ]; then
     # The format of #{window_visible_layout} is loosely summarised recursively as:
     #   <format> = <width>x<height>,<x>,<y>(,<id>|{<format>}|[<format>])
     # We only need the ones with ids, which means they don't have child structures.
-    read -r w h x y << EOF
+    IFS=x, read -r w h x y _ << EOF
     $(tmux display -p -F "#{window_visible_layout}" \
-    | sed "s/.*[[{,]\([0-9]*\)x\([0-9]*\),\([0-9]*\),\([0-9]*\),${TMUX_PANE#%}[]},]\?.*/\1 \2 \3 \4/")
+    | grep -o "\([0-9]*\)x\([0-9]*\),\([0-9]*\),\([0-9]*\),${TMUX_PANE#%}")
 EOF
     pane_w=$((w * charw))
     pane_h=$((h * charh))
@@ -65,14 +65,12 @@ fi
 
 # Play each of the videos separately (deal with different video sizes)
 for video in "$@"; do
-    # Only play video
-    file --mime-type "$video" | grep -q "application/\|video/" || continue
     # Get the real size of the video
-    read -r width height sar_x sar_y << EOF
+    IFS=,: read -r width height sar_x sar_y << EOF
     $(ffprobe "$video" -v error -select_streams v:0 -of csv=s=,:p=0 \
-        -show_entries stream=width,height,sample_aspect_ratio \
-    | sed 's/\([0-9]*\),\([0-9]*\),\([0-9]*\):\([0-9]*\)/\1 \2 \3 \4/')
+    -show_entries stream=width,height,sample_aspect_ratio)
 EOF
+    [ "$width" -gt 0 ] || continue
 
     # fix the aspect ratio, sar might be absent in some videos
     if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]; then
