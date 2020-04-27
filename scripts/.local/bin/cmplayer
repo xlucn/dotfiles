@@ -8,14 +8,16 @@
 #
 # TODO:
 #   pass mplayer options
+# NOTE:
+#   If you want to quit all video play with 'q' (not only the current mplayer),
+#   you have to put the following line in `~/.mplayer/input.conf`:
+#       q quit 1 (or anything that is not 0)
 
 # Character width and height in pixels
 charw=10
 charh=20
 # The framebuffer device name under /dev/
 FB=fb0
-# This temp file will be created
-MPLAYER_INPUT_CONF="/tmp/mplayer_input.conf"
 
 if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
@@ -33,9 +35,6 @@ EOF
 fi
 
 command -v mplayer > /dev/null 2>&1 || { echo Please install mplayer; exit; }
-
-# Use 'q' to quit mplayer with a non-zero exit code so we can quit this script
-rm -f $MPLAYER_INPUT_CONF && echo "q quit 129" > $MPLAYER_INPUT_CONF
 
 # Hide the cursor and texts
 clear; tput civis
@@ -91,11 +90,9 @@ EOF
         video_x=$((pane_x + (pane_w - video_w) / 2))
     fi
 
-    # Finally what we wanted to do!
-    # - Mute all output / disable user config in case of conflicts
-    # - And play the video with correct position and size
-    # - Use the keybinding trick to quit the whole script on 'q'
+    # Mute all output / disable user config in case of conflicts
+    # And play the video with correct position and size
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
             -vf scale="$video_w":"$video_h" -geometry $video_x:$video_y \
-            -input conf=$MPLAYER_INPUT_CONF || exit
+            || exit
 done
