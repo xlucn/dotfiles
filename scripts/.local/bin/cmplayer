@@ -1,17 +1,9 @@
 #!/bin/sh
 #
-# A script to play video in framebuffer using mplayer and put it on the position
-# of current tmux pane if in a tmux session.
+# A script to play video in *framebuffer* with *mplayer* and put it in the
+# current tmux pane if in a *tmux* session. (*These* are requirements)
 #
-# Requirement:
-#   framebuffer(i.e. in tty), mplayer, ffprobe, tmux(optional)
-#
-# TODO:
-#   pass mplayer options
-# NOTE:
-#   If you want to quit all video play with 'q' (not only the current mplayer),
-#   you have to put the following line in `~/.mplayer/input.conf`:
-#       q quit 1 (or anything that is not 0)
+# TODO: pass mplayer options
 
 # Character width and height in pixels
 charw=${CHARW-8}
@@ -21,15 +13,20 @@ FB=fb0
 
 if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
-Usage: $(basename "$0") video [ video ... ]
+Usage: [CHARW=<w>] [CHARH=<h>] [DISPLAY=] $(basename "$0") video ...
 
-Note: You need to change the character size in this script if the font size
-      you are using is different from the preset (10, 20).
+Note: You can specify the character size with environment variables by e.g.
+          $ CHARW=10 CHARH=20 $(basename "$0") video
+      The default is width = 8, height = 16.
 
 Note: This script is meant to be used under framebuffer (e.g. tty).
       If you are in tty inside a tmux session which was started in X11, it will
       have a \$DISPLAY environment variable. unset it with \`unset DISPLAY\` or
-      $ DISPLAY= $(basename "$0") video
+          $ DISPLAY= $(basename "$0") video
+
+Note: If you want to quit all video play with 'q' (not only the current mplayer),
+      you have to put the following line in '~/.mplayer/input.conf':
+          q quit 1 (or anything that is not 0)
 EOF
     exit
 fi
@@ -91,7 +88,6 @@ EOF
     fi
 
     # Mute all output / disable user config in case of conflicts
-    # And play the video with correct position and size
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
             -vf scale="$video_w":"$video_h" -geometry $video_x:$video_y \
             || exit
