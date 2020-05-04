@@ -47,13 +47,17 @@ fi
 
 # shell prompt functions
 __cwd_trim() {
+    printf "\[\e[1;33m\]"
     limit=20
     cwd=$(basename "$PWD")
     if [ ${#cwd} -gt $limit ]; then
-        printf "\[\e[1;33m\]%s ...\[\e[0m\]" "$(echo "$cwd" | cut -c -"$((limit - 4))")"
+        printf "%s ..." "$(echo "$cwd" | cut -c -"$((limit - 4))")"
     else
-        printf "\[\e[1;33m\]%s\[\e[0m\]" "$cwd"
+        printf "%s" "$cwd"
     fi
+    # lf indicator -- if you are in lf file manager
+    [ -n "$LF_LEVEL" ] && printf " (LF:%s)" "$LF_LEVEL"
+    printf "\[\e[0m\]"
 }
 
 __jobs_count() {
