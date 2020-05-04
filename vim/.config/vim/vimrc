@@ -1,4 +1,4 @@
-" Plugin Manager {{{
+" Plugin Manager
 " Vim-Plug {{{
 " vim basic settings
 set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
@@ -35,8 +35,7 @@ Plug 'jdkanani/vim-material-theme'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 call plug#end()
 " }}}
-" }}}
-" Vim Settings {{{
+" Vim Settings
 " Vim Config {{{
 " be iMproved
 set nocompatible
@@ -178,12 +177,14 @@ autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources :silent !xrdb -load %
 autocmd FileType tex,markdown setlocal sw=2 ts=2 sts=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
-" fcitx: restore input method state when enter insert mode
+" }}}
+" Fcitx Toggle {{{
+" restore input method state when enter insert mode
 let s:fcitx_cmd = executable("fcitx5-remote") ? "fcitx5-remote" : "fcitx-remote"
 autocmd InsertLeave * let b:fcitx = system(s:fcitx_cmd) | call system(s:fcitx_cmd.' -c')
 autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx_cmd.' -o') | endif
 " }}}
-" Netrw {{{
+" Netrw -> NerdTree {{{
 " Make Netrw function like NerdTree
 let g:netrw_banner            = 0 " disable banner
 let g:netrw_browse_split      = 4 " open file in previous (CTRL-W_p) window
@@ -198,9 +199,21 @@ function ToggleNetRW()
     endif
 endfunction
 " }}}
+" My own goyo mode {{{
+function Goyo()
+    if exists("g:goyo_status")
+        unlet g:goyo_status
+        set number ruler signcolumn=auto showtabline=2 laststatus=2
+    else
+        let g:goyo_status = 1
+        set nonumber noruler signcolumn=no showtabline=0 laststatus=0
+    endif
+endfunction
 " }}}
-" Plugin Settings {{{
+" Plugin Settings
 " Vim Which Key {{{
+call which_key#register(mapleader, "g:which_key_map")
+call which_key#register(maplocalleader, "g:which_key_map_local")
 let g:which_key_use_floating_win = 0
 let g:which_key_map = {
   \ 'c' : [ 'gcc', 'comment'],
@@ -212,6 +225,7 @@ let g:which_key_map = {
   \ 'x' : [ ':x',  'save and quit'],
   \ '.' : [ ':let @/=""', 'clear search hl'],
   \ 'r' : [ ':so $MYVIMRC', 'reload vimrc'],
+  \ 'z' : [ ':call Goyo()', 'Goyo mode'],
   \ }
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' }
@@ -220,20 +234,6 @@ nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
 vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
 nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
 vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-call which_key#register(mapleader, "g:which_key_map")
-call which_key#register(maplocalleader, "g:which_key_map_local")
-" }}}
-" My own goyo mode {{{
-function Goyo()
-    if exists("g:goyo_status")
-        unlet g:goyo_status
-        set number signcolumn=auto showtabline=2 laststatus=2
-    else
-        let g:goyo_status = 1
-        set nonumber signcolumn=no showtabline=0 laststatus=0
-    endif
-endfunction
-let g:which_key_map.g = [ ':call Goyo()', 'Goyo mode']
 " }}}
 " Markdown {{{
 let g:vim_markdown_folding_style_pythonic = 1
@@ -244,12 +244,8 @@ let g:mkdp_auto_start = 0
 let g:mkdp_browser = 'firefox'
 " }}}
 " Lightline {{{
-" the base256 and base16 colorscheme are not from any vim plugins, find them
-" in my repo
-let s:Xcolors = { '0': 'NONE',
-  \ '1': 'NONE', '2': 'NONE', '3': 'NONE', '4': 'NONE',
-  \ '5': 'NONE', '6': 'NONE', '7': 'NONE', '8': 'NONE',
-  \ }
+let s:Xcolors = { '1': 'NONE', '2': 'NONE', '3': 'NONE', '4': 'NONE',
+   \ '5': 'NONE', '6': 'NONE', '7': 'NONE', '8': 'NONE', '0': 'NONE' }
 " Load colors from Xresources
 if has('gui_running')
     let s:regex = '.*\*color\(\d*\):.*\(#[0-9a-fA-F]\{6\}\).*'
@@ -431,4 +427,4 @@ else
 endif
 " }}}
 " }}}
-" vim:foldmethod=marker:foldlevel=1
+" vim:foldmethod=marker:foldlevel=0
