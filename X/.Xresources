@@ -50,6 +50,9 @@ st.font: Hack Nerd Font:pixelsize=16:antialias=true:autohint:true
 st.alpha: 0.7
 st.borderpx: 0
 
+tabbed.font: Source Han Sans CN:pixelsize=12
+tabbed.tabwidth: 200
+
 Sxiv.font: xft:Monospace:pixelsize=14, xft:Source Han Sans CN:pixelsize=14
 
 /* *background : #263238 */
