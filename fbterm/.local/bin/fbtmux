@@ -17,6 +17,7 @@
 
 # Only start in tty
 tty | grep -q tty || { echo "not in tty"; exit; }
+trap 'tput cnorm' INT TERM QUIT EXIT # show cursor on quit
 
 # Check commands
 command -v fbterm > /dev/null 2>&1 && USE_FBTERM=1
@@ -69,4 +70,3 @@ elif [ -n "$USE_YAFT" ]; then
     cmd="yaft"
 fi
 $cmd tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
-tput cnorm # show cursor
