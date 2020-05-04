@@ -5,9 +5,16 @@
 #
 # TODO: pass mplayer options
 
+if pgrep fbterm > /dev/null 2>&1; then
+    CHARW=$(sed -n "s/^font-width=\([0-9]*\)$/\1/p" "$HOME/.fbtermrc")
+    CHARH=$(sed -n "s/^font-height=\([0-9]*\)$/\1/p" "$HOME/.fbtermrc")
+elif pgrep yaft > /dev/null 2>&1; then
+    CHARW=8
+    CHARH=16
+fi
 # Character width and height in pixels
-charw=${CHARW-8}
-charh=${CHARH-16}
+charw=${CHARW:-8}
+charh=${CHARH:-16}
 # The framebuffer device name under /dev/
 FB=fb0
 
