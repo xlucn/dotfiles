@@ -186,13 +186,15 @@ autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx
 " }}}
 " Netrw -> NerdTree {{{
 " Make Netrw function like NerdTree
-let g:netrw_banner            = 0 " disable banner
-let g:netrw_browse_split      = 4 " open file in previous (CTRL-W_p) window
-let g:netrw_winsize           = 30
-" nnoremap <Tab> :Lexplore<CR>  " This generates empty buffers, bad
+let g:netrw_banner       = 0   " disable banner
+let g:netrw_browse_split = 4   " open file in previous (CTRL-W_p) window
+let g:netrw_winsize      = -20 " split size
+let g:netrw_dirhistmax   = 0   " disable history
+let g:netrw_liststyle    = 0   " thin listing
 nnoremap <C-N> :call ToggleNetRW()<CR>
+nnoremap <Tab> :call ToggleNetRW()<CR>
 function ToggleNetRW()
-    if exists("g:netrw_buffer")
+    if exists("g:netrw_buffer") && bufexists(g:netrw_buffer)
         exe "bd".g:netrw_buffer | unlet g:netrw_buffer
     else
         Vexplore | let g:netrw_buffer=bufnr("%")
