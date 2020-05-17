@@ -6,6 +6,9 @@
 # A script to configure multiple displays with xrandr
 #
 
+DMENU=dmenu
+command rofi > /dev/null 2>&1 && DMENU="rofi -dmenu"
+
 monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
 
 # This is the core part. Without functionalities like lists, we store
@@ -48,6 +51,6 @@ for m in $monitors; do
     done
 done
 
-choice=$(printf "%s$options" "" | dmenu -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
+choice=$(printf "%s$options" "" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
 [ -n "$choice" ] && eval "\$command_$choice"
