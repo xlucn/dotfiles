@@ -5,9 +5,11 @@
 filename=$1
 target=$2
 folder=$(dirname "$(realpath "$filename")")
-folder="${folder#$HOME}"
+folder="${folder#$HOME}" # TODO: other than home
 
 [ -z "$folder" ] && exit
 
 mkdir -p "$target/$folder"
+echo "moving $filename to $target/$folder"
 mv "$filename" "$target/$folder"
+echo "stow the file with \"stow $target\""
