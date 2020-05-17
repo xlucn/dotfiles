@@ -53,11 +53,10 @@ info()
 {
     result=0
     for keyword in "$@"; do
-        if [ "$keyword" != "${keyword#-*}" ]; then
-            temp=$(awk '/'"^${keyword#-*}:"'/{print $2}' /proc/meminfo)
+        temp=$(sed -n "s/^${keyword#-}:[ ]*\([0-9]*\).*/\1/p" /proc/meminfo)
+        if [ "$keyword" != "${keyword#-}" ]; then
             result=$((result - temp))
         else
-            temp=$(awk '/'"^$keyword:"'/{print $2}' /proc/meminfo)
             result=$((result + temp))
         fi
     done
