@@ -3,8 +3,9 @@
 
 # scroll with ^Y and ^E
 unbind * \Ce
-bind generic,index \Cy previous-entry
-bind generic,index \Ce next-entry
+unbind * h
+bind generic,index,browser \Cy previous-entry
+bind generic,index,browser \Ce next-entry
 bind pager \Cy previous-line
 bind pager \Ce next-line
 
