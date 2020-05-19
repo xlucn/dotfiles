@@ -45,7 +45,7 @@ servers = (
     autoconnect = "yes";
   },
   {
-    address = "irc.filelist.ro";
+    address = "irc.filelist.io";
     chatnet = "FileList";
     port = "6697";
     use_tls = "yes";
