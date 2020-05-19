@@ -20,10 +20,10 @@ configuration {
     border              : 0;
     spacing             : 0;
     separator-style     : "none";
-    /* some customized colors used after */
-    selected-background : #EEFFFF80;
-    selected-text-color : #212121;
-    background          : #21212180;
+    /* some customized colors used later */
+    selected-background : #EEFFFF40;
+    selected-text-color : #EEFFFF;
+    background          : #212121D0;
     text-color          : #EEFFFF;
 }
 
@@ -78,6 +78,7 @@ element-text {
 element normal.normal,
 element alternate.normal {
     background-color : #00000000;
+    color            : @text-color;
 }
 
 element selected.normal,
