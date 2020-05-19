@@ -334,6 +334,30 @@ let g:lightline = {
     \ },
     \ }
 " }}}
+" Fugitive {{{
+" show the log in a pretty way
+function! GitRepoLogAll()
+    silent Git log --all --decorate --oneline --graph --date-order
+    redraw!
+endfunction
+" key bindings
+let g:which_key_map.g = {
+  \ 'name' : '+git-operation',
+  \ 'b' : [ '!git branch -a', 'git show branch' ],
+  \ 'd' : [ ':Gvdiff', 'git diff' ],
+  \ 'c' : [ ':Gcommit -v', 'git commit' ],
+  \ 's' : [ ':Gstatus', 'git status' ],
+  \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
+  \ 'u' : [ ':Gpush', 'git push' ],
+  \ 'f' : [ ':Gpull', 'git pull' ],
+  \ 't' : {
+    \ 'name' : '+stash',
+    \ 's' : [ ':Git stash', 'git stash' ],
+    \ 'p' : [ ':Git stash pop', 'git stash pop' ],
+    \ 'l' : [ ':Git stash list', 'git stash list' ]
+    \ }
+  \ }
+" }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
