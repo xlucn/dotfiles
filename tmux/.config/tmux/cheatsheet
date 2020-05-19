@@ -1,0 +1,24 @@
+┌~─`────┬!─1────┬@─2────┬#─3────┬$─4────┬%─5────┬^─6────┬&─7────┬*─8────┬(─9────┬)─0────┬_─-────┬+─=────┬─BacSp─────────┐
+│       │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │LightUp│LightDn│               │
+│       │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │Mpd -10│Mpd +10│               │
+│       │       │       │       │       │       │       │       │       │       │       │       │       │               │
+├──Tab──┴───┬─Q─┴───┬─W─┴───┬─E─┴───┬─R─┴───┬─T─┴───┬─Y─┴───┬─U─┴───┬─I─┴───┬─O─┴───┬─P─┴───┬{─[┴───┬}─]┴───┬─|─\───────┤
+│LastPane   │CloseP │       │       │       │       │       │       │       │       │       │VolUp  │VolDn  │VolMute    │
+│           │Detach │       │       │       │       │       │       │       │       │       │MpdPrev│MpdNext│MpdToggle  │
+│           │QuitAll│       │       │Reload │       │       │       │       │       │       │       │       │           │
+├──Esc──────┴─┬─A───┴─┬─S───┴─┬─D───┴─┬─F───┴─┬─G───┴─┬─H───┴─┬─J───┴─┬─K───┴─┬─L───┴─┬:─;──┴─┬"─'──┴─┬─────┴─Enter─────┤
+│LastWindow   │ShowAll│Help   │       │       │       │ResizeM│NextP  │PrevP  │ResizeM│       │       │NewTerm          │
+│             │       │       │       │       │       │ResizeS│MvPrevP│MvNextP│ResizeS│       │       │                 │
+│             │       │       │       │       │       │       │       │       │Lock   │       │       │                 │
+├──Shift──────┴───┬─Z─┴───┬─X─┴───┬─C─┴───┬─V─┴───┬─B─┴───┬─N─┴───┬─M─┴───┬<─,┴───┬>─.┴───┬?─/┴───┬───┴─Shift───────────┤
+│                 │       │Command│Copy   │Paste  │HideBar│       │Zoom   │PrevW  │NextW  │       │                     │
+│                 │       │       │       │       │       │       │       │MvPrevW│MvNextW│       │                     │
+│                 │       │       │       │       │       │       │       │       │       │       │                     │
+├──Ctrl───┬───────┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴─Alt───┼───────┴─┬─────────┬──Ctrl───┤
+│         │         │         │ MoveToMaster                                    │         │         │         │         │
+│         │         │         │                                                 │         │         │         │         │
+│         │         │         │                                                 │         │         │         │         │
+└─────────┴─────────┴─────────┴─────────────────────────────────────────────────┴─────────┴─────────┴─────────┴─────────┘
+Note: 1. First line -> Alt + Key, Second line: Shift + Alt + Key, Third line: Ctrl + Alt + Key
+      2. Single character notation: M -> master pane, S -> stack panes, W -> window, P -> pane
+      3. You need to make sure Shift + Alt + Key works if using tty, see loadkeys(1)
