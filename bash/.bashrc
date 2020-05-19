@@ -57,6 +57,8 @@ __cwd_trim() {
     fi
     # lf indicator -- if you are in lf file manager
     [ -n "$LF_LEVEL" ] && printf " (LF:%s)" "$LF_LEVEL"
+    # ranger indicator -- if you are in ranger file manager
+    [ -n "$RANGER_LEVEL" ] && printf " (RANGER:%s)" "$RANGER_LEVEL"
     printf "\[\e[0m\]"
 }
 
