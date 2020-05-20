@@ -28,13 +28,6 @@ alias cranger="ranger --cmd='set preview_images_method w3m'"
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # quiet newsboat
 alias newsboat="newsboat -q"
-# fzf integrate with pacman and yay
-fzf_pacman() {
-    pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
-}
-fzf_yay() {
-    yay -Slq | fzf -m -q "$*" --preview 'yay -Si {1}'| xargs -ro yay -S
-}
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
