@@ -1,7 +1,3 @@
 #!/bin/sh
-# ps and grep
-pid=$(pgrep -if "$@" | grep -v "$$")
-if [ -n "$pid" ]
-then
-    echo "$pid" | xargs ps -fp
-fi
+# ps and pgrep
+pgrep -if "$@" | grep -v "$$" | xargs ps -fp
