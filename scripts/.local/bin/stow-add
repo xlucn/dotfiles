@@ -3,9 +3,9 @@
 [ "$#" != 2 ] && { echo "$(basename "$0") filename taraget"; exit; }
 
 filename=$1
-target=$2
+target=${2%/}
 folder=$(dirname "$(realpath "$filename")")
-folder="${folder#$HOME}" # TODO: other than home
+folder="${folder#$HOME/}" # TODO: other than home
 
 [ -z "$folder" ] && exit
 
