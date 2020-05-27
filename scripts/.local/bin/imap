@@ -25,10 +25,10 @@ query_interval=120
 # CLI arguments
 while getopts hn:s:p:P: param; do
     case "$param" in
-        s) _server=$OPTARG;;
-        p) _port=$OPTARG;;
-        P) _password=$OPTARG;;
-        n) _number=$OPTARG;;
+        s) arg_server=$OPTARG;;
+        p) arg_port=$OPTARG;;
+        P) arg_password=$OPTARG;;
+        n) arg_number=$OPTARG;;
         h|*) usage; exit;;
     esac
 done
@@ -38,7 +38,6 @@ shift $((OPTIND - 1))
 if [ $# = 1 ]; then email=$1; else usage; exit 1; fi
 
 # Some predefined server and ports
-port=993
 case "${email##*@}" in
     outlook.com) server=imap-mail.outlook.com ;;
     qq.com)      server=imap.qq.com ;;
@@ -47,31 +46,30 @@ case "${email##*@}" in
 esac
 
 # CLI arguments take precedence
-[ -n "$_server" ] && server="$_server"
-[ -n "$_port" ] && port="$_port"
-
+port=${arg_port:-993}
+server=${arg_server:-$server}
 [ -z "$server" ] && { echo Server not set. >&2; exit 1; }
-[ -z "$port" ] && { echo Port not set. >&2; exit 1; }
 
 # Read possible cached results
-tempfile="/tmp/imap_$email"
-touch "$tempfile"
-read -r time_last count < "$tempfile"
 time_now="$(date +%s)"
+tempfile="/tmp/imap_$email"
+[ -f "$tempfile" ] && read -r time_last count < "$tempfile"
 # TODO: -n N option not working here
-if [ -n "$count" ] && [ $((time_now - time_last)) -lt "$query_interval" ]; then
+if [ -n "$count" ] && [ -n "$time_last" ] \
+&& [ $((time_now - time_last)) -lt "$query_interval" ]; then
     echo "$count"; exit
 fi
 
 # Password operations are slow, put it after using cached results above
 password=$(pass show mail/"$email" 2> /dev/null)
-[ -n "$_password" ] && password="$_password"
+password=${arg_password:-$password}
 [ -z "$password" ] && { echo Password not set. >&2; exit 1; }
 
 # Fetch and cache
-unseen=$(curl -f -s -m 30 --connect-timeout 30 -u "$email:$password" \
-         --url "imaps://$server:$port/INBOX" -X "UID SEARCH UNSEEN" \
-         || exit)
+unseen=$(curl --fail --silent --max-time 30 --connect-timeout 30 \
+              --user "$email:$password" \
+              --url "imaps://$server:$port/INBOX" \
+              --request "UID SEARCH UNSEEN" || exit)
 unseen=$(echo "$unseen" | cut -d " " -f 3- | tr -d "\r")
 count=$(echo "$unseen" | wc -w)
 echo "$time_now $count" > "$tempfile"
