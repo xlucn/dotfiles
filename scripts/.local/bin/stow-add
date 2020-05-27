@@ -1,5 +1,6 @@
 #!/bin/sh
-
+# TODO: some args
+# TODO: multiple files
 [ "$#" != 2 ] && { echo "usage: $(basename "$0") <filename> <taraget>"; exit; }
 
 filename=$1
