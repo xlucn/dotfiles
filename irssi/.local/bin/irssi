@@ -22,7 +22,7 @@ export_passwords()
 
 if [ -z $NO_TMUX ]; then
     session=irssi
-    if ! tmux -L "$session" ls -F "#S" 2> /dev/null; then
+    if ! tmux -L "$session" ls -F "#S" > /dev/null 2>&1; then
         if [ -z $NO_PASS ]; then export_passwords; fi
         tmux -L "$session" -f /dev/null new -d -s "$session" /usr/bin/irssi "$@"
         tmux -L "$session" set -s -t irssi prefix None
