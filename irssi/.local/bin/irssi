@@ -31,6 +31,7 @@ if [ -z $NO_TMUX ]; then
         tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=default
         tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=default
         tmux -L "$session" set -s -t irssi status off
+        tmux -L "$session" set -s -t irssi set-titles on
     fi
     tmux -L "$session" attach -t "$session"
 else
