@@ -2,14 +2,16 @@
 # Reference: https://tools.ietf.org/html/rfc5092
 #            https://tools.ietf.org/html/rfc3501
 
-usage()
-{
+usage() {
     cat >&2 << EOF
 Usage: $(basename "$0") [-s server] [-p port] [-P password] [-n N] [-h] email
 
 Options:
-    -s: Server address of email provider. For the following email providers this
-        option is not needed: gmail, outlook, qqmail
+    -s: Server address of email provider.
+        For the following email providers this option is not needed:
+            gmail, outlook, qqmail
+        For other email providers, you have to specify them manually, or
+        modify this script.
     -p: Imap port, default is 993
     -P: Imap password. If not provided, the output of this command is used:
             pass show mail/<email>
