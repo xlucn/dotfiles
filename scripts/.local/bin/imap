@@ -77,32 +77,33 @@ echo "$time_now $count" > "$tempfile"
 # Output
 echo "$count"
 
-# fetch email envelope
 base64_decode() {
+    # =?UTF-8?B?BASE_64_STRING?=
     encode=${1%\?*}; base64=${1#*\?}; string=$2
     if [ "$base64" = 'B' ] || [ "$base64" = 'b' ]; then
         echo "$string" | base64 -d | iconv -f "$encode" -t "utf-8"
     fi
 }
 
-parse_envelope() {
-    # https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
+# fetch email envelope
+# https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
+if [ -n "$arg_number" ] && [ "$count" -gt 0 ]; then
+    # Match patterns in ENVELOPE string
     base64_regex='\"=?\([^?]*?.\)?\([^?]*\)?=\"' # contains 2 matches
     quoted_regex='\"\([^\"]*\)\"' # contains 1 match
+    # Get uid list
+    [ "$count" -ge "$arg_number" ] && start_pos=$((count - arg_number + 1))
+    uids="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
+    # Fetch and parse
+    curl --fail --silent --max-time 30 --connect-timeout 30 \
+        --user "$email:$password" --url "imaps://$server:$port/INBOX" \
+        --request "UID FETCH $uids (ENVELOPE)" |
+    sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*))/\1|\2|\3|\4|\5|\6|\7/" |
+    tr -d '\r' |
     while IFS=\| read -r date subject_enc subject from_enc from user host; do
         date -d "$date" +"%Y-%m-%d %r"
         base64_decode "$subject_enc" "$subject"; echo
         base64_decode "$from_enc" "$from"
-        echo " <$user@$host>"
-    done << EOF
-    $(sed "s/\* [0-9]* FETCH (UID [0-9]* ENVELOPE ($quoted_regex $base64_regex (($base64_regex NIL $quoted_regex $quoted_regex)).*))/\1|\2|\3|\4|\5|\6|\7/" | tr -d '\r')
-EOF
-}
-
-if [ -n "$_number" ] && [ "$count" -gt 0 ]; then
-    [ "$count" -ge "$_number" ] && start_pos=$((count - _number + 1))
-    uids="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
-    curl -f -s -m 30 --connect-timeout 30 -u "$email:$password" \
-        --url "imaps://$server:$port/INBOX" -X "UID FETCH $uids (ENVELOPE)" \
-    | parse_envelope
+        echo " <${user#<}@${host%>}>"
+    done
 fi
