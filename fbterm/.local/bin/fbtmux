@@ -45,8 +45,8 @@ if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1; then
         if [ ! -e "$bg_framebuffer" ] \
         || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
         || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
-            # the arguments of -modulate are: brightness, saturation
-            convert "$bg_wallpaper" -modulate 30,20 -blur 0x4 "$bg_framebuffer"
+            # convert -modulate brightness, saturation
+            convert "$bg_wallpaper" -modulate 20,20 -blur 0x4 "$bg_framebuffer"
         fi
     else
         bg_framebuffer=$bg_wallpaper
