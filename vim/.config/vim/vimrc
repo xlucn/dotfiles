@@ -32,6 +32,7 @@ Plug 'VoldikSS/vim-mma'
 Plug 'jpalardy/vim-slime'
 Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
+Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 call plug#end()
 " }}}
@@ -215,6 +216,17 @@ function Goyo()
 endfunction
 " }}}
 " Plugin Settings
+" Vim wiki {{{
+let g:vimwiki_list = [{
+ \  'path': '~/Code/notes',
+ \  'syntax': 'markdown',
+ \  'index': 'README',
+ \  'ext': '.md'
+ \  }]
+let g:vimwiki_filetype = ['markdown']
+let g:vimwiki_map_prefix = '<leader>n'
+let g:vimwiki_key_mappings = { 'global': 0, }
+" }}}
 " Vim Which Key {{{
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
