@@ -355,9 +355,10 @@ endfunction
 " key bindings
 let g:which_key_map.g = {
   \ 'name' : '+git-operation',
-  \ 'b' : [ '!git branch -a', 'git show branch' ],
+  \ 'b' : [ ':Gblame', 'git blame' ],
   \ 'd' : [ ':Gvdiff', 'git diff' ],
   \ 'c' : [ ':Gcommit -v', 'git commit' ],
+  \ 'g' : [ ':!tig -C"$(dirname $(realpath %))"', 'run tig' ],
   \ 's' : [ ':Gstatus', 'git status' ],
   \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
   \ 'u' : [ ':Gpush', 'git push' ],
