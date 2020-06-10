@@ -1,19 +1,28 @@
+# Newsblur
+# urls-source "newsblur"
+# newsblur-login "oliver_lew@outlook.com"
+# newsblur-passwordeval "pass show web/newsblur.com"
+# newsblur-min-items 100
+# cookie-cache "~/.cache/newsboat/cookies.txt"
+
 # Settings
+max-items 0
+auto-reload yes
+suppress-first-reload yes
 reload-threads 8
 download-retries 3
 download-timeout 60
 reload-only-visible-feeds yes
 
 # Keys
-unbind-key j
-unbind-key k
-unbind-key ^D
 bind-key ^Y up
 bind-key ^E down
 bind-key j down
 bind-key k up
 bind-key SPACE pagedown
 bind-key b pageup
+bind-key ^D pagedown
+bind-key ^U pageup
 bind-key J next-feed articlelist
 bind-key K prev-feed articlelist
 bind-key G end
@@ -21,22 +30,29 @@ bind-key g home
 bind-key l open
 bind-key h quit
 bind-key \ toggle-show-read-feeds
-# source ~/.config/newsboat/config
 
 # Formats
 # articlelist-format
-# articlelist-title-format n/a
+# articlelist-title-format
 # feedlist-title-format
 feedlist-format "%4i%S%n %11u %t"
 
 # Colors
-highlight article "^(Feed|Title|Author|Link|Date):" yellow default bold
-highlight articlelist "lens" cyan default bold
 color listnormal          white   default
 color listfocus           white   blue    bold
 color listnormal_unread   yellow  default
 color listfocus_unread    yellow  blue    bold
-color info                cyan    default bold
+color info                cyan    default
+highlight article "^(Author|Date):.*" white default bold
+highlight article "^Title:.*" cyan  default bold
+highlight article "^Feed:.*" yellow default bold
+highlight article "^Link:.*" yellow default
+highlight articlelist "lens" cyan default bold
 
 # Filters
 define-filter "Empty feeds" "total_count = 0"
+
+# Proxy
+proxy-type socks5h
+proxy localhost:41685
+use-proxy yes
