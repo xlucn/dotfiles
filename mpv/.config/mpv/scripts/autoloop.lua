@@ -3,7 +3,7 @@
 -- Automatically set loop-file=inf for duration < given length. Default is 5s
 -- Use script-opts=autoloop-duration=x in mpv.conf to set your preferred length
 
-local autoloop_duration = 5000
+local autoloop_duration = 5
 
 local function getOption()
     local opt = mp.get_opt("autoloop-duration")
