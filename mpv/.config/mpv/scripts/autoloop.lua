@@ -1,10 +1,11 @@
+-- luacheck: globals mp
 -- mpv issue 5222
 -- Automatically set loop-file=inf for duration < given length. Default is 5s
 -- Use script-opts=autoloop-duration=x in mpv.conf to set your preferred length
 
-local autoloop_duration = 5
+local autoloop_duration = 5000
 
-function getOption()
+local function getOption()
     local opt = mp.get_opt("autoloop-duration")
     if (opt ~= nil) then
         local test = tonumber(opt)
@@ -19,7 +20,7 @@ getOption()
 local was_loop = mp.get_property_native("loop-file")
 local changed = false
 
-function set_loop()
+local function set_loop()
     local duration = mp.get_property_native("duration")
     -- Check the property again in case auto profiles (e.g., extensions.gif)
     -- have changed it since the script is loaded
@@ -32,7 +33,7 @@ function set_loop()
     end
 end
 
-function reset_loop()
+local function reset_loop()
     -- I need this hack because the "end-file" event is often accompanied by
     -- the loading process of the next file in the playlist. If the
     -- "loop-file" property is already changed by auto profiles (e.g.,
