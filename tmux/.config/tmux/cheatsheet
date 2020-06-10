@@ -1,17 +1,17 @@
-┌~─`────┬!─1────┬@─2────┬#─3────┬$─4────┬%─5────┬^─6────┬&─7────┬*─8────┬(─9────┬)─0────┬_─-────┬+─=────┬─BacSp─────────┐
-│       │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │LightUp│LightDn│               │
+┌~─`────┬!─1────┬@─2────┬#─3────┬$─4────┬%─5────┬^─6────┬&─7────┬*─8────┬(─9────┬)─0────┬_─-────┬+─=────┬─Backspace---──┐
+│       │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │LightDn│LightUp│               │
 │       │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │Mpd -10│Mpd +10│               │
 │       │       │       │       │       │       │       │       │       │       │       │       │       │               │
 ├──Tab──┴───┬─Q─┴───┬─W─┴───┬─E─┴───┬─R─┴───┬─T─┴───┬─Y─┴───┬─U─┴───┬─I─┴───┬─O─┴───┬─P─┴───┬{─[┴───┬}─]┴───┬─|─\───────┤
-│LastPane   │CloseP │       │       │       │       │       │       │       │       │       │VolUp  │VolDn  │VolMute    │
+│LastPane   │CloseP │       │       │       │       │       │       │       │       │       │VolDn  │VolUp  │VolMute    │
 │           │Detach │       │       │       │       │       │       │       │       │       │MpdPrev│MpdNext│MpdToggle  │
 │           │QuitAll│       │       │Reload │       │       │       │       │       │       │       │       │           │
 ├──Esc──────┴─┬─A───┴─┬─S───┴─┬─D───┴─┬─F───┴─┬─G───┴─┬─H───┴─┬─J───┴─┬─K───┴─┬─L───┴─┬:─;──┴─┬"─'──┴─┬─────┴─Enter─────┤
-│LastWindow   │ShowAll│Help   │       │       │       │ResizeM│NextP  │PrevP  │ResizeM│       │       │NewTerm          │
+│LastWindow   │ShowAll│ShowKey│       │       │       │ResizeM│NextP  │PrevP  │ResizeM│       │       │NewTerm          │
 │             │       │       │       │       │       │ResizeS│MvPrevP│MvNextP│ResizeS│       │       │                 │
 │             │       │       │       │       │       │       │       │       │Lock   │       │       │                 │
 ├──Shift──────┴───┬─Z─┴───┬─X─┴───┬─C─┴───┬─V─┴───┬─B─┴───┬─N─┴───┬─M─┴───┬<─,┴───┬>─.┴───┬?─/┴───┬───┴─Shift───────────┤
-│                 │       │Command│Copy   │Paste  │HideBar│       │Zoom   │PrevW  │NextW  │       │                     │
+│                 │       │TmuxCmd│Copy   │Paste  │HideBar│       │Zoom   │PrevW  │NextW  │       │                     │
 │                 │       │       │       │       │       │       │       │MvPrevW│MvNextW│       │                     │
 │                 │       │       │       │       │       │       │       │       │       │       │                     │
 ├──Ctrl───┬───────┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴─Alt───┼───────┴─┬─────────┬──Ctrl───┤
@@ -19,6 +19,11 @@
 │         │         │         │                                                 │         │         │         │         │
 │         │         │         │                                                 │         │         │         │         │
 └─────────┴─────────┴─────────┴─────────────────────────────────────────────────┴─────────┴─────────┴─────────┴─────────┘
-Note: 1. First line -> Alt + Key, Second line: Shift + Alt + Key, Third line: Ctrl + Alt + Key
-      2. Single character notation: M -> master pane, S -> stack panes, W -> window, P -> pane
-      3. You need to make sure Shift + Alt + Key works if using tty, see loadkeys(1)
+
+Note: 1. Different meanings for each line
+            First line  -> Alt + Key,
+            Second line -> Alt + Shift + Key,
+            Third line  -> Alt + Ctrl + Key,   Usually session-wide keybindings
+      2. You need to make sure Shift+Alt+Key works if using tty, see loadkeys(1)
+      3. Single character notations:
+            M -> master pane,   S -> stack panes,   W -> window,    P -> pane
