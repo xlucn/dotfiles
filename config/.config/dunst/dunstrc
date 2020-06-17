@@ -178,4 +178,8 @@
     category = "dwm-status.network"
     set_stack_tag = "network"
 
+[stack-mpd]
+    category = "dwm-status.mpd"
+    set_stack_tag = "mpd"
+
 # vim: ft=cfg
