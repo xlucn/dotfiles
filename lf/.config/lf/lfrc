@@ -1,0 +1,15 @@
+# Setting
+set nodrawbox
+set icons
+set nohidden
+set info size
+set ifs "\n"
+set filesep "\n"
+set previewer ~/.config/lf/pv.sh
+
+# Key bindings
+map <c-y> up
+map <c-e> down
+map <enter> $ ~/.config/lf/open.sh $fx
+map gh cd ~
+map gr cd /
