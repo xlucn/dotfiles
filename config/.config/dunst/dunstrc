@@ -10,7 +10,7 @@
     # width is 0
     shrink = no
     # The transparency of the window.  Range: [0; 100]
-    transparency = 30
+    transparency = 10
     # The height of the entire notification
     notification_height = 0
 
