@@ -2,6 +2,7 @@
 Config files for everything
 
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesomewm.png?raw=true)
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/dwm.png?raw=true)
 
 ## Environment
 
@@ -9,6 +10,7 @@ Config files for everything
   - [Archlinux](http://www.archlinux.org/)
 - WM:
   - [AwesomeWM](https://awesomewm.org/)
+  - [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches)
 - Colorscheme:
   - [wal](https://github.com/dylanaraps/pywal) base16-materialer
 - Terminal Emulator
