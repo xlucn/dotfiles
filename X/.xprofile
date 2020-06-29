@@ -3,7 +3,7 @@
 # shellcheck disable=SC1090
 
 # QT theme
-export QT_QPA_PLATFORMTHEME=gtk2
+export QT_QPA_PLATFORMTHEME=qt5ct
 # chinese input method
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
