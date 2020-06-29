@@ -28,6 +28,8 @@ alias cranger="ranger --cmd='set preview_images_method w3m'"
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # quiet newsboat
 alias newsboat="newsboat -q"
+# vimwiki note
+alias vimnote="vim +VimwikiIndex"
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
