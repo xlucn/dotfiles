@@ -19,3 +19,5 @@
     proxy = "socks5h://localhost:1080"
 [tig]
     tab-size = 4
+[pull]
+    rebase = false
