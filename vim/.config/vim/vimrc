@@ -233,7 +233,6 @@ call which_key#register(maplocalleader, "g:which_key_map_local")
 let g:which_key_use_floating_win = 0
 let g:which_key_fallback_to_native_key = 1
 let g:which_key_map = {
-  \ 'c' : [ 'gcc', 'comment'],
   \ 'q' : [ ':q',  'quit'],
   \ 'Q' : [ ':qa', 'quit all'],
   \ 'd' : [ ':bd', 'close buffer'],
@@ -255,6 +254,12 @@ vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
 nnoremap <silent> [ :WhichKey '['<CR>
 nnoremap <silent> ] :WhichKey ']'<CR>
 nnoremap <silent> y :WhichKey 'y'<CR>
+" }}}
+" Vim commentary{{{
+nmap <leader>c <Plug>CommentaryLine
+omap <leader>c <Plug>Commentary
+xmap <leader>c <Plug>Commentary
+let g:which_key_map.c = 'comment'
 " }}}
 " Markdown {{{
 let g:vim_markdown_folding_style_pythonic = 1
