@@ -223,7 +223,8 @@ let g:vimwiki_list = [{
  \  'index': 'README',
  \  'ext': '.md'
  \  }]
-let g:vimwiki_filetype = ['markdown']
+let g:vimwiki_conceallevel = 0
+let g:vimwiki_filetypes = ['markdown']
 let g:vimwiki_map_prefix = '<leader>n'
 let g:vimwiki_key_mappings = { 'global': 0, }
 " }}}
