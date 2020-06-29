@@ -18,7 +18,7 @@ charh=${CHARH:-16}
 # The framebuffer device name under /dev/
 FB=fb0
 
-if [ $# = 0 ] || [ "$1" = "-h" ] || [ -n "$DISPLAY" ]; then
+if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
 Usage: [CHARW=<w>] [CHARH=<h>] [DISPLAY=] $(basename "$0") video ...
 
