@@ -33,6 +33,10 @@ alias vimnote="vim +VimwikiIndex"
 # cam
 alias mpvcam="mpv av://v4l2:/dev/video0 --profile=low-latency --untimed"
 alias mplayercam="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 30"
+# pip update
+pip-update() {
+    pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs pip install --user --upgrade
+}
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
