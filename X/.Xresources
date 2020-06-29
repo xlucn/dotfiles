@@ -47,7 +47,7 @@ URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
 st.font: Hack Nerd Font:pixelsize=16:antialias=true:autohint:true
-st.alpha: 0.7
+st.alpha: 0.8
 st.borderpx: 0
 
 tabbed.font: Source Han Sans CN:pixelsize=12
