@@ -1,22 +1,11 @@
 #!/bin/sh
 # Script to work with transmission-remote-gtk's action functionality.
-
-# for testing purpose
-msg()
-{
-    notify-send -a "Transmission Remote" "testing" "$*"
-}
-
-if [ $# != 1 ]
-then
-    msg "Action need one argument: target path"
+[ $# != 1 ] && exit
+if [ -f "$1" ] || [ -d "$1" ]; then
+    dest="$1"
+elif [ -f "$1.part" ]; then
+    dest="$1.part"
 else
-    fm=nemo
-    if [ -f "$1" ] || [ -d "$1" ]
-    then
-        dir="$1"
-    else
-        dir=$(dirname "$1")
-    fi
-    $fm "$dir"
+    dest=$(dirname "$1")
 fi
+nemo "$dest"
