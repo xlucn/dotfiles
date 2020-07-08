@@ -50,7 +50,7 @@ if [ -f "$CONFIG_FILE" ]; then
                 conflict=$((conflict + 1))
             fi
         else
-            printf "\e[$((left?34:0))m%6s \e[$((right?31:0))m%6s\e[0m %s\n" "+$left" "-$right" "$p"
+            printf "\033[$((left?34:0))m%6s \033[$((right?31:0))m%6s\033[0m %s\n" "+$left" "-$right" "$p"
         fi
     done < "$CONFIG_FILE"
 

@@ -1,6 +1,6 @@
-#! /bin/sh
+#!/bin/sh
 for i in $(seq 0 255) ; do
-    printf "\e[48;5;%sm %3d \e[0m" "$i" "$i"
+    printf "\033[48;5;%sm %3d \033[0m" "$i" "$i"
     if { [ "$i" -le 15 ] && [ $(( i % 8 )) = 7 ]; } \
     || { [ "$i" -gt 15 ] && [ $(( i % 6 )) = 3 ]; }; then
         printf "\n";
