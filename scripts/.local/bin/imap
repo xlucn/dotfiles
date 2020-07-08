@@ -4,18 +4,17 @@
 
 usage() {
     cat >&2 << EOF
-Usage: $(basename "$0") [-s server] [-p port] [-P password] [-n N] [-h] email
+Usage: $(basename "$0") [-s server] [-p port] [-P password] [-n N] email
 
 Options:
     -s: Server address of email provider.
         For the following email providers this option is not needed:
             gmail, outlook, qqmail
-        For other email providers, you have to specify them manually, or
-        modify this script.
     -p: Imap port, default is 993
     -P: Imap password. If not provided, the output of this command is used:
             pass show mail/<email>
-    -n: Output the latest N emails' info (date, subject, from one in each line)
+    -n: Output the latest N emails' info.
+            Format: date, subject and sender in separate lines.
 EOF
 }
 
@@ -55,14 +54,13 @@ time_now="$(date +%s)"
 tempfile="/tmp/imap_$email"
 [ -f "$tempfile" ] && read -r time_last count < "$tempfile"
 # TODO: -n N option not working here
-if [ -n "$count" ] && [ -n "$time_last" ] \
-&& [ $((time_now - time_last)) -lt "$query_interval" ]; then
+if [ -n "$count" ] && [ -n "$time_last" ] && \
+   [ $((time_now - time_last)) -lt "$query_interval" ]; then
     echo "$count"; exit
 fi
 
-# Password operations are slow, put it after using cached results above
-password=$(pass show mail/"$email" 2> /dev/null)
-password=${arg_password:-$password}
+# Password operations are slow, put it after reading cached results above
+password=${arg_password:-$(pass show "mail/$email" 2> /dev/null)}
 [ -z "$password" ] && { echo Password not set. >&2; exit 1; }
 
 # Fetch and cache
@@ -78,7 +76,7 @@ echo "$time_now $count" > "$tempfile"
 echo "$count"
 
 base64_decode() {
-    # =?UTF-8?B?BASE_64_STRING?=
+    # pattern: =?$1?$2?= -> =?UTF-8?B?BASE_64_STRING?=
     encode=${1%\?*}; base64=${1#*\?}; string=$2
     if [ "$base64" = 'B' ] || [ "$base64" = 'b' ]; then
         echo "$string" | base64 -d | iconv -f "$encode" -t "utf-8"

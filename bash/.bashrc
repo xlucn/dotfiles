@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"; do
-    if [ -d "$p" ] && ! echo "$PATH" | grep -q "$p"; then
+    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
         export PATH="$p:${PATH}"
     fi
 done
@@ -30,9 +30,6 @@ alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 alias newsboat="newsboat -q"
 # vimwiki note
 alias vimnote="vim +VimwikiIndex"
-# cam
-alias mpvcam="mpv av://v4l2:/dev/video0 --profile=low-latency --untimed"
-alias mplayercam="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 30"
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs pip install --user --upgrade

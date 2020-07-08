@@ -1,29 +1,22 @@
 #!/bin/sh
-#
-# file: setmonitor
-# link: https://github.com/OliverLew/dotfiles
-#
 # A script to configure multiple displays with xrandr
-#
 
 command -v dmenu > /dev/null 2>&1 && DMENU="dmenu" || DMENU="rofi -dmenu"
 
-monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
+monitors=$(xrandr | sed -n 's/\(.*\) disconnected.*/\1/p')
 
 # This is the core part. Without functionalities like lists, we store
 # the commands beforehand in variable names corresponding to the each option.
 # In other words, if we choose option "N foo bar", the executed command will
 # be "$command_N"
-add_cmd()
-{
+add_cmd() {
     options="${options}${index:-0} $1\n"
     eval "command_${index:-0}=\"$2\""
     index=$((index + 1))
 }
 
 # Disable any other monitors that's *not* in the function arguments
-args_disable_others()
-{
+xrandr_disable_others() {
     for m in $monitors; do
         for n in "$@"; do [ "$m" = "$n" ] && enabled="$m"; done
         [ "$m" != "$enabled" ] && printf " --output %s --off" "$m"
@@ -35,8 +28,8 @@ add_cmd "Cancel" true
 
 # Single Monitor
 for m in $monitors; do
-    add_cmd "Single    $m" "xrandr --output $m --auto --primary
-        $(args_disable_others "$m")"
+    add_cmd "Single    $m" \
+            "xrandr --output $m --auto --primary $(xrandr_disable_others "$m")"
 done
 
 # Dual monitor
@@ -44,12 +37,12 @@ for m in $monitors; do
     for n in $monitors; do
         [ "$m" = "$n" ] && continue
         add_cmd "Dual      $m -> $n" "xrandr --output $m --auto --primary
-            --output $n --auto --right-of $m $(args_disable_others "$m" "$n")"
+            --output $n --auto --right-of $m $(xrandr_disable_others "$m" "$n")"
         add_cmd "Mirror    $m -> $n" "xrandr --output $m --auto --primary
-            --output $n --auto --same-as $m $(args_disable_others "$m" "$n")"
+            --output $n --auto --same-as $m $(xrandr_disable_others "$m" "$n")"
     done
 done
 
 choice=$(printf "%s$options" "" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
-[ -n "$choice" ] && eval "\$command_$choice"
+eval "\$command_${choice-0}"
