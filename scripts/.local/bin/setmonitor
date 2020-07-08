@@ -6,8 +6,7 @@
 # A script to configure multiple displays with xrandr
 #
 
-DMENU=dmenu
-command rofi > /dev/null 2>&1 && DMENU="rofi -dmenu"
+command -v dmenu > /dev/null 2>&1 && DMENU="dmenu" || DMENU="rofi -dmenu"
 
 monitors=$(xrandr | awk '{ if ($2 == "connected") print $1 }')
 
