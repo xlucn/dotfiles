@@ -124,6 +124,7 @@ for device in $devices; do
             show_speed "$device"
         fi
     elif [ "$flag_connection" = 1 ]; then
+        # TODO probably cat /proc/net/wireless
         nmcli -f GENERAL,AP dev show "$(basename "$device")" \
             | grep -A 8 -E "(AP[^*]*\*|GENERAL.CONNECTION)" \
             | awk -F ": *" '/\.(CONNECTION|SIGNAL):/{ print $2 }' \
