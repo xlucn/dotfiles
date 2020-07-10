@@ -86,9 +86,11 @@ EOF
     video_h=$pane_h
     video_x=$pane_x
     video_y=$pane_y
-    if [ $((width * pane_h - height * pane_w)) -gt 0 ]; then
+    if [ $((width * pane_h)) -gt $((height * pane_w)) ]; then
         video_h=$((pane_w * height / width))
-        [ "$pane_w" -gt "$pane_h" ] && video_y=$((pane_y + (pane_h - video_h) / 2))
+        if [ $((2 * width * pane_h)) -lt $((3 * height * pane_w)) ]; then
+            video_y=$((pane_y + (pane_h - video_h) / 2))
+        fi
     else
         video_w=$((pane_h * width / height))
         video_x=$((pane_x + (pane_w - video_w) / 2))
