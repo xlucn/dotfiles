@@ -3,7 +3,7 @@
 
 current_dir=$(pwd)
 
-trap "cd \$current_dir; exit" TERM QUIT INT HUP
+trap "cd \$current_dir" TERM QUIT INT HUP
 
 for p in $(pacman -Qmq | grep -- "-git"); do
     d=$HOME/.cache/yay/$p
