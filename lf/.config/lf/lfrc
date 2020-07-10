@@ -5,7 +5,7 @@ set nohidden
 set info size
 set ifs "\n"
 set filesep "\n"
-set previewer ~/.config/lf/pv.sh
+set previewer pv
 
 # Key bindings
 map <c-y> up
@@ -15,4 +15,4 @@ map gh cd ~
 map gr cd /
 
 # Commands
-cmd open $~/.config/lf/open.sh $fx
+cmd open $ open $fx
