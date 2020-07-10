@@ -1,11 +1,5 @@
 #!/bin/bash
 
-for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"; do
-    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
-        export PATH="$p:${PATH}"
-    fi
-done
-
 if [ "$PS1" ] && [ -f /usr/share/bash-completion/bash_completion ]
 then
     . /usr/share/bash-completion/bash_completion

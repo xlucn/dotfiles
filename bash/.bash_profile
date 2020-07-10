@@ -1,5 +1,11 @@
 #!/bin/sh
-#
+# PATH
+for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"; do
+    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
+        export PATH="$p:${PATH}"
+    fi
+done
+
 # Environments
 export EDITOR=vim
 export VISUAL=vim
