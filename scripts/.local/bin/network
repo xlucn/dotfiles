@@ -126,13 +126,12 @@ for device in $devices; do
     elif [ "$flag_connection" = 1 ]; then
         # TODO probably cat /proc/net/wireless
         nmcli -f GENERAL,AP dev show "$(basename "$device")" \
-            | grep -A 8 -E "(AP[^*]*\*|GENERAL.CONNECTION)" \
-            | awk -F ": *" '/\.(CONNECTION|SIGNAL):/{ print $2 }' \
-            | { read -r connection;
-                read -r signal;
-                echo "${connection:---}"
-                echo "${signal:-0}"
-            }
+        | sed -n "s/AP\[[0-9]*\]\.\(SSID\|SIGNAL\):\ *\(.*\)/\2/p" \
+        | { read -r connection;
+            read -r signal;
+            echo "${connection:---}"
+            echo "${signal:-0}"
+        }
     else
         read -r state < "$device"/operstate
         if [ "$state" = "up" ]; then
