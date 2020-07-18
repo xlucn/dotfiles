@@ -162,24 +162,8 @@
     frame_color = "#ff0000"
     timeout = 0
 
-[stack-volume]
-    category = "dwm-status.volume"
-    set_stack_tag = "volume"
-
-[stack-brightness]
-    category = "dwm-status.light"
-    set_stack_tag = "brightness"
-
-[stack-battery]
-    category = "dwm-status.battery"
-    set_stack_tag = "battery"
-
-[stack-network]
-    category = "dwm-status.network"
-    set_stack_tag = "network"
-
-[stack-mpd]
-    category = "dwm-status.mpd"
-    set_stack_tag = "mpd"
+[dwm-status]
+    category = "dwm-status"
+    set_stack_tag = "dwm-status"
 
 # vim: ft=cfg
