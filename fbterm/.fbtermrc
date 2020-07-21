@@ -2,8 +2,8 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=Hack Nerd Font:style=Regular,Source Han Sans CN:style=Regular
 font-size=16
+font-names=Unifont:Symbols Nerd Font:style=2048-em:JetBrainsMono Nerd Font:sytle=Regular:Hack Nerd Font:style=Regular,Noto Sans CJK SC:style=Regular:Source Han Sans CN:style=Regular
 
 # force font width (and/or height), usually for non-fixed width fonts
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)

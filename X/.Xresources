@@ -46,14 +46,13 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
-st.font: Hack Nerd Font:pixelsize=16:antialias=true:autohint:true
 st.alpha: 0.8
 st.borderpx: 0
 
-tabbed.font: Source Han Sans CN:pixelsize=12
+tabbed.font: Noto Sans CJK SC:pixelsize=12
 tabbed.tabwidth: 200
 
-Sxiv.font: xft:Monospace:pixelsize=14, xft:Source Han Sans CN:pixelsize=14
+Sxiv.font: xft:Monospace:pixelsize=14, xft:Noto Sans CJK SC:pixelsize=14
 
 Xautolock.time: 10
 Xautolock.locker: slock
