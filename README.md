@@ -1,29 +1,27 @@
 # dotfiles
 Config files for everything
 
-![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesomewm.png?raw=true)
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/dwm.png?raw=true)
+![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesomewm.png?raw=true)
 
 ## Environment
 
 - OS:
   - [Archlinux](http://www.archlinux.org/)
 - WM:
-  - [AwesomeWM](https://awesomewm.org/)
   - [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches)
-- Colorscheme:
-  - [wal](https://github.com/dylanaraps/pywal) base16-materialer
+  - [AwesomeWM](https://awesomewm.org/)
 - Terminal Emulator
   - [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
-- Text Editor
-  - [vim](https://www.vim.org/)
+- Color scheme:
+  - material color scheme
 
 ## Requirement and recommendations
 
 - fonts
-  - [Hack](https://github.com/source-foundry/Hack)
-  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF) for large font in linux console
-  - [Nerd Font](https://nerdfonts.com) for awesome wm and fbterm
+  - [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) and [Hack](https://github.com/source-foundry/Hack) for code
+  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF) and [Unifont](http://unifoundry.com/unifont/index.html) for Unicode bitmap font (in tty)
+  - [Material Design Icons font](https://github.com/templarian/MaterialDesign/) and [Nerd Font](https://nerdfonts.com) for status bar
 
 - curl for vim-plug auto install (in .vimrc) and a lot other scripts
 
@@ -33,10 +31,8 @@ Config files for everything
   - [gpg](https://gnupg.org/) for password-store and other encryptions
 
 - For Awesome WM:
-  - [nemo](https://github.com/linuxmint/nemo) for file manager
   - [rofi](https://github.com/davatorium/rofi) for launcher
   - [picom](https://github.com/yshui/picom) for compositing (a fork of [compton](https://github.com/chjj/compton))
-  - [xinput](https://www.x.org/archive/current/doc/man/man1/xinput.1.xhtml) for configuring trackpad.
 
 ## Install
 
