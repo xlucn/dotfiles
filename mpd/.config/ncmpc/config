@@ -1,0 +1,36 @@
+# connection
+host                         = localhost
+port                         = 6600
+# interface
+enable-mouse                 = no
+auto-center                  = yes
+scroll-offset                = 10
+audible-bell                 = no
+visible-bell                 = yes
+seek-time                    = 10
+text-editor                  = vim
+second-column                = yes
+screen-list                  = help playlist browse library search lyrics outputs song keydef
+# display
+wide-cursor                  = yes
+hardware-cursor              = no
+visible-bitrate              = yes
+set-xterm-title              = yes
+status-message-time          = 5
+list-format                  = "[%artist% - %title%]|%shortfile%"
+status-format                = "[%artist% - %title%]|%file%"
+xterm-title-format           = "ncmpc: [[%artist% - %title%]|%file%]"
+# colors
+enable-colors                = yes
+color background             = none
+color title                  = cyan,bold/none
+color title-bold             = yellow,bold/none
+color line                   = cyan
+color line-flags             = yellow
+color list                   = white
+color list-bold              = yellow,bold
+color progressbar            = yellow/none
+color progressbar-background = black/none
+color status-state           = cyan/none
+color status-song            = white/none
+color status-time            = green/none
