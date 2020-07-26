@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 # Script to start tmux in fbterm/yaft/getty
 #
 # Requirement:
@@ -36,7 +36,7 @@ if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1; then
     # regenerate darkened image for framebuffer with convert
     if command -v convert > /dev/null 2>&1; then
         # Compare modified time, only update when needed
-        # use stat instead of test -nt/-ot command, test will dereference links
+        # use stat instead of test -nt/-ot command which dereferences links
         script_time=$(stat -Lc %Y "$0")
         bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
         if [ -e "$bg_framebuffer" ]; then
