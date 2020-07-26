@@ -10,7 +10,7 @@ if pgrep fbterm > /dev/null 2>&1; then
     CHARH=$(sed -n "s/^font-height=\([0-9]*\)$/\1/p" "$HOME/.fbtermrc")
 elif pgrep yaft > /dev/null 2>&1; then
     CHARW=8
-    CHARH=16
+    CHARH=18
 fi
 # Character width and height in pixels
 charw=${CHARW:-8}
@@ -96,7 +96,7 @@ EOF
         video_x=$((pane_x + (pane_w - video_w) / 2))
     fi
 
-    # Mute all output / disable user config in case of conflicts
+    # Mute all output
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
             -vf scale="$video_w":"$video_h" -geometry $video_x:$video_y \
             || exit
