@@ -18,6 +18,8 @@ Options:
 EOF
 }
 
+# Directory to store cached results
+TMPDIR=/tmp/status
 # Minimal time interval between two imap queries
 query_interval=120
 
@@ -51,7 +53,7 @@ server=${arg_server:-$server}
 
 # Read possible cached results
 time_now="$(date +%s)"
-tempfile="/tmp/imap_$email"
+tempfile="$TMPDIR/imap_$email"
 [ -f "$tempfile" ] && read -r time_last count < "$tempfile"
 # TODO: -n N option not working here
 if [ -n "$count" ] && [ -n "$time_last" ] && \

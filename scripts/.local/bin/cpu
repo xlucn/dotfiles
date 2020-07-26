@@ -1,7 +1,7 @@
 #!/bin/sh
 
-tmpfile="/tmp/tmux_cpu_info"
 
+tmpfile="/tmp/status/cpu_info"
 for col in $(grep "cpu " /proc/stat | tr -d cpu); do
     total=$((total + col))
     count=$((count + 1))
