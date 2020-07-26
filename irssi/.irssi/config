@@ -34,7 +34,7 @@ servers = (
     port = "6667";
     use_tls = "no";
     tls_verify = "no";
-    autoconnect = "yes";
+    autoconnect = "no";
   },
   {
     address = "irc.alpharatio.cc";
@@ -91,6 +91,7 @@ servers = (
     use_tls = "yes";
     tls_verify = "yes";
     autoconnect = "yes";
+  },
   {
     address = "irc.oftc.net";
     chatnet = "OFTC";
@@ -158,9 +159,9 @@ chatnets = {
 };
 
 channels = (
-  { name = "#freenode"; chatnet = "Freenode"; autojoin = "No"; },
+  { name = "#freenode"; chatnet = "Freenode"; autojoin = "no"; },
   { name = "#irssi"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "yes"; },
+  { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "no"; },
   { name = "#alpharatio"; chatnet = "AlphaRatio"; autojoin = "yes"; },
   { name = "#announce"; chatnet = "AlphaRatio"; },
   { name = "#filelist"; chatnet = "FileList"; autojoin = "yes"; },
