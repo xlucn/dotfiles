@@ -57,10 +57,9 @@ Sxiv.font: xft:Monospace:pixelsize=14, xft:Noto Sans CJK SC:pixelsize=14
 Xautolock.time: 10
 Xautolock.locker: slock
 
-/* *background : #263238 */
 *cursorColor: #ECEFF1
 *foreground: #ECEFF1
-*background: #212121
+*background: #222B39
 *color0: #546E7A
 *color1: #FF5252
 *color2: #5CF19E
