@@ -72,3 +72,4 @@ elif [ -n "$USE_YAFT" ]; then
     cmd="yaft"
 fi
 $cmd tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
+clear
