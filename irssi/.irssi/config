@@ -47,9 +47,9 @@ servers = (
   {
     address = "irc.filelist.io";
     chatnet = "FileList";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "yes";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
     autoconnect = "yes";
   },
   {
@@ -187,7 +187,14 @@ channels = (
   { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
   { name = "#jpopsuki-support"; chatnet = "synIRC"; },
   { name = "#empornium"; chatnet = "DigitalIRC"; autojoin = "yes"; },
-  { name = "#suckless"; chatnet = "OFTC"; autojoin = "yes"; }
+  { name = "#suckless"; chatnet = "OFTC"; autojoin = "yes"; },
+  {
+    name = "#archlinux-cn-offtopic";
+    chatnet = "Freenode";
+    autojoin = "yes";
+  },
+  { name = "#archlinux-cn"; chatnet = "Freenode"; autojoin = "yes"; },
+  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "yes"; }
 );
 
 aliases = {
@@ -197,19 +204,13 @@ aliases = {
   DATE = "TIME";
   DEHIGHLIGHT = "DEHILIGHT";
   DESCRIBE = "ACTION";
-  DHL = "DEHILIGHT";
   EXIT = "QUIT";
   GOTO = "SCROLLBACK GOTO";
   HIGHLIGHT = "HILIGHT";
-  HL = "HILIGHT";
   HOST = "USERHOST";
-  J = "JOIN";
   LAST = "LASTLOG";
   M = "MSG";
-  N = "NAMES";
   NMSG = "^MSG";
-  P = "PART";
-  Q = "QUERY";
   RESET = "SET -default";
   SAY = "MSG *";
   SB = "SCROLLBACK";
@@ -423,3 +424,4 @@ keyboard = (
     data = "script exec Irssi::Script::tmux_nicklist_portable::toggle_nicklist";
   }
 );
+hilights = ( );
