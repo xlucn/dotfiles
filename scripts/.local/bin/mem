@@ -9,7 +9,7 @@ usage()
 }
 
 # TODO: CAPS for swap?
-while getopts "123htufsbcaBST:" arg; do
+while getopts "123htufsbcaBS" arg; do
     case "$arg" in
         t) flag_total=1;;
         u) flag_used=1;;
@@ -19,7 +19,6 @@ while getopts "123htufsbcaBST:" arg; do
         a) flag_avail=1;;
         B) flag_byte=1;;
         S) flag_swap=1;;
-        T) test=$OPTARG;;
         1|2|3) precision=$arg;;
         h|*) usage; exit 0;;
     esac
@@ -63,10 +62,7 @@ info()
     format "$result"
 }
 
-if [ -n "$test" ]; then
-    format "$test"
-    exit
-elif [ "$flag_total" = 1 ]; then
+if [ "$flag_total" = 1 ]; then
     if [ "$flag_swap" = 1 ]; then
         info SwapTotal
     else
