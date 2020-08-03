@@ -1,9 +1,5 @@
 #!/bin/sh
-
+# start transmission daemon with specified logfile
 logdir="$HOME/.cache/transmission-daemon"
 logfile="$logdir/$(date +%s).log"
-if [ ! -d "$logdir" ]
-then
-    mkdir -p "$logdir"
-fi
-/usr/bin/transmission-daemon "$@" --logfile "$logfile"
+mkdir -p "$logdir" && /usr/bin/transmission-daemon "$@" --logfile "$logfile"
