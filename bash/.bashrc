@@ -44,7 +44,7 @@ __cwd_trim() {
     limit=20
     cwd=$(basename "$PWD")
     if [ ${#cwd} -gt $limit ]; then
-        printf "%s ..." "$(echo "$cwd" | cut -c -"$((limit - 4))")"
+        printf "%s …" "$(echo "$cwd" | cut -c -"$((limit - 2))")"
     else
         printf "%s" "$cwd"
     fi
