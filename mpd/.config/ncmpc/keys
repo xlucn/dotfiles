@@ -24,11 +24,38 @@ key scroll-down-half = Ctrl-D,  'F'
 ## Scroll down half a screen
 key scroll-up-half = 'B',  Ctrl-U
 
+## Select currently playing song
+key select-playing = 263
+
+## Help screen
+key screen-help = '1',  F1
+
+## Play/Enter directory
+key play = Ctrl-M,  'l'
+
 ## Pause
 key pause = 'p'
 
+## Stop
+key stop = 's'
+
+## Seek forward
+key seek-forward = 'f',  261
+
+## Seek backward
+key seek-backward = 'b',  260
+
+## Increase volume
+key volume-up = 43,  61
+
+## Decrease volume
+key volume-down = 45
+
 ## Start a music database update
 key db-update = 'U'
+
+## Go to parent directory
+key go-parent-directory = 'h'
 
 ## Locate song in browser
 key locate = Ctrl-G
@@ -47,6 +74,9 @@ key rfind-next = 'N'
 
 ## Jump to
 key jump = 'J'
+
+## Lyrics screen
+key screen-lyrics = '7',  F7
 
 ## Update Lyrics
 key lyrics-update = 0
