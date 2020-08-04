@@ -343,12 +343,17 @@ settings = {
     awl_height_adjust = "0";
     awl_viewer_launch_env = "NOTITLE=1";
     chansort_configurable_autosort = "yes";
+    nickcolor_truncate_value = "-15";
+    nickcolor_enable_truncate = "yes";
+    nickcolor_colors = "2 3 4 5 6 7 9 10 11 12 13";
   };
   "irc/core" = { skip_motd = "yes"; alternate_nick = "Lewinat0r"; };
   "fe-common/core" = { show_names_on_join = "no"; };
 };
 
-ignores = ( { level = "JOINS PARTS QUITS TOPICS NICKS"; } );
+ignores = ( 
+  { level = "CRAP JOINS PARTS QUITS MODES TOPICS NICKS"; }
+);
 
 keyboard = (
   { key = "meta-[M"; id = "command"; data = "mouse_xterm "; },

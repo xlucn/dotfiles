@@ -295,22 +295,22 @@ abstracts = {
 };
 formats = {
   "fe-common/irc" = {
-    own_action = "{ownaction $[-19]0} $1";
-    action_private = "{pvtaction $[-19]0}$1";
-    action_private_query = "{pvtaction_query $[-19]0} $2";
-    action_public = "{pubaction $[-19]0}$1";
+    own_action = "{ownaction $[-18]0} $1";
+    action_private = "{pvtaction $[-18]0}$1";
+    action_private_query = "{pvtaction_query $[-18]0} $2";
+    action_public = "{pubaction $[-18]0}$1";
   };
   "fe-common/core" = {
-    own_msg = "{ownmsgnick {ownnick $[-21]0$2}}$1";
-    own_msg_channel = "{ownmsgnick {ownnick $[-21]0$3}{msgchannel $1}}$2";
-    own_msg_private_query = "{ownprivmsgnick {ownprivnick $[-21]2}}$1";
-    pubmsg_me = "{pubmsgmenick {menick $[-21]0}$2}$1";
-    pubmsg_me_channel = "{pubmsgmenick {menick $[-21]0$3}{msgchannel $1}}$2";
-    pubmsg_hilight = "{pubmsghinick $0 $0 $[-21]1$3%n}$2";
-    pubmsg_hilight_channel = "{pubmsghinick $0 $[-21]1$4{msgchannel $2}}$3";
-    pubmsg = "{pubmsgnick {pubnick %w$[-21]0}$2}$1";
-    pubmsg_channel = "{pubmsgnick {pubnick %w$[-21]0}$2}$1";
-    msg_private_query = "{privmsgnick $[-21]0}$2";
+    own_msg = "{ownmsgnick {ownnick $[-20]0$2}}$1";
+    own_msg_channel = "{ownmsgnick {ownnick $[-20]0$3}{msgchannel $1}}$2";
+    own_msg_private_query = "{ownprivmsgnick {ownprivnick $[-20]2}}$1";
+    pubmsg_me = "{pubmsgmenick {menick $[-20]0}$2}$1";
+    pubmsg_me_channel = "{pubmsgmenick {menick $[-20]0$3}{msgchannel $1}}$2";
+    pubmsg_hilight = "{pubmsghinick $0 $0 $[-20]1$3%n}$2";
+    pubmsg_hilight_channel = "{pubmsghinick $0 $[-20]1$4{msgchannel $2}}$3";
+    pubmsg = "{pubmsgnick $2 {pubnick \00313$[-15]0}}$1";
+    pubmsg_channel = "{pubmsgnick {pubnick %c$[-20]0}$2}$1";
+    msg_private_query = "{privmsgnick $[-20]0}$2";
   };
   "Irssi::Script::adv_windowlist" = {
     awl_display_header = "%8%9$C";

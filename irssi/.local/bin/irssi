@@ -6,8 +6,10 @@
 if ! command -v pass > /dev/null 2>&1; then NO_PASS=1; fi
 if ! command -v tmux > /dev/null 2>&1; then NO_TMUX=1; fi
 
-export_passwords()
-{
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+start_irssi="/usr/bin/irssi --home=$XDG_CONFIG_HOME/irssi $*"
+
+export_passwords() {
     echo "Exporting passwords to subshell environments ..."
     passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
     for network in "$passdir/irc/"*; do
@@ -24,7 +26,7 @@ if [ -z $NO_TMUX ]; then
     session=irssi
     if ! tmux -L "$session" ls -F "#S" > /dev/null 2>&1; then
         if [ -z $NO_PASS ]; then export_passwords; fi
-        tmux -L "$session" -f /dev/null new -d -s "$session" /usr/bin/irssi "$@"
+        tmux -L "$session" -f /dev/null new -d -s "$session" "$start_irssi"
         tmux -L "$session" set -s -t irssi prefix None
         tmux -L "$session" unbind-key -a
         tmux -L "$session" bind-key -n C-\\ detach-client
@@ -36,5 +38,6 @@ if [ -z $NO_TMUX ]; then
     tmux -L "$session" attach -t "$session"
 else
     if [ -z $NO_PASS ]; then export_passwords; fi
-    /usr/bin/irssi "$@"
+    # /usr/bin/irssi  --home="$XDG_CONFIG_HOME/irssi" "$@"
+    exec "$start_irssi"
 fi
