@@ -39,10 +39,29 @@ if [ "$TERM" = "linux" ]; then
 fi
 
 # shell prompt functions
+red="\001\033[31m\002"
+green="\001\033[32m\002"
+yellow="\001\033[33m\002"
+blue="\001\033[34m\002"
+magenta="\001\033[35m\002"
+cyan="\001\033[36m\002"
+reset="\001\033[0m\002"
+boldyellow="\001\033[1;33m\002"
+
+if ! command -v __git_ps1 > /dev/null 2>&1; then
+    # shellcheck disable=SC1090 # source location
+    . "$HOME/.config/git/git-prompt.sh"
+fi
+
+__ssh_indicator() {
+    if [ -n "$SSH_CLIENT" ]; then
+        printf "${cyan}[SSH] $magenta%s@%s$reset " "$(whoami)" "$(hostname)"
+    fi
+}
+
 __cwd_trim() {
-    printf "\[\e[1;33m\]"
     limit=20
-    cwd=$(basename "$PWD")
+    cwd="$1"
     if [ ${#cwd} -gt $limit ]; then
         printf "%s …" "$(echo "$cwd" | cut -c -"$((limit - 2))")"
     else
@@ -52,69 +71,57 @@ __cwd_trim() {
     [ -n "$LF_LEVEL" ] && printf " (LF:%s)" "$LF_LEVEL"
     # ranger indicator -- if you are in ranger file manager
     [ -n "$RANGER_LEVEL" ] && printf " (RANGER:%s)" "$RANGER_LEVEL"
-    printf "\[\e[0m\]"
 }
 
-__jobs_count() {
-    jobs_info=$(jobs)
-    count_stop=$(echo "$jobs_info" | grep -Ec "Stopped|Suspended")
-    count_run=$(echo "$jobs_info" | grep -Ec "Running")
-    count_done=$(echo "$jobs_info" | grep -Ec "Done")
-    count_kill=$(echo "$jobs_info" | grep -Ec "Killed|Terminated")
-    count=$(( count_stop + count_run + count_done + count_kill ))
-    if [ $count -gt 0 ]; then
-        printf " "
-        [ "$count_stop" -gt 0 ] && printf "\[\e[33m\]S%s\[\e[0m\]" "$count_stop"
-        [ "$count_run"  -gt 0 ] && printf "\[\e[32m\]R%s\[\e[0m\]" "$count_run"
-        [ "$count_done" -gt 0 ] && printf "\[\e[34m\]D%s\[\e[0m\]" "$count_done"
-        [ "$count_kill" -gt 0 ] && printf "\[\e[31m\]K%s\[\e[0m\]" "$count_kill"
-    fi
+__curdir() {
+    printf "$boldyellow%s$reset" "$(__cwd_trim "$(basename "$(pwd)")")"
 }
 
-__user_host() {
-    printf "\[\e[35m\]%s@%s\[\e[0m\] " "$(whoami)" "$(hostname)"
-}
-
-__ssh_indicator() {
-    if [ -n "$SSH_CLIENT" ]; then
-        printf "\[\e[36m\][SSH]\[\e[0m\] "
-        __user_host
-    fi
+__jobcounts() {
+    jobcount=$(jobs -p | wc -l)
+    [ "$jobcount" -gt 0 ] && printf " $green(jobs:%s)$reset" "$jobcount"
 }
 
 __git_autostats() {
     if [ -f /tmp/git-autostats ]; then
         read -r uptodate ahead behind conflict < /tmp/git-autostats
         printf " ["
-        [ "$uptodate" -gt 0 ] && printf "\[\e[34m\]%s=\[\e[0m\]" "$uptodate"
-        [ "$ahead"    -gt 0 ] && printf "\[\e[32m\]%s+\[\e[0m\]" "$ahead"
-        [ "$behind"   -gt 0 ] && printf "\[\e[33m\]%s-\[\e[0m\]" "$behind"
-        [ "$conflict" -gt 0 ] && printf "\[\e[31m\]%s±\[\e[0m\]" "$conflict"
+        [ "$uptodate" -gt 0 ] && printf "$blue%s=$reset" "$uptodate"
+        [ "$ahead"    -gt 0 ] && printf "$green%s+$reset" "$ahead"
+        [ "$behind"   -gt 0 ] && printf "$yellow%s-$reset" "$behind"
+        [ "$conflict" -gt 0 ] && printf "$red%s±$reset" "$conflict"
         printf "]"
     else
         git autostats -u > /dev/null 2>&1
     fi
 }
 
-__before_git() {
-    __ssh_indicator
-    __cwd_trim
-    __jobs_count
-    __git_autostats
-}
-__after_git() {
-    printf " \[\e[1;33m\]\$\[\e[0m\] "
+__gitprompt() {
+    printf "$(
+    __git_ps1 " (%s)" |
+    sed -e "s/%/%%/g" \
+        -e "s/\\\\\\[/\\\\001/g" \
+        -e "s/\\\\\\]/\\\\002/g" \
+        -e "s/\\\\\\e/\\\\033/g"
+    )%s"
 }
 
-# use the prompt script somes with git
-if ! command -v __git_ps1 > /dev/null 2>&1; then
-    . /usr/share/git/completion/git-prompt.sh
-fi
+__shell_prompt() {
+    __ssh_indicator
+    __curdir
+    __jobcounts
+    __git_autostats
+    __gitprompt
+    printf "$boldyellow %s $reset" "$"
+}
+
+# use the prompt script comes with git
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="verbose"
 export GIT_PS1_SHOWCOLORHINTS=1
-PROMPT_COMMAND='__git_ps1 "$(__before_git)" "$(__after_git)"'
+
+PS1='$(__shell_prompt)'
 
 # History, https://unix.stackexchange.com/questions/18212
 HISTSIZE=-1
