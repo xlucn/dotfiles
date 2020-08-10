@@ -9,18 +9,18 @@ local config = require("config")
 -- }}}
 local theme = {}
 -- Colorscheme files from Xresources {{{
-local xresources_theme = beautiful.xresources.get_current_theme()
-theme.dark   = xresources_theme.color0
-theme.red    = xresources_theme.color1
-theme.green  = xresources_theme.color2
-theme.yellow = xresources_theme.color3
-theme.blue   = xresources_theme.color4
-theme.purple = xresources_theme.color5
-theme.cyan   = xresources_theme.color6
-theme.light  = xresources_theme.color7
-theme.grey   = xresources_theme.color8
-theme.fg     = xresources_theme.foreground  -- ? better not use this, use light instead
-theme.bg     = xresources_theme.background  -- ? better not use this, use dark instead
+local xcolors = beautiful.xresources.get_current_theme()
+theme.black  = xcolors and xcolors.color0      or "#000000"
+theme.red    = xcolors and xcolors.color1      or "#FF0000"
+theme.green  = xcolors and xcolors.color2      or "#00FF00"
+theme.yellow = xcolors and xcolors.color3      or "#FFFF00"
+theme.blue   = xcolors and xcolors.color4      or "#0000FF"
+theme.purple = xcolors and xcolors.color5      or "#FF00FF"
+theme.cyan   = xcolors and xcolors.color6      or "#00FFFF"
+theme.white  = xcolors and xcolors.color7      or "#FFFFFF"
+theme.grey   = xcolors and xcolors.color8      or "#808080"
+theme.fg     = xcolors and xcolors.foreground  or "#FFFFFF"
+theme.bg     = xcolors and xcolors.background  or "#000000"
 -- }}}
 -- Basic Colors {{{
 theme.bg_normal             = theme.bg
@@ -41,8 +41,9 @@ else
 end
 -- }}}
 -- Sizes {{{
-theme.preferred_icon_size   = dpi(48)
-theme.bar_size              = dpi(config.bar_size)
+theme.preferred_icon_size   = 48  -- don't apply dpi here (for now)
+theme.bar_size              = dpi(config.basic_size)
+theme.panel_size            = theme.bar_size * 8
 theme.systray_icon_spacing  = dpi(8)
 theme.systray_icon_size     = dpi(24)
 -- }}}
@@ -86,14 +87,14 @@ theme.slider_bar_shape = gears.shape.rounded_bar
 theme.slider_bar_height = dpi(24)
 theme.slider_bar_color = theme.grey .. "80"
 theme.slider_bar_active_color = theme.fg_normal
-theme.slider_bar_margins = 12 -- { top = 12, bottom = 12 }
+theme.slider_bar_margins = dpi(12) -- { top = 12, bottom = 12 }
 theme.progressbar_bg = theme.grey .. "80"
 theme.progressbar_fg = theme.fg_normal
 theme.progressbar_shape = gears.shape.rounded_bar
 theme.progressbar_border_width = 0
 theme.progressbar_bar_shape = gears.shape.rectangle
 theme.progressbar_bar_border_width = 0
-theme.progressbar_margins = 12
+theme.progressbar_margins = dpi(12)
 -- theme.progressbar_paddings
 -- }}}
 -- Tooltip {{{
@@ -139,7 +140,6 @@ function theme.find_icon(icon_name, scalable)
     elseif not scalable and icon_name:find("symbolic") then
         scalable = true
     end
-    -- naughty.notify { text = "finding " .. icon_name }
     local data_dirs = { gears.filesystem.get_xdg_data_home(),
                         table.unpack(gears.filesystem.get_xdg_data_dirs()) }
     local icon_themes = { config.icon_theme, "Adwaita"}
@@ -186,37 +186,37 @@ awesome.set_preferred_icon_size(theme.preferred_icon_size)
 -- The tables are passed to add_icon_to_theme function only to replace the
 --     second element to the corresponding icon path
 add_icon_to_theme({
-        layout_floating       = { "󰕕", "focus-windows" },
+        layout_floating       = { "󰕕", "focus-windows", image_margin = dpi(8) },
         layout_tile           = { "󰙀", "view-grid" },
-        layout_max            = { "󰄮", "zoom-fit-best" },
+        layout_max            = { "󰄮", "zoom-fit-best", image_margin = dpi(4) },
 
         menuicon              = { "󰀻", "view-app-grid" }, -- start-here
-        sidebar_open          = { "󰄾", "pan-end" }, -- "pane-hide"
-        sidebar_close         = { "󰄽", "pan-start" }, -- "pane-show"
-        closebutton           = { "󰅖", "window-close", image_margin = 12 },
-        newterm               = { "󰐕", "list-add", image_margin = 6 },
+        sidebar_open          = { "󰍜", "pan-end" }, -- "pane-hide" 󰄾
+        sidebar_close         = { "󰍜", "pan-start" }, -- "pane-show" 󰄽
+        closebutton           = { "󰅖", "window-close", image_margin = dpi(12) },
+        newterm               = { "󰐕", "list-add", image_margin = dpi(6) },
         icon_tray = { [true]  = { "󰅀", "pan-down" },
                       [false] = { "󰅃", "pan-up" } },
 
         icon_music            = { "󰎇", "audio-x-generic" },
         icon_music_state      = { -- state is opposite to action(in icon name)
-            play              = { "󰏤", "media-playback-pause" },
-            pause             = { "󰐊", "media-playback-start" },
-            stop              = { "󰓛", "media-playback-stop" } },
+                       play   = { "󰏤", "media-playback-pause" },
+                       pause  = { "󰐊", "media-playback-start" },
+                       stop   = { "󰓛", "media-playback-stop" } },
         icon_music_next       = { "󰒭", "media-skip-forward" },
         icon_music_prev       = { "󰒮", "media-skip-backward" },
         icon_music_forward    = { "󰶻", "media-seek-forward" },
         icon_music_backward   = { "󰶺", "media-seek-backward" },
         icon_music_random     = {
-            [true]            = { "󰒝", "media-playlist-shuffle" },
-            [false]           = { "󰒞", "media-playlist-consecutive" } },
+                      [true]  = { "󰒝", "media-playlist-shuffle" },
+                      [false] = { "󰒞", "media-playlist-consecutive" } },
         icon_music_repeat     = {
-            [true]            = { "󰑖", "media-playlist-repeat" },
-            [false]           = { "󰑘", "media-playlist-repeat-one" } },
+                      [true]  = { "󰑖", "media-playlist-repeat" },
+                      [false] = { "󰑘", "media-playlist-repeat-one" } },
 
-        icon_volume_mute      = { "󰝟", "audio-volume-muted" },
-        icon_volume_low       = { "󰕿", "audio-volume-low", font_margin = 10 },
-        icon_volume_mid       = { "󰖀", "audio-volume-medium", font_margin = 6 },
+        icon_volume_mute      = { "󰝟", "audio-volume-muted" }, -- 
+        icon_volume_low       = { "󰕾", "audio-volume-low" }, -- 󰕿
+        icon_volume_mid       = { "󰕾", "audio-volume-medium" }, -- 󰖀
         icon_volume_high      = { "󰕾", "audio-volume-high" },
         icon_volume_stack     = { "󰕾", "audio-volume-high", color = theme.fg .. "40" },
 
@@ -258,8 +258,8 @@ add_icon_to_theme({
                                 { "󰤨", "network-wireless-signal-excellent" }},
         icon_wireless         = { "󰤨", "network-wireless" },
         icon_wireless_off     = { "󰤮", "network-wireless-offline" },
-        icon_wired            = { "󰈀", "network-wired" },
-        icon_wired_off        = { "󰈀", "network-wired-offline", color = theme.fg .. "40" },
+        icon_wired = { [true] = { "󰈀", "network-wired" },
+                      [false] = { "󰈀", "network-wired-offline", color = theme.fg .. "40" } },
 
         icon_email_unread     = { "󰇮", "mail-unread" },
         icon_email_read       = { "󰇰", "mail-read" },
@@ -296,8 +296,9 @@ theme.tag_icons = {
 }
 -- }}}
 -- Titlebar {{{
-theme.titlebar_bg     = theme.light
-theme.titlebar_fg     = theme.bg_normal
+-- theme.titlebar_bg     = theme.bg .. "C0"
+theme.titlebar_bg     = theme.white
+theme.titlebar_fg     = theme.black
 theme.titlebar_height = dpi(28)
 theme.titlebar_button_size = dpi(16)
 
@@ -343,7 +344,7 @@ for b, c in pairs(button_colors) do
 end
 -- }}}
 -- Notifications {{{
-naughty.config.padding = dpi(8)
+naughty.config.padding = dpi(16)
 naughty.config.spacing = dpi(8)
 naughty.config.defaults.margin       = dpi(16)
 naughty.config.defaults.timeout      = 10

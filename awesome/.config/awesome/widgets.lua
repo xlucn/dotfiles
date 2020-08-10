@@ -4,6 +4,7 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
 local dpi = beautiful.xresources.apply_dpi
 -- my local config file
 local config = require("config")
@@ -44,12 +45,6 @@ function icon_button_widget:set_image_margin(margin)
         self._private.container:get_children_by_id("margin_role")[1].margins = margin
     end
 end
-function icon_button_widget:set_font_margin(margin)
-    self._private.font_margin = margin
-    if self._private.use_font then
-        self._private.container:get_children_by_id("margin_role")[1].right = margin
-    end
-end
 function icon_button_widget:set_icon(icon, args)
     local function check_icon(i)
         return type(i) == "table" and i or ( self._private.use_font and { i, nil } or { nil, i } )
@@ -62,9 +57,6 @@ function icon_button_widget:set_icon(icon, args)
             set_markup(markup(icon[1] or "",
                               config.icon_font .. " " .. (args.font_size or "20"),
                               icon.color or beautiful.fg_normal))
-        if not self._private.font_margin then
-            self:set_font_margin(icon.font_margin or 0)
-        end
     else
         self._private.container:get_children_by_id("image_role")[1]:set_image(icon[2])
         if not self._private.image_margin then
@@ -112,21 +104,22 @@ local osd_popup = awful.popup {
         {
             icon_button(),
             id = 'icon_button',
-            forced_height = config.bar_size * 6,
-            forced_width = config.bar_size * 6,
-            margins = config.bar_size,
+            forced_height = beautiful.bar_size * 5,
+            forced_width = beautiful.bar_size * 6,
+            margins = config.use_image_icon and beautiful.bar_size or 0,
             widget = wibox.container.margin
         },
         {
             id = 'progressbar',
-            forced_height = config.bar_size,
-            forced_width = config.bar_size * 6,
+            forced_height = beautiful.bar_size,
+            forced_width = beautiful.bar_size * 6,
             widget = wibox.widget.progressbar
         },
         layout = wibox.layout.fixed.vertical,
     },
     placement   = awful.placement.centered,
     shape       = gears.shape.rounded_rect,
+    bg          = beautiful.bg_normal .. "80",
     visible     = false,
     ontop       = true,
 }
@@ -221,20 +214,14 @@ local function alsa()
         awful.button({}, 4, volume_up),         -- scroll up
         awful.button({}, 5, volume_down)        -- scroll down
     }
-    local stack_icon = wibox.widget {
-        icon,
-        icon_button(beautiful.icon_volume_stack),
-        layout = wibox.layout.stack
-    }
-
     local alsa_widget = wibox.widget {
-        config.use_image_icon and icon or stack_icon,
+        icon,
         text,
         clickable(slider),
         forced_height = beautiful.bar_size,
         layout = wibox.layout.fixed.horizontal
     }
-    alsa_widget.indicator = config.use_image_icon and icon or stack_icon
+    alsa_widget.indicator = icon
     alsa_widget:buttons{
         awful.button({}, 4, volume_up),         -- scroll up
         awful.button({}, 5, volume_down)        -- scroll down
@@ -448,50 +435,67 @@ local function memory()
 end
 -- }}}
 -- {{{ mail
-local function imap_each(email)
-    local imap_icon = icon_button()
-    local imap_count = wibox.widget.textbox()
-
-    local imap_upd = gears.timer {
-        timeout   = 120,
-        autostart = true,
-        callback  = function()
-            awful.spawn.easy_async(string.format("imap %s", email),
-                function(stdout)
-                    local count = string.match(stdout, "(%d+)")
-                    if count == nil then
-                        imap_icon:set_icon(beautiful.icon_email_sync)
-                    elseif count == "0" then
-                        imap_icon:set_icon(beautiful.icon_email_read)
-                    else
-                        imap_icon:set_icon(beautiful.icon_email_unread)
-                    end
-                    imap_count:set_text(count or "")
-                end
-            )
-        end
-    }
-
-    imap_upd:emit_signal("timeout")
-    imap_icon:buttons { awful.button({}, 3, function()
-        awful.spawn(config.terminal_run(
-            string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
-                          config.mutt, config.mutt, email)
-        ))
-    end) }
-    return {
-        imap_icon,
-        imap_count,
-        layout = wibox.layout.fixed.horizontal
-    }
-end
 local function imap()
-    local imap_widget = {}
-    imap_widget.indicator= wibox.widget{
+    local indicator_status
+    local flags_unread = {}
+    local imap_widget = wibox.widget{
         layout = wibox.layout.fixed.horizontal
     }
+    imap_widget.indicator = icon_button(beautiful.icon_email_read)
+
+    local function imap_each(email)
+        local imap_icon = icon_button()
+        local imap_count = wibox.widget.textbox()
+
+        local imap_upd = gears.timer {
+            timeout   = 120,
+            autostart = true,
+            callback  = function()
+                awful.spawn.easy_async(string.format("imap %s", email),
+                    function(stdout)
+                        local count = string.match(stdout, "(%d+)")
+                        if count == nil then
+                            imap_icon:set_icon(beautiful.icon_email_sync)
+                        elseif count == "0" then
+                            imap_icon:set_icon(beautiful.icon_email_read)
+                        else
+                            imap_icon:set_icon(beautiful.icon_email_unread)
+                        end
+                        imap_count:set_text(count or "")
+
+                        -- update the indicator
+                        -- TODO: a cleaner code?
+                        flags_unread[email] = count ~= "0"
+                        indicator_status = false
+                        for _, e in pairs(config.imap_emails) do
+                            if flags_unread[e] then
+                                indicator_status = true
+                            end
+                        end
+                        imap_widget.indicator:set_icon(indicator_status
+                            and beautiful.icon_email_unread
+                            or beautiful.icon_email_read)
+                    end
+                )
+            end
+        }
+
+        imap_upd:emit_signal("timeout")
+        imap_icon:buttons { awful.button({}, 3, function()
+            awful.spawn(config.terminal_run(
+                string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
+                              config.mutt, config.mutt, email)
+            ))
+        end) }
+        return {
+            imap_icon,
+            imap_count,
+            layout = wibox.layout.fixed.horizontal
+        }
+    end
+
     for _, email in pairs(config.imap_emails) do
-        imap_widget.indicator:add(imap_each(email))
+        imap_widget:add(imap_each(email))
     end
     return imap_widget
 end
@@ -529,18 +533,20 @@ local function network()
             awful.spawn.easy_async_with_shell(
                 "network -e; network -w; network -es; network -ws; network -wc; network -ec",
                 function(stdout)
-                    local e, w, ed, eu, wd, wu, _, ws, _, es = string.match(stdout,
+                    local e, w, ed, eu, wd, wu, _, ws, _, _ = string.match(stdout,
                         "(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n(%d+)\n([^\n]+)\n(%d+)\n([^\n]+)\n(%d+)")
                     ws = tonumber(ws)
                     local upspeed = tonumber(eu) + tonumber(wu)
                     local downspeed = tonumber(ed) + tonumber(wd)
-                    local signal_level = ws > 80  and 5 or ws > 55 and 4 or ws > 30 and 3 or ws > 5 and 2 or 1
+                    local signal_level = ws > 80 and 5
+                                      or ws > 55 and 4
+                                      or ws > 30 and 3
+                                      or ws > 5  and 2
+                                      or 1
                     if w == "1" then
                         net_icon:set_icon(beautiful.icon_wireless_level[signal_level])
-                    elseif e == "1" then
-                        net_icon:set_icon(beautiful.icon_wired)
                     else
-                        net_icon:set_icon(beautiful.icon_wired_off)
+                        net_icon:set_icon(beautiful.icon_wired[e == 1])
                     end
                     net_speed:set_text(
                         string.format("祝 %s\n %s", format_netspeed(upspeed), format_netspeed(downspeed))
@@ -699,7 +705,7 @@ local function datetime()
         {
             align = "center",
             format = markup("%b\n%d\n%a\n\n", beautiful.fontname .. " 11") ..
-                     markup("%H\n%M", beautiful.fontname .. " 14"),
+                     markup("%H\n%M", beautiful.fontname .. " 16"),
             widget = wibox.widget.textclock
         },
         margins = { top = beautiful.bar_size / 3, bottom = beautiful.bar_size / 3 },
@@ -731,6 +737,7 @@ local function datetime()
                 font = beautiful.fontname .. " 13",
                 widget = wibox.widget.textbox
             },
+            bg = "#00000000",
             widget = wibox.container.background
         })
     end
@@ -738,19 +745,24 @@ local function datetime()
         month_offset = e and (month_offset + e) or 0
         awful.spawn.easy_async_with_shell(
             -- the $(date +%%Y-%%m-1) is for acquiring the correct month in case of invalid dates
-            -- (e.g. march 31 -1 month -> march 1, see 'info date')
-            string.format("date +\"%%d\";" ..  -- today
-                          -- Day of week for the first day of the month, required for right align
-                          "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%w\";" ..
-                          -- The calendar of the month
-                          "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%m %%Y\" | xargs cal",
-                          month_offset, month_offset),
+            -- (e.g. "march 31" - "1 month" = "march 1", see 'info date')
+            string.format(
+                "date +\"%%d\";" ..  -- today
+                -- Day of week for the first day, required for right align
+                "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%w\";" ..
+                -- The calendar of the month
+                "date -d \"$(date +%%Y-%%m-1) %d month\" +\"%%m %%Y\" | xargs cal",
+                month_offset, month_offset
+            ),
             function(stdout)
                 row = 1
                 for s in string.gmatch(stdout, "([^\n]+)") do
-                    if row == 1 then today = s
-                    elseif row == 2 then firstday = tonumber(s + 1)
-                    elseif row == 3 then calendar_title:set_text(s:match("^%s*(.-)%s*$"))
+                    if row == 1 then
+                        today = tonumber(s)
+                    elseif row == 2 then
+                        firstday = tonumber(s + 1)
+                    elseif row == 3 then
+                        calendar_title:set_text(s:match("^%s*(.-)%s*$"))
                     else
                         -- TODO: use find to improve the procedure here (reduce the code duplications)
                         -- ( hint: find items one by one within two for loops )
@@ -760,15 +772,14 @@ local function datetime()
                             while col < firstday do
                                 tile = calendar_grid:get_widgets_at(2, col)[1]
                                 tile.children[1]:set_text("")
-                                tile.bg = "#00000000"
                                 col = col + 1
                             end
                         end
                         for d in string.gmatch(s, "(%S+)") do
                             tile = calendar_grid:get_widgets_at(row - 3, col)[1]
                             tile.children[1]:set_text(d)
-                            if d == today and month_offset == 0 then
-                                tile.bg = beautiful.bg_focus .. "80"
+                            if tonumber(d) == today and month_offset == 0 then
+                                tile.bg = beautiful.bg_focus .. "40"
                             else
                                 tile.bg = "#00000000"
                             end
@@ -778,7 +789,6 @@ local function datetime()
                         while col <= 7 do
                             tile = calendar_grid:get_widgets_at(row - 3, col)[1]
                             tile.children[1]:set_text("")
-                            tile.bg = "#00000000"
                             col = col + 1
                         end
                     end
@@ -816,6 +826,7 @@ local function datetime()
         bg = beautiful.bg_normal .. "80",
         visible = false,
         ontop = true,
+        type = "dock",
         width = calendar_grid.forced_width,
         height = calendar_grid.forced_height + beautiful.bar_size
     })
@@ -871,19 +882,20 @@ local function layoutbox(s)
     box:buttons {
         awful.button({ }, 1, function () awful.layout.inc( 1) end),
         awful.button({ }, 3, function () awful.layout.inc(-1) end),
-        awful.button({ }, 4, function () awful.tag.incgap(-8) end),
-        awful.button({ }, 5, function () awful.tag.incgap( 8) end)
+        awful.button({ }, 4, function () awful.tag.incgap(-dpi(8)) end),
+        awful.button({ }, 5, function () awful.tag.incgap( dpi(8)) end)
     }
     return box
 end
 -- }}}
 -- launcher {{{
 local function launcher(s)
-    local button = wibox.widget {
-        icon_button(beautiful.menuicon),
-        bg = beautiful.blue,
-        widget = wibox.container.background,
-    }
+    local button = icon_button(beautiful.menuicon)
+    -- local button = wibox.widget {
+    --     icon_button(beautiful.menuicon),
+    --     -- bg = beautiful.blue,
+    --     widget = wibox.container.background,
+    -- }
     button:buttons { awful.button({ }, 1, function()
         awful.spawn(config.launcher_rofi_cmd(s))
     end) }
@@ -898,6 +910,73 @@ local function newterm_button()
     end) }
     return button
 end
+-- }}}
+-- notification center {{{
+-- Another thought:
+-- Scroll discretely (not continuous). Use the slider widget as a scroll bar. Here is a demo:
+local function notifhub()
+    local notifications = {}
+    for i = 1, 9 do
+        -- table.insert(notifications, naughty.layout.box {
+        --     notification = naughty.notify({text = "test"})
+        -- })
+        table.insert(notifications, wibox.widget.textbox(
+            string.format("No. %d\n\tSomething", i)
+        ))
+    end
+    local slider = wibox.widget{
+        maximum = 20,
+        minimum = 1,
+        forced_height = 24,
+        forced_width = 24,
+        handle_width = 48,
+        handle_color = "#808080",
+        bar_height = 24,
+        bar_shape = gears.shape.rectangle,
+        bar_color = "#202020",
+        bar_active_color = "#202020",
+        bar_margins = 0,
+        widget = wibox.widget.slider,
+    }
+    local notification_list = wibox.widget {
+        layout = wibox.layout.fixed.vertical
+    }
+    local notification_area = wibox.widget {
+        nil,
+        notification_list,
+        {
+            slider,
+            direction = "west",
+            forced_height = beautiful.bar_size,
+            widget = wibox.container.rotate
+        },
+        layout = wibox.layout.align.horizontal
+    }
+    notification_area:buttons {
+        awful.button( {}, 4, function() slider.value = slider.value - 1 end ),
+        awful.button( {}, 5, function() slider.value = slider.value + 1 end ),
+    }
+    slider:connect_signal('property::value', function()
+        local index = slider.value
+        notification_list:reset()
+        for i = index, index + 9 do
+            if notifications[i] then
+                notification_list:add(notifications[i])
+            end
+        end
+        local last = notifications[#notification_list.children + index - 1]
+    end)
+    wibox {
+        widget = notification_area,
+        x = 300, y = 300,
+        width = 360, height = 360,
+        bg = "#404040",
+        visible = true
+    }
+    slider.value = 1
+    return notification_area
+end
+-- notifhub()
 -- }}}
 -- topbar {{{
 local battery_widget = battery()
@@ -915,7 +994,7 @@ local function topbar(s)
         y = s.geometry.y,
         width = s.geometry.width - beautiful.bar_size,
         height = beautiful.bar_size,
-        bg = beautiful.bg_normal,
+        bg = beautiful.bg_normal .. "80",
         visible = true,
         ontop = true,
         type = "dock",
@@ -924,19 +1003,20 @@ local function topbar(s)
         layout = wibox.layout.align.horizontal,
         {
             layout = wibox.layout.fixed.horizontal,
+            -- 6 is the number of widgets on the right
+            forced_width = bar.width - 6 * beautiful.bar_size,
             s.mytasklist,
             newterm_button(),
-            -- forced_width = bar.width - 5 * config.basic_size,
         },
         nil,
         {
-            layout = wibox.layout.fixed.horizontal,
             alsa_widget.indicator,
             light_widget.indicator,
             imap_widget.indicator,
             net_widget.indicator,
             battery_widget.indicator,
             layoutbox(s),
+            layout = wibox.layout.fixed.horizontal,
         },
     }
     bar:struts({ top = beautiful.bar_size })
@@ -960,7 +1040,7 @@ local function leftbar(s)
         y = s.geometry.y,
         width = beautiful.bar_size,
         height = s.geometry.height,
-        bg = beautiful.bg_normal,
+        bg = beautiful.bg_normal .. "80",
         visible = true,
         ontop = true,
         type = "dock",
@@ -971,7 +1051,11 @@ local function leftbar(s)
     }
     bar:setup {
         {
-            launcher(s),
+            wibox.widget {
+                    s.leftpanel.toggle_button,
+                bg = beautiful.blue,
+                widget = wibox.container.background,
+            },
             s.mytaglist,
             layout = wibox.layout.fixed.vertical,
         },
@@ -979,7 +1063,7 @@ local function leftbar(s)
         {
             systray(),
             datetime(),
-            s.leftpanel.toggle_button,
+            launcher(s),
             layout = wibox.layout.fixed.vertical,
         },
         layout = wibox.layout.align.vertical
@@ -994,7 +1078,7 @@ local function leftpanel(s)
         screen = s,
         x = s.geometry.x,
         y = s.geometry.y,
-        width = dpi(config.panel_size),
+        width = beautiful.panel_size,
         height = s.geometry.height,
         bg = beautiful.bg_normal .. "80",
         visible = false,
@@ -1002,18 +1086,6 @@ local function leftpanel(s)
         type = "dock",
     }
     panel:setup {
-        {
-            battery_widget,
-            cpu_widget,
-            mem_widget,
-            alsa_widget,
-            light_widget,
-            net_widget,
-            mpd_widget,
-            -- spacing = 24,
-            layout = wibox.layout.fixed.vertical,
-        },
-        nil,
         {
             wibox.widget{
                 icon = beautiful.closebutton,
@@ -1029,6 +1101,19 @@ local function leftpanel(s)
             icon_button(),
             layout = wibox.layout.flex.horizontal,
         },
+        {
+            battery_widget,
+            cpu_widget,
+            mem_widget,
+            alsa_widget,
+            light_widget,
+            net_widget,
+            imap_widget,
+            mpd_widget,
+            -- spacing = 24,
+            layout = wibox.layout.fixed.vertical,
+        },
+        nil,
         layout = wibox.layout.align.vertical
     }
 
@@ -1038,6 +1123,7 @@ local function leftpanel(s)
         self.visible = not self.visible
         if self.visible then
             toggle_button:set_icon(beautiful.sidebar_close)
+            s.leftbar.flag_hidden = not s.leftbar.visible
             s.leftbar.x = s.geometry.x + self.width
             -- a little trick to put leftbar's shadow above leftpanel
             s.leftbar.visible = false
@@ -1045,6 +1131,10 @@ local function leftpanel(s)
         else
             toggle_button:set_icon(beautiful.sidebar_open)
             s.leftbar.x = s.geometry.x
+            if s.leftbar.flag_hidden then
+                s.leftbar.visible = false
+                s.leftbar.flag_hidden = false
+            end
         end
     end
 

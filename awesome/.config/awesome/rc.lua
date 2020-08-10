@@ -89,7 +89,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         widget_template = {
             {
                 id = "icon_button",
-                image_margin = beautiful.bar_size / 4,
+                image_margin = beautiful.bar_size * 0.3,
                 widget = mywidgets.icon_button,
             },
             id     = 'background_role',
@@ -120,8 +120,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     c:raise()
                 end
             end),
-            awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
-            awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
+            awful.button({ }, 4, function () awful.client.focus.byidx(-1) end),
+            awful.button({ }, 5, function () awful.client.focus.byidx(1) end)
         },
         -- Notice that there is *NO* wibox.wibox prefix, it is a template,
         -- not a widget instance.
@@ -235,19 +235,17 @@ awful.keyboard.append_global_keybindings({
               {description = "lock screen", group = "awesome"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05) end,
               {description = "increase master width", group = "layout"}),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05) end,
               {description = "decrease master width", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)       end,
               {description = "select next layout", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)       end,
               {description = "select previous layout", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n", function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then client.focus = c c:raise() end
+                  local c = awful.client.restore() if c then client.focus = c c:raise() end
               end,
               {description = "restore minimized", group = "client"}),
 
@@ -266,11 +264,11 @@ awful.keyboard.append_global_keybindings({
               {description = "save selection to clipboard", group = "screenshot"}),
 
     -- Prompt
-    awful.key({ modkey,           }, "d", function () awful.spawn(config.launcher_rofi_cmd(mouse.screen)) end,
+    awful.key({ modkey, }, "d", function() awful.spawn(config.launcher_rofi_cmd(mouse.screen)) end,
               {description = "application launcher", group = "launcher"}),
-    awful.key({ modkey,           }, "x", function () awful.spawn("rofi -show run") end,
+    awful.key({ modkey, }, "x", function() awful.spawn("rofi -show run") end,
               {description = "run command", group = "launcher"}),
-    awful.key({ modkey }, "p", function() awful.spawn("setmonitor", false) end,
+    awful.key({ modkey  }, "p", function() awful.spawn("setmonitor", false) end,
               {description = "set display", group = "screen"}),
     awful.key({ }, "XF86Display", function() awful.spawn("setmonitor", false) end,
               {description = "set display", group = "screen"}),
@@ -283,29 +281,23 @@ awful.keyboard.append_global_keybindings({
 })
 
 local clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
-              function (c) c.fullscreen = not c.fullscreen c:raise() end,
+    awful.key({ modkey,           }, "f", function (c) c.fullscreen = not c.fullscreen c:raise() end,
               {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey,           }, "q",
-              function (c) c:kill() end,
+    awful.key({ modkey,           }, "q", function (c) c:kill() end,
               {description = "close client", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",
-              awful.client.floating.toggle,
+    awful.key({ modkey, "Shift" }, "f", awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return",
-              function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey, "Shift" }, "s", function(c) c.sticky = not c.sticky end,
+              {description = "toggle sticky", group = "client"}),
+    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",
-              function (c) c:move_to_screen() end,
+    awful.key({ modkey,           }, "o", function (c) c:move_to_screen() end,
               {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",
-              function (c) c.ontop = not c.ontop end,
+    awful.key({ modkey,  "Shift"  }, "t", function (c) c.ontop = not c.ontop end,
               {description = "toggle ontop", group = "client"}),
-    awful.key({ modkey,           }, "n",
-              function (c) c.minimized = true end ,
+    awful.key({ modkey,           }, "n", function (c) c.minimized = true end ,
               {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
-              function (c) c.maximized = not c.maximized c:raise() end ,
+    awful.key({ modkey,           }, "m", function (c) c.maximized = not c.maximized c:raise() end ,
               {description = "(un)maximize", group = "client"})
 )
 
@@ -379,51 +371,45 @@ ruled.client.append_rules {
     },
 
     { -- Add titlebars to normal clients and dialogs
-        rule_any = {
-            type = { "normal", "dialog" }
-        },
-        properties = {
-            titlebars_enabled = true
-        }
+        rule_any = { type = { "normal", "dialog" } },
+        properties = { titlebars_enabled = true }
     },
 
     { -- Floating clients
         rule_any = {
             instance = {
-              "DTA",                  -- Firefox addon DownThemAll.
-              "copyq",                -- Includes session name in class.
-              "Popup",
-              "file_progress",        -- Nemo file operation
+                "copyq",                -- Includes session name in class.
+                "Popup",
+                "file_progress",        -- Nemo file operation
             },
 
             name = {
-              "Event Tester",           -- xev.
-              "Select a Template",      -- LibreOffice
-              "Screen Layout Editor",   -- arandr
-              "File Operation Progress" -- thunar file operation
+                "Event Tester",           -- xev.
+                "Select a Template",      -- LibreOffice
             },
             role = {
-              "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-              "page-info",    -- Firefox's image info
-              "About",        -- Firefox's about page
-              "GtkFileChooserDialog"
+                "page-info",    -- Firefox's image info
+                "About",        -- Firefox's about page
+                "GtkFileChooserDialog"
             },
             class = {
+                "Arandr",
                 "Galculator",
                 "xpad",
                 "Screenkey",
+                "floating_terminal", -- floating hack for st
             }
         },
         properties = {
             floating = true,
             ontop = true,
             placement = awful.placement.centered
+            -- TODO: try to avoid other windows?
         },
     },
 
     { -- Fullscreen and screen management for pdfpc
         rule = { class = "Pdfpc" },
-        -- properties = { fullscreen = true },
         -- This callback will *magically* put presentation to the secondary
         -- screen and leave the presenter console on the current screen.
         callback = function(c) c:move_to_screen() end
@@ -436,10 +422,7 @@ ruled.client.append_rules {
             instance = "Navigator"
         },
         properties = {
-            -- The flag_ignore_shape is not a client property, it is just a flag
-            flag_ignore_shape = true,
             tag = beautiful.tag_icons[2][1],
-            shape = gears.shape.rectangle,
             titlebars_enabled = false,
         }
     },
@@ -454,22 +437,27 @@ ruled.client.append_rules {
             ontop = true,
             sticky = true,
             floating = true,
-            shape = gears.shape.rectangle,
-            placement = awful.placement.bottom_right
+            -- placement = awful.placement.bottom_right
         },
     },
 
-    { -- floating hack for st
-      -- TODO: not perfect. E.g. change from floating to tiling, then restart awesome, it will be floating again
-      -- https://github.com/awesomeWM/awesome/issues/2517#issuecomment-578724877
-        rule = {
-            class = "floating_terminal"
+    { -- ingore round corner
+        rule_any = {
+            role = {
+                "browser",
+                "PictureInPicture",
+            }
         },
         properties = {
-            floating = true,
-            ontop = true,
-            placement = awful.placement.centered
-        },
+            -- The flag_ignore_shape is not a client property, it is just a flag
+            flag_ignore_shape = true,
+            shape = gears.shape.rectangle,
+        }
+    },
+
+    {
+        rule = { class = "Lxterminal" },
+        properties = { size_hints_honor = false }
     },
 }
 -- }}}
@@ -498,26 +486,20 @@ end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
-    -- buttons for the titlebar
-    local buttons = {
-        awful.button({ }, 1, function()
-            c:activate { context = "titlebar", action = "mouse_move"   }
-        end),
-        awful.button({ }, 3, function()
-            c:activate { context = "titlebar", action = "mouse_resize" }
-        end),
-    }
-
     awful.titlebar(c, { size = beautiful.titlebar_height, }):setup {
         nil,
         {
-            {
-                align  = "center",
-                font = beautiful.titlebar_font,
-                widget = awful.titlebar.widget.titlewidget(c)
+            align  = "center",
+            font = beautiful.titlebar_font,
+            buttons = {
+                awful.button({ }, 1, function()
+                    c:activate { context = "titlebar", action = "mouse_move"   }
+                end),
+                awful.button({ }, 3, function()
+                    c:activate { context = "titlebar", action = "mouse_resize" }
+                end),
             },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
+            widget = awful.titlebar.widget.titlewidget(c)
         },
         {
             {
@@ -554,32 +536,25 @@ local function fullscreen_toggle(c)
         end
     end
 end
--- when change either focus or fullscreen state
+-- when either focus or fullscreen state changes
 client.connect_signal("focus", fullscreen_toggle)
 client.connect_signal("unfocus", fullscreen_toggle)
 client.connect_signal("property::fullscreen", fullscreen_toggle)
 
-client.connect_signal("property::fullscreen", function(c)
+local function client_shape_toggle(c)
     -- The flag_ignore_shape is not a client property, it was set by me
-    if c.fullscreen or c.flag_ignore_shape then
+    if c.fullscreen or c.maximized or c.flag_ignore_shape then
         c.shape = gears.shape.rectangle
     else
         c.shape = config.client_shape
     end
-end)
+end
+client.connect_signal("property::fullscreen", client_shape_toggle)
+client.connect_signal("property::maximized", client_shape_toggle)
 
-client.connect_signal("property::maximized", function(c)
-    -- The flag_ignore_shape is not a client property, it was set by me
-    if c.maximized or c.flag_ignore_shape then
-        c.shape = gears.shape.rectangle
-    else
-        c.shape = config.client_shape
-    end
-end)
-
-naughty.connect_signal("request::display", function(n)
-    naughty.layout.box { notification = n }
-end)
+-- naughty.connect_signal("request::display", function(n)
+--     local test = naughty.layout.box { notification = n }
+-- end)
 -- }}}
 -- Garbage collect {{{
 collectgarbage('setpause', 100)
@@ -592,7 +567,22 @@ gears.timer({
         collectgarbage()
     end
 })
+-- gears.timer({
+--     timeout   = 3,
+--     autostart = true,
+--     call_now  = true,
+--     callback  = function()
+--     for name, obj in pairs{ button = button,
+--                             client = client,
+--                             drawable = drawable,
+--                             drawin = drawin,
+--                             key = key,
+--                             screen = screen,
+--                             tag = tag } do
+--         print(string.format("%12s\t%d", name .. ": ", obj.instances()))
+--     end
+--     end
+-- })
 os.execute("echo end: ; date +%s.%N")
 -- }}}
-
 -- vim:foldmethod=marker:foldlevel=0
