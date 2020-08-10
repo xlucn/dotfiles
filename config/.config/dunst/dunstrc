@@ -44,7 +44,7 @@
     idle_threshold = 120
 
     # Possible values are: full, strip, no
-    markup = full
+    markup = no
 
     # The format of the message.  Possible variables are:
     #   %a  appname
