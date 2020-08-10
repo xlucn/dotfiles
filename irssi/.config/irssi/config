@@ -343,7 +343,7 @@ settings = {
     awl_height_adjust = "0";
     awl_viewer_launch_env = "NOTITLE=1";
     chansort_configurable_autosort = "yes";
-    nickcolor_truncate_value = "-15";
+    nickcolor_truncate_value = "-12";
     nickcolor_enable_truncate = "yes";
     nickcolor_colors = "2 3 4 5 6 7 9 10 11 12 13";
   };

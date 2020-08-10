@@ -308,7 +308,7 @@ formats = {
     pubmsg_me_channel = "{pubmsgmenick {menick $[-20]0$3}{msgchannel $1}}$2";
     pubmsg_hilight = "{pubmsghinick $0 $0 $[-20]1$3%n}$2";
     pubmsg_hilight_channel = "{pubmsghinick $0 $[-20]1$4{msgchannel $2}}$3";
-    pubmsg = "{pubmsgnick $2 {pubnick \00313$[-15]0}}$1";
+    pubmsg = "{pubmsgnick $2 {pubnick \00307$[-13]0}}$1";
     pubmsg_channel = "{pubmsgnick {pubnick %c$[-20]0}$2}$1";
     msg_private_query = "{privmsgnick $[-20]0}$2";
   };
