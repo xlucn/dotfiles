@@ -84,25 +84,12 @@ set completeopt=menuone,noinsert,longest
 highlight clear SignColumn
 " gui options: dark, tab, icon, scrollbar
 set guioptions=deir
+" gui font
 set guifont=Hack\ 12
 " show line number
 set number
 " always show sign column
 set signcolumn=yes
-" enable mouse support in console
-set mouse=a
-" fix for urxvt and st
-if !has('nvim')
-    if $TERM =~ "rxvt-unicode"
-        set ttymouse=urxvt
-    elseif $TERM == "st" || $TERM == "st-256color"
-        set ttymouse=sgr
-    endif
-endif
-" cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
-let &t_SI = "\e[6 q"
-let &t_SR = "\e[4 q"
-let &t_EI = "\e[2 q"
 " shows what you are typing as a command
 set showcmd
 " turn on wild menu on :e <Tab>
@@ -123,17 +110,35 @@ set lazyredraw
 set noerrorbells
 " don't show welcome screen
 set shortmess+=I
+" show tabs / buffers on top
 set showtabline=2
+" do not show mode on the last line
 set noshowmode
 " show partial line
 set display+=lastline
 " color scheme
 set background=dark
+" enable mouse support in console
+set mouse=a
+" fix for urxvt and st
+if !has('nvim')
+    if $TERM =~ "rxvt-unicode"
+        set ttymouse=urxvt
+    elseif $TERM == "st" || $TERM == "st-256color"
+        set ttymouse=sgr
+    endif
+endif
+" cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
+let &t_SI = "\e[6 q"
+let &t_SR = "\e[4 q"
+let &t_EI = "\e[2 q"
 if has('gui_running')
     colorscheme material-theme
 else
     colorscheme wal
 endif
+" incremental case-insensitive highlight smart case search
+set incsearch ignorecase smartcase hlsearch
 " }}}
 " Space Tabs Indentations {{{
 " indentations
@@ -149,16 +154,6 @@ set smarttab
 " show tabs and trailing white space
 set list
 set listchars=tab:>-,trail:.
-" }}}
-" Search {{{
-" incremental search
-set incsearch
-" case-insensitive search
-set ignorecase
-" smart case search(only when search pattern has no capital letters)
-set smartcase
-" highlight search
-set hlsearch
 " }}}
 " Navigations {{{
 " go up/down
