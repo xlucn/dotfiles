@@ -94,19 +94,18 @@ if [ -n "$arg_number" ] && [ "$count" -gt 0 ]; then
     [ "$count" -ge "$arg_number" ] && start_pos=$((count - arg_number + 1))
     uids="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
     # Match patterns in ENVELOPE string
-    base64_regex='\"\(=?[^?]*?.?[^?]*?=\|[^\"]*\)\"'
-    quoted_regex='\"\([^\"]*\)\"'
+    base64_regex='"*\(=?[^?]*?.?[^?]*?=\|[^"]*\|NIL\)"*'
+    quoted_regex='"*\([^"]*\|NIL\)"*'
     address_list="(($base64_regex NIL $quoted_regex $quoted_regex))"
-    envelope_regex="ENVELOPE ($quoted_regex $base64_regex $address_list"
+    envelope_regex=".*ENVELOPE ($quoted_regex $base64_regex $address_list.*"
     # Fetch and parse
     curl --fail --silent --max-time 30 --connect-timeout 30 \
         --user "$email:$password" --url "imaps://$server:$port/INBOX" \
         --request "UID FETCH $uids (ENVELOPE)" |
-    sed "s/.*$envelope_regex.*/\1|\2|\3|\4|\5/" | tr -d '\r' |
+    sed "s/$envelope_regex/\1|\2|\3|\4|\5/" | tr -d '\r' |
     while IFS=\| read -r date subject from user host; do
-        date -d "$date" +"%Y-%m-%d %r"
-        base64_decode "$subject"; echo
-        base64_decode "$from"
-        echo " <${user#<}@${host%>}>"
-    done
+        date -d "$date" +"%Y-%m-%d %r" || echo "Unknown date"
+        printf "%s %s\n" "$(base64_decode "$from")" "<${user#<}@${host%>}>"
+        printf "%s\n" "$(base64_decode "$subject")"
+    done 2> /dev/null
 fi
