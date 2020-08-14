@@ -34,7 +34,7 @@ key screen-help = '1',  F1
 key play = Ctrl-M,  'l'
 
 ## Pause
-key pause = 'p'
+key pause = 'p',  32
 
 ## Stop
 key stop = 's'
@@ -50,6 +50,12 @@ key volume-up = 43,  61
 
 ## Decrease volume
 key volume-down = 45
+
+## Select/deselect song in queue
+key select = 't'
+
+## Select all listed items
+key select_all = 'T'
 
 ## Start a music database update
 key db-update = 'U'
