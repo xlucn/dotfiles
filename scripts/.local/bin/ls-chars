@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 [ -f "$1" ] && cmd='fc-query'
 for range in $(${cmd-fc-match} --format='%{charset}' "$1"); do
     for n in $(seq "0x${range%-*}" "0x${range#*-}"); do
