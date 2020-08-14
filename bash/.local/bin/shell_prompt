@@ -1,0 +1,81 @@
+#!/bin/sh
+# shell prompt functions
+red="\001\033[31m\002"
+green="\001\033[32m\002"
+yellow="\001\033[33m\002"
+blue="\001\033[34m\002"
+magenta="\001\033[35m\002"
+cyan="\001\033[36m\002"
+reset="\001\033[0m\002"
+boldyellow="\001\033[1;33m\002"
+
+# use the prompt script comes with git
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWUPSTREAM="verbose"
+export GIT_PS1_SHOWCOLORHINTS=1
+
+if ! command -v __git_ps1 > /dev/null 2>&1; then
+    # shellcheck disable=SC1090 # source location
+    . "$HOME/.config/git/git-prompt.sh"
+fi
+
+__ssh_indicator() {
+    if [ -n "$SSH_CLIENT" ]; then
+        printf "${cyan}[SSH] $magenta%s@%s$reset " "$(whoami)" "$(hostname)"
+    fi
+}
+
+__cwd_trim() {
+    limit=20
+    cwd="$1"
+    if [ ${#cwd} -gt $limit ]; then
+        printf "%s …" "$(echo "$cwd" | cut -c -"$((limit - 2))")"
+    else
+        printf "%s" "$cwd"
+    fi
+    # lf indicator -- if you are in lf file manager
+    [ -n "$LF_LEVEL" ] && printf " (LF:%s)" "$LF_LEVEL"
+    # ranger indicator -- if you are in ranger file manager
+    [ -n "$RANGER_LEVEL" ] && printf " (RANGER:%s)" "$RANGER_LEVEL"
+}
+
+__curdir() {
+    printf "$boldyellow%s$reset" "$(__cwd_trim "$(basename "$(pwd)")")"
+}
+
+__jobcounts() {
+    jobcount=$(jobs -p | wc -l)
+    [ "$jobcount" -gt 0 ] && printf " $green(jobs:%s)$reset" "$jobcount"
+}
+
+__git_autostats() {
+    if [ -f /tmp/git-autostats ]; then
+        read -r _ ahead behind conflict < /tmp/git-autostats
+        [ $((ahead + behind + conflict)) = 0 ] && return
+        printf " ["
+        [ "$ahead"    -gt 0 ] && printf "$green%s+$reset" "$ahead"
+        [ "$behind"   -gt 0 ] && printf "$yellow%s-$reset" "$behind"
+        [ "$conflict" -gt 0 ] && printf "$red%s±$reset" "$conflict"
+        printf "]"
+    else
+        git autostats -u > /dev/null 2>&1
+    fi
+}
+
+__gitprompt() {
+    printf "$(
+    __git_ps1 " (%s)" |
+    sed -e "s/%/%%/g" \
+        -e "s/\\\\\\[/\\\\001/g" \
+        -e "s/\\\\\\]/\\\\002/g" \
+        -e "s/\\\\\\e/\\\\033/g"
+    )%s"
+}
+
+__ssh_indicator
+__curdir
+__jobcounts
+__git_autostats
+__gitprompt
+printf "$boldyellow %s $reset" "$"
