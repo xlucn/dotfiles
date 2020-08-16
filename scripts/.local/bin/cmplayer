@@ -71,8 +71,9 @@ for video in "$@"; do
     # Get the real size of the video
     IFS=,: read -r orig_w orig_h sar_x sar_y << EOF
         $(ffprobe "$video" -v error -select_streams v:0 -of csv=s=,:p=0 \
-        -show_entries stream=width,height,sample_aspect_ratio)
+        -show_entries stream="width,height,sample_aspect_ratio" 2> /dev/null)
 EOF
+    # Skip if it is not a video
     [ "$orig_w" -gt 0 ] || continue
 
     # fix the aspect ratio if sar is present
