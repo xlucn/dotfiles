@@ -7,20 +7,21 @@
 
 if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
-Usage: [CHARW=<w>] [CHARH=<h>] [DISPLAY=] $(basename "$0") video ...
+Usage: [CHARW=<w>] [CHARH=<h>] [FB=<fb>] $(basename "$0") video ...
 
-Note: You can specify the character size with environment variables by e.g.
+Note: You can specify the character size with environment variables if the
+      script didn't get the correct ones by
           $ CHARW=10 CHARH=20 $(basename "$0") video
-      The default is width = 8, height = 16.
 
 Note: This script is meant to be used under framebuffer (e.g. tty).
-      If you are in tty inside a tmux session which was started in X11, it will
-      have a \$DISPLAY environment variable. unset it with \`unset DISPLAY\` or
+      If \$DISPLAY variable is not empty, unset it with \`unset DISPLAY\` or
           $ DISPLAY= $(basename "$0") video
 
-Note: If you want to quit all video play with 'q' (not only the current mplayer),
-      you have to put the following line in '~/.mplayer/input.conf':
-          q quit 1 (or anything that is not 0)
+Note: By default 'q' only quits the current mplayer process and goes on to the
+      next video. If you want to quit the whole video playing with 'q', you
+      have to put the following line in '~/.mplayer/input.conf':
+          q quit 1
+      The '1' can be anything that is not 0.
 EOF
     exit
 fi
@@ -50,8 +51,8 @@ if [ -n "$TMUX_PANE" ]; then
     #   <format> = <width>x<height>,<x>,<y>(,<id>|{<format>}|[<format>])
     # We only need the ones with ids, which means they don't have child structures.
     IFS=x, read -r w h x y _ << EOF
-    $(tmux display -p -F "#{window_visible_layout}" \
-    | grep -o "\([0-9]*\)x\([0-9]*\),\([0-9]*\),\([0-9]*\),${TMUX_PANE#%}")
+        $(tmux display -p -F "#{window_visible_layout}" \
+        | grep -o "\([0-9]*\)x\([0-9]*\),\([0-9]*\),\([0-9]*\),${TMUX_PANE#%}")
 EOF
     pane_w=$((w * charw))
     pane_h=$((h * charh))
@@ -68,35 +69,32 @@ fi
 # Play each of the videos separately (deal with different video sizes)
 for video in "$@"; do
     # Get the real size of the video
-    IFS=,: read -r width height sar_x sar_y << EOF
-    $(ffprobe "$video" -v error -select_streams v:0 -of csv=s=,:p=0 \
-    -show_entries stream=width,height,sample_aspect_ratio)
+    IFS=,: read -r orig_w orig_h sar_x sar_y << EOF
+        $(ffprobe "$video" -v error -select_streams v:0 -of csv=s=,:p=0 \
+        -show_entries stream=width,height,sample_aspect_ratio)
 EOF
-    [ "$width" -gt 0 ] || continue
+    [ "$orig_w" -gt 0 ] || continue
 
-    # fix the aspect ratio, sar might be absent in some videos
+    # fix the aspect ratio if sar is present
     if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]; then
-        width=$((width * sar_x / sar_y))
+        orig_w=$((orig_w * sar_x / sar_y))
     fi
 
     # Calculate the actual video dimension on screen that could fit in the pane
-    # Also center the video appropriately
-    video_w=$pane_w
-    video_h=$pane_h
-    video_x=$pane_x
-    video_y=$pane_y
-    if [ $((width * pane_h)) -gt $((height * pane_w)) ]; then
-        video_h=$((pane_w * height / width))
-        if [ $((2 * width * pane_h)) -lt $((3 * height * pane_w)) ]; then
-            video_y=$((pane_y + (pane_h - video_h) / 2))
-        fi
+    # Also center the video inside the pane
+    if [ $((orig_w * pane_h)) -gt $((orig_h * pane_w)) ]; then
+        video_w=$pane_w
+        video_h=$((pane_w * orig_h / orig_w))
+        video_x=$pane_x
+        video_y=$((pane_y + (pane_h - video_h) / 2))
     else
-        video_w=$((pane_h * width / height))
+        video_w=$((pane_h * orig_w / orig_h))
+        video_h=$pane_h
         video_x=$((pane_x + (pane_w - video_w) / 2))
+        video_y=$pane_y
     fi
 
     # Mute all output
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
-            -vf scale="$video_w":"$video_h" -geometry $video_x:$video_y \
-            || exit
+            -vf scale="$video_w:$video_h" -geometry "$video_x:$video_y" || exit
 done
