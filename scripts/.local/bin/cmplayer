@@ -5,19 +5,6 @@
 #
 # TODO: pass mplayer options
 
-if pgrep fbterm > /dev/null 2>&1; then
-    CHARW=$(sed -n "s/^font-width=\([0-9]*\)$/\1/p" "$HOME/.fbtermrc")
-    CHARH=$(sed -n "s/^font-height=\([0-9]*\)$/\1/p" "$HOME/.fbtermrc")
-elif pgrep yaft > /dev/null 2>&1; then
-    CHARW=8
-    CHARH=18
-fi
-# Character width and height in pixels
-charw=${CHARW:-8}
-charh=${CHARH:-16}
-# The framebuffer device name under /dev/
-FB=fb0
-
 if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ -n "$DISPLAY" ]; then
     cat << EOF
 Usage: [CHARW=<w>] [CHARH=<h>] [DISPLAY=] $(basename "$0") video ...
@@ -45,8 +32,19 @@ clear; tput civis
 # Clean upon quit
 trap 'clear; tput cnorm' INT TERM QUIT EXIT
 
+# The framebuffer device name under /dev/
+FB=${FB:-fb0}
+
 # Calculate position and available size
+IFS=, read -r screen_w screen_h < "/sys/class/graphics/$FB/virtual_size"
 if [ -n "$TMUX_PANE" ]; then
+    # Get screen resolution and character-based dimention
+    cols=$(tmux display -p "#{client_width}")
+    rows=$(tmux display -p "#{client_height}")
+    # Character width and height in pixels
+    charw=${CHARW:-$((screen_w / cols))}
+    charh=${CHARH:-$((screen_h / rows))}
+
     # The following command get the pane's location and size (in unit of characters)
     # The format of #{window_visible_layout} is loosely summarised recursively as:
     #   <format> = <width>x<height>,<x>,<y>(,<id>|{<format>}|[<format>])
@@ -63,7 +61,8 @@ else
     # Use framebuffer size if not in tmux
     pane_x=0
     pane_y=0
-    IFS=, read -r pane_w pane_h < "/sys/class/graphics/$FB/virtual_size"
+    pane_w=$screen_w
+    pane_h=$screen_h
 fi
 
 # Play each of the videos separately (deal with different video sizes)
