@@ -77,9 +77,8 @@ EOF
     [ "$orig_w" -gt 0 ] || continue
 
     # fix the aspect ratio if sar is present
-    if [ "$sar_x" != "N/A" ] && [ -n "$sar_x" ] && [ -n "$sar_y" ]; then
+    [ "$sar_x" != "N/A" ] && [ "$sar_x" = "$sar_x" ] && [ "$sar_y" = "$sar_y" ] &&
         orig_w=$((orig_w * sar_x / sar_y))
-    fi
 
     # Calculate the actual video dimension on screen that could fit in the pane
     # Also center the video inside the pane
