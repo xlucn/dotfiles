@@ -141,13 +141,6 @@ for device in $devices; do
         }
     else
         read -r state < "$device"/operstate
-        if [ "$state" = "up" ]; then
-            echo 1
-        elif [ "$state" = "down" ]; then
-            echo 0
-        else
-            echo "$state" >&2
-            exit 1
-        fi
+        [ "$state" = "up" ] && echo 1 || echo 0
     fi
 done
