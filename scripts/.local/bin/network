@@ -123,14 +123,21 @@ for device in $devices; do
         else
             show_speed "$device"
         fi
-    elif [ "$flag_connection" = 1 ]; then
-        # TODO probably cat /proc/net/wireless
-        nmcli -f GENERAL,AP dev show "$(basename "$device")" \
-        | sed -n "s/AP\[[0-9]*\]\.\(SSID\|SIGNAL\):\ *\(.*\)/\2/p" \
-        | { read -r connection;
-            read -r signal;
-            echo "${connection:---}"
-            echo "${signal:-0}"
+    elif [ -n "$flag_connection" ]; then
+        nmcli -f GENERAL,AP dev show "$(basename "$device")" |
+        {   while IFS=': ' read -r key value; do
+                case "$key" in
+                    GENERAL.CONNECTION) connection=$value;;
+                    AP[*].IN-USE) ap_inuse=$value;;
+                    AP[*].SSID) ssid=$value;;
+                    AP[*].SIGNAL) signal=$value;;
+                esac
+            done;
+            if [ -n "$ap_inuse" ]; then
+                printf "%s\n%s" "$ssid" "$signal"
+            elif [ "$connection" != "--" ]; then
+                printf "%s\n100" "$connection"
+            fi
         }
     else
         read -r state < "$device"/operstate
