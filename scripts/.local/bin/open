@@ -8,7 +8,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         fi ;;
     text/*|*/xml|*/csv|*/json)
         ${EDITOR:-vim} "$@" ;;
-    video/*)
+    video/*|*/octet-stream)
         if [ -n "$DISPLAY" ]; then
             mpv -- "$@" || mplayer -- "$@"
         else
