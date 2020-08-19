@@ -12,14 +12,15 @@ text-editor         = vim
 second-column       = yes
 screen-list         = help playlist browse library search lyrics outputs song keydef
 # display
-wide-cursor                  = yes
-hardware-cursor              = no
-visible-bitrate              = yes
-set-xterm-title              = yes
-status-message-time          = 5
 list-format                  = "[%artist% - %title%]|%shortfile%"
 status-format                = "[%artist% - %title%]|%file%"
 xterm-title-format           = "ncmpc: [[%artist% - %title%]|%file%]"
+welcome-screen-list = no
+wide-cursor         = yes
+hardware-cursor     = no
+visible-bitrate     = yes
+set-xterm-title     = yes
+status-message-time = 5
 # colors
 enable-colors                = yes
 color background             = none
