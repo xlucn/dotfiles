@@ -1,89 +1,62 @@
 #!/bin/sh
 
-usage()
-{
-    # TODO: full usage
-    echo "Usage: $(basename "$0") [ -S ] [ -B ] [ -bcftu ] [ -123 ]"
-    echo ""
-    echo
+usage() {
+    cat << EOF
+Usage: $(basename "$0") [ -B ] [ -abcftuFTU ] [ -123 ]
+
+Options:
+    -B use byte as unit
+    -a show available
+    -b show buffer
+    -c show cache
+    -f show free
+    -s show shared
+    -t show total
+    -u show used
+    -F show swap free
+    -T show swap total
+    -U show swap used
+    -1/2/3 control the precision of decimals
+EOF
 }
 
-# TODO: CAPS for swap?
-while getopts "123htufsbcaBS" arg; do
+while getopts "123abcfhstuBFUT" arg; do
     case "$arg" in
-        t) flag_total=1;;
-        u) flag_used=1;;
-        f) flag_free=1;;
-        b) flag_buff=1;;
-        c) flag_cache=1;;
-        a) flag_avail=1;;
+        a|b|c|f|F|s|t|T|u|U) flag_target=$arg;;
         B) flag_byte=1;;
-        S) flag_swap=1;;
         1|2|3) precision=$arg;;
         h|*) usage; exit 0;;
     esac
 done
 
-format()
-{
-    mem="$1"
-    if [ -z "$flag_byte" ]; then
-        for unit in KB MB GB TB; do
-            if [ "$mem" -lt 1024 ]; then
-                if [ -n "$decimal" ]; then
-                    printf "%d.%s %s\n" "$mem" "$decimal" "$unit"
-                else
-                    echo "$mem $unit"
-                fi
-                break
-            else
-                # TODO: rounding
-                decimal=$((mem % 1024 * 1000 / 1024))
-                decimal=$(printf "%03d" "$decimal" | cut -c -"${precision:-3}")
-                mem=$((mem / 1024))
-            fi
-        done
-    else
-        echo "$mem"
-    fi
-}
+# read mem info
+while IFS=': ' read -r key value _; do
+    eval "${key%(*}=$value"
+done < /proc/meminfo
 
-info()
-{
-    result=0
+info() {
     for keyword in "$@"; do
-        temp=$(sed -n "s/^${keyword#-}:[ ]*\([0-9]*\).*/\1/p" /proc/meminfo)
-        if [ "$keyword" != "${keyword#-}" ]; then
-            result=$((result - temp))
-        else
-            result=$((result + temp))
-        fi
+        # An arithmetic hack, sign + positive = sign * positive in $(())
+        mem=$((mem + (${keyword%${keyword#-}} + ${keyword#-})))
     done
-    format "$result"
+    # format
+    [ -n "$flag_byte" ] && echo "$mem" && return
+    for unit in KB MB GB TB; do
+        [ "$mem" -lt 1024 ] && echo "$mem.${decimal:-0} $unit" && break
+        decimal=$(printf "%03d" "$((mem % 1024))" | cut -c -"${precision:-3}")
+        mem=$((mem / 1024))
+    done
 }
 
-if [ "$flag_total" = 1 ]; then
-    if [ "$flag_swap" = 1 ]; then
-        info SwapTotal
-    else
-        info MemTotal
-    fi
-elif [ "$flag_free" = 1 ]; then
-    if [ "$flag_swap" = 1 ]; then
-        info SwapFree
-    else
-        info MemFree
-    fi
-elif [ "$flag_used" = 1 ]; then
-    if [ "$flag_swap" = 1 ]; then
-        info SwapTotal -SwapFree
-    else
-        info MemTotal -MemFree -Buffers -Cached -SReclaimable
-    fi
-elif [ "$flag_buff" = 1 ]; then
-    info Buffers
-elif [ "$flag_cache" = 1 ]; then
-    info Cached SReclaimable
-elif [ "$flag_avail" = 1 ]; then
-    info MemAvailable
-fi
+case "$flag_target" in
+    a) info MemAvailable ;;
+    b) info Buffers ;;
+    c) info Cached SReclaimable ;;
+    f) info MemFree ;;
+    F) info SwapFree ;;
+    s) info Shmem ;;
+    t) info MemTotal ;;
+    T) info SwapTotal ;;
+    u) info MemTotal -MemFree -Buffers -Cached -SReclaimable ;;
+    U) info SwapTotal -SwapFree ;;
+esac
