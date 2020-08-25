@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 [ -f "$1" ] || fontfile=$(fc-match "$1" --format="%{file}")
 # find this python script in my dotfiles repo
 psnames "${fontfile-$1}" |
