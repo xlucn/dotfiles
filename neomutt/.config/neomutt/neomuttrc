@@ -47,8 +47,8 @@ set include = yes
 # check all mailboxes
 set imap_check_subscribed = yes
 set imap_list_subscribed = yes
-# sort by threads
-set sort = "threads"
+# sort method
+set sort = "date"
 set sort_aux = "last-date-received"
 # index scroll instead of turning pages
 set menu_scroll
