@@ -1,16 +1,16 @@
 #!/bin/sh
 # A script to configure multiple displays with xrandr
 
-command -v dmenu > /dev/null 2>&1 && DMENU="dmenu" || DMENU="rofi -dmenu"
+command -v dmenu > /dev/null && DMENU="dmenu" || DMENU="rofi -dmenu"
 
 monitors=$(xrandr | sed -n 's/\(.*\) disconnected.*/\1/p')
 
-# This is the core part. Without functionalities like lists, we store
-# the commands beforehand in variable names corresponding to the each option.
-# In other words, if we choose option "N foo bar", the executed command will
+# This is the core part. Without lists/arrys in POSIX shell, we store the
+# commands beforehand in different variables corresponding to each option.
+# In other words, if we choose option "N foobar", the executed command will
 # be "$command_N"
 add_cmd() {
-    options="${options}${index:-0} $1\n"
+    options="$options${index:-0} $1\n"
     eval "command_${index:-0}=\"$2\""
     index=$((index + 1))
 }
@@ -43,6 +43,6 @@ for m in $monitors; do
     done
 done
 
-choice=$(printf "%s$options" "" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
+choice=$(printf "%s$options" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
-eval "\$command_${choice-0}"
+eval "\$command_${choice:-0}"
