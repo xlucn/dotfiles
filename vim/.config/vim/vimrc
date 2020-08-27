@@ -1,17 +1,21 @@
 " Plugin Manager
 " Vim-Plug {{{
+" be iMproved
+set nocompatible
+" set vim folder
+let $VIM = $XDG_CONFIG_HOME . '/vim'
 " vim basic settings
-set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
-set viminfo="$HOME/.cache/vim/viminfo"
+set runtimepath=$VIM,$VIMRUNTIME,$VIM/after
+" Important: put this after nocompatible
+set viminfo+=n~/.config/vim/viminfo
 " automatic installation
-if empty(glob("$XDG_CONFIG_HOME/vim/autoload/plug.vim"))
-  silent !curl -fLo $XDG_CONFIG_HOME/vim/autoload/plug.vim --create-dirs
+if empty(glob($VIM . '/autoload/plug.vim'))
+  silent !curl -fLo $VIM/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 " begin vim-plug
-call plug#begin('$XDG_CONFIG_HOME/vim/bundle')
-Plug 'VundleVim/Vundle.vim'
+call plug#begin($VIM . '/bundle')
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
@@ -38,8 +42,6 @@ call plug#end()
 " }}}
 " Vim Settings
 " Vim Config {{{
-" be iMproved
-set nocompatible
 " leader key
 let mapleader = ','
 let maplocalleader = '\'
@@ -51,8 +53,6 @@ filetype plugin on
 filetype indent on
 " auto reload files
 set autoread
-" set vim folder
-let $VIM = "/home/oliver/.config/vim"
 " set encoding
 set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
@@ -186,6 +186,7 @@ autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx
 " }}}
 " Netrw -> NerdTree {{{
 " Make Netrw function like NerdTree
+let g:netrw_home         = $VIM
 let g:netrw_banner       = 0   " disable banner
 let g:netrw_browse_split = 4   " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20 " split size
