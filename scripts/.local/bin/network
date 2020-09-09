@@ -2,24 +2,26 @@
 # Script to show status, name and speed of network interfaces
 
 usage() {
-    echo "$(basename "$0") [ -h ] [ -ew -i <interface> ] [ -cns ]"
-    echo
-    echo "Devices:"
-    echo "    -e: show stats about all ethernet devices"
-    echo "    -w: show stats about all wireless devices"
-    echo "    -i <interface>: show stats about <interface>"
-    echo
-    echo "Output:"
-    echo "    -c: show basic connection infomation: name and signal strength if available"
-    echo "    -n: show device names"
-    echo "    -s: show device RX/TX (a.k.a. DL/UL) speed"
-    echo "    default: print device status, 1 for up, 0 for down"
-    echo
-    echo "Format:"
-    echo "    -h: format speed with human readable units (B/s, KB/s, MB/s, etc)"
-    echo
-    echo "Note: the options can be put together, e.g. show network speed for eth0"
-    echo "    $(basename "$0") -hs -i eth0"
+    cat << EOF
+Usage: $(basename "$0") [ -h ] [ -ew -i <interface> ] [ -cns ]
+
+Options:
+    Devices:
+        -e: show stats about all ethernet devices
+        -w: show stats about all wireless devices
+        -i <interface>: show stats about <interface>
+
+    Output:
+        -c: show basic connection infomation: name and signal strength if available
+        -s: show device RX/TX (a.k.a. DL/UL) speed
+        default: print device status, 1 for up, 0 for down
+
+    Format:
+        -h: format speed with human readable units (B/s, KB/s, MB/s, etc)
+
+Note: the options can be put together, e.g. show network speed for eth0
+    $(basename "$0") -hs -i eth0
+EOF
 }
 
 while getopts "i:webcnsh-:" arg; do
@@ -28,7 +30,6 @@ while getopts "i:webcnsh-:" arg; do
         w) flag_wireless=1;;
         e) flag_ethernet=1;;
         c) flag_connection=1;;
-        n) flag_name=1;;
         s) flag_speed=1;;
         h) flag_human_readable=1;;
         -) [ "$OPTARG" = "help" ] && usage; exit;;
@@ -46,8 +47,6 @@ elif [ "$flag_ethernet" = 1 ]; then
     devices=$(find "$folder" -name "e*")
 elif [ "$flag_wireless" = 1 ]; then
     devices=$(find "$folder" -name "w*")
-elif [ -n "$flag_name" ]; then
-    devices=$(find "$folder" -name "[ew]*")
 else
     usage
     exit
@@ -101,9 +100,7 @@ show_speed()
 }
 
 if [ -z "$devices" ]; then
-    if [ "$flag_name" = 1 ]; then
-        echo No device
-    elif [ "$flag_speed" = 1 ]; then
+    if [ "$flag_speed" = 1 ]; then
         echo 0
         echo 0
     elif [ "$flag_connection" = 1 ]; then
@@ -115,10 +112,8 @@ if [ -z "$devices" ]; then
 fi
 
 for device in $devices; do
-    if [ "$flag_name" = 1 ]; then
-        basename "$device"
-    elif [ "$flag_speed" = 1 ]; then
-        if [ "$flag_human_readable" = 1 ]; then
+    if [ -n "$flag_speed" ]; then
+        if [ -n "$flag_human_readable" ]; then
             show_speed "$device" | human_readable
         else
             show_speed "$device"
