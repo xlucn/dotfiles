@@ -1,39 +1,50 @@
 #!/bin/sh
+# Handle by MIME type
 case "$(file -Lb --mime-type -- "$1")" in
     text/html)
         if [ -n "$DISPLAY" ]; then
             firefox -- "$@"
         else
             lynx "$@" || elinks "$@" || w3m "$@" || links "$@"
-        fi ;;
+        fi && exit ;;
     text/*|*/xml|*/csv|*/json)
-        ${EDITOR:-vim} "$@" ;;
-    video/*|*/octet-stream)
+        ${EDITOR:-vim} "$@" && exit ;;
+    video/*)
         if [ -n "$DISPLAY" ]; then
             mpv -- "$@" || mplayer -- "$@"
         else
             cmplayer "$@" ||
             mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
             mpv --vo=gpu --gpu-context=drm --msg-level=all=no -- "$@"
-        fi ;;
+        fi && exit ;;
     audio/*)
-        mpv -- "$@" || mplayer -- "$@" ;;
+        mpv -- "$@" || mplayer -- "$@" && exit ;;
     application/pdf)
         if [ -n "$DISPLAY" ]; then
             zathura "$@"
         else
             jfbview "$@"
-        fi ;;
+        fi && exit ;;
     image/*)
         if [ -n "$DISPLAY" ]; then
             sxiv "$@" || vimiv "$@"
         else
             jfbview "$@" || fbv "$@"
-        fi ;;
-    *)
-        if [ -n "$DISPLAY" ]; then
-            for f in "$@"; do
-                xdg-open "$f"
-            done &
-        fi ;;
+        fi && exit ;;
+    *) ;;
 esac
+
+# Handle by extension
+case "$(echo "${1##*.}" | tr '[:upper:]' '[:lower:]')" in
+    ts) ;;
+
+    azw*) ;;
+
+    *) ;; # Go on to handle by mime type
+esac
+
+if [ -n "$DISPLAY" ]; then
+    for f in "$@"; do
+        xdg-open "$f"
+    done &
+fi
