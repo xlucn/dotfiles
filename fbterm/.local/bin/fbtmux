@@ -8,18 +8,13 @@
 #   convert:     optional, for darkening and blurring wallpaper 
 #
 # Note:
-#   Something you might want to change:
-#   * wallpaper location: $HOME/.local/share/backgrounds/wallpaper.*
-#   * tmux config location: $HOME/.config/tmux/fbtmux.conf
-#
-# If you don't want to use fbterm/yaft, simply start tmux with this config
-#   ~/.config/tmux/fbtmux.conf
+#   wallpaper location: $HOME/.local/share/backgrounds/wallpaper.*
 
 # Only start in tty
 tty | grep -q tty || { echo "not in tty"; exit; }
 trap 'tput cnorm' INT TERM QUIT EXIT # show cursor on quit
 
-# Check commands
+# Check commands, respect users' settings
 if [ -z "$USE_YAFT" ] && [ -z "$USE_FBTERM" ]; then
     command -v fbterm > /dev/null 2>&1 && USE_FBTERM=1
     command -v yaft > /dev/null 2>&1 && USE_YAFT=1
@@ -39,9 +34,7 @@ if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1; then
         # use stat instead of test -nt/-ot command which dereferences links
         script_time=$(stat -Lc %Y "$0")
         bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
-        if [ -e "$bg_framebuffer" ]; then
-            bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
-        fi
+        [ -e "$bg_framebuffer" ] && bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
         if [ ! -e "$bg_framebuffer" ] \
         || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
         || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
@@ -65,11 +58,12 @@ EOF
 fi
 
 # Everything set, start fbterm/yaft in $HOME directory
-cd "${HOME}" || exit
+cd "$HOME" || exit
 if [ -n "$USE_FBTERM" ]; then
     cmd="fbterm --"
 elif [ -n "$USE_YAFT" ]; then
     cmd="yaft"
 fi
+# This config is from my own dotfiles
 $cmd tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
 clear
