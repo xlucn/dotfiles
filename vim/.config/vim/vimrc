@@ -51,75 +51,41 @@ syntax on
 filetype on
 filetype plugin on
 filetype indent on
-" auto reload files
-set autoread
-" set encoding
+set autoread " auto reload files
 set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set spelllang=en,cjk
-" use x11 normal clipboard
-set clipboard=unnamedplus
-" automatically write a file when leaving a buffer
-set autowrite
+set clipboard=unnamedplus " use x11 normal clipboard
+set autowrite " automatically write a file when leaving a buffer
 set hidden
 set laststatus=2
-" fold
-set foldlevel=1
-let g:markdown_folding = 1
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
-" conceal
-" set conceallevel=2
-" time out for key code delays, decide how long to wait for key code
-" sequence and how long leader guide (if installed) will pop up.
-set timeoutlen=300
-" do not wait after escape key
-set ttimeoutlen=0
-" open diff window vertically
-set diffopt+=vertical
-" comletion
-set completeopt=menuone,noinsert,longest
+set timeoutlen=300 " time out for key code delays
+set ttimeoutlen=0 " do not wait after escape key
+set diffopt+=vertical " open diff window vertically
+set completeopt=menuone,noinsert,longest " comletion
 " }}}
 " UI basic {{{
 " clear sign column highlight
 highlight clear SignColumn
-" gui options: dark, tab, icon, scrollbar
-set guioptions=deir
-" gui font
-set guifont=Hack\ 12
-" show line number
-set number
-" always show sign column
-set signcolumn=yes
-" shows what you are typing as a command
-set showcmd
-" turn on wild menu on :e <Tab>
-set wildmenu
-" change the terminal's title
-set title
-" show matching characters
-set showmatch
-" minimum lines above and below cursor
-set scrolloff=2
-" split into right by default
-set splitright
-" update time, related to fugitive sign column update, etc.
-set updatetime=100
-" redraw when needed
-set lazyredraw
-" don't beep
-set noerrorbells
-" don't show welcome screen
-set shortmess+=I
-" show tabs / buffers on top
-set showtabline=2
-" do not show mode on the last line
-set noshowmode
-" show partial line
-set display+=lastline
-" color scheme
-set background=dark
-" enable mouse support in console
-set mouse=a
+set guioptions=dir " gui options: dark, icon, scrollbar
+set guifont=Hack\ 12 " gui font
+set number " show line number
+set signcolumn=yes " always show sign column
+set showcmd " shows what you are typing as a command
+set wildmenu " turn on wild menu on :e <Tab>
+set title " change the terminal's title
+set showmatch " show matching characters
+set scrolloff=2 " minimum lines above and below cursor
+set splitright " split into right by default
+set updatetime=100 " update time, related to fugitive sign column update, etc.
+set lazyredraw " redraw when needed
+set noerrorbells " don't beep
+set shortmess+=I " don't show welcome screen
+set showtabline=2 " show tabs / buffers on top
+set noshowmode " do not show mode on the last line
+set display+=lastline " show partial line
+set background=dark " color scheme
+set mouse=a " enable mouse support in console
 " fix for urxvt and st
 if !has('nvim')
     if $TERM =~ "rxvt-unicode"
@@ -261,6 +227,11 @@ xmap <leader>c <Plug>Commentary
 let g:which_key_map.c = 'comment'
 " }}}
 " Markdown {{{
+" vim markdown
+" fold
+let g:markdown_folding = 1
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
+
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
