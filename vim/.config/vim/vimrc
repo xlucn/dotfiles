@@ -395,11 +395,12 @@ let g:which_key_map.a = {
   \ }
 " }}}
 " Vim Tex {{{
+let g:tex_flavor = 'latex'
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
 " start vim with a server, see ':h vimtex-clientserver'
 if empty(v:servername) && exists('*remote_startserver') && !empty($DISPLAY)
-  call remote_startserver('VIM')
+    call remote_startserver('VIM')
 endif
 " viewer setting
 let g:vimtex_view_method = 'zathura'
