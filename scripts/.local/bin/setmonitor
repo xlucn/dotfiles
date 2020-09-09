@@ -3,7 +3,7 @@
 
 command -v dmenu > /dev/null && DMENU="dmenu" || DMENU="rofi -dmenu"
 
-monitors=$(xrandr | sed -n 's/\(.*\) disconnected.*/\1/p')
+monitors=$(xrandr | sed -n 's/\(.*\) connected.*/\1/p')
 
 # This is the core part. Without lists/arrys in POSIX shell, we store the
 # commands beforehand in different variables corresponding to each option.
