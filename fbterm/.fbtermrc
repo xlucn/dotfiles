@@ -2,15 +2,20 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=Unifont,JetBrainsMono Nerd Font:sytle=Regular,Noto Sans CJK SC:style=Regular
-font-size=14
-
 # force font width (and/or height), usually for non-fixed width fonts
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
-## recommend size-width-height:
-## 14-8-18 17-10-20 21-12-24 26-15-30
-font-width=8
-font-height=18
+
+# Recommendations 14-8-18 16-10-20 21-12-24 26-15-30
+
+# font-names=Unifont,JetBrainsMono Nerd Font:sytle=Regular
+# font-size=12
+# font-width=8
+# font-height=18
+
+font-names=Hack Nerd Font:style=Regular,Noto Sans CJK SC:style=Regular
+font-size=16
+font-width=10
+font-height=20
 
 # default color of foreground/background text
 color-foreground=ECEFF1
