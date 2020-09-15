@@ -15,17 +15,17 @@ servers = (
   {
     address = "irc.rizon.net";
     chatnet = "Rizon";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "yes";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
     autoconnect = "yes";
   },
   {
     address = "irc.rizon.net";
     chatnet = "Rizon2";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "yes";
+    port = "6667";
+    use_tls = "no";
+    tls_verify = "no";
     autoconnect = "yes";
   },
   {
@@ -194,7 +194,7 @@ channels = (
     autojoin = "yes";
   },
   { name = "#archlinux-cn"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "yes"; }
+  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "no"; }
 );
 
 aliases = {
