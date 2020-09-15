@@ -2,6 +2,6 @@
 
 for battery in /sys/class/power_supply/BAT*
 do
-    b=$(cat "$battery"/capacity)
-    [ "$b" -gt 100 ] && echo 100 || echo "$b"
+    [ -d "$battery" ] && b=$(cat "$battery"/capacity)
+    [ "${b:-0}" -gt 100 ] && echo 100 || echo "$b"
 done
