@@ -39,7 +39,7 @@ case "$(file -Lb --mime-type -- "$1")" in
     text/*|*/xml|*/csv|*/json)
         # try to detect the charactor encodeing
         enc=$(head -n20 "$1" | uchardet)
-        highlight -O ansi --force -- "$1" |\
+        { highlight -O ansi --force -- "$1" || cat "$1"; } |\
         iconv -f "${enc:-UTF-8}" -t UTF-8 && exit ;;
 
     # Image
