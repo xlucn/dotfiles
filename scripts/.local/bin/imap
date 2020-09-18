@@ -43,6 +43,7 @@ case "${email##*@}" in
     outlook.com) server=imap-mail.outlook.com ;;
     qq.com)      server=imap.qq.com ;;
     gmail)       server=imap.gmail.com ;;
+    smail.nju.edu.cn) server=imap.exmail.qq.com ;;
     *) ;;
 esac
 
