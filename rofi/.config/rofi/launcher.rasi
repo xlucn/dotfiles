@@ -32,7 +32,7 @@ window {
     width            : 80%;
     height           : 80%;
     location         : center;
-    border-radius    : 32px;
+    border-radius    : 0px;
 }
 
 mainbox {
