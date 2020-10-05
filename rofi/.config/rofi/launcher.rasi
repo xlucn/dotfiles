@@ -5,7 +5,7 @@ configuration {
     modi                : "drun";
     show-icons          : true;
     scroll-method       : 0;
-    columns             : 5;
+    columns             : 6;
     lines               : 5;
     cycle               : false;
     drun-display-format : "{name}";
@@ -29,21 +29,14 @@ configuration {
 
 window {
     background-color : @background;
-    width            : 100%;
-    height           : 100%;
-    location         : south east;
+    width            : 80%;
+    height           : 80%;
+    location         : center;
+    border-radius    : 32px;
 }
 
 mainbox {
-    children         : [inputbar, listview];
-}
-
-inputbar {
-    children         : [dummy, entry, dummy];
-}
-
-dummy {
-    expand           : true;
+    children         : [entry, listview];
 }
 
 entry {
@@ -51,13 +44,13 @@ entry {
     font             : "Monospace 16";
     border-radius    : 16px;
     padding          : 16px;
-    margin           : 6% 0% 0% 0%;
+    margin           : 4% 2% 2% 2%;
     expand           : false;
-    width            : 32em;
+    width            : 30%;
 }
 
 listview {
-    margin           : 4% 8%;
+    margin           : 2%;
     scrollbar        : false;
 }
 
@@ -67,7 +60,7 @@ element {
 }
 
 element-icon {
-    size             : 8%;
+    size             : 6%;
 }
 
 element-text {
@@ -76,14 +69,12 @@ element-text {
     margin           : 4px 0px 0px 0px;
 }
 
-element normal.normal,
-element alternate.normal {
+element normal.normal, element alternate.normal {
     background-color : #00000000;
     color            : @text-color;
 }
 
-element selected.normal,
-element selected.active {
+element selected.normal, element selected.active {
     background-color : @selected-background;
     color            : @selected-text-color;
 }
