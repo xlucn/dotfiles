@@ -6,6 +6,7 @@ set nocompatible
 let $VIM = $XDG_CONFIG_HOME . '/vim'
 " vim basic settings
 set runtimepath=$VIM,$VIMRUNTIME,$VIM/after
+set backupdir=$XDG_CACHE_HOME/vim/backup
 " Important: put this after nocompatible
 set viminfo+=n~/.config/vim/viminfo
 " automatic installation
@@ -51,6 +52,7 @@ syntax on
 filetype on
 filetype plugin on
 filetype indent on
+set backup
 set autoread " auto reload files
 set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
