@@ -27,4 +27,3 @@ left_meters=LeftCPUs Memory Swap Battery
 left_meter_modes=1 1 1 2
 right_meters=RightCPUs CPU Tasks LoadAverage
 right_meter_modes=1 1 2 2
-vim_mode=1
