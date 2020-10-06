@@ -1,7 +1,7 @@
 #!/bin/sh
 # shellcheck disable=SC1090
 
-[ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile" &
+[ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
 WALLPAPER=$HOME/.local/share/backgrounds/wallpaper.jpg
 
