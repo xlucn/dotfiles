@@ -341,7 +341,7 @@ local function battery()
                 function(stdout)
                     local level, state = string.match(stdout, "(%d+)\n(%d)")
                     local stat_icon
-                    level = tonumber(level)
+                    level = tonumber(level) or 100
                     if state == "1" then
                         stat_icon = beautiful.icon_battery_charging[(level + 4) // 10 + 1]
                     else
@@ -549,7 +549,7 @@ local function network()
                         net_icon:set_icon(beautiful.icon_wired[e == 1])
                     end
                     net_speed:set_text(
-                        string.format("祝 %s\n %s", format_netspeed(upspeed), format_netspeed(downspeed))
+                        string.format("󰕒 %s\n󰇚 %s", format_netspeed(upspeed), format_netspeed(downspeed))
                     )
                 end
             )
