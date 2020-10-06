@@ -45,6 +45,6 @@ esac
 
 if [ -n "$DISPLAY" ]; then
     for f in "$@"; do
-        xdg-open "$f"
+        if [ -x "$f" ]; then "$f"; else xdg-open "$f"; fi
     done &
 fi
