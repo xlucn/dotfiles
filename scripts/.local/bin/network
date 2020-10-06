@@ -129,9 +129,11 @@ for device in $devices; do
                 esac
             done;
             if [ -n "$ap_inuse" ]; then
-                printf "%s\n%s" "$ssid" "$signal"
+                printf "%s\n%s\n" "$ssid" "$signal"
             elif [ "$connection" != "--" ]; then
-                printf "%s\n100" "$connection"
+                printf "%s\n100\n" "$connection"
+            else
+                printf "%s\n0\n" "--"
             fi
         }
     else
