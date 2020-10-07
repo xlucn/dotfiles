@@ -22,9 +22,10 @@ startdwm() {
 }
 
 startgnome() {
-    export XDG_CURRENT_DESKTOP=GNOME-Classic:GNOME
-    export GNOME_SHELL_SESSION_MODE=classic
-    exec gnome-session --session=gnome-classic
+    export GTK_CSD=1
+    export XDG_SESSION_TYPE=x11
+    export GDK_BACKEND=x11
+    exec gnome-session
 }
 
 case ${1:-dwm} in
