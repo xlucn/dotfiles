@@ -6,7 +6,7 @@ while read -r c n; do
     printf " \U$c   <span size=\"xx-small\">%s $n</span>\n" "$c"
 done |
 sed -e "s/\&/\&amp;/g" -e "s/<\([^s\/]\)/\&lt;\1/g" |
-rofi -dmenu -markup-rows -theme-str \
+rofi -dmenu -i -markup-rows -theme-str \
    "configuration { font: \"Monospace 28\"; columns: 2; lines: 8; } \
    inputbar { children: [entry]; } \
    window { width: 1200px; }" |
