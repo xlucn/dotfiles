@@ -36,15 +36,15 @@ set highlight-transparency 0.2
 
 # Colors TODO: all the colors
 set default-fg "#ECEFF1"
-set default-bg "#222B39"
-set statusbar-bg "#222B39"
+set default-bg "#212121"
+set statusbar-bg "#212121"
 set statusbar-fg "#ECEFF1"
 # Recolor
 set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
 set recolor-darkcolor "#FFFFFF"
-set recolor-lightcolor "#222B39"
+set recolor-lightcolor "#212121"
 
 # Clipboard
 set selection-clipboard "clipboard"
