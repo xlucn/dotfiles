@@ -1,5 +1,5 @@
 configuration {
-    font                : "Monospace 12";
+    font                : "Monospace 11";
     icon-theme          : "Papirus";
     sidebar-mode        : false;
     modi                : "drun";
@@ -41,7 +41,7 @@ mainbox {
 
 entry {
     background-color : @selected-background;
-    font             : "Monospace 16";
+    font             : "Monospace 14";
     border-radius    : 16px;
     padding          : 16px;
     margin           : 4% 2% 2% 2%;
@@ -57,6 +57,8 @@ listview {
 element {
     border-radius    : 16px;
     orientation      : vertical;
+    padding          : 2% 0%;
+    margin           : 0% 1%;
 }
 
 element-icon {
@@ -64,9 +66,7 @@ element-icon {
 }
 
 element-text {
-    expand           : true;
     horizontal-align : 0.5;
-    margin           : 4px 0px 0px 0px;
 }
 
 element normal.normal, element alternate.normal {
