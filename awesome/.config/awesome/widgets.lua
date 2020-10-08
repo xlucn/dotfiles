@@ -209,7 +209,7 @@ local function alsa()
     icon:buttons {
         awful.button({}, 1, volume_toggle),
         awful.button({}, 3, function()          -- right click
-            awful.spawn(config.terminal_run("alsamixer", true))
+            awful.spawn(config.float_terminal .. " -e alsamixer")
         end),
         awful.button({}, 4, volume_up),         -- scroll up
         awful.button({}, 5, volume_down)        -- scroll down
@@ -387,7 +387,7 @@ local function cpu()
     }
 
     cpu_icon:buttons { awful.button({}, 3, function()
-        awful.spawn(config.terminal_run("htop -s PERCENT_CPU"))
+        awful.spawn(config.terminal .. " -e htop -s PERCENT_CPU")
     end) }
 
     local cpu_widget = wibox.widget {
@@ -422,7 +422,7 @@ local function memory()
     }
     mem_upd:emit_signal("timeout")
     mem_icon:buttons { awful.button({}, 3, function()
-        awful.spawn(config.terminal_run("htop -s PERCENT_MEM"))
+        awful.spawn(config.terminal .. " -e htop -s PERCENT_MEM")
     end) }
     local mem_widget = wibox.widget {
         mem_icon,
@@ -482,10 +482,10 @@ local function imap()
 
         imap_upd:emit_signal("timeout")
         imap_icon:buttons { awful.button({}, 3, function()
-            awful.spawn(config.terminal_run(
+            awful.spawn(config.terminal .. " -e " ..
                 string.format("%s -e \"source ~/.config/%s/%s.muttrc\"",
                               config.mutt, config.mutt, email)
-            ))
+            )
         end) }
         return {
             imap_icon,
@@ -558,7 +558,7 @@ local function network()
     net_upd:emit_signal("timeout")
 
     net_icon:buttons { awful.button({}, 1, function()
-        awful.spawn(config.terminal_run("nmtui-connect", true))
+        awful.spawn(config.float_terminal .. " -e nmtui-connect")
     end) }
     local network_widget = wibox.widget {
         net_icon,
@@ -657,7 +657,7 @@ local function mpd()
     local mpc_backward = mpc_spawn_update("mpc -q seek -10")
     local mpc_single = mpc_spawn_update("mpc -q single")
     local mpc_random = mpc_spawn_update("mpc -q random")
-    local mpd_launch_client = function() awful.spawn(config.terminal_run("ncmpcpp")) end
+    local mpd_launch_client = function() awful.spawn(config.terminal .. " -e ncmpcpp") end
 
     mpd_icon:buttons   { awful.button({}, 1, mpd_launch_client) }
     mpd_stop:buttons   { awful.button({}, 1, mpc_stop) }
@@ -889,15 +889,10 @@ local function layoutbox(s)
 end
 -- }}}
 -- launcher {{{
-local function launcher(s)
+local function launcher()
     local button = icon_button(beautiful.menuicon)
-    -- local button = wibox.widget {
-    --     icon_button(beautiful.menuicon),
-    --     -- bg = beautiful.blue,
-    --     widget = wibox.container.background,
-    -- }
     button:buttons { awful.button({ }, 1, function()
-        awful.spawn(config.launcher_rofi_cmd(s))
+        awful.spawn("rofi -show drun -theme launcher")
     end) }
     return button
 end

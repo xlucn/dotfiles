@@ -1,58 +1,50 @@
-local gears = require("gears")
-
 local config = {}
-
-------------------------------------------------------------
---
--- Something you might want to change
---
-------------------------------------------------------------
-
--- Colorscheme
--- Use colors from gtk theme or Xresources (TODO)
---      true: use colors from gtk theme
---      false: use colors from xresource
-config.use_gtk_theme = false
 
 ---- Icons
 -- Use font or images, see theme.lua for all icons used in bars and panels
 --      true: svg icons from system icon theme, e.g. /usr/share/icons
 --      false: use font characters from fonts installed on system
-config.use_image_icon = false
--- Icon theme if use_image_icon is true
--- Note: beautiful.icon_theme will also be set to this, which affects menu, tasklist icons, etc.
+config.use_image_icon = true
+
+-- Icon theme AwesomeWM-wide
 config.icon_theme = "Papirus-Dark"
--- Icon Font if use_image_icon is false
+
+-- Icon Font
 -- Note: The font characters set in theme.lua should match this font,
 --     if you want to use another font, you have to change all the icons there
 config.icon_font = "Material Design Icons"
 
-
--- Mod4: Super key or Win key; Mod1: Alt
-config.modkey = "Mod4"
--- Terminal emulator
-config.terminal = "st"
--- Text edit in terminal
-config.terminal_editor = "vim"
-
-
 -- The font name to use, could specify style (e.g. Hack Bold) but not size
 config.fontname = "Hack Bold"
 
+-- Mod4: Super key or Win key; Mod1: Alt
+config.modkey = "Mod4"
+
+-- Terminal emulator
+config.terminal = "st"
+-- Command to spawn floating terminal
+-- Set to nil if it supports startup notifications
+config.floating_terminal = "st -c floating_terminal"
+-- Text edit in terminal
+config.terminal_editor = "vim"
 
 ---- Appearences
 -- The basic size for widgets. The panel size.
 -- This value will be applied dpi so don't do it here (TODO: maybe do it here?)
 config.basic_size = 48
 
-
 ---- Widgets configuration
--- Email addresses. I might write the usage in README.md, go check it out :).
+-- Email addresses TODO: search folder for email adds
 config.imap_emails = {
     "oliver_lew@outlook.com",
     "2869761396@qq.com",
 }
 
+-- MPD host
+config.mpd_host = "localhost:6600"
+
+-- ALSA channel
+config.alsa_channel = "Master"
 
 ---- Screenshot commands
 --
@@ -74,73 +66,17 @@ config.scrot_save = " ~/Pictures/Screenshot_%F_%H-%M-%S.png"
 -- Appended options to save to clipboard (selection)
 config.scrot_clip = " -o /dev/stdout | xclip -selection clipboard -t image/png"
 
-
-
 ------------------------------------------------------------
 --
 -- Something you might not have to change
 --
 ------------------------------------------------------------
 
-
--- Command to spawn a floating terminal (for st)
--- If the terminal support startup notifications (that is, if you can use
---     'properties' in 'awful.spawn' to make them floating), there is no need to
---     change the command.
--- There is a hack in rules to float any window with class name "floating_terminal"
-if config.terminal == "st" then
-    config.floating_terminal = "st -c floating_terminal"
-else
-    config.floating_terminal = config.terminal
-end
-
-
 -- Email client, use neomutt if available otherwise mutt
-config.mutt = os.execute("command -v neomutt > /dev/null 2>&1") and "neomutt" or "mutt"
-
--- MPD host
-config.mpd_host = "localhost:6600"
-
--- ALSA channel
-config.alsa_channel = "Master"
-
--- change it if your terminal does not work
--- e.g. termite needs quotes around command
-config.terminal_run = function(cmd, floating)
-    return (floating and config.floating_terminal or config.terminal) .. " -e " .. cmd
-end
-
+config.mutt = os.execute("command -v neomutt > /dev/null") and "neomutt" or "mutt"
 
 config.editor_cmd = function(file)
-    return config.terminal_run(config.terminal_editor .. " " .. file)
+    return string.formatconfig.terminal .. " -e " .. config.terminal_editor .. " " .. file
 end
-
-
--- Rofi command to open a app launcher
--- This command will involve some widgets not seen here. Right, it's because
--- I don't know where else is better put this function for now :)
-config.launcher_rofi_cmd = function(s)
-    -- run rofi with the space left by bars and panels
-    local topbar_offset = s.topbar and s.topbar.visible and s.topbar.height or 0
-    local leftbar_offset = s.leftbar and s.leftbar.visible and s.leftbar.width or 0
-    local leftpanel_offset = s.leftpanel and s.leftpanel.visible and s.leftpanel.width or 0
-    local width = s.geometry.width - leftbar_offset - leftpanel_offset
-    local height = s.geometry.height - topbar_offset
-    return "rofi -modi drun -show drun -theme launcher"
-        .. " -theme-str \"#window {"
-        .. "    location: south east;"
-        .. "    width: " .. width .. "px;"
-        .. "    height: " .. height .. "px;"
-        .. "}\""
-end
-
-
--- Default client shape
--- The shape always change to rectangle in the following cases:
---      fullscreen
---      maximized
---      firefox main window, you can add/change other browsers in rules.
-config.client_shape = gears.shape.rounded_rect
-
 
 return config

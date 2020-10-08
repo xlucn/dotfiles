@@ -266,7 +266,7 @@ awful.keyboard.append_global_keybindings({
               {description = "save selection to clipboard", group = "screenshot"}),
 
     -- Prompt
-    awful.key({ modkey, }, "d", function() awful.spawn(config.launcher_rofi_cmd(mouse.screen)) end,
+    awful.key({ modkey, }, "d", function() awful.spawn("rofi -show drun -theme launcher") end,
               {description = "application launcher", group = "launcher"}),
     awful.key({ modkey, }, "x", function() awful.spawn("rofi -show run") end,
               {description = "run command", group = "launcher"}),
@@ -276,9 +276,9 @@ awful.keyboard.append_global_keybindings({
               {description = "set display", group = "screen"}),
 
     -- Application launching
-    awful.key({ modkey }, "r", function () awful.spawn(config.terminal_run("ranger")) end,
+    awful.key({ modkey }, "r", function () awful.spawn(config.terminal .. " -e ranger") end,
               {description = "launch file manager", group = "launcher"}),
-    awful.key({ modkey }, "e", function () awful.spawn(config.terminal_run("neomutt")) end,
+    awful.key({ modkey }, "e", function () awful.spawn(config.terminal .. " -e neomutt") end,
               {description = "launch email client", group = "launcher"})
 })
 
@@ -367,7 +367,7 @@ ruled.client.append_rules {
             buttons = clientbuttons,
             screen = awful.screen.preferred,
             size_hints_honor = true,
-            shape = config.client_shape,
+            shape = gears.shape.rounded_rect,
             placement = awful.placement.no_overlap+awful.placement.no_offscreen
         }
     },
@@ -548,7 +548,7 @@ local function client_shape_toggle(c)
     if c.fullscreen or c.maximized or c.flag_ignore_shape then
         c.shape = gears.shape.rectangle
     else
-        c.shape = config.client_shape
+        c.shape = gears.shape.rounded_rect
     end
 end
 client.connect_signal("property::fullscreen", client_shape_toggle)
