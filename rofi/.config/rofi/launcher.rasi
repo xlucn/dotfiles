@@ -23,7 +23,7 @@ configuration {
     /* some customized colors used later */
     selected-background : #EEFFFF40;
     selected-text-color : #EEFFFF;
-    background          : #212121D0;
+    background          : #212121C0;
     text-color          : #EEFFFF;
 }
 
