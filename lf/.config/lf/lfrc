@@ -15,4 +15,4 @@ map gh cd ~
 map gr cd /
 
 # Commands
-cmd open & open $fx
+cmd open $ open $fx
