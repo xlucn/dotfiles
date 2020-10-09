@@ -43,7 +43,8 @@ bind   generic,index,pager   \Cu          previous-page
 # enter and exit with left/right h/l enter/q
 macro  index <left> "c?\t" "Go back to the list of mailboxes"
 macro  index h      "c?\t" "Go back to the list of mailboxes"
-bind   generic,pager,index q      exit
+macro  index q      "<sync-mailbox><exit>"
+bind   generic,pager q      exit
 bind   generic,pager <left> exit
 bind   generic,pager h      exit
 bind   browser  <left>    goto-parent
