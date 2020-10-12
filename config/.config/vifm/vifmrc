@@ -1,101 +1,38 @@
 " vim: filetype=vifm :
-" The " character at the beginning of a line comments out the line.
-" Blank lines are ignored.
 
 " ------------------------------------------------------------------------------
-
-" This is the actual command used to start vi.  The default is vim.
-set vicmd=vim
-
-" This makes vifm perform file operations on its own instead of relying on
-" standard utilities like `cp`.  While using `cp` and alike is a more universal
-" solution, it's also much slower when processing large amounts of files and
-" doesn't support progress measuring.
-set syscalls
-
-" Trash Directory
-" The default is to move files that are deleted with dd or :d to
-" the trash directory.  If you change this you will not be able to move
-" files by deleting them and then using p to put the file in the new location.
-" I recommend not changing this until you are familiar with vifm.
-" This probably shouldn't be an option.
-set trash
-
-" This is how many directories to store in the directory history.
-set history=100
-
-" Automatically resolve symbolic links on l or Enter.
-set nofollowlinks
-
-" With this option turned on you can run partially entered commands with
-" unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
-" set fastrun
-
-" Natural sort of (version) numbers within text.
-set sortnumbers
-
-" Maximum number of changes that can be undone.
-set undolevels=100
-
-" If you installed the vim.txt help file set vimhelp.
-" If would rather use a plain text help file set novimhelp.
-set vimhelp
-
-" If you would like to run an executable file when you
-" press return on the file name set this.
-set norunexec
-
-" Selected color scheme
-colorscheme Default
-
-" Format for displaying time in file list. For example:
-" TIME_STAMP_FORMAT=%m/%d-%H:%M
-" See man date or man strftime for details.
-set timefmt=%m/%d\ %H:%M
-
-" Show list of matches on tab completion in command-line mode
-set wildmenu
-
-" Display completions in a form of popup with descriptions of the matches
-set wildstyle=popup
-
-" Display suggestions in normal, visual and view modes for keys, marks and
-" registers (at most 5 files).  In other view, when available.
+set vicmd=vim            " This is the actual command used to start vi
+set syscalls             " Use file operations implemented by vifm
+set trash                " Trash Directory
+set history=100          " Directory history.
+set nofollowlinks        " Automatically resolve symbolic links on l or Enter.
+set tuioptions=pu        " Tui options
+set sortnumbers          " Natural sort of (version) numbers within text.
+set undolevels=100       " Maximum number of changes that can be undone.
+set vimhelp              " Use vim.txt help file
+set norunexec            " Run an executable file when you press return
+set timefmt=%m/%d\ %H:%M " Time format in file list. See man strftime for details
+set wrap                 " Wrap long lines in preview
+set wildmenu             " Show list of matches on tab completion
+set wildstyle=popup      " Display completions in a popup with descriptions
+set ignorecase           " Ignore case in search patterns
+set smartcase            " Do not ignore uppercase letter exist
+set nohlsearch           " Don't highlight search results automatically
+set incsearch            " Use increment searching (search while typing)
+set scrolloff=4          " Keep a offset on top and bottom when scroll
+set slowfs=curlftpfs     " Don't do too many requests to slow file systems
+set statusline=" %A %10u:%-7g %15s %= %20d"
 set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
+colorscheme Default      " Selected color scheme
 
-" Ignore case in search patterns unless it contains at least one uppercase
-" letter
-set ignorecase
-set smartcase
-
-" Don't highlight search results automatically
-set nohlsearch
-
-" Use increment searching (search while typing)
-set incsearch
-
-" Try to leave some space from cursor to upper/lower border in lists
-set scrolloff=4
-
-" Don't do too many requests to slow file systems
-if !has('win')
-    set slowfs=curlftpfs
-endif
-
-" Set custom status line look
-set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
-
-set wrap
-
+" What should be saved automatically between vifm runs
+set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
+    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
 " ------------------------------------------------------------------------------
-
 " :mark mark /full/directory/path [filename]
-
-mark b ~/bin/
 mark h ~/
 
 " ------------------------------------------------------------------------------
-
 " :com[mand][!] command_name action
 " The following macros can be used in a command
 " %a is replaced with the user arguments.
@@ -302,11 +239,6 @@ filetype *.iso
        \ {Mount with fuseiso}
        \ FUSE_MOUNT|fuseiso %SOURCE_FILE %DESTINATION_DIR,
 
-" SshMount
-filetype *.ssh
-       \ {Mount with sshfs}
-       \ FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR %FOREGROUND,
-
 " FtpMount
 filetype *.ftp
        \ {Mount with curlftpfs}
@@ -322,17 +254,6 @@ fileviewer *.7z 7z l %c
 filextype *.odt,*.doc,*.docx,*.xls,*.xlsx,*.odp,*.pptx libreoffice %f &
 fileviewer *.doc catdoc %c
 fileviewer *.docx docx2txt.pl %f -
-
-" TuDu files
-filetype *.tudu tudu -f %c
-
-" Qt projects
-filextype *.pro qtcreator %f &
-
-" Directories
-filextype */
-        \ {View in thunar}
-        \ Thunar %f &,
 
 " Syntax highlighting in preview
 "
@@ -367,15 +288,6 @@ filetype * xdg-open
 
 " ------------------------------------------------------------------------------
 
-" What should be saved automatically between vifm runs
-" Like in previous versions of vifm
-" set vifminfo=options,filetypes,commands,bookmarks,dhistory,state,cs
-" Like in vi
-set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
-    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
-
-" ------------------------------------------------------------------------------
-
 " Examples of configuring both panels
 
 " Customize view columns a bit (enable ellipsis for truncated file names)
@@ -384,75 +296,20 @@ set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
 " Filter-out build and temporary files
 " filter! /^.*\.(lo|o|d|class|py[co])$|.*~$/
 
-set tuioptions=pu
 
 " ------------------------------------------------------------------------------
-
 nnoremap q :quit<cr>
-
-" Sample mappings
-
-" Start shell in current directory
-nnoremap s :shell<cr>
-
-" Display sorting dialog
-nnoremap S :sort<cr>
-
-" Toggle visibility of preview window
-nnoremap w :view<cr>
+nnoremap e :edit<cr>
+nnoremap s :shell<cr> " Start shell in current directory
+nnoremap S :sort<cr> " Display sorting dialog
+nnoremap w :view<cr> " Toggle visibility of preview window
 vnoremap w :view<cr>gv
-
-" Open file in new instance of gvim
-nnoremap o :!vim %f<cr>
-" Open file in existing instance of gvim
-nnoremap O :!vim --remote-tab-silent %f<cr>
-
-" Yank current directory path into the clipboard
-nnoremap yd :!echo %d | xclip %i<cr>
-
-" Yank current file path into the clipboard
-nnoremap yf :!echo %c:p | xclip %i<cr>
-
-" Mappings for faster renaming
-nnoremap I cw<c-a>
+nnoremap I cw<c-a> " Mappings for faster renaming
 nnoremap cc cw<c-u>
 nnoremap A cw
-
+nnoremap yd :!echo %d | xclip %i<cr> " Yank current directory path into the clipboard
+nnoremap yf :!echo %c:p | xclip %i<cr> " Yank current file path into the clipboard
 " Open editor to edit vifmrc and apply settings after returning to vifm
 nnoremap ,c :write | edit $MYVIFMRC | restart<cr>
+nnoremap ,w :set wrap!<cr> " Toggle wrap setting on ,w key
 
-" Toggle wrap setting on ,w key
-nnoremap ,w :set wrap!<cr>
-
-" Example of standard two-panel file managers mappings
-nnoremap <f3> :!less %f<cr>
-nnoremap <f4> :edit<cr>
-nnoremap <f5> :copy<cr>
-nnoremap <f6> :move<cr>
-nnoremap <f7> :mkdir<space>
-nnoremap <f8> :delete<cr>
-
-" ------------------------------------------------------------------------------
-
-" Various customization examples
-
-" Use ag (the silver searcher) instead of grep
-"
-" set grepprg='ag --line-numbers %i %a %s'
-
-" Add additional place to look for executables
-"
-" let $PATH = $HOME.'/bin/fuse:'.$PATH
-
-" Block particular shortcut
-"
-" nnoremap <left> <nop>
-
-" Export IPC name of current instance as environment variable and use it to
-" communicate with the instance later.
-"
-" It can be used in some shell script that gets run from inside vifm, for
-" example, like this:
-"     vifm --server-name "$VIFM_SERVER_NAME" --remote +"cd '$PWD'"
-"
-" let $VIFM_SERVER_NAME = v:servername
