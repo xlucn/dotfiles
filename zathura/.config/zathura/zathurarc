@@ -20,8 +20,8 @@ map b toggle_statusbar
 # Mode changing
 map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen
-map P toggle_presentation
-map [presentation] P toggle_presentation
+map p toggle_presentation
+map [presentation] p toggle_presentation
 # zoom in/out with wheel
 map <C-Button4> zoom in
 map <C-Button5> zoom out
