@@ -1,3 +1,6 @@
+# Video
+deinterlace=yes
+
 # GUI
 sub-font-size=40
 no-keepaspect-window
