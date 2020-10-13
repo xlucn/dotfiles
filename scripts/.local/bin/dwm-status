@@ -88,8 +88,6 @@ case "${INDEX:-$1}" in
         dwmbar_height=24
         case "${BUTTON-1}" in
             1)
-                screen_height=$(xrandr | sed -n 's/.*x\([0-9]*\).*\*.*/\1/p')
-                height=$((screen_height - dwmbar_height))
                 rofi -theme launcher -show drun &
                 ;;
             3)
