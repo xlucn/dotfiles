@@ -3,30 +3,28 @@
 FIFO="/tmp/udev-local.fifo"
 UDEV_LOCAL_LOG="/tmp/udev-local.log"
 
-[ ! -p $FIFO ] && mkfifo $FIFO
+[ ! -p $FIFO ] && rm -f $FIFO && mkfifo $FIFO
 
-[ $# -gt 0 ] && echo "$1" > $FIFO && exit
+while read -r p; do
+    echo "debug: $p" > $UDEV_LOCAL_LOG
+    case "$p" in
+        capslock)
+            notify-send "New keyboard" "Mapping CapsLock -> Escape."
+            sleep 5 # xmodmap won't work on new keyboards without this delay
+            DISPLAY=:0 /usr/bin/xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'
+            ;;
+        ac-on)
+            notify-send "Power supply" "AC adpater pluged in"
+            ;;
+        ac-off)
+            notify-send "Power supply" "AC adpater unpluged"
+            ;;
+        drm)
+            notify-send "External monitor detected"
+            ;;
+        *)
+            ;;
+    esac
+done < $FIFO
 
-while true; do
-    while read -r p; do
-        echo "debug: $p" > $UDEV_LOCAL_LOG
-        case "$p" in
-            capslock)
-                notify-send "New keyboard" "Mapping CapsLock -> Escape."
-                sleep 1 # xmodmap won't work on new keyboards without this delay
-                /usr/bin/xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'
-                ;;
-            ac-on)
-                notify-send "Power supply" "AC adpater pluged in"
-                ;;
-            ac-off)
-                notify-send "Power supply" "AC adpater unpluged"
-                ;;
-            drm)
-                notify-send "External monitor detected"
-                ;;
-            *)
-                ;;
-        esac
-    done < $FIFO
-done
+rm $FIFO

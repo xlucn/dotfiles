@@ -1,7 +1,7 @@
 # map caps key to escape for all keyboards with capslock
-SUBSYSTEM=="leds",KERNEL=="input[0-9]*::capslock",ACTION=="add",SUBSYSTEMS=="input",RUN+="/usr/local/bin/udev-local capslock"
+SUBSYSTEM=="leds",KERNEL=="input[0-9]*::capslock",ACTION=="add",SUBSYSTEMS=="input",RUN+="echo capslock > /tmp/udev-local.fifo"
 # power on/off notify
-SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="1",RUN+="/usr/local/bin/udev-local ac-on"
-SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="0",RUN+="/usr/local/bin/udev-local ac-off"
+SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="1",RUN+="echo ac-on > /tmp/udev-local.fifo"
+SUBSYSTEM=="power_supply",KERNEL=="AC",ACTION=="change",ATTR{online}=="0",RUN+="echo ac-off > /tmp/udev-local.fifo"
 # monitor change
-SUBSYSTEM=="drm",KERNEL=="card0",ACTION=="change",RUN+="/usr/local/bin/udev-local drm"
+SUBSYSTEM=="drm",KERNEL=="card0",ACTION=="change",RUN+="echo drm > /tmp/udev-local.fifo"
