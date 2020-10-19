@@ -1,25 +1,14 @@
 #!/bin/sh
-
-
 tmpfile="/tmp/status/cpu_info"
-for col in $(grep "cpu " /proc/stat | tr -d cpu); do
-    total=$((total + col))
-    count=$((count + 1))
-    if [ "$count" -lt 4 ] || [ "$count" -gt 5 ]; then
-        active=$((active + col))
-    fi
+
+paste /proc/stat "$tmpfile" |
+while read -r cpu c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 active_old total_old; do
+    [ "${cpu#cpu}" = "$cpu" ] && break
+    [ "$cpu" != "cpu" ] && [ "$1" != "-a" ] && break
+    total=$((c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 + c9 + c10))
+    active=$((total - c4 - c5))
+    echo "$active $total" >> "$tmpfile-new"
+    printf "%2s\n" $(((active - active_old) * 100 / (total - total_old)))
 done
 
-if [ -f "$tmpfile" ]; then
-    read -r active_old total_old < "$tmpfile"
-    active_inc=$((active - active_old))
-    total_inc=$((total - total_old))
-fi
-echo "$active $total" > "$tmpfile"
-
-if [ -n "$total_inc" ] && [ "$total_inc" -gt 10 ]; then
-    printf "%2s" $((active_inc * 100 / total_inc))
-else
-    sleep 1
-    $0
-fi
+mv "$tmpfile-new" "$tmpfile"
