@@ -29,6 +29,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-endwise'
 Plug 'liuchengxu/vim-which-key'
 " Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
@@ -225,11 +226,19 @@ nnoremap <silent> [ :WhichKey '['<CR>
 nnoremap <silent> ] :WhichKey ']'<CR>
 nnoremap <silent> y :WhichKey 'y'<CR>
 " }}}
-" Vim commentary{{{
+" Vim commentary {{{
 nmap <leader>c <Plug>CommentaryLine
 omap <leader>c <Plug>Commentary
 xmap <leader>c <Plug>Commentary
 let g:which_key_map.c = 'comment'
+" }}}
+" Vim Endwise {{{
+" https://github.com/tpope/vim-endwise/issues/41#issuecomment-432905813
+autocmd FileType tex
+  \ let b:endwise_addition = '\="\\end" . matchstr(submatch(0), "{.\\{-}}")' |
+  \ let b:endwise_words = 'begin' |
+  \ let b:endwise_pattern = '\\begin{.\{-}}' |
+  \ let b:endwise_syngroups = 'texSection,texBeginEnd,texBeginEndName,texStatement'
 " }}}
 " Markdown {{{
 " vim markdown
