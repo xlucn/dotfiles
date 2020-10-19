@@ -194,7 +194,8 @@ channels = (
     autojoin = "yes";
   },
   { name = "#archlinux-cn"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "no"; }
+  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "no"; },
+  { name = "#fdroid"; chatnet = "Freenode"; autojoin = "yes"; }
 );
 
 aliases = {
