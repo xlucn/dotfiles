@@ -24,8 +24,9 @@ TMPDIR=/tmp/status
 query_interval=120
 
 # CLI arguments
-while getopts hn:s:p:P: param; do
+while getopts fhn:s:p:P: param; do
     case "$param" in
+        f) arg_force=1;;
         s) arg_server=$OPTARG;;
         p) arg_port=$OPTARG;;
         P) arg_password=$OPTARG;;
@@ -57,7 +58,7 @@ time_now="$(date +%s)"
 tempfile="$TMPDIR/imap_$email"
 [ -f "$tempfile" ] && read -r time_last count < "$tempfile"
 # TODO: -n N option not working here
-if [ -n "$count" ] && [ -n "$time_last" ] && \
+if [ -z "$arg_force" ] && [ -n "$count" ] && [ -n "$time_last" ] && \
    [ $((time_now - time_last)) -lt "$query_interval" ]; then
     echo "$count"; exit
 fi
