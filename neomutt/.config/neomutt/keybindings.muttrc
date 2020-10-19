@@ -4,10 +4,10 @@
 # scroll with ^Y and ^E
 unbind * \Ce
 unbind * h
-bind generic,index,browser \Cy previous-entry
-bind generic,index,browser \Ce next-entry
-bind pager \Cy previous-line
-bind pager \Ce next-line
+bind generic,browser \Cy previous-entry
+bind generic,browser \Ce next-entry
+bind pager,index \Cy previous-line
+bind pager,index \Ce next-line
 
 # search
 bind   generic,index,pager / search
