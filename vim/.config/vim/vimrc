@@ -149,6 +149,7 @@ autocmd FileType mma setlocal noet
 autocmd FileType tex,markdown,gitcommit setlocal spell
 autocmd FileType gnuplot setlocal commentstring=#%s
 autocmd FileType mma setlocal commentstring=(*%s*)
+" autocmd FileType tex let b:ale_lsp_root='./'
 " }}}
 " Fcitx Toggle {{{
 " restore input method state when enter insert mode
@@ -387,13 +388,16 @@ let g:ale_lint_on_text_changed = 'normal'
 " clangd needs a compile_commands.json file for the project
 let g:ale_linters = {
   \ 'c': ['ccls'],
-  \ 'python': ['pyls'],
-  \ 'sh': ['shellcheck'],
-  \ 'lua': ['luacheck']
+  \ 'cpp': ['ccls'],
+  \ 'python': ['pyls', 'flake8'],
+  \ 'lua': ['luacheck'],
+  \ 'sh': ['shellcheck']
   \ }
 let g:ale_fixers = {
   \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'c': ['clang-format', 'clangtidy']
+  \ 'c': ['clang-format', 'clangtidy'],
+  \ 'cpp': ['clang-format', 'clangtidy'],
+  \ 'sh': ['shellcheck']
   \ }
 let g:ale_linters_explicit = 1
 let g:ale_c_parse_makefile = 1
