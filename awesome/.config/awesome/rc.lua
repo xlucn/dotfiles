@@ -89,7 +89,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         widget_template = {
             {
                 id = "icon_button",
-                image_margin = beautiful.bar_size * 0.3,
+                image_margin = beautiful.bar_size * 0.25,
                 widget = mywidgets.icon_button,
             },
             id     = 'background_role',
