@@ -5,7 +5,6 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local dpi = beautiful.xresources.apply_dpi
 -- my local config file
 local config = require("config")
 local modkey = config.modkey
@@ -53,10 +52,11 @@ function icon_button_widget:set_icon(icon, args)
     args = args or {}
     icon = check_icon(icon)
     if self._private.use_font then
-        self._private.container:get_children_by_id("text_role")[1]:
-            set_markup(markup(icon[1] or "",
-                              config.icon_font .. " " .. (args.font_size or "20"),
-                              icon.color or beautiful.fg_normal))
+        self._private.container:get_children_by_id("text_role")[1]:set_markup(markup(
+            icon[1] or "",
+            config.icon_font .. " " .. (args.font_size or "20"),
+            icon.color or beautiful.fg_normal
+        ))
     else
         self._private.container:get_children_by_id("image_role")[1]:set_image(icon[2])
         if not self._private.image_margin then
@@ -882,8 +882,8 @@ local function layoutbox(s)
     box:buttons {
         awful.button({ }, 1, function () awful.layout.inc( 1) end),
         awful.button({ }, 3, function () awful.layout.inc(-1) end),
-        awful.button({ }, 4, function () awful.tag.incgap(-dpi(8)) end),
-        awful.button({ }, 5, function () awful.tag.incgap( dpi(8)) end)
+        awful.button({ }, 4, function () awful.tag.incgap(-beautiful.useless_gap_inc) end),
+        awful.button({ }, 5, function () awful.tag.incgap( beautiful.useless_gap_inc) end)
     }
     return box
 end

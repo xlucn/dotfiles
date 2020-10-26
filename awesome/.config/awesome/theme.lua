@@ -59,6 +59,7 @@ theme.titlebar_font = theme.fontname .. " 12"
 -- }}}
 -- Window {{{
 theme.useless_gap           = dpi(8)
+theme.useless_gap_inc       = dpi(8)
 theme.border_width          = dpi(0)
 theme.border_normal         = theme.bg_normal
 theme.border_focus          = theme.bg_focus
