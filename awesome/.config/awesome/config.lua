@@ -22,11 +22,14 @@ config.modkey = "Mod4"
 
 -- Terminal emulator
 config.terminal = "st"
--- Command to spawn floating terminal
--- Set to nil if it supports startup notifications
-config.floating_terminal = "st -c floating_terminal"
+-- Command to spawn floating terminal. Set to nil if it supports startup notifications
+config.float_terminal = "st -c floating_terminal"
 -- Text edit in terminal
 config.terminal_editor = "vim"
+
+config.editor_cmd = function(file)
+    return string.formatconfig.terminal .. " -e " .. config.terminal_editor .. " " .. file
+end
 
 ---- Appearences
 -- The basic size for widgets. The panel size.
@@ -45,6 +48,9 @@ config.mpd_host = "localhost:6600"
 
 -- ALSA channel
 config.alsa_channel = "Master"
+
+-- Email client, use neomutt if available otherwise mutt
+config.mutt = os.execute("command -v neomutt > /dev/null") and "neomutt" or "mutt"
 
 ---- Screenshot commands
 --
@@ -65,18 +71,5 @@ config.scrot_save = " ~/Pictures/Screenshot_%F_%H-%M-%S.png"
 
 -- Appended options to save to clipboard (selection)
 config.scrot_clip = " -o /dev/stdout | xclip -selection clipboard -t image/png"
-
-------------------------------------------------------------
---
--- Something you might not have to change
---
-------------------------------------------------------------
-
--- Email client, use neomutt if available otherwise mutt
-config.mutt = os.execute("command -v neomutt > /dev/null") and "neomutt" or "mutt"
-
-config.editor_cmd = function(file)
-    return string.formatconfig.terminal .. " -e " .. config.terminal_editor .. " " .. file
-end
 
 return config
