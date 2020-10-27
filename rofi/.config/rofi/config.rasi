@@ -13,21 +13,28 @@ configuration {
     lines              : 10;
 }
 
-@import "~/.cache/wal/colors-rofi-dark.rasi"
-
 * {
-    line-margin     : 0px;
-    line-padding    : 0px;
-    separator-style : "none";
-    margin          : 0px;
-    padding         : 0px;
-    border          : 0px;
-    spacing         : 0px;
-    selected-normal-background : #4a4a4a;
+    line-margin      : 0px;
+    line-padding     : 0px;
+    separator-style  : "none";
+    margin           : 0px;
+    padding          : 0px;
+    border           : 0px;
+    spacing          : 0px;
+    text-color       : #EEFFFF;
+    background-color : @background;
+
+    background       : #212121;
+
+    active-background: #C3E88D;
+    urgent-background: #F07178;
+
+    selected-normal-background: #4a4a4a;
+    selected-active-background: #F07178;
+    selected-urgent-background: #FFCB6B;
 }
 
 window {
-    padding         : 0px;
     width           : 960px;
 }
 
@@ -37,8 +44,6 @@ button {
 
 listview {
     scrollbar       : false;
-    border          : 0px;
-    spacing         : 0px;
 }
 
 inputbar {
@@ -49,4 +54,27 @@ inputbar {
 
 element {
     padding         : 20px;
+}
+
+#element.normal.urgent {
+    background-color: @urgent-background;
+    text-color: @background;
+}
+
+#element.normal.active {
+    background-color: @active-background;
+    text-color: @background;
+}
+
+#element.selected.normal {
+    background-color: @selected-normal-background;
+}
+
+#element.selected.urgent {
+    background-color: @selected-urgent-background;
+}
+
+#element.selected.active {
+    text-color: @background;
+    background-color: @selected-active-background;
 }
