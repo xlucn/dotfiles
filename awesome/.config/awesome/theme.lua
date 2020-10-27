@@ -81,21 +81,21 @@ theme.tasklist_icon_vmargin = dpi(16)
 theme.tasklist_icon_margin  = dpi(4)
 -- }}}
 -- Slider and progressbar {{{
-theme.slider_bar_border_width = 0
-theme.slider_handle_border_width = 0
-theme.slider_handle_width = 0
-theme.slider_bar_shape = gears.shape.rounded_bar
-theme.slider_bar_height = dpi(24)
-theme.slider_bar_color = theme.grey .. "80"
-theme.slider_bar_active_color = theme.fg_normal
-theme.slider_bar_margins = dpi(12) -- { top = 12, bottom = 12 }
-theme.progressbar_bg = theme.grey .. "80"
-theme.progressbar_fg = theme.fg_normal
-theme.progressbar_shape = gears.shape.rounded_bar
-theme.progressbar_border_width = 0
-theme.progressbar_bar_shape = gears.shape.rectangle
+theme.slider_bar_border_width      = 0
+theme.slider_handle_border_width   = 0
+theme.slider_handle_width          = 0
+theme.slider_bar_shape             = gears.shape.rounded_bar
+theme.slider_bar_height            = dpi(24)
+theme.slider_bar_color             = theme.grey .. "80"
+theme.slider_bar_active_color      = theme.fg_normal
+theme.slider_bar_margins           = dpi(12) -- { top        = 12, bottom = 12 }
+theme.progressbar_bg               = theme.grey .. "80"
+theme.progressbar_fg               = theme.fg_normal
+theme.progressbar_shape            = gears.shape.rounded_bar
+theme.progressbar_border_width     = 0
+theme.progressbar_bar_shape        = gears.shape.rectangle
 theme.progressbar_bar_border_width = 0
-theme.progressbar_margins = dpi(12)
+theme.progressbar_margins          = dpi(12)
 -- theme.progressbar_paddings
 -- }}}
 -- Tooltip {{{
@@ -345,13 +345,13 @@ for b, c in pairs(button_colors) do
 end
 -- }}}
 -- Notifications {{{
-naughty.config.padding = dpi(16)
-naughty.config.spacing = dpi(8)
+naughty.config.padding               = dpi(16)
+naughty.config.spacing               = dpi(8)
 naughty.config.defaults.margin       = dpi(16)
 naughty.config.defaults.timeout      = 10
 naughty.config.defaults.border_width = 0
 naughty.config.defaults.font         = config.fontname .. " Bold 12"
-naughty.config.defaults.icon_size    = 48
+naughty.config.defaults.icon_size    = 48 -- do not apply dpi here
 naughty.config.defaults.shape        = gears.shape.rounded_rect
 naughty.config.defaults.opacity      = 0.8
 naughty.config.defaults.bg           = theme.grey
