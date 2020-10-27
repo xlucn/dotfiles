@@ -83,14 +83,7 @@ while IFS=': ' read key value; do
     Name) name=$value ;;
     Hash) info_hash=$value ;;
     Location) location=$value ;;
-    Magnet)
-        while read kv; do
-            [ "${kv%%=*}" = tr ] && trackers="$trackers ${kv#*=}"
-        done << EOF
-        $(echo "$value" | sed -e 's/&/\n/g' -e 's/%26/&/g' -e 's/%2F/\//g' \
-        -e 's/%3A/:/g' -e 's/%3D/=/g' -e 's/%3F/\?/g' -e 's+https\?://\([^/]*\)/.*+\1+')
-EOF
-        ;;
+    Magnet) trackers=${value#*tr=} ;;
     *) ;;
     esac
 done
