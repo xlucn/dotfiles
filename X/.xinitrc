@@ -28,9 +28,19 @@ startgnome() {
     exec gnome-session
 }
 
+if [ "${1%2x}" != "$1" ]; then
+    export GDK_SCALE=2
+    export GDK_DPI_SCALE=0.5
+    export QT_SCALE_FACTER=2
+    export XCURSOR_SIZE=32
+    echo "Xft.dpi: 192" > /tmp/Xresources.hidpi
+    xrdb -merge /tmp/Xresources.hidpi
+    rm /tmp/Xresources.hidpi
+fi
+
 case ${1:-dwm} in
     awesome*) prewm; exec awesome;;
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
-    dwm|*) prewm; startdwm;;
+    dwm*|*) prewm; startdwm;;
 esac
