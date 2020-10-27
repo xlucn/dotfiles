@@ -1,4 +1,5 @@
 configuration {
+    dpi                : 1;
     font               : "Hack 14";
     show-icons         : true;
     icon-theme         : "Papirus";
