@@ -79,8 +79,7 @@ EOF
     [ "$sar_x" != "N/A" ] && [ "$sar_x" = "$sar_x" ] && [ "$sar_y" = "$sar_y" ] &&
         orig_w=$((orig_w * sar_x / sar_y))
 
-    # Calculate the actual video dimension on screen that could fit in the pane
-    # Also center the video inside the pane
+    # Calculate the actual video size and position that could fit in the pane
     if [ $((orig_w * pane_h)) -gt $((orig_h * pane_w)) ]; then
         video_w=$pane_w
         video_h=$((pane_w * orig_h / orig_w))
@@ -93,7 +92,10 @@ EOF
         video_y=$pane_y
     fi
 
+    # This line and the line after mplayer exits is a hack to refresh tmux
+    [ -n "$TMUX_PANE" ] && { sleep 1; tmux refresh; } &
     # Mute all output and play the video!
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
             -vf scale="$video_w:$video_h" -geometry "$video_x:$video_y" || exit
+    [ -n "$TMUX_PANE" ] && tmux refresh
 done
