@@ -6,4 +6,4 @@ forever
 # unixpw_nis
 usepw
 # use recommended client-side pixel caching
-ncache 10
+ncache 0
