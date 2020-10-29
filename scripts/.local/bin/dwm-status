@@ -5,6 +5,7 @@ PATH=/opt/sbase/bin:$PATH
 TMPDIR=/tmp/status
 TERMINAL="st"
 FLOATTERM="$TERMINAL -c floating"
+d() { [ -n "$DEBUG" ] && /bin/date +%N; }
 
 get_emails() {
     for mail in ~/.config/neomutt/*@*.muttrc; do
@@ -34,7 +35,7 @@ IVOL=13         ICON_VOL=''     SVOL=vol        NVOL=3
 IMPDSTAT=16     ICON_MPDSTAT=   SMPDSTAT=mpd
 INULL=17
 
-/bin/date +%N
+d
 # If you clicked some text after a delimiter \0NN in the status bar,
 # the hexadecimal value of it will be passed as $1
 [ "${#1}" -eq 1 ] && INDEX=$(printf "%02o" $((0x$1)))
@@ -122,7 +123,7 @@ case "${INDEX:-$1}" in
     *)
         if [ -n "$1" ]; then notify-send "$1" Mouse"$BUTTON"; fi ;;
 esac
-/bin/date +%N
+d
 # Update only when needed, exit otherwise
 [ $# -gt 0 ] && [ -z "$UPDATE_LIGHT" ] && [ -z "$UPDATE_VOL" ] && [ -z "$UPDATE_MPD" ] && exit
 
@@ -135,7 +136,7 @@ for NAME in MEM CPU NET BAT VOL MPDSTAT; do
     eval [ -f "$FN" ] && read -r TIME_$NAME STR_$NAME < "$FN"
 done
 
-/bin/date +%N
+d
 progress_bar() { # https://stackoverflow.com/a/5349842/10530288
     [ "$1" -eq "$1" ] && [ "$1" -ge 0 ] && [ "$1" -le 100 ] || return
     printf "["
@@ -206,7 +207,7 @@ if [ $# = 0 ] || [ -n "$UPDATE_MPD" ]; then
     esac
     echo "$TIME $STR_MPDSTAT" > "$TMPDIR/$SMPDSTAT"
 fi
-/bin/date +%N
+d
 xsetroot -name "$(
     # \02x: different colors
     printf "\022\0$IMEM %s \023 %s \021\0$INULL "   "$ICON_MEM" "$STR_MEM"
@@ -224,4 +225,4 @@ xsetroot -name "$(
     printf "\023\0$IRUN %s "                        "$ICON_RUN"
     printf "\022\0$IAPPS %s "                       "$ICON_APPS"
 )"
-/bin/date +%N
+d
