@@ -137,6 +137,9 @@ nnoremap <silent> <C-H> :bprevious<CR>
 nnoremap <silent> <C-L> :bnext<CR>
 " toggle fold
 nnoremap <space> za
+" center the screen when searching
+nnoremap n nzzzv
+nnoremap N Nzzzv
 " }}}
 " Autocmd {{{
 autocmd VimEnter * silent exec "! echo -ne '\e[2 q'"
