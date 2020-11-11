@@ -1,4 +1,3 @@
 bind q quit
-bind Escape quit
 # fix positioning in awesome wm
 option move-on-mapped true
