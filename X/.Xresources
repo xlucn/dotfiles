@@ -46,7 +46,7 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
-st.alpha: 0.7
+st.alpha: 0.9
 st.borderpx: 0
 
 tabbed.font: Noto Sans CJK SC:pixelsize=12
