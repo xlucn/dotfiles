@@ -1,3 +1,4 @@
 bind q quit
 # fix positioning in awesome wm
 option move-on-mapped true
+option windowed-mode both
