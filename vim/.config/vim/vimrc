@@ -38,8 +38,8 @@ Plug 'VoldikSS/vim-mma'
 Plug 'jpalardy/vim-slime'
 Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
-Plug 'vimwiki/vimwiki'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'ervandew/supertab'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
@@ -169,7 +169,6 @@ let g:netrw_winsize      = -20 " split size
 let g:netrw_dirhistmax   = 0   " disable history
 let g:netrw_liststyle    = 0   " thin listing
 nnoremap <C-N> :call ToggleNetRW()<CR>
-nnoremap <Tab> :call ToggleNetRW()<CR>
 function ToggleNetRW()
     if exists("g:netrw_buffer") && bufexists(g:netrw_buffer)
         exe "bd".g:netrw_buffer | unlet g:netrw_buffer
@@ -190,18 +189,6 @@ function Goyo()
 endfunction
 " }}}
 " Plugin Settings
-" Vim wiki {{{
-let g:vimwiki_list = [{
- \  'path': '~/Code/notes',
- \  'syntax': 'markdown',
- \  'index': 'README',
- \  'ext': '.md'
- \  }]
-let g:vimwiki_conceallevel = 0
-let g:vimwiki_filetypes = ['markdown']
-let g:vimwiki_map_prefix = '<leader>n'
-let g:vimwiki_key_mappings = { 'global': 0, }
-" }}}
 " Vim Which Key {{{
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
@@ -253,6 +240,11 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
+" vim-markdown-preview
+let vim_markdown_preview_browser='firefox'
+" let vim_markdown_preview_use_xdg_open=1
+let vim_markdown_preview_temp_file=1
+let vim_markdown_preview_github=0
 " preview
 let g:mkdp_auto_start = 0
 let g:mkdp_browser = 'firefox'
