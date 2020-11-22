@@ -16,7 +16,7 @@ prewm() {
 udev-local &
 
 startdwm() {
-    hsetroot -cover "$WALLPAPER" > /dev/null 2>&1 &
+    xwallpaper --zoom "$WALLPAPER" --daemon
     while true; do dwm-status; sleep 1; done &
     exec dwm
 }
