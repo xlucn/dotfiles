@@ -5,16 +5,16 @@ set nocompatible
 " set vim folder
 let $VIM = $XDG_CONFIG_HOME . '/vim'
 " vim basic settings
-set runtimepath=$VIM,$VIMRUNTIME,$VIM/after
+set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
 " Important: put this after nocompatible
 set viminfo+=n$VIM/viminfo
 " automatic installation
-if empty(glob($VIM . '/autoload/plug.vim'))
-  silent !curl -fLo $VIM/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+" if empty(glob($VIM . '/autoload/plug.vim'))
+"   silent !curl -fLo $VIM/autoload/plug.vim --create-dirs
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" endif
 " begin vim-plug
 call plug#begin($VIM . '/bundle')
 Plug 'godlygeek/tabular'
