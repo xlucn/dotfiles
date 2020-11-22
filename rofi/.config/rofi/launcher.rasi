@@ -1,5 +1,4 @@
 configuration {
-    font                : "Monospace 11";
     icon-theme          : "Papirus";
     sidebar-mode        : false;
     modi                : "drun";
@@ -41,7 +40,6 @@ mainbox {
 
 entry {
     background-color : @selected-background;
-    font             : "Monospace 14";
     border-radius    : 16px;
     padding          : 1%;
     margin           : 4% 2% 2% 2%;
