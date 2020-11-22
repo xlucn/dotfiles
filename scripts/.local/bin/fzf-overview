@@ -1,0 +1,9 @@
+pactree -l base >> /tmp/pacman-summary-base
+for pkg in $(pacman -Qqg base-devel); do
+    pactree -l "$pkg"
+done >> /tmp/pacman-summary-base
+sort /tmp/pacman-summary-base | uniq > /tmp/pacman-uniq-base
+
+pacman -Qeq | sort | uniq > /tmp/pacman-uniq-exp
+
+comm -13 /tmp/pacman-uniq-base /tmp/pacman-uniq-exp | fzf --preview 'pacman -Qi {1}'
