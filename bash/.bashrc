@@ -22,8 +22,8 @@ alias cranger="ranger --cmd='set preview_images_method w3m'"
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # quiet newsboat
 alias newsboat="newsboat -q"
-# vimwiki note
-alias vimnote="vim +VimwikiIndex"
+# vim note
+alias notes="lf \$HOME/Code/notes"
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs pip install --user --upgrade
