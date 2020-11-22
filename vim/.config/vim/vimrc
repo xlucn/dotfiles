@@ -40,6 +40,13 @@ Plug 'dylanaraps/wal.vim'
 Plug 'jdkanani/vim-material-theme'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+" Plug 'MikeCoder/markdown-preview.vim'
+" Plug 'JamshedVesuna/vim-markdown-preview'
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/vim-lsp'
 Plug 'ervandew/supertab'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
