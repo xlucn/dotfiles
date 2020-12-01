@@ -11,6 +11,8 @@ Config files for everything
 - OS: [Archlinux](http://www.archlinux.org/)
 - WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches) and [AwesomeWM](https://awesomewm.org/)
 - Terminal Emulator: [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
+- Network Manager: systemd-networkd + systemd-resolved + iwd
+- Brightness control: brightnessctl
 - Color scheme: material color scheme
 
 ## Requirement and recommendations
