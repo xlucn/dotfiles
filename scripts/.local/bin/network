@@ -120,23 +120,16 @@ for device in $devices; do
             show_speed "$device"
         fi
     elif [ -n "$flag_connection" ]; then
-        nmcli -f GENERAL,AP dev show "$(basename "$device")" |
-        {   while IFS=': ' read -r key value; do
-                case "$key" in
-                    GENERAL.CONNECTION) connection=$value;;
-                    AP[*].IN-USE) ap_inuse=$value;;
-                    AP[*].SSID) ssid=$value;;
-                    AP[*].SIGNAL) signal=$value;;
-                esac
-            done;
-            if [ -n "$ap_inuse" ]; then
-                printf "%s\n%s\n" "$ssid" "$signal"
-            elif [ "$connection" != "--" ]; then
-                printf "%s\n100\n" "$connection"
-            else
-                printf "%s\n0\n" "--"
-            fi
-        }
+        case "${device##*/}" in
+            wl*)
+                iwctl station "${device##*/}" get-networks rssi-dbms |
+                sed 's/\x1b\[[0-9;]*m//g' | grep "^  > " | {
+                    read -r _ name _ signal;
+                    printf "%s\n%s\n" "$name" "$((130+signal/100))";
+                } ;;
+            en*) printf "Ethernet\n100\n" ;;
+            *) printf "%s\n0\n" "--" ;;
+        esac
     else
         read -r state < "$device"/operstate
         [ "$state" = "up" ] && echo 1 || echo 0
