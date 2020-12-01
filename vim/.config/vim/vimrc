@@ -107,9 +107,11 @@ if !has('nvim')
     endif
 endif
 " cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
-let &t_SI = "\e[6 q"
-let &t_SR = "\e[4 q"
-let &t_EI = "\e[2 q"
+if $TERM != "linux"
+    let &t_SI = "\e[6 q"
+    let &t_SR = "\e[4 q"
+    let &t_EI = "\e[2 q"
+endif
 if has('gui_running')
     colorscheme material-theme
 else
