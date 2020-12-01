@@ -20,6 +20,7 @@ EOF
 
 # Directory to store cached results
 TMPDIR=/tmp/status
+mkdir -p "$TMPDIR"
 # Minimal time interval between two imap queries
 query_interval=120
 

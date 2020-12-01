@@ -73,6 +73,7 @@ show_speed()
     NANO_PER_SEC=1000000000
     device=$1
     tmpfile=/tmp/status/$(basename "$device")_old
+    mkdir -p /tmp/status
     timens=$(date +"%s%N")
     read -r rx_bytes < "$device"/statistics/rx_bytes
     read -r tx_bytes < "$device"/statistics/tx_bytes

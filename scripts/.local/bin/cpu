@@ -1,5 +1,6 @@
 #!/bin/sh
 tmpfile="/tmp/status/cpu_info"
+mkdir -p /tmp/status
 touch "$tmpfile"
 
 paste /proc/stat "$tmpfile" |
