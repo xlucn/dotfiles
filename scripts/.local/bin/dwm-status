@@ -59,8 +59,8 @@ case "${INDEX:-$1}" in
     "$ILIGHT"|light)
         [ "$1" = "light" ] && BUTTON=$2
         case "$BUTTON" in
-            4|up)   light -A 4; UPDATE_LIGHT=1 ;;
-            5|down) light -U 4; UPDATE_LIGHT=1 ;;
+            4|up)   brightnessctl -q s 4%+; UPDATE_LIGHT=1 ;;
+            5|down) brightnessctl -q s 4%-; UPDATE_LIGHT=1 ;;
         esac ;;
     "$INET")
         case "$BUTTON" in
@@ -193,7 +193,7 @@ if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 if [ "$(imap "$SMAIL1")" -gt 0 ]; then ICON_MAIL1="󰇮"; else ICON_MAIL1="󰇰"; fi
 if [ "$(imap "$SMAIL2")" -gt 0 ]; then ICON_MAIL2="󰇮"; else ICON_MAIL2="󰇰"; fi
 
-STR_LIGHT=$(printf "%.0f" "$(light 2> /dev/null)")
+STR_LIGHT=$(brightnessctl -m i | awk -F, '{ print $4 }')
 [ -n "$UPDATE_LIGHT" ] &&
 notify-send -c "dwm-status" -h int:value:"$STR_LIGHT" "Brightness:" "$(progress_bar "$STR_LIGHT")" &
 
