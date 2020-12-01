@@ -29,7 +29,3 @@ hwdec-codecs=h264,vc1,hevc,vp9
 tone-mapping=reinhard
 tone-mapping-param=0.5
 tone-mapping-desaturate=1.0
-
-# Cache
-cache=yes
-cache-secs=60
