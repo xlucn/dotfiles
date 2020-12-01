@@ -1,6 +1,6 @@
 configuration {
     dpi                : 1;
-    font               : "Hack 14";
+    font               : "Monospace 8";
     show-icons         : true;
     icon-theme         : "Papirus";
     scroll-method      : 0;
