@@ -1,0 +1,1 @@
+make && make PREFIX=~/.local/ install && make clean && rm config.h
