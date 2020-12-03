@@ -35,7 +35,7 @@ for battery in /sys/class/power_supply/BAT*; do
         elif [ "$POWER_SUPPLY_STATUS" = "Charging" ]; then
             time=$(((charge_full - charge_now) * 1000 / power))
         elif [ "$POWER_SUPPLY_STATUS" = "Discharging" ]; then
-            time=$((charge_full * 1000 / power))
+            time=$((charge_now * 1000 / power))
         fi
         echo $time
     fi
