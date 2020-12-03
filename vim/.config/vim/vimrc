@@ -31,7 +31,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'liuchengxu/vim-which-key'
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
 Plug 'lervag/vimtex'
 Plug 'VoldikSS/vim-mma'
@@ -48,7 +48,7 @@ Plug 'junegunn/fzf.vim'
 " Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Plug 'prabirshrestha/vim-lsp'
 Plug 'ervandew/supertab'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
 " }}}
 " Vim Settings
@@ -506,53 +506,4 @@ endif
 
 " let g:asyncomplete_auto_completeopt = 0
 
-" set completeopt=menuone,noinsert,noselect,preview
-let g:coc_config_home = $VIM . '/bundle/coc.nvim/config'
-  " \   "latex": {
-  " \     "command": "texlab",
-  " \     "filetypes": ["tex", "bib", "plaintex", "context"],
-  " \     "ignoredRootPaths": ["~"]
-  " \   },
-call coc#config("languageserver", {
-  \   "bash": {
-  \     "command": "bash-language-server",
-  \     "args": ["start"],
-  \     "filetypes": ["sh"],
-  \     "ignoredRootPaths": []
-  \   },
-  \   "ccls": {
-  \     "command": "ccls",
-  \     "filetypes": ["h", "c", "cc", "cpp", "c++", "objc", "objcpp"],
-  \     "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
-  \     "initializationOptions": {
-  \        "cache": {
-  \          "directory": "/tmp/ccls"
-  \        }
-  \      }
-  \   },
-  \   "vimls": {
-  \     "module": "/usr/lib/vim-language-server/bin/index.js",
-  \     "args": ["--node-ipc"],
-  \     "filetypes": ["vim"],
-  \     "initializationOptions": {
-  \       "iskeyword": "@,48-57,_,192-255,-#",
-  \       "vimruntime": "",
-  \       "runtimepath": "~/.config/vim",
-  \       "diagnostic": {
-  \         "enable": "true"
-  \       },
-  \       "indexes": {
-  \         "runtimepath": "true",
-  \         "gap": 100,
-  \         "count": 3,
-  \         "projectRootPatterns" : [".git", "autoload", "plugin"]
-  \       },
-  \       "suggest": {
-  \         "fromVimruntime": "true",
-  \         "fromRuntimepath": "false"
-  \       }
-  \     }
-  \   }
-  \ })
-" }}}
 " vim:foldmethod=marker:foldlevel=0
