@@ -29,9 +29,6 @@ startgnome() {
 }
 
 if [ "${1%2x}" != "$1" ]; then
-    export GDK_SCALE=2
-    export GDK_DPI_SCALE=0.5
-    export QT_SCALE_FACTOR=1.5
     export XCURSOR_SIZE=32
     echo "Xft.dpi: 144" > /tmp/Xresources.hidpi
     xrdb -merge /tmp/Xresources.hidpi
