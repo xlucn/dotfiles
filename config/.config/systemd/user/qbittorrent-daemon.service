@@ -1,0 +1,10 @@
+[Unit]
+Description=Qbittorrent daemon without X11
+
+[Service]
+ExecStart=/usr/bin/qbittorrent-nox
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=default.target
