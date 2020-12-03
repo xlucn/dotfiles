@@ -1,24 +1,15 @@
 configuration {
-    icon-theme          : "Papirus";
     sidebar-mode        : false;
     modi                : "drun";
     show-icons          : true;
-    scroll-method       : 0;
-    columns             : 6;
-    lines               : 5;
-    cycle               : false;
+    columns             : 5;
+    lines               : 4;
     drun-display-format : "{name}";
 }
 
 * {
+    /* transparent default */
     background-color    : #00000000;
-    line-margin         : 0;
-    line-padding        : 0;
-    margin              : 0;
-    padding             : 0;
-    border              : 0;
-    spacing             : 0;
-    separator-style     : "none";
     /* some customized colors used later */
     selected-background : #EEFFFF40;
     selected-text-color : #EEFFFF;
@@ -29,36 +20,43 @@ configuration {
 window {
     background-color : @background;
     width            : 80%;
-    height           : 80%;
     location         : center;
-    border-radius    : 0px;
 }
 
 mainbox {
-    children         : [entry, listview];
+    children         : [inputbar, listview];
+    margin           : 2%;
+}
+
+inputbar {
+    children         : [dummy, entry, dummy];
+}
+
+dummy {
+    expand           : true;
 }
 
 entry {
     background-color : @selected-background;
     border-radius    : 16px;
     padding          : 1%;
-    margin           : 4% 2% 2% 2%;
     expand           : false;
+    width            : 20%;
 }
 
 listview {
-    margin           : 2%;
+    margin           : 2% 0%;
     scrollbar        : false;
 }
 
 element {
     border-radius    : 16px;
     orientation      : vertical;
-    padding          : 2% 0%;
+    padding          : 2% 1%;
 }
 
 element-icon {
-    size             : 6%;
+    size             : 8%;
 }
 
 element-text {
