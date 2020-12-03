@@ -35,7 +35,6 @@ if [ "$TERM" = "linux" ]; then
     sed -n "$_SEDCMD" "$HOME/.Xresources" | while read -r n color; do
         [ "$n" -lt 16 ] && [ "$n" -gt 0 ] && printf "\e]P%X%s" "$n" "$color"
     done
-    clear
 fi
 
 # This command is in my own dotfiles repo
