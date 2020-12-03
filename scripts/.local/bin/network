@@ -123,8 +123,9 @@ for device in $devices; do
         case "${device##*/}" in
             wl*)
                 iwctl station "${device##*/}" get-networks rssi-dbms |
-                sed 's/\x1b\[[0-9;]*m//g' | grep "^  > " | {
-                    read -r _ name _ signal;
+                sed 's/\x1b\[[0-9;]*m//g' |
+                sed -n 's/\s*>\s*\(.*\)\(psk\|open\)\s*\([-0-9]*\)/\1|\3/p' | {
+                    IFS='|' read -r name signal;
                     printf "%s\n%s\n" "$name" "$((130+signal/100))";
                 } ;;
             en*) printf "Ethernet\n100\n" ;;
