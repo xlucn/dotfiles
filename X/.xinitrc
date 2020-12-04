@@ -30,7 +30,7 @@ startgnome() {
 if [ "${1%2x}" != "$1" ]; then
     export XCURSOR_SIZE=32
     echo "Xft.dpi: 144" > /tmp/Xresources.Xft.dpi
-    xrdb -merge /tmp/Xresources.hidpi
+    xrdb -merge /tmp/Xresources.Xft.dpi
 fi
 
 case ${1:-dwm} in
