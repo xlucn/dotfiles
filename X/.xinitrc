@@ -3,7 +3,7 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
-WALLPAPER=$HOME/.local/share/backgrounds/wallpaper.jpg
+WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
 prewm() {
     fcitx -d > /dev/null 2>&1 &
