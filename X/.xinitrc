@@ -6,18 +6,17 @@
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
 prewm() {
-    fcitx -d > /dev/null 2>&1 &
-    picom -b --experimental-backends
+    pgrep -x fcitx || fcitx -d > /dev/null 2>&1
+    pgrep -x picom || picom -b --experimental-backends
     pgrep -x udiskie || udiskie > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
+    pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
+    pgrep -x udev-local || udev-local &
 }
 
-udev-local &
-
 startdwm() {
-    xwallpaper --zoom "$WALLPAPER" --daemon
-    while true; do dwm-status; sleep 1; done &
+    pgrep -x xwallpaper || xwallpaper --zoom "$WALLPAPER" --daemon
+    pgrep -x dwm-status || dwm-status --daemon &
     exec dwm
 }
 
