@@ -1,5 +1,9 @@
 ! -- Xft settings -- !
+#if __has_include("/tmp/Xresources.Xft.dpi")
+# include "/tmp/Xresources.Xft.dpi"
+#else
 Xft.dpi       : 96
+#endif
 Xft.antialias : true
 Xft.rgba      : rgb
 Xft.hinting   : true
