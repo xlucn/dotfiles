@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=dwm (Hidpi)
+Comment=Log in using the dwm (without a session manager)
+Exec=/usr/bin/xinitrc-helper dwm2x
+TryExec=/usr/bin/xinitrc-helper
+Type=Application
