@@ -36,6 +36,10 @@ IMPDSTAT=16     ICON_MPDSTAT=   SMPDSTAT=mpd
 INULL=17
 
 d
+if [ "$1" = "--daemon" ]; then
+    while true; do sh $0; sleep 1; done
+    exit
+fi
 # If you clicked some text after a delimiter \0NN in the status bar,
 # the hexadecimal value of it will be passed as $1
 [ "${#1}" -eq 1 ] && INDEX=$(printf "%02o" $((0x$1)))
