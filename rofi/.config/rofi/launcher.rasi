@@ -2,8 +2,8 @@ configuration {
     sidebar-mode        : false;
     modi                : "drun";
     show-icons          : true;
-    columns             : 5;
-    lines               : 4;
+    columns             : 6;
+    lines               : 5;
     drun-display-format : "{name}";
 }
 
@@ -56,7 +56,7 @@ element {
 }
 
 element-icon {
-    size             : 8%;
+    size             : 6%;
 }
 
 element-text {

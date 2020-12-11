@@ -55,7 +55,15 @@ inputbar {
 }
 
 element {
-    padding         : 2%;
+    padding         : 1%;
+}
+
+element-icon {
+    size            : 4%;
+}
+
+element-text {
+    vertical-align : 0.5;
 }
 
 #element.normal.urgent {
