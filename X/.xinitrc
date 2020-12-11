@@ -29,6 +29,7 @@ startgnome() {
 
 if [ "${1%2x}" != "$1" ]; then
     export XCURSOR_SIZE=32
+    export QT_AUTO_SCREEN_SCALE_FACTOR=0
     echo "Xft.dpi: 144" > /tmp/Xresources.Xft.dpi
     xrdb -merge /tmp/Xresources.Xft.dpi
 fi
