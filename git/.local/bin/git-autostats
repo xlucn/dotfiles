@@ -35,6 +35,7 @@ if [ -f "$CONFIG_FILE" ]; then
     fi
 
     while read -r p; do
+        [ ! -d "$p" ] && continue
         upstream="$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")"
         current="$(git -C "$p" branch --show-current)"
         left="$(git -C "$p" rev-list --count --left-only "$current"..."$upstream")"
