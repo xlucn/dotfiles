@@ -8,7 +8,9 @@ while getopts ct arg; do
     esac
 done
 
-for battery in /sys/class/power_supply/BAT*; do
+batteries=$(find /sys/class/power_supply/ -name "BAT*")
+
+for battery in $batteries; do
     while IFS='=' read -r key value; do
         eval "$key=\"$value\""
     done < "$battery/uevent"
