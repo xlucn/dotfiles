@@ -126,6 +126,7 @@ chatnets = {
   };
   FileList = {
     type = "IRC";
+    nick = "Lewinat0r";
     autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
   };
   P2PNET = {
@@ -135,7 +136,7 @@ chatnets = {
   BeyondHD = {
     type = "IRC";
     # need identify to join channels
-    autosendcmd = "/^msg nickserv identify ${pass_beyondhd_oliverlew}; wait 2000";
+    autosendcmd = "/^msg Millie identify ${pass_beyondhd_key}; wait 2000";
   };
   synIRC = {
     type = "IRC";
