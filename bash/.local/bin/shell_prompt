@@ -64,7 +64,7 @@ __git_autostats() {
 }
 
 __gitprompt() {
-    /bin/env df --output=fstype . | grep -q sshfs && return
+    /usr/bin/env df --output=fstype . | grep -q sshfs && return
     printf "$(
     __git_ps1 " (%s)" |
     sed -e "s/%/%%/g" \
