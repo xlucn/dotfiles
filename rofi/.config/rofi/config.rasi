@@ -1,6 +1,6 @@
 configuration {
     dpi                : 1;
-    font               : "Monospace 8";
+    font               : "Monospace 7";
     show-icons         : true;
     icon-theme         : "Papirus";
     scroll-method      : 0;
@@ -59,7 +59,7 @@ element {
 }
 
 element-icon {
-    size            : 4%;
+    size            : 3%;
 }
 
 element-text {
