@@ -1,5 +1,5 @@
 install:
-	find . -type d | grep -v "\.\/\(\.git\|system\)" | sed -n 's/.\/[a-zA-Z]*\/\(.*\)/\1/p' | sort | uniq | while read -r dir; do mkdir -p "$$dir"; done
+	find . -type d | grep -v "\.\/\(\.git\|system\)" | sed -n 's/\.\/[a-zA-Z]*\/\(.*\)/\1/p' | sort | uniq | while read -r dir; do mkdir -p "$$HOME/$$dir"; done
 	stow -t ~ -v `ls --ignore=.git* --ignore=system --ignore=README.md --ignore=.stowrc --ignore=makefile`
 
 uninstall:
