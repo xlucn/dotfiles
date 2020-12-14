@@ -8,7 +8,7 @@ let $VIM = $XDG_CONFIG_HOME . '/vim'
 set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
 " Important: put this after nocompatible
-set viminfo+=n$VIM/viminfo
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 " automatic installation
 " if empty(glob($VIM . '/autoload/plug.vim'))
 "   silent !curl -fLo $VIM/autoload/plug.vim --create-dirs
