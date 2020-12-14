@@ -122,12 +122,16 @@ for device in $devices; do
             wl*)
                 iwctl station "${device##*/}" get-networks rssi-dbms |
                 sed 's/\x1b\[[0-9;]*m//g' |
-                sed -n 's/\s*>\s*\(.*\)\(psk\|open\)\s*\([-0-9]*\)/\1|\3/p' | {
+                sed -n 's/\s*>\s*\(.*\)\(psk\|wep\|open\)\s*\([-0-9]*\)/\1|\3/p' | {
                     IFS='|' read -r name rssi
-                    rssi=$((rssi / 100))
-                    # a quadratic model
-                    signal=$((rssi > -20 ? 100 : 100 - (rssi + 20) * (rssi + 20) / 50))
-                    printf "%s\n%s\n" "$name" "$signal"
+                    if [ -z "$name" ]; then
+                        printf "%s\n%s\n" "Not connected" "0"
+                    else
+                        rssi=$((rssi / 100))
+                        # a quadratic model
+                        signal=$((rssi > -20 ? 100 : 100 - (rssi + 20) * (rssi + 20) / 50))
+                        printf "%s\n%s\n" "$name" "$signal"
+                    fi
                 } ;;
             en*) printf "Ethernet\n100\n" ;;
             *) printf "%s\n0\n" "--" ;;
