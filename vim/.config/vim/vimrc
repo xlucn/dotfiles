@@ -20,7 +20,7 @@ call plug#begin($VIM . '/bundle')
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
-" Plug 'maximbaz/lightline-ale'
+Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
@@ -48,7 +48,6 @@ Plug 'junegunn/fzf.vim'
 " Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Plug 'prabirshrestha/vim-lsp'
 Plug 'ervandew/supertab'
-" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
 " }}}
 " Vim Settings
@@ -310,8 +309,8 @@ let g:lightline = {
     \   'right': [ [ 'linter_checking',
     \               'linter_errors',
     \               'linter_warnings',
-    \               'linter_ok',
-    \               'coc_status'],
+    \               'linter_infos',
+    \               'linter_ok' ],
     \              [ 'percent', 'lineinfo', 'syntastic' ],
     \              [ 'fileformat', 'fileencoding', 'filetype' ] ],
     \ },
@@ -325,20 +324,21 @@ let g:lightline = {
     \ 'component_expand': {
     \   'buffers': 'lightline#bufferline#buffers',
     \   'linter_checking': 'lightline#ale#checking',
+    \   'linter_infos': 'lightline#ale#infos',
     \   'linter_warnings': 'lightline#ale#warnings',
     \   'linter_errors': 'lightline#ale#errors',
     \   'linter_ok': 'lightline#ale#ok',
     \ },
     \ 'component_type': {
     \   'buffers': 'tabsel',
-    \   'linter_checking': 'left',
+    \   'linter_checking': 'right',
+    \   'linter_infos': 'right',
     \   'linter_warnings': 'warning',
     \   'linter_errors': 'error',
-    \   'linter_ok': 'left',
+    \   'linter_ok': 'right',
     \ },
     \ 'component_function': {
     \   'gitbranch': 'fugitive#head',
-    \   'coc_status': 'coc#status'
     \ },
     \ }
 " }}}
@@ -473,26 +473,22 @@ else
 endif
 " }}}
 " vim-lsp {{{
-let g:which_key_map.l = { "name": "language server" }
-nmap <leader>lj <Plug>(coc-diagnostic-next)
-nmap <leader>lk <Plug>(coc-diagnostic-prev)
-vmap <leader>lp <Plug>(coc-format-selected)
-nmap <leader>lp <Plug>(coc-format-selected)
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-                \ 'name': 'pyls',
-                \ 'cmd': {server_info->['pyls']},
-                \ 'whitelist': ['python'],
-                \ })
-endif
-if executable('texlab')
-    au User lsp_setup call lsp#register_server({
-                \ 'name': 'texlab',
-                \ 'cmd': {server_info->['texlab']},
-                \ 'whitelist': ['bib','tex'],
-                \ })
-endif
+" let g:which_key_map.l = { "name": "language server" }
+" if executable('pyls')
+"     " pip install python-language-server
+"     au User lsp_setup call lsp#register_server({
+"                 \ 'name': 'pyls',
+"                 \ 'cmd': {server_info->['pyls']},
+"                 \ 'whitelist': ['python'],
+"                 \ })
+" endif
+" if executable('texlab')
+"     au User lsp_setup call lsp#register_server({
+"                 \ 'name': 'texlab',
+"                 \ 'cmd': {server_info->['texlab']},
+"                 \ 'whitelist': ['bib','tex'],
+"                 \ })
+" endif
 " function! s:on_lsp_buffer_enabled() abort
 "     setlocal omnifunc=lsp#complete
 "     setlocal signcolumn=yes
@@ -502,8 +498,13 @@ endif
 "     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
 "     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " augroup END
+" }}}
+" asyncomplete {{{
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+" imap <c-space> <Plug>(asyncomplete_force_refresh)
 " let g:asyncomplete_auto_popup = 1
-
 " let g:asyncomplete_auto_completeopt = 0
-
+" }}}
 " vim:foldmethod=marker:foldlevel=0
