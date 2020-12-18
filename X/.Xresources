@@ -70,7 +70,7 @@ xmenu.borderWidth: 2
 xmenu.selbackground: #B0BEC5
 xmenu.selforeground: #222B39
 
-*cursorColor: #ECEFF1
+*cursorColor: #B0BEC5
 *foreground: #ECEFF1
 *background: #212121
 *color0: #546E7A
@@ -80,7 +80,7 @@ xmenu.selforeground: #222B39
 *color4: #40C4FF
 *color5: #FF4081
 *color6: #64FCDA
-*color7: #FFFFFF
+*color7: #ECEFF1
 *color8: #B0BEC5
 *color9: #FF8A80
 *color10: #B9F6CA
