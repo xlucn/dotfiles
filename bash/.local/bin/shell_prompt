@@ -42,6 +42,7 @@ __cwd_trim() {
 
 __curdir() {
     printf "$boldyellow%s$reset" "$(__cwd_trim "$(basename "$(pwd)")")"
+    printf "\001\033]0;[%s] %s\007\002" "$TERM" "$PWD"
 }
 
 __jobcounts() {
