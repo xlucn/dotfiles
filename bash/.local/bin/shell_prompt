@@ -21,19 +21,18 @@ if ! command -v __git_ps1 > /dev/null 2>&1; then
 fi
 
 __ssh_indicator() {
-    if [ -n "$SSH_CLIENT" ]; then
-        printf "${cyan}[SSH] $magenta%s@%s$reset " "$(whoami)" "$(hostname)"
-    fi
+    [ -n "$SSH_CLIENT" ] &&
+        printf "$cyan [SSH:$magenta%s@%s$cyan]$reset" "$(whoami)" "$(hostname)"
 }
 
 __cwd_trim() {
     limit=20
     cwd="$1"
-    if [ ${#cwd} -gt $limit ]; then
-        printf "%s …" "$(echo "$cwd" | cut -c -"$((limit - 2))")"
-    else
-        printf "%s" "$cwd"
-    fi
+
+    # print current directory
+    printf "%s" "$(echo "$cwd" | cut -c -"$limit")"
+    [ ${#cwd} -gt $limit ] && printf "…"
+
     # lf indicator -- if you are in lf file manager
     [ -n "$LF_LEVEL" ] && printf " (LF:%s)" "$LF_LEVEL"
     # ranger indicator -- if you are in ranger file manager
@@ -41,7 +40,7 @@ __cwd_trim() {
 }
 
 __curdir() {
-    printf "$boldyellow%s$reset" "$(__cwd_trim "$(basename "$(pwd)")")"
+    printf " $boldyellow%s$reset" "$(__cwd_trim "$(basename "$PWD")")"
     printf "\001\033]0;[%s] %s\007\002" "$TERM" "$PWD"
 }
 
