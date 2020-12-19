@@ -28,7 +28,7 @@ key scroll-up-half = 'B',  Ctrl-U
 key select-playing = 263
 
 ## Help screen
-key screen-help = '1',  F1
+key screen-help = '1',  F1,  63
 
 ## Play/Enter directory
 key play = Ctrl-M,  'l'
@@ -75,11 +75,17 @@ key screen-next = Ctrl-I,  46
 ## Previous screen
 key screen-prev = 353,  44
 
+## Backward find
+key rfind = 0
+
 ## Backward find previous
 key rfind-next = 'N'
 
 ## Jump to
 key jump = 'J'
+
+## View the selected and the currently playing song
+key view = 'i',  '6',  F6
 
 ## Lyrics screen
 key screen-lyrics = '7',  F7

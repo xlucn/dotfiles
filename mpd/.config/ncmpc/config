@@ -10,8 +10,11 @@ visible-bell        = no
 seek-time           = 10
 text-editor         = vim
 second-column       = yes
-screen-list         = playlist browse library search song
+screen-list         = playlist browse library search song lyrics outputs
+crossfade-time      = 3
+search-mode         = filename
 # display
+scroll              = yes
 welcome-screen-list = no
 wide-cursor         = yes
 hardware-cursor     = no
