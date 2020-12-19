@@ -79,7 +79,6 @@ set completeopt=menuone,noinsert,longest " comletion
 " clear sign column highlight
 highlight clear SignColumn
 set guioptions=dir " gui options: dark, icon, scrollbar
-set guifont=Hack\ 12 " gui font
 set number " show line number
 set signcolumn=yes " always show sign column
 set showcmd " shows what you are typing as a command
