@@ -104,11 +104,18 @@ if !has('nvim')
         set ttymouse=sgr
     endif
 endif
-" cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
 if $TERM != "linux"
+    " cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
     let &t_SI = "\e[6 q"
     let &t_SR = "\e[4 q"
     let &t_EI = "\e[2 q"
+else
+    " cursor shape for linux console
+    let &t_ve = "\e[?25h"
+    let &t_vi = "\e[?25l"
+    let &t_SI = "\e[?0c"
+    let &t_SR = "\e[?4c"
+    let &t_EI = "\e[?8c"
 endif
 if has('gui_running')
     colorscheme material-theme
