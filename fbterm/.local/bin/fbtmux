@@ -22,12 +22,16 @@ fi
 command -v tmux > /dev/null 2>&1 || { echo please install tmux; exit; }
 
 # Configure wallpaper
-bg_dir="$HOME/.local/share/backgrounds"
-bg_wallpaper=$(find "$bg_dir" -name 'wallpaper*' | head -1)
+bg_dir="$HOME/Pictures"
+bg_wallpaper=$(find "$bg_dir" -name 'wallpaper.*' | head -1)
 bg_framebuffer=$bg_dir/framebuffer.${bg_wallpaper##*.}
 
 # Set wallpaper with fbv
-if [ -n "$bg_wallpaper" ] && command -v fbv > /dev/null 2>&1; then
+if ! command -v fbv > /dev/null 2>&1; then
+    printf '"fbv" not installed, can not set wallpaper, continue? [Y/n] '
+    read -r ans
+    [ "$ans" = n ] && exit
+elif [ -n "$bg_wallpaper" ]; then
     # regenerate darkened image for framebuffer with convert
     if command -v convert > /dev/null 2>&1; then
         # Compare modified time, only update when needed
