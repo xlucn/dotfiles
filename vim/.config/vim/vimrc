@@ -37,7 +37,6 @@ Plug 'lervag/vimtex'
 Plug 'VoldikSS/vim-mma'
 Plug 'jpalardy/vim-slime'
 Plug 'dylanaraps/wal.vim'
-Plug 'jdkanani/vim-material-theme'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 " Plug 'MikeCoder/markdown-preview.vim'
@@ -78,8 +77,9 @@ set completeopt=menuone,noinsert,longest " comletion
 " UI basic {{{
 " clear sign column highlight
 highlight clear SignColumn
-set guioptions=dir " gui options: dark, icon, scrollbar
+set guioptions=di " gui options: dark, icon
 set number " show line number
+set relativenumber " show relative number
 set signcolumn=yes " always show sign column
 set showcmd " shows what you are typing as a command
 set wildmenu " turn on wild menu on :e <Tab>
@@ -117,10 +117,9 @@ else
     let &t_SR = "\e[?4c"
     let &t_EI = "\e[?8c"
 endif
+colorscheme wal
 if has('gui_running')
-    colorscheme material-theme
-else
-    colorscheme wal
+    set background=light
 endif
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
@@ -156,8 +155,8 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 " }}}
 " Autocmd {{{
-autocmd VimEnter * silent exec "! echo -ne '\e[2 q'"
-autocmd VimLeave * silent exec "! echo -ne '\e[6 q'"
+autocmd VimEnter * silent exec "! echo -ne ".&t_EI
+autocmd VimLeave * silent exec "! echo -ne ".&t_SI
 autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources silent call system("xrdb -load ".expand('%:t'))
@@ -195,10 +194,10 @@ endfunction
 function Goyo()
     if exists("g:goyo_status")
         unlet g:goyo_status
-        set number ruler signcolumn=auto showtabline=2 laststatus=2
+        set nu rnu ru scl=auto stal=2 ls=2
     else
         let g:goyo_status = 1
-        set nonumber noruler signcolumn=no showtabline=0 laststatus=0
+        set nonu nornu noru scl=no stal=0 ls=0
     endif
 endfunction
 " }}}
