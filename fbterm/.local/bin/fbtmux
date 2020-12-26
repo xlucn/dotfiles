@@ -3,71 +3,66 @@
 #
 # Requirement:
 #   tmux,
-#   fbterm/yaft: optional, for unicode and wallpaper support,
-#   fbv:         optional, for setting wallpaper,
-#   convert:     optional, for darkening and blurring wallpaper 
+#   fbterm:  optional, for unicode and wallpaper support,
+#   fbv:     optional, for setting wallpaper,
+#   convert: optional, for darkening and blurring wallpaper 
 #
 # Note:
-#   wallpaper location: $HOME/.local/share/backgrounds/wallpaper.*
+#   wallpaper location: $HOME/Pictures/wallpaper.*
 
-# Only start in tty
-tty | grep -q tty || { echo "not in tty"; exit; }
-trap 'tput cnorm' INT TERM QUIT EXIT # show cursor on quit
-
-# Check commands, respect users' settings
-if [ -z "$USE_YAFT" ] && [ -z "$USE_FBTERM" ]; then
-    command -v fbterm > /dev/null 2>&1 && USE_FBTERM=1
-    command -v yaft > /dev/null 2>&1 && USE_YAFT=1
-fi
 command -v tmux > /dev/null 2>&1 || { echo please install tmux; exit; }
 
-# Configure wallpaper
-bg_dir="$HOME/Pictures"
-bg_wallpaper=$(find "$bg_dir" -name 'wallpaper.*' | head -1)
-bg_framebuffer=$bg_dir/framebuffer.${bg_wallpaper##*.}
+trap 'tput cnorm; clear' INT TERM QUIT EXIT # show cursor on quit
 
-# Set wallpaper with fbv
-if ! command -v fbv > /dev/null 2>&1; then
-    printf '"fbv" not installed, can not set wallpaper, continue? [Y/n] '
-    read -r ans
-    [ "$ans" = n ] && exit
-elif [ -n "$bg_wallpaper" ]; then
-    # regenerate darkened image for framebuffer with convert
-    if command -v convert > /dev/null 2>&1; then
-        # Compare modified time, only update when needed
-        # use stat instead of test -nt/-ot command which dereferences links
-        script_time=$(stat -Lc %Y "$0")
-        bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
-        [ -e "$bg_framebuffer" ] && bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
-        if [ ! -e "$bg_framebuffer" ] \
-        || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
-        || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
-            # convert -modulate brightness, saturation
-            convert "$bg_wallpaper" -modulate 30,20 -blur 0x4 "$bg_framebuffer"
+TERMINAL=${TERMINAL:-fbterm --}
+[ "$TERMINAL" = NONE ] && unset TERMINAL
+# Start directly in shell if not in tty
+tty | grep -q tty || unset TERMINAL
+# Check commands, respect users' settings
+if [ -n "$TERMINAL" ]; then
+    command -v "${TERMINAL%% *}" > /dev/null 2>&1 || unset TERMINAL
+fi
+
+if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
+    # Configure wallpaper
+    bg_dir="$HOME/Pictures"
+    bg_wallpaper=$(find "$bg_dir" -name 'wallpaper.*' | head -1)
+    bg_framebuffer=$bg_dir/framebuffer.${bg_wallpaper##*.}
+
+    # Set wallpaper with fbv
+    if command -v fbv > /dev/null 2>&1 && [ -n "$bg_wallpaper" ]; then
+        # regenerate darkened image for framebuffer with convert
+        if command -v convert > /dev/null 2>&1; then
+            # Compare modified time, only update when needed
+            # use stat instead of test -nt/-ot command which dereferences links
+            script_time=$(stat -Lc %Y "$0")
+            bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
+            [ -e "$bg_framebuffer" ] && bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
+            if [ ! -e "$bg_framebuffer" ] \
+            || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
+            || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
+                # convert -modulate brightness, saturation
+                convert "$bg_wallpaper" -modulate 30,20 -blur 0x4 "$bg_framebuffer"
+            fi
+        else
+            bg_framebuffer=$bg_wallpaper
         fi
-    else
-        bg_framebuffer=$bg_wallpaper
+
+        # start fbterm/yaft with background using fbv
+        tput civis # hide cursor
+        fbv -ciuker "$bg_framebuffer" << EOF
+q
+EOF
+        if [ "${TERMINAL%% *}" = fbterm ]; then
+            export FBTERM_BACKGROUND_IMAGE=1
+        elif [ "${TERMINAL%% *}" = yaft ]; then
+            export YAFT="wall"
+        fi
     fi
 
-    # start fbterm/yaft with background using fbv
-    tput civis # hide cursor
-    fbv -ciuker "$bg_framebuffer" << EOF
-    q
-EOF
-    if [ -n "$USE_FBTERM" ]; then
-        export FBTERM_BACKGROUND_IMAGE=1
-    elif [ -n "$USE_YAFT" ]; then
-        export YAFT="wall"
-    fi
 fi
 
 # Everything set, start fbterm/yaft in $HOME directory
 cd "$HOME" || exit
-if [ -n "$USE_FBTERM" ]; then
-    cmd="fbterm --"
-elif [ -n "$USE_YAFT" ]; then
-    cmd="yaft"
-fi
 # This config is from my own dotfiles
-$cmd tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
-clear
+$TERMINAL tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
