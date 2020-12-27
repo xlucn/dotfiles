@@ -1,5 +1,5 @@
 " vim: ft=vim
-" file: .exrc
+" file: exrc
 "
 " Some rules for vi init file:
 " - Starting a comment line with \", apparently :)
@@ -43,8 +43,7 @@ map ,z :q!
 map ,e :e
 map ,w :w
 map ,x :wq
-" Reload .exrc file in $HOME
-map ,r :source ~/.exrc
+map ,r :source ~/.config/ex/exrc
 "
 " Other ! mappings, does not work well for last one or two characters
 " Default commented, delete and navigate in normal mode instead
