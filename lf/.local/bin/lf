@@ -1,0 +1,17 @@
+#!/usr/bin/sh
+export FIFO_UEBERZUG="/tmp/lf-ueberzug-${PPID}"
+
+start_ueberzug() {
+    mkfifo "$FIFO_UEBERZUG" || exit 1
+    ueberzug layer --parser simple --silent < "$FIFO_UEBERZUG" &
+    exec 3>"$FIFO_UEBERZUG"
+}
+
+stop_ueberzug() {
+    exec 3>&-
+    rm "$FIFO_UEBERZUG" > /dev/null 2>&1
+}
+
+trap stop_ueberzug EXIT QUIT INT TERM
+start_ueberzug
+/usr/bin/lf "$@"

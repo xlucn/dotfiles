@@ -6,6 +6,7 @@ set info size
 set ifs "\n"
 set filesep "\n"
 set previewer pv
+set cleaner preview-image
 
 # Key bindings
 map <c-y> up

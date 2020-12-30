@@ -43,10 +43,8 @@ case "$(file -Lb --mime-type -- "$1")" in
         iconv -f "${enc:-UTF-8}" -t UTF-8 && exit ;;
 
     # Image
-    # image/*)
-        # Preview as text conversion
-        # img2txt --gamma=0.6 -- "$1" && exit 1
-        # exiftool "$1" && exit ;;
+    image/*)
+        preview-image draw "$1" "$2" "$3" "$4" "$5" && exit 1 ;;
 
     # Video and audio
     video/*|audio/*|application/octet-stream)
