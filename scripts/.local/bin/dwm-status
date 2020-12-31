@@ -169,11 +169,15 @@ fi
 if [ -z "$STR_BAT" ] || [ $((TIME - TIME_BAT)) -gt $NBAT ]; then
     BAT_NORMAL="󰂎 󰁺 󰁻 󰁼 󰁽 󰁾 󰁿 󰂀 󰂁 󰂂 󰁹"
     BAT_CHARGE="󰢟 󰢜 󰂆 󰂇 󰂈 󰢝 󰂉 󰢞 󰂊 󰂋 󰂅"
-    # BAT_UNKNOWN="󰂑"
+    BAT_UNKNOWN="󱉞"
     BAT_LEVEL=$(battery)
-    [ "$(ac)" = 1 ] && BAT_SYMS="$BAT_CHARGE" || BAT_SYMS="$BAT_NORMAL"
-    BAT_INDEX=$(((BAT_LEVEL + 5) / 10 + 1))
-    STR_BAT=$(echo "$BAT_SYMS" | cut -d ' ' -f "$BAT_INDEX")
+    if [ "$BAT_LEVEL" = "-1" ]; then
+        STR_BAT=$BAT_UNKNOWN
+    else
+        [ "$(battery -c)" = 1 ] && BAT_SYMS="$BAT_CHARGE" || BAT_SYMS="$BAT_NORMAL"
+        BAT_INDEX=$(((BAT_LEVEL + 5) / 10 + 1))
+        STR_BAT=$(echo "$BAT_SYMS" | cut -d ' ' -f "$BAT_INDEX")
+    fi
     echo "$TIME $STR_BAT" > $TMPDIR/$SBAT
     echo "Battery: $BAT_LEVEL" > $TMPDIR/$SBAT-tooltip
 fi
