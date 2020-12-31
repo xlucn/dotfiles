@@ -1,6 +1,4 @@
 #!/usr/bin/sh
-export FIFO_UEBERZUG="/tmp/lf-ueberzug-${PPID}"
-
 start_ueberzug() {
     mkfifo "$FIFO_UEBERZUG" || exit 1
     ueberzug layer --parser simple --silent < "$FIFO_UEBERZUG" &
@@ -12,6 +10,9 @@ stop_ueberzug() {
     rm "$FIFO_UEBERZUG" > /dev/null 2>&1
 }
 
-trap stop_ueberzug EXIT QUIT INT TERM
-start_ueberzug
+if [ -n "$DISPLAY" ]; then
+    export FIFO_UEBERZUG="/tmp/lf-ueberzug-${PPID}"
+    trap stop_ueberzug EXIT QUIT INT TERM
+    start_ueberzug
+fi
 /usr/bin/lf "$@"
