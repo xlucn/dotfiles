@@ -2,21 +2,23 @@
 
 usage()
 {
-    echo "Usage: $(basename "$0") [ -u ] [ -s path ]"
+    echo "Usage: $(basename "$0") [ -u ] [ -s ]"
     echo "    -u: update the counts information of all repos"
     echo "    -s: search and update repos in the path"
 }
 
 search_repos()
 {
-    find "$(realpath "$1")" -type d -name .git \
+    printf "Enter the git repo user name of yours: "
+    read -r user
+    find "$HOME" -type d -name .git \
         ! -path "*/.cache/*" \
         ! -path "*/.vim/*" \
-        -exec dirname {} ';' | \
-    fzf -m --reverse --bind "ctrl-a:select-all" \
-        --header "Select the repos you want to track with git-autofetch
-Tab: toggle select  Ctrl+A: select all
-Enter: save to $CONFIG_FILE" > "$CONFIG_FILE"
+        ! -path "*/.config/vim/*" \
+        -exec dirname {} ';' |
+    while read -r repo; do
+        git -C "$repo" remote get-url origin | grep -q "$user" && echo "$repo"
+    done > "$CONFIG_FILE"
 }
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
