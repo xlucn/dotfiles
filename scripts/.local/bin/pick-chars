@@ -1,12 +1,46 @@
-#!/bin/bash
-[ -f "$1" ] || fontfile=$(fc-match "$1" --format="%{file}")
-# find this python script `psnames` in my dotfiles repo github.com/OliverLew/dotfiles
-psnames "${fontfile-$1}" |
-grep "[0-9a-f]*\s.*" |
-while read -r c n; do
-    printf "<span size=\"x-large\"> \U$c   </span>%s $n\n" "$c"
-done |
-sed -e "s/\&/\&amp;/g" -e "s/<\([^s\/]\)/\&lt;\1/g" |
-rofi -dmenu -i -p "Choose a glyph" -multi-select -markup-rows -columns 2 |
-awk '{ print $3 }' |
-xclip -selection clipboard
+#!/usr/bin/env python
+import os
+import sys
+from subprocess import PIPE, run
+
+from fontTools.ttLib import TTFont
+from fontTools.unicode import Unicode
+
+if len(sys.argv) != 2:
+    exit(1)
+
+if os.path.exists(sys.argv[1]):
+    font_file = sys.argv[1]
+else:
+    cmd = "fc-match '{font}' --format='%{{file}}'".format(font=sys.argv[1])
+    font_file = run(cmd, shell=True, stdout=PIPE).stdout
+
+lines = []
+with TTFont(font_file) as ttf:
+    cmap = ttf.getBestCmap()
+    for y in cmap:
+        if y < 32:
+            continue
+
+        if cmap[y].startswith("uni"):
+            desc = Unicode[y].lower()
+        else:
+            desc = cmap[y]
+
+        c = chr(y).replace('&', '&amp;').replace('<', '&lt;')
+        if len(c) == 0:
+            continue
+
+        lines.append(
+            "<span size=\"x-large\"> {char}  </span> {n:05x} {desc}".
+            format(char=c, n=y, desc=desc))
+
+cmd = ['rofi', '-dmenu', '-i',
+       '-p', 'Choose a glyph',
+       '-multi-select',
+       '-markup-rows', '-columns', '2']
+choice = run(cmd, stdout=PIPE, input=bytes('\n'.join(lines), encoding='utf-8'))
+
+code = choice.stdout.decode().split('</span>')[1].split()[0]
+glyph = chr(int(code, base=16))
+run(['xclip', '-selection', 'clipboard'], input=bytes(glyph, encoding='utf-8'))
