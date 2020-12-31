@@ -50,14 +50,17 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
-st.font: Monospace:size=12:antialias=true:autohint=true
-st.alpha: 0.9
+st.alpha: 1.0
 st.borderpx: 0
 
-tabbed.font: Noto Sans CJK SC:pixelsize=12
+tabbed.font: Noto Sans CJK SC:size=12
 tabbed.tabwidth: 200
 
-Sxiv.font: xft:Monospace:pixelsize=14, xft:Noto Sans CJK SC:pixelsize=14
+dmenu.font: xft:Monospace:size=12
+dmenu.minheight: 48
+dmenu.centered: 1
+dmenu.width: 0.5
+dmenu.lines: 15
 
 Xautolock.time: 10
 Xautolock.locker: slock
@@ -69,6 +72,8 @@ xmenu.border: #B0BEC5
 xmenu.borderWidth: 2
 xmenu.selbackground: #B0BEC5
 xmenu.selforeground: #222B39
+
+*.font: Monospace:size=12
 
 *cursorColor: #B0BEC5
 *foreground: #ECEFF1
