@@ -57,6 +57,12 @@ key select = 't'
 ## Select all listed items
 key select_all = 'T'
 
+## Clear queue
+key clear = 'C'
+
+## Toggle consume mode
+key consume = 'c'
+
 ## Start a music database update
 key db-update = 'U'
 
