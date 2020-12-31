@@ -54,7 +54,7 @@ function icon_button_widget:set_icon(icon, args)
     if self._private.use_font then
         self._private.container:get_children_by_id("text_role")[1]:set_markup(markup(
             icon[1] or "",
-            config.icon_font .. " " .. (args.font_size or "20"),
+            config.icon_font .. " " .. self._private.font_size,
             icon.color or beautiful.fg_normal
         ))
     else
@@ -67,12 +67,15 @@ end
 local function icon_button_build(icon, args)
     args = args or {}
     local use_font = args.use_font or not config.use_image_icon
+    local icon_size = args.topbar and beautiful.topbar_size or beautiful.bar_size
+    local font_size = args.topbar and "14" or "20"
 
     local clickable_widget = clickable()
     local button = wibox.widget.base.make_widget(clickable_widget, nil, {enable_properties = true})
     gears.table.crush(button, icon_button_widget, true)
     button._private.container = clickable_widget
     button._private.use_font = use_font
+    button._private.font_size = font_size
 
     clickable_widget:setup {
         use_font and {
@@ -85,8 +88,8 @@ local function icon_button_build(icon, args)
             widget = wibox.widget.imagebox,
         },
         id = "margin_role",
-        forced_width = beautiful.bar_size,
-        forced_height = beautiful.bar_size,
+        forced_width = icon_size,
+        forced_height = icon_size,
         widget = wibox.container.margin,
     }
 
@@ -143,7 +146,7 @@ local function alsa()
     local color_unmuted = beautiful.fg_normal
     local color_muted = beautiful.grey
     local text = wibox.widget.textbox()
-    local icon = icon_button()
+    local icon = icon_button(nil, { topbar = true })
     local slider =  wibox.widget.slider()
     local stat_icon
 
@@ -227,41 +230,32 @@ local function alsa()
         awful.button({}, 5, volume_down)        -- scroll down
     }
     awful.keyboard.append_global_keybindings({
-        awful.key({}, "XF86AudioMute", volume_toggle,
-                  {description = "toggle mute", group = "Media"}),
-        awful.key({}, "XF86AudioRaiseVolume", volume_up,
-                  {description = "volume up", group = "Media"}),
-        awful.key({}, "XF86AudioLowerVolume", volume_down,
-                  {description = "volume down", group = "Media"}),
-        awful.key({ modkey }, "\\", volume_toggle,
-                  {description = "toggle mute", group = "Media"}),
-        awful.key({ modkey }, "]", volume_up,
-                  {description = "volume up", group = "Media"}),
-        awful.key({ modkey }, "[", volume_down,
-                  {description = "volume down", group = "Media"}),
+        awful.key({}, "XF86AudioMute",        volume_toggle, {description = "toggle mute", group = "Media"}),
+        awful.key({}, "XF86AudioRaiseVolume", volume_up,     {description = "volume up",   group = "Media"}),
+        awful.key({}, "XF86AudioLowerVolume", volume_down,   {description = "volume down", group = "Media"}),
+        awful.key({ modkey }, "\\", volume_toggle, {description = "toggle mute", group = "Media"}),
+        awful.key({ modkey }, "]",  volume_up,     {description = "volume up",   group = "Media"}),
+        awful.key({ modkey }, "[",  volume_down,   {description = "volume down", group = "Media"}),
     })
     return alsa_widget
 end
 -- }}}
 -- brightness {{{
--- Note: using percentage format in `light` command will cause problems.
+-- Note: using percentage format in `brightnessctl` command will cause problems.
 -- That is, when the accuracy of the controller is not exactly 1%, you will not
--- be setting the value to exact x% by simply `light -S x`. The loss is due to
+-- be setting the value to exact x% by simply `brightnessctl s x`. The loss is due to
 -- the cut off when switching between percentage and raw format.
 local function light()
     local light_text = wibox.widget.textbox()
     local light_slider = wibox.widget.slider()
-    local light_icon = icon_button(beautiful.icon_brightness)
+    local light_icon = icon_button(beautiful.icon_brightness, { topbar = true })
 
     -- modify the slider's maximum value to the estimated maximum raw value
-    awful.spawn.easy_async_with_shell("light -G; light -Gr; light -Pr",
+    awful.spawn.easy_async_with_shell("brightnessctl -m i | awk -F, '{ print $4, $3, $5 }'",
         function(stdout)
-            local perc, raw, min = string.match(stdout, "(%d*%.?%d+)\n(%d+)\n(%d+)")
-            -- calculate the maximum raw level (0.5 is for rounding the result)
-            if tonumber(raw) > 0 then
-                light_slider.maximum = math.floor(raw * 100 / perc + 0.5)
-            end
-            light_slider.minimum = tonumber(min)
+            local perc, raw, max = string.match(stdout, "(%d+)%% (%d+) (%d+)")
+            light_slider.maximum = tonumber(max)
+            light_slider.minimum = 1
             light_slider.value = tonumber(raw)
             light_text:set_text(string.format("%3.0f%%", perc))
         end
@@ -276,7 +270,7 @@ local function light()
     local function brightness_up() brightness_change(10) end
 
     local function brightness_set()
-        awful.spawn(string.format("light -Sr %f", light_slider.value), false)
+        awful.spawn(string.format("brightnessctl -q s %f", light_slider.value), false)
         light_text:set_text(string.format("%3.0f%%", 100 * light_slider.value / light_slider.maximum))
     end
 
@@ -285,7 +279,7 @@ local function light()
         autostart = true,
         call_now  = true,
         callback  = function()
-            awful.spawn.easy_async_with_shell("light -Gr",
+            awful.spawn.easy_async_with_shell("brightnessctl g",
                 function(stdout)
                     light_slider.value = tonumber(stdout)
                 end
@@ -329,7 +323,7 @@ end
 -- }}}
 -- battery {{{
 local function battery()
-    local bat_icon = icon_button()
+    local bat_icon = icon_button(nil, { topbar = true })
     local bat_text = wibox.widget.textbox()
     local bat_bar = wibox.widget.progressbar()
     gears.timer({
@@ -367,7 +361,7 @@ end
 -- }}}
 -- cpu {{{
 local function cpu()
-    local cpu_icon = icon_button()
+    local cpu_icon = icon_button(nil, { topbar = true })
     local cpu_text = wibox.widget.textbox()
     local cpu_bar = wibox.widget.progressbar()
 
@@ -403,7 +397,7 @@ end
 -- }}}
 -- memory {{{
 local function memory()
-    local mem_icon = icon_button()
+    local mem_icon = icon_button(nil, { topbar = true })
     local mem_text = wibox.widget.textbox()
     local mem_bar = wibox.widget.progressbar()
     local mem_upd = gears.timer {
@@ -441,7 +435,7 @@ local function imap()
     local imap_widget = wibox.widget{
         layout = wibox.layout.fixed.horizontal
     }
-    imap_widget.indicator = icon_button(beautiful.icon_email_read)
+    imap_widget.indicator = icon_button(beautiful.icon_email_read, { topbar = true })
 
     local function imap_each(email)
         local imap_icon = icon_button()
@@ -502,7 +496,7 @@ end
 -- }}}
 -- network {{{
 local function network()
-    local net_icon = icon_button()
+    local net_icon = icon_button(nil, { topbar = true })
     local net_speed = wibox.widget.textbox()
     -- format network speed
     local function format_netspeed(raw_speed)
@@ -869,7 +863,7 @@ end
 --}}}
 -- layoutbox {{{
 local function layoutbox(s)
-    local box = icon_button()
+    local box = icon_button(nil, { topbar = true })
     function box:update()
         local layout_name = awful.layout.getname(awful.layout.get(s))
         self:set_icon(beautiful["layout_" .. layout_name])
@@ -893,15 +887,6 @@ local function launcher()
     local button = icon_button(beautiful.menuicon)
     button:buttons { awful.button({ }, 1, function()
         awful.spawn("rofi -show drun -theme launcher")
-    end) }
-    return button
-end
--- }}}
--- new term button {{{
-local function newterm_button()
-    local button = icon_button(beautiful.newterm)
-    button:buttons { awful.button({}, 1, function()
-        awful.spawn(config.terminal)
     end) }
     return button
 end
@@ -988,8 +973,8 @@ local function topbar(s)
         x = s.geometry.x + beautiful.bar_size,
         y = s.geometry.y,
         width = s.geometry.width - beautiful.bar_size,
-        height = beautiful.bar_size,
-        bg = beautiful.bg_normal .. "80",
+        height = beautiful.topbar_size,
+        bg = beautiful.bg_normal, -- .. "80",
         visible = true,
         ontop = true,
         type = "dock",
@@ -999,9 +984,13 @@ local function topbar(s)
         {
             layout = wibox.layout.fixed.horizontal,
             -- 6 is the number of widgets on the right
-            forced_width = bar.width - 6 * beautiful.bar_size,
+            forced_width = bar.width - 6 * beautiful.topbar_size,
             s.mytasklist,
-            newterm_button(),
+            wibox.widget{
+                icon = beautiful.newterm,
+                buttons = { awful.button({}, 1, function() awful.spawn(config.terminal) end) },
+                widget = icon_button
+            },
         },
         nil,
         {
@@ -1014,15 +1003,10 @@ local function topbar(s)
             layout = wibox.layout.fixed.horizontal,
         },
     }
-    bar:struts({ top = beautiful.bar_size })
+    bar:struts({ top = beautiful.topbar_size })
     function bar:toggle()
-        if self.visible then
-            self.flag_hidden = true
-            self.visible = false
-        else
-            self.flag_hidden = false
-            self.visible = true
-        end
+        self.flag_hidden = self.visible
+        self.visible = not self.visible
     end
     return bar
 end
@@ -1035,7 +1019,7 @@ local function leftbar(s)
         y = s.geometry.y,
         width = beautiful.bar_size,
         height = s.geometry.height,
-        bg = beautiful.bg_normal .. "80",
+        bg = beautiful.bg_normal, -- .. "80",
         visible = true,
         ontop = true,
         type = "dock",
@@ -1075,7 +1059,7 @@ local function leftpanel(s)
         y = s.geometry.y,
         width = beautiful.panel_size,
         height = s.geometry.height,
-        bg = beautiful.bg_normal .. "80",
+        bg = beautiful.bg_normal, -- .. "80",
         visible = false,
         ontop = true,
         type = "dock",

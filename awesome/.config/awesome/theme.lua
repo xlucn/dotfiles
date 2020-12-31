@@ -43,6 +43,7 @@ end
 -- Sizes {{{
 theme.preferred_icon_size   = 48  -- don't apply dpi here (for now)
 theme.bar_size              = dpi(config.basic_size)
+theme.topbar_size           = dpi(config.basic_size) * 2 / 3
 theme.panel_size            = theme.bar_size * 8
 theme.systray_icon_spacing  = dpi(8)
 theme.systray_icon_size     = dpi(24)
@@ -77,8 +78,7 @@ theme.tasklist_fg_focus     = theme.fg_focus
 theme.tasklist_bg_focus     = theme.blue
 theme.tasklist_bg_minimize  = theme.bg_minimize
 theme.tasklist_spacing      = dpi(0)
-theme.tasklist_icon_vmargin = dpi(16)
-theme.tasklist_icon_margin  = dpi(4)
+theme.tasklist_icon_margin  = dpi(2)
 -- }}}
 -- Slider and progressbar {{{
 theme.slider_bar_border_width      = 0
@@ -298,16 +298,17 @@ theme.tag_icons = {
 -- }}}
 -- Titlebar {{{
 -- theme.titlebar_bg     = theme.bg .. "C0"
-theme.titlebar_bg     = theme.white
-theme.titlebar_fg     = theme.black
-theme.titlebar_height = dpi(28)
-theme.titlebar_button_size = dpi(16)
+theme.titlebar_bg     = theme.bg
+theme.titlebar_fg     = theme.fg
+theme.titlebar_height = dpi(config.basic_size * 3 / 4)
+theme.titlebar_button_size = dpi(config.basic_size / 3)
+theme.titlebar_button_spacing = dpi(config.basic_size / 4)
 
 local function button(color)
-    local height = theme.titlebar_height
-    local width = theme.titlebar_height
+    local height = theme.titlebar_button_size
+    local width = theme.titlebar_button_size
     local shape = gears.shape.circle
-    return gears.surface.load_from_shape (width, height, shape, color)
+    return gears.surface.load_from_shape(width, height, shape, color)
 end
 
 local button_colors = {

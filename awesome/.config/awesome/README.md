@@ -35,7 +35,7 @@ There is only 4 files (plus some shell scripts in the same repo):
 
 - Some shell scripts in the `scripts` folder of this repo
 - `curl`: all kinds of network related tasks (e.g. email)
-- `light`: brightness control
+- `brightnessctl`: brightness control
 - `amixer`: volume control
 - `rofi`: app launcher, command prompts
 

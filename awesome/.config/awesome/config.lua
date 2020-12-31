@@ -9,13 +9,11 @@ config.use_image_icon = true
 -- Icon theme AwesomeWM-wide
 config.icon_theme = "Papirus-Dark"
 
--- Icon Font
--- Note: The font characters set in theme.lua should match this font,
---     if you want to use another font, you have to change all the icons there
+-- Icon Font. Note: The font characters set in theme.lua should match this font,
 config.icon_font = "Material Design Icons"
 
 -- The font name to use, could specify style (e.g. Hack Bold) but not size
-config.fontname = "Hack Bold"
+config.fontname = "Monospace Bold"
 
 -- Mod4: Super key or Win key; Mod1: Alt
 config.modkey = "Mod4"
@@ -23,8 +21,8 @@ config.modkey = "Mod4"
 -- Terminal emulator
 config.terminal = "st"
 -- Command to spawn floating terminal. Set to nil if it supports startup notifications
-config.float_terminal = "st -c floating_terminal"
--- Text edit in terminal
+config.floating_terminal = "st -c floating_terminal"
+-- Text editor in terminal
 config.terminal_editor = "vim"
 
 config.editor_cmd = function(file)

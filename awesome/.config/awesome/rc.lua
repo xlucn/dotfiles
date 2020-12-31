@@ -133,28 +133,23 @@ screen.connect_signal("request::desktop_decoration", function(s)
                             id     = 'icon_role',
                             widget = wibox.widget.imagebox,
                         },
-                        left = beautiful.tasklist_icon_vmargin,
-                        right = beautiful.tasklist_icon_vmargin,
-                        top = beautiful.tasklist_icon_margin,
-                        bottom = beautiful.tasklist_icon_margin,
-                        widget  = wibox.container.margin
-                    },
-                    {
+                        {
+                            id     = 'text_role',
+                            widget = wibox.widget.textbox,
+                        },
                         {
                             id = 'close_role',
                             icon = beautiful.closebutton,
                             shape = gears.shape.circle,
-                            forced_width = beautiful.bar_size - 12,
+                            forced_width = beautiful.topbar_size - 2 -
+                                            2 * beautiful.tasklist_icon_margin,
                             widget = mywidgets.icon_button
                         },
-                        left = beautiful.tasklist_icon_vmargin,
-                        right = beautiful.tasklist_icon_vmargin,
-                        top = beautiful.tasklist_icon_margin,
-                        bottom = beautiful.tasklist_icon_margin,
-                        widget = wibox.container.margin,
+                        layout = wibox.layout.align.horizontal,
                     },
-                    forced_height = beautiful.bar_size - 2,
-                    layout = wibox.layout.align.horizontal,
+                    margins = beautiful.tasklist_icon_margin,
+                    forced_height = beautiful.topbar_size - 2,
+                    widget = wibox.container.margin,
                 },
                 {
                     id     = 'background_role',
@@ -164,16 +159,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
             },
             widget = mywidgets.clickable,
             create_callback = function(self, c, _, _)
-                -- self.tooltip = awful.tooltip({
-                --   objects = { self },
-                --   delay_show = 0.4,
-                --   margin_leftright = beautiful.tooltip_marginv,
-                --   margin_topbottom = beautiful.tooltip_marginh,
-                --   timer_function = function() return c.name end,
-                -- })
-                -- self.tooltip.mode = "outside"
-                -- self.tooltip.preferred_alignments = {"middle", "front", "back"}
-
                 local close_button = self:get_children_by_id("close_role")[1]
                 close_button:buttons { awful.button({}, 1, function() c:kill() end) }
             end,
@@ -489,7 +474,17 @@ end)
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     awful.titlebar(c, { size = beautiful.titlebar_height, }):setup {
-        nil,
+        {
+            {
+                awful.titlebar.widget.closebutton    (c),
+                awful.titlebar.widget.minimizebutton (c),
+                awful.titlebar.widget.maximizedbutton(c),
+                spacing = beautiful.titlebar_button_spacing,
+                layout = wibox.layout.fixed.horizontal
+            },
+            margins = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
+            layout = wibox.container.margin,
+        },
         {
             align  = "center",
             font = beautiful.titlebar_font,
@@ -504,20 +499,8 @@ client.connect_signal("request::titlebars", function(c)
             widget = awful.titlebar.widget.titlewidget(c)
         },
         {
-            {
-                awful.titlebar.widget.floatingbutton (c),
-                awful.titlebar.widget.stickybutton   (c),
-                awful.titlebar.widget.ontopbutton    (c),
-                awful.titlebar.widget.maximizedbutton(c),
-                awful.titlebar.widget.minimizebutton (c),
-                awful.titlebar.widget.closebutton    (c),
-                spacing = beautiful.titlebar_height / 2,
-                layout = wibox.layout.fixed.horizontal
-            },
-            top = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
-            bottom = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
-            left = beautiful.titlebar_button_size / 2,
-            right = beautiful.titlebar_button_size / 2,
+            awful.titlebar.widget.floatingbutton (c),
+            margins = (beautiful.titlebar_height - beautiful.titlebar_button_size) / 2,
             layout = wibox.container.margin,
         },
         layout = wibox.layout.align.horizontal
