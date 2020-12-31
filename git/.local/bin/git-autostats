@@ -23,10 +23,10 @@ search_repos()
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
 
-while getopts "hus:" p; do
+while getopts "hus" p; do
     case "$p" in
         u) flag_update=1;;
-        s) search_repos "$OPTARG"; exit;;
+        s) search_repos; exit;;
         h|*) usage; exit;;
     esac
 done
