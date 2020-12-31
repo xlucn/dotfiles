@@ -10,6 +10,8 @@ done
 
 batteries=$(find /sys/class/power_supply/ -name "BAT*")
 
+[ -n "$batteries" ] || { echo -1; exit; }
+
 for battery in $batteries; do
     while IFS='=' read -r key value; do
         eval "$key=\"$value\""
