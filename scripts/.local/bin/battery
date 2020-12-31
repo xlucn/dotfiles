@@ -12,6 +12,11 @@ batteries=$(find /sys/class/power_supply/ -name "BAT*")
 
 [ -n "$batteries" ] || { echo -1; exit; }
 
+if [ -n "$flag_charging" ]; then
+    cat /sys/class/power_supply/A*/online 2> /dev/null | grep -c 1
+    exit
+fi
+
 for battery in $batteries; do
     while IFS='=' read -r key value; do
         eval "$key=\"$value\""
@@ -26,7 +31,7 @@ for battery in $batteries; do
     else
         charge_full=1
     fi
-    echo $(((charge_now * 100 + 50) / charge_full))
+    level=$(((charge_now * 100 + 50) / charge_full))
 
     if [ -n "$flag_time" ]; then
         if [ -n "$POWER_SUPPLY_POWER_NOW" ]; then
@@ -41,10 +46,8 @@ for battery in $batteries; do
         elif [ "$POWER_SUPPLY_STATUS" = "Discharging" ]; then
             time=$((charge_now * 1000 / power))
         fi
-        echo $time
+        printf "%d %d" $level $time
+    else
+        printf "%d" $level
     fi
 done
-
-if [ -n "$flag_charging" ]; then
-    cat /sys/class/power_supply/A*/online 2> /dev/null | grep -c 1
-fi
