@@ -1,22 +1,14 @@
 [options]
-# The last font override the previous ones
-font = JetBrainsMono Nerd Font 13
+font = Monospace 12
 audible_bell = false
 clickable_url = true
-dynamic_title = true
-# scrollback lines
 scrollback_lines = 10000
-# allow bold fonts
 allow_bold = true
-# automatically hide the mouse when typing
 mouse_autohide = true
-# Full screen on F11
-fullscreen = true
-# specify icon (for awesome wm)
 icon_name = terminal
 
 [colors]
-foreground      = #ECEFF1
+foreground      = #B0BEC5
 foreground_bold = #ECEFF1
 background      = #212121
 color0          = #546E7A
