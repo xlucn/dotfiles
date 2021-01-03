@@ -1,10 +1,9 @@
 #!/bin/sh
 # Handle by extension
-case "$(echo "${1##*.}" | tr '[:upper:]' '[:lower:]')" in
+case ${1##*.} in
     # Archive
-    a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
+    a|ace|alz|apk|arc|arj|bz|bz2|cab|cpio|deb|gz|iso|jar|lha|lz|lzh|lzma|lzo|\
     rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip|zst)
-        atool --list -- "$1" && exit
         bsdtar --list --file "$1" && exit ;;
     rar)
         unrar lt -p- -- "$1" && exit ;;
