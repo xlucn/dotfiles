@@ -5,6 +5,9 @@ then
     . /usr/share/bash-completion/bash_completion
 fi
 
+# shellcheck disable=SC1090
+. "$HOME/.profile"
+
 # Alias
 # auto color
 alias ls="ls --color=auto"
