@@ -40,7 +40,7 @@ cmd = ['rofi', '-dmenu', '-i',
        '-multi-select',
        '-markup-rows', '-columns', '2']
 choice = run(cmd, stdout=PIPE, input=bytes('\n'.join(lines), encoding='utf-8'))
-
-code = choice.stdout.decode().split('</span>')[1].split()[0]
-glyph = chr(int(code, base=16))
-run(['xclip', '-selection', 'clipboard'], input=bytes(glyph, encoding='utf-8'))
+glyphs = ' '.join([chr(int(line.split('</span>')[1].split()[0], base=16))
+                   for line in choice.stdout.decode().split('\n')[:-1]])
+run(['xclip', '-selection', 'clipboard'],
+    input=bytes(glyphs, encoding='utf-8'))
