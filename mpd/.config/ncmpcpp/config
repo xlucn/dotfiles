@@ -7,7 +7,7 @@ ncmpcpp_directory = ~/.cache/ncmpcpp
 ## music visualizer
 # Available values: spectrum, wave, wave_filled, ellipse.
 visualizer_type = spectrum
-visualizer_fifo_path = /tmp/mpd.fifo
+visualizer_data_source = /tmp/mpd.fifo
 visualizer_output_name = Visualizer feed
 # If you set format to 44100:16:2, make it 'yes'.
 visualizer_in_stereo = yes
