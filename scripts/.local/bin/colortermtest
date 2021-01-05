@@ -1,7 +1,7 @@
 #!/bin/sh
 for i in $(seq 0 9); do
-    for f in $(seq 30 37) 39 $(seq 90 97); do
-        for b in $(seq 40 47) 49 $(seq 100 107); do
+    for f in $(seq 30 37); do
+        for b in $(seq 40 47); do
             color="[$i;$f;${b}m"
             printf "\033%s^%s\033[0m" "$color" "$color"
         done

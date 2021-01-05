@@ -1,8 +1,22 @@
 #!/bin/sh
-for i in $(seq 0 255) ; do
-    printf "\033[48;5;%sm %3d \033[0m" "$i" "$i"
-    if { [ "$i" -le 15 ] && [ $(( i % 8 )) = 7 ]; } \
-    || { [ "$i" -gt 15 ] && [ $(( i % 6 )) = 3 ]; }; then
-        printf "\n";
-    fi
+colorblock() { printf "\033[48;5;%sm %3d \033[0m" "$1" "$1"; }
+
+for i in $(seq 0 15) ; do
+    colorblock "$i"
+    [ $(( i % 8 )) = 7 ] && printf "\n"
+done
+
+for i in $(seq 16 6 123) ; do
+    for j in $(seq "$i" "$((i + 5))") ; do
+        colorblock "$j"
+    done
+    for j in $(seq "$i" "$((i + 5))") ; do
+        colorblock "$((j + 108))"
+    done
+    printf "\n"
+done
+
+for i in $(seq 232 255) ; do
+    colorblock "$i"
+    [ $(( i % 12 )) = 3 ] && printf "\n"
 done
