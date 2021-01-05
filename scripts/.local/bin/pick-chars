@@ -2,43 +2,33 @@
 import os
 import sys
 from subprocess import PIPE, run
-
 from fontTools.ttLib import TTFont
 from fontTools.unicode import Unicode
 
 if len(sys.argv) != 2:
     exit(1)
-
-if os.path.exists(sys.argv[1]):
+elif os.path.exists(sys.argv[1]):
     font_file = sys.argv[1]
 else:
     cmd = "fc-match '{font}' --format='%{{file}}'".format(font=sys.argv[1])
     font_file = run(cmd, shell=True, stdout=PIPE).stdout
+if not os.path.exists(font_file):
+    exit(1)
 
 lines = []
 with TTFont(font_file) as ttf:
     cmap = ttf.getBestCmap()
     for y in cmap:
-        if y < 32:
-            continue
-
-        if cmap[y].startswith("uni"):
-            desc = Unicode[y].lower()
-        else:
-            desc = cmap[y]
-
         c = chr(y).replace('&', '&amp;').replace('<', '&lt;')
-        if len(c) == 0:
+        if y < 32 or len(c) == 0:
             continue
 
-        lines.append(
-            "<span size=\"x-large\"> {char}  </span> {n:05x} {desc}".
-            format(char=c, n=y, desc=desc))
+        desc = Unicode[y].lower() if cmap[y].startswith("uni") else cmap[y]
+        lines.append("<span size=\"x-large\"> {char}  </span> {n:05x} {desc}".
+                     format(char=c, n=y, desc=desc))
 
-cmd = ['rofi', '-dmenu', '-i',
-       '-p', 'Choose a glyph',
-       '-multi-select',
-       '-markup-rows', '-columns', '2']
+cmd = ['rofi', '-dmenu', '-i', '-p', 'Choose a glyph',
+       '-multi-select', '-markup-rows', '-columns', '2']
 choice = run(cmd, stdout=PIPE, input=bytes('\n'.join(lines), encoding='utf-8'))
 glyphs = ' '.join([chr(int(line.split('</span>')[1].split()[0], base=16))
                    for line in choice.stdout.decode().split('\n')[:-1]])
