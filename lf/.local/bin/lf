@@ -10,7 +10,7 @@ stop_ueberzug() {
     rm "$FIFO_UEBERZUG" > /dev/null 2>&1
 }
 
-if [ -n "$DISPLAY" ] && command -v ueberzug 2> /dev/null; then
+if [ -n "$DISPLAY" ] && command -v ueberzug > /dev/null; then
     export FIFO_UEBERZUG="/tmp/lf-ueberzug-${PPID}"
     trap stop_ueberzug EXIT QUIT INT TERM
     start_ueberzug
