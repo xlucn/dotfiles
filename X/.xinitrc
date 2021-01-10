@@ -39,5 +39,6 @@ case ${1:-dwm} in
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
     simple) startdwm;;
-    dwm*|*) prewm; startdwm;;
+    dwm*) prewm; startdwm;;
+    *) exec "$1";;
 esac
