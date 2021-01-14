@@ -43,7 +43,7 @@ set statusbar-fg "#ECEFF1"
 set recolor false
 set recolor-keephue true
 set recolor-reverse-video true
-set recolor-darkcolor "#FFFFFF"
+set recolor-darkcolor "#ECEFF1"
 set recolor-lightcolor "#212121"
 
 # Clipboard
