@@ -16,13 +16,19 @@ key home = 262,  'g'
 key end = 360,  'G'
 
 ## Page up
-key pgup = 339
+key pgup = 339,  Ctrl-B
+
+## Page down
+key pgdn = 338,  Ctrl-F
+
+## Scroll up one line
+key scroll-up-line = Ctrl-P
 
 ## Scroll up half a screen
-key scroll-down-half = Ctrl-D,  'F'
+key scroll-down-half = Ctrl-D
 
 ## Scroll down half a screen
-key scroll-up-half = 'B',  Ctrl-U
+key scroll-up-half = Ctrl-U
 
 ## Select currently playing song
 key select-playing = 263
