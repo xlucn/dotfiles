@@ -21,7 +21,7 @@ hardware-cursor     = no
 visible-bitrate     = yes
 set-xterm-title     = yes
 status-message-time = 5
-list-format         = "[[%artist% - ]%title%]|%shortfile%"
+list-format         = "[[%artist% - ]%title%]|%file%"
 status-format       = "[[%artist% - ]%title%]|%shortfile%"
 xterm-title-format  = "[[%artist% - ]%title%]|%shortfile%"
 # colors
