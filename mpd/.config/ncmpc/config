@@ -23,7 +23,7 @@ set-xterm-title     = yes
 status-message-time = 5
 list-format         = "[[%artist% - ]%title%]|%file%"
 status-format       = "[[%artist% - ]%title%]|%shortfile%"
-xterm-title-format  = "[[%artist% - ]%title%]|%shortfile%"
+xterm-title-format  = "ncmpc - [[[%artist% - ]%title%]|%shortfile%]"
 # colors
 enable-colors       = yes
 color background    = none
