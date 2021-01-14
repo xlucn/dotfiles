@@ -54,5 +54,5 @@ define-filter "Empty feeds" "total_count = 0"
 
 # Proxy
 proxy-type socks5h
-proxy localhost:41685
+proxy localhost:1081
 use-proxy yes
