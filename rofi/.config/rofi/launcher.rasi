@@ -19,8 +19,8 @@ configuration {
 
 window {
     background-color : @background;
-    width            : 80%;
-    location         : center;
+    width            : 100%;
+    height           : 100%;
 }
 
 mainbox {
@@ -44,19 +44,14 @@ entry {
     width            : 20%;
 }
 
-listview {
-    margin           : 2% 0%;
-    scrollbar        : false;
-}
-
 element {
     border-radius    : 16px;
     orientation      : vertical;
-    padding          : 2% 1%;
+    padding          : 3%;
 }
 
 element-icon {
-    size             : 6%;
+    size             : 8%;
 }
 
 element-text {
