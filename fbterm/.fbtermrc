@@ -6,36 +6,30 @@
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
 
 # Recommendations 14-8-18 16-10-20 21-12-24 26-15-30
-
-# font-names=Unifont,JetBrainsMono Nerd Font:sytle=Regular
-# font-size=12
-# font-width=8
-# font-height=18
-
-font-names=Hack Nerd Font:style=Regular,Noto Sans CJK SC:style=Regular
-font-size=16
-font-width=10
-font-height=20
+font-names=Monospace
+font-size=24
+font-width=15
+font-height=30
 
 # default color of foreground/background text
-color-foreground=ECEFF1
-color-background=222B39
-color-0=546E7A
-color-1=FF5252
-color-2=5CF19E
-color-3=FFD740
-color-4=40C4FF
-color-5=FF4081
-color-6=64FCDA
-color-7=FFFFFF
-color-8=B0BEC5
-color-9=FF8A80
-color-10=B9F6CA
-color-11=FFE57F
-color-12=80D8FF
-color-13=FF80AB
-color-14=A7FDEB
-color-15=FFFFFF
+color-foreground=a6a19b
+color-background=212121
+color-0=303030
+color-1=826023
+color-2=618231
+color-3=7e7b28
+color-4=3e825c
+color-5=82685c
+color-6=749cb3
+color-7=a6a19b
+color-8=484848
+color-9=b48430
+color-10=86b443
+color-11=b0ab37
+color-12=55b47f
+color-13=b4907f
+color-14=9bb4c8
+color-15=d8d1c9
 
 # max scroll-back history lines of every window, value must be [0 - 65535], 0 means disable it
 history-lines=0
