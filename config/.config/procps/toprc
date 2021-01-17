@@ -14,3 +14,8 @@ Usr	fieldscur=¥&'¨*09½Ä·º)+,-./1234568Å;<>?@ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdef
 	summclr=3, msgsclr=1, headclr=2, taskclr=6
 Fixed_widest=0, Summ_mscale=1, Task_mscale=1, Zero_suppress=0
 
+begin: saved other filter data -------------------
+window #3, osel_tot=1
+	type=111,	filter=!COMMAND=[
+end  : saved other filter data -------------------
+
