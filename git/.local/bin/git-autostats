@@ -9,8 +9,7 @@ usage()
 
 search_repos()
 {
-    printf "Enter the git repo user name of yours: "
-    read -r user
+    user=$1
     find "$HOME" -type d -name .git \
         ! -path "*/.cache/*" \
         ! -path "*/.vim/*" \
@@ -23,10 +22,10 @@ search_repos()
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
 
-while getopts "hus" p; do
+while getopts "hus:" p; do
     case "$p" in
         u) flag_update=1;;
-        s) search_repos; exit;;
+        s) search_repos "$OPTARG"; exit;;
         h|*) usage; exit;;
     esac
 done
