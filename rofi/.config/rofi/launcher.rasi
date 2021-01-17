@@ -1,40 +1,26 @@
+/* rofi config for launcher, need my main config.rasi file */
+
 configuration {
-    sidebar-mode        : false;
     modi                : "drun";
-    show-icons          : true;
     columns             : 6;
     lines               : 5;
     drun-display-format : "{name}";
 }
 
 * {
-    /* transparent default */
-    background-color    : #00000000;
-    /* some customized colors used later */
-    selected-background : #EEFFFF40;
-    selected-text-color : #EEFFFF;
-    background          : #212121C0;
-    text-color          : #EEFFFF;
+    background-color    : #212121;
+    color               : #EEFFFF;
+    /* color for highlighted things */
+    selected-background : #484848;
 }
 
-window {
-    background-color : @background;
-    width            : 100%;
-    height           : 100%;
-}
+window { width: 80%; }
 
-mainbox {
-    children         : [inputbar, listview];
-    margin           : 4%;
-}
+mainbox { margin: 4%; }
 
-inputbar {
-    children         : [dummy, entry, dummy];
-}
+inputbar { children: [dummy, entry, dummy]; }
 
-dummy {
-    expand           : true;
-}
+dummy { expand: true; }
 
 entry {
     background-color : @selected-background;
@@ -48,22 +34,11 @@ element {
     border-radius    : 16px;
     orientation      : vertical;
     padding          : 3%;
-}
-
-element-icon {
-    size             : 8%;
-}
-
-element-text {
-    horizontal-align : 0.5;
-}
-
-element normal.normal, element alternate.normal {
-    background-color : #00000000;
     color            : @text-color;
 }
 
-element selected.normal, element selected.active {
-    background-color : @selected-background;
-    color            : @selected-text-color;
-}
+element-icon { size: 6%; }
+
+element-text { horizontal-align: 0.5; }
+
+element selected { background-color: @selected-background; }
