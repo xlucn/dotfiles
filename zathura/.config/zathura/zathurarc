@@ -1,6 +1,8 @@
 # Keymappings
 map [ navigate previous
 map ] navigate next
+map H jumplist backward
+map L jumplist forward
 map <PageUp> navigate previous
 map <PageDown> navigate next
 map [presentation] k navigate previous
