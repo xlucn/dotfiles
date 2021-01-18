@@ -1,12 +1,6 @@
 # Keymappings
-map h scroll left
-map j scroll down
-map k scroll up
-map l scroll right
 map [ navigate previous
 map ] navigate next
-map K navigate previous
-map J navigate next
 map <PageUp> navigate previous
 map <PageDown> navigate next
 map [presentation] k navigate previous
@@ -22,9 +16,6 @@ map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen
 map p toggle_presentation
 map [presentation] p toggle_presentation
-# zoom in/out with wheel
-map <C-Button4> zoom in
-map <C-Button5> zoom out
 
 # Synctex
 set synctex true
