@@ -14,6 +14,10 @@ map <c-e> down
 map <enter> open
 map gh cd ~
 map gr cd /
+map <m-3> open
+map <m-2> updir
+map <m-up>    up
+map <m-down>  down
 
 # Commands
 cmd open $ open $fx
