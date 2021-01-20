@@ -1,0 +1,9 @@
+#!/bin/sh
+while a=$(dialog --erase-on-exit --no-shadow --inputbox input: 8 50 --output-fd 1); do
+    dialog --no-shadow --infobox "Translating $a" 0 0
+    translation=$(trans "$a" | sed -e 's/\x1b\[1m/\\Zb/g' \
+                                   -e 's/\x1b\[22m/\\ZB/g' \
+                                   -e 's/\x1b\[4m/\\Zu/g' \
+                                   -e 's/\x1b\[24m/\\ZU/g')
+    dialog --no-shadow --colors --msgbox "$translation" 0 0
+done
