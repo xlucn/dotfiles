@@ -7,8 +7,6 @@ map <PageUp> navigate previous
 map <PageDown> navigate next
 map [presentation] k navigate previous
 map [presentation] j navigate next
-map [fullscreen] <Up> navigate previous
-map [fullscreen] <Down> navigate next
 map [fullscreen] <Left> navigate previous
 map [fullscreen] <Right> navigate next
 # UI toggling
