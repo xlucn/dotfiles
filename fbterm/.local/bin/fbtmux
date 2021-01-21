@@ -1,38 +1,38 @@
 #!/bin/sh
+# file: fbtmux
 # Script to start tmux in fbterm/yaft/getty
 #
 # Requirement:
 #   tmux,
-#   fbterm:  optional, for unicode and wallpaper support,
-#   fbv:     optional, for setting wallpaper,
-#   convert: optional, for darkening and blurring wallpaper 
+#   fbterm/yaft: optional, for unicode display and wallpaper support,
+#   fbv:         optional, for setting wallpaper for fbterm/yaft,
+#   convert:     optional, for darkening and blurring wallpaper 
 #
-# Note:
-#   wallpaper location: $HOME/Pictures/wallpaper.*
+# Configuration:
+#   FBTMUX_TERMINAL: start tmux in terminals other than getty, this will prefix
+#                the tmux command. E.g. "fbterm --"(default) or "yaft"
+#   FBTMUX_WALLPAPER: specify the wallpaper location, default to $HOME/Pictures/wallpaper.*
 
 command -v tmux > /dev/null 2>&1 || { echo please install tmux; exit; }
 
 trap 'tput cnorm; clear' INT TERM QUIT EXIT # show cursor on quit
 
-TERMINAL=${TERMINAL:-fbterm --}
-[ "$TERMINAL" = NONE ] && unset TERMINAL
+TERMINAL=${FBTMUX_TERMINAL:-fbterm --}
 # Start directly in shell if not in tty
 tty | grep -q tty || unset TERMINAL
-# Check commands, respect users' settings
-if [ -n "$TERMINAL" ]; then
-    command -v "${TERMINAL%% *}" > /dev/null 2>&1 || unset TERMINAL
-fi
+# Check commands
+command -v "${TERMINAL%% *}" > /dev/null 2>&1 || unset TERMINAL
 
 if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
-    # Configure wallpaper
-    bg_dir="$HOME/Pictures"
-    bg_wallpaper=$(find "$bg_dir" -name 'wallpaper.*' | head -1)
-    bg_framebuffer=$bg_dir/framebuffer.${bg_wallpaper##*.}
+    # Finding wallpaper
+    bg_wallpaper=${FBTMUX_WALLPAPER:-$(find "$HOME/Pictures" -name 'wallpaper.*' | head -1)}
 
     # Set wallpaper with fbv
     if command -v fbv > /dev/null 2>&1 && [ -n "$bg_wallpaper" ]; then
+        bg_framebuffer=$bg_wallpaper
         # regenerate darkened image for framebuffer with convert
         if command -v convert > /dev/null 2>&1; then
+            bg_framebuffer=/tmp/framebuffer.${bg_wallpaper##*.}
             # Compare modified time, only update when needed
             # use stat instead of test -nt/-ot command which dereferences links
             script_time=$(stat -Lc %Y "$0")
@@ -41,11 +41,9 @@ if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
             if [ ! -e "$bg_framebuffer" ] \
             || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
             || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
-                # convert -modulate brightness, saturation
-                convert "$bg_wallpaper" -modulate 30,20 -blur 0x4 "$bg_framebuffer"
+                # convert -modulate brightness,saturation
+                convert "$bg_wallpaper" -modulate 15,40 -blur 0x4 "$bg_framebuffer"
             fi
-        else
-            bg_framebuffer=$bg_wallpaper
         fi
 
         # start fbterm/yaft with background using fbv
@@ -53,11 +51,8 @@ if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
         fbv -ciuker "$bg_framebuffer" << EOF
 q
 EOF
-        if [ "${TERMINAL%% *}" = fbterm ]; then
-            export FBTERM_BACKGROUND_IMAGE=1
-        elif [ "${TERMINAL%% *}" = yaft ]; then
-            export YAFT="wall"
-        fi
+        export FBTERM_BACKGROUND_IMAGE=1
+        export YAFT="wall"
     fi
 
 fi
