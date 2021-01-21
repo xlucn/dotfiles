@@ -1,0 +1,6 @@
+use_shadow = OFF
+screen_color = (RED,DEFAULT,OFF)
+bindkey * ^Y GRID_UP
+bindkey * ^E GRID_DOWN
+bindkey * ^D PAGE_NEXT
+bindkey * ^U PAGE_PREV
