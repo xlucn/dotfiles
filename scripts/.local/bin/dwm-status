@@ -206,6 +206,7 @@ if [ "$(imap "$SMAIL2")" -gt 0 ]; then ICON_MAIL2="󰇮"; else ICON_MAIL2="󰇰"
 
 STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }')
 STR_LIGHT=${STR_LIGHT:-0}
+STR_LIGHT=${STR_LIGHT%\%}
 [ -n "$UPDATE_LIGHT" ] &&
 notify-send -c "dwm-status" -h int:value:"$STR_LIGHT" "Brightness:" "$(progress_bar "$STR_LIGHT")" &
 
