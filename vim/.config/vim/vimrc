@@ -41,6 +41,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'dylanaraps/wal.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'baskerville/vim-sxhkdrc'
 " Plug 'MikeCoder/markdown-preview.vim'
 " Plug 'JamshedVesuna/vim-markdown-preview'
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
