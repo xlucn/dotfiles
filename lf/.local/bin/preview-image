@@ -5,12 +5,10 @@ ID="lf-preview"
 [ $# = 1 ] && cmd=clear
 case "${cmd:-$1}" in
     "draw")
-        # notify-send "$2|$3|$4|$5|$6"
-        {   printf "action\tadd\tidentifier\t%s\t" "$ID"
-            printf "x\t%d\ty\t%d\tpath\t%s\t" "$5" "$6" "$2"
-            printf "width\t%d\theight\t%d\n" "$3" "$4"
+        {   printf '{ "action": "add", "identifier": "%s", "path": "%s",' "$ID" "$2"
+            printf '"width": %d, "height": %d, "x": %d, "y": %d }\n' "$3" "$4" "$5" "$6"
         } > "$FIFO_UEBERZUG" ;;
     "clear")
-        printf "action\tremove\tidentifier\t%s\n" "$ID" > "$FIFO_UEBERZUG" ;;
+        printf '{ "action": "remove", "identifier": "%s" }\n' "$ID" > "$FIFO_UEBERZUG" ;;
     "*") echo "Unknown command: '$1', '$2'" ;;
 esac
