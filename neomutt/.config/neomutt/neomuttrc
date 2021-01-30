@@ -68,7 +68,7 @@ hdr_order Subject: From: To: CC: BCC: Date:
 
 # show index on top and pager below
 set pager_context = 3
-set pager_index_lines = 10
+set pager_index_lines = 5
 # stop at the bottom of a message instead of go to next message
 set pager_stop = yes
 
