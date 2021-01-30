@@ -9,6 +9,7 @@ fi
 . "$HOME/.profile"
 
 # Alias
+alias sudo="doas"
 # auto color
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
@@ -31,6 +32,8 @@ alias notes="lf \$HOME/Code/notes"
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs pip install --user --upgrade
 }
+# arch linux update
+alias au="sudo pacman -Syu && paru -Sua"
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
