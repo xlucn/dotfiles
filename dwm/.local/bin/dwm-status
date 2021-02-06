@@ -46,7 +46,7 @@ fi
 case "${INDEX:-$1}" in
     "$IMEM")
         case "$BUTTON" in
-            3) $FLOATTERM -e top -o %MEM ;;
+            3) $FLOATTERM -e top -o RES ;;
         esac ;;
     "$ICPU")
         case "$BUTTON" in

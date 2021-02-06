@@ -9,8 +9,8 @@ Cpu	fieldscur=¥¨³´;½@Ä·º¹Å&')*+,-./012568<>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdef
 Job	fieldscur=¥¦¹·º(³´Ä»½@<§Å)*+,-./012568>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
 	winflags=720308, sortindx=0, maxtasks=0, graph_cpus=1, graph_mems=1
 	summclr=3, msgsclr=2, headclr=6, taskclr=3
-Usr	fieldscur=¥&'¨*09½Ä·º)+,-./1234568Å;<>?@ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
-	winflags=720820, sortindx=21, maxtasks=0, graph_cpus=1, graph_mems=1
+Usr	fieldscur=%&'¨*09Ä·½:)+,-./1234568Å;<>?@ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
+	winflags=720820, sortindx=24, maxtasks=0, graph_cpus=1, graph_mems=1
 	summclr=3, msgsclr=1, headclr=2, taskclr=6
 Fixed_widest=0, Summ_mscale=1, Task_mscale=1, Zero_suppress=0
 
