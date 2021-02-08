@@ -50,6 +50,7 @@ export RANDFILE="$XDG_CACHE_HOME/openssl_rnd"
 export DIALOGRC="$XDG_CONFIG_HOME/dialog/dialogrc"
 export LYNX_CFG="$XDG_CONFIG_HOME/lynx/lynx.cfg"
 export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
+export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
 
 # Set icons in lf
 export LF_ICONS="\
