@@ -47,10 +47,10 @@ ctrl + @Print
     scrot -e 'xclip -selection clipboard -t image/png < $f && rm $f'
 
 shift + @Print
-    scrot -s --line mode=edge 'Screenshot_%F_%H-%M-%S.png' -e 'mv $f ~/Pictures/'
+    scrot -s --line mode=edge,width=4,color=red,opacity=70 'Screenshot_%F_%H-%M-%S.png' -e 'mv $f ~/Pictures/'
 
 ctrl + shift + @Print
-    scrot -s --line mode=edge -e 'xclip -selection clipboard -t image/png < $f && rm $f'
+    scrot -s --line mode=edge,width=4,color=red,opacity=70 -e 'xclip -selection clipboard -t image/png < $f && rm $f'
 
 super + r
     rofi -show run
