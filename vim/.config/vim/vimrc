@@ -203,6 +203,15 @@ function Goyo()
     endif
 endfunction
 " }}}
+" Execute current file {{{
+function ExecCurrentFile()
+    if &ft == "sh"
+        execute ":!sh %:p"
+    elseif &ft == "python"
+        execute ":!python %:p"
+    endif
+endfunction
+" }}}
 " Plugin Settings
 " Vim Which Key {{{
 call which_key#register(mapleader, "g:which_key_map")
@@ -216,6 +225,7 @@ let g:which_key_map = {
   \ 'w' : [ ':w',  'save'],
   \ 'e' : [ ':e',  'edit (reload)'],
   \ 'x' : [ ':x',  'save and quit'],
+  \ 'k' : [ ':call ExecCurrentFile()',  'run current file'],
   \ '.' : [ ':let @/=""', 'clear search hl'],
   \ 'r' : [ ':so $MYVIMRC', 'reload vimrc'],
   \ 'z' : [ ':call Goyo()', 'Goyo mode'],
