@@ -51,6 +51,8 @@ export DIALOGRC="$XDG_CONFIG_HOME/dialog/dialogrc"
 export LYNX_CFG="$XDG_CONFIG_HOME/lynx/lynx.cfg"
 export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
 export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
+export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
+export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
 
 # Set icons in lf
 export LF_ICONS="\
