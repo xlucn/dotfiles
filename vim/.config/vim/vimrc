@@ -5,14 +5,6 @@ let $VIM = $XDG_CONFIG_HOME . '/vim'
 set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-" vim-plug installation
-function VimplugInstall()
-    if empty(glob($VIM . '/autoload/plug.vim'))
-      silent !curl -fLo $VIM/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    endif
-endfunction
 " }}}
 " Vim-Plug {{{
 call plug#begin($VIM . '/bundle')
@@ -180,14 +172,7 @@ let g:netrw_browse_split = 4   " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20 " split size
 let g:netrw_dirhistmax   = 0   " disable history
 let g:netrw_liststyle    = 0   " thin listing
-nnoremap <C-N> :call ToggleNetRW()<CR>
-function ToggleNetRW()
-    if exists("g:netrw_buffer") && bufexists(g:netrw_buffer)
-        exe "bd".g:netrw_buffer | unlet g:netrw_buffer
-    else
-        Vexplore | let g:netrw_buffer=bufnr("%")
-    endif
-endfunction
+nnoremap <C-N> :Lexplore<CR>
 " }}}
 " My own goyo mode {{{
 function Goyo()
@@ -520,5 +505,13 @@ endif
 " imap <c-space> <Plug>(asyncomplete_force_refresh)
 " let g:asyncomplete_auto_popup = 1
 " let g:asyncomplete_auto_completeopt = 0
+" }}}
+" ultisnippet {{{
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+" }}}
+" tagbar {{{
+let g:tagbar_width = max([25, winwidth(0) / 5])
+let g:tagbar_compact = 1
 " }}}
 " vim:foldmethod=marker:foldlevel=0
