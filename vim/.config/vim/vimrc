@@ -1,13 +1,9 @@
-" Plugin Manager
-" Vim-Plug {{{
-" be iMproved
+" vim basic {{{
+" be iMproved, put this line at TOP of vimrc
 set nocompatible
-" set vim folder
 let $VIM = $XDG_CONFIG_HOME . '/vim'
-" vim basic settings
 set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
-" Important: put this after nocompatible
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 " vim-plug installation
 function VimplugInstall()
@@ -17,7 +13,8 @@ function VimplugInstall()
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 endfunction
-" begin vim-plug
+" }}}
+" Vim-Plug {{{
 call plug#begin($VIM . '/bundle')
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
