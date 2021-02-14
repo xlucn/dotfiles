@@ -421,6 +421,7 @@ let g:which_key_map.a = {
 let g:tex_flavor = 'latex'
 " enable vimtex fold
 let g:vimtex_fold_enabled = 1
+let g:vimtex_syntax_enabled = 0
 " start vim with a server, see ':h vimtex-clientserver'
 if empty(v:servername) && exists('*remote_startserver') && !empty($DISPLAY) && empty($TMUX)
     call remote_startserver('VIM')
