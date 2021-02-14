@@ -26,7 +26,7 @@ set sidebar_format = "%B %?N?[%N]?%* %S"
 # forward subject formats
 set forward_format = "Fwd: %s"
 # index (list of mails)
-set index_format = "%4C %Z %[%Y-%m-%d %R] %-15.15L (%?l?%4l&%4c?) %s"
+set index_format = "%4C %Z %<[y?%<[d?%[%H:%M]&%[%m/%d]>&%[%y-%m]> %-10.10L (%?l?%4l&%4c?) %s"
 
 # cache folder
 set message_cachedir = ~/.cache/neomutt/bodies
