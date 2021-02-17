@@ -38,20 +38,20 @@ set noremap
 "   The manual only specify one character as lhs (here are two).
 "   According to 'An introduction to display editing with vi', the lhs
 "   only need to be entered within 1 second when timeout is set.
-map ,q :q
-map ,z :q!
-map ,e :e
-map ,w :w
-map ,x :wq
-map ,r :source ~/.config/ex/exrc
+" map ,q :q
+" map ,z :q!
+" map ,e :e
+" map ,w :w
+" map ,x :wq
+" map ,r :source ~/.config/ex/exrc
 "
 " Other ! mappings, does not work well for last one or two characters
 " Default commented, delete and navigate in normal mode instead
 "
 " Make backspace delete as expected
-map  h
-map!  sa
-map!  sa
+" map  h
+" map!  sa
+" map!  sa
 " Bad hacks for arrow heys, lag when pressing escape
 " map! OA ka
 " map! OB ja
@@ -59,5 +59,5 @@ map!  sa
 " map! OC la
 "
 " Complete words, famous vi macros
-map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
-map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
+" map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
+" map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
