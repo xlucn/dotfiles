@@ -392,7 +392,7 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters = {
   \ 'c': ['ccls'],
   \ 'cpp': ['ccls'],
-  \ 'python': ['pyls', 'flake8'],
+  \ 'python': ['pyls'],
   \ 'lua': ['luacheck'],
   \ 'sh': ['shellcheck']
   \ }
