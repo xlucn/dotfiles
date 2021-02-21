@@ -4,7 +4,7 @@ Config files for everything
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/dwm.png?raw=true)
 *Screenshot: [my own fork](https://github.com/OliverLew/dwm) of dwm*
 ![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/awesomewm.png?raw=true)
-*Screenshot: my customizations of awesomewm*
+*Screenshot: my customizations of awesomewm (not using/putting time into this for a long time)*
 
 ## Environment
 
