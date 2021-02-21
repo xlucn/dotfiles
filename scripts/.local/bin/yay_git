@@ -7,9 +7,5 @@ trap "cd \$current_dir" TERM QUIT INT HUP
 
 for p in $(pacman -Qmq | grep -- "-git"); do
     d=$HOME/.cache/yay/$p
-    if [ -d "$d" ]; then
-        cd "$d" && makepkg && makepkg -i
-    else
-        yay -S "aur/$p"
-    fi
+    [ -d "$d" ] && cd "$d" && makepkg && makepkg -i
 done
