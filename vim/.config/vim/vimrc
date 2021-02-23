@@ -31,6 +31,7 @@ Plug 'dylanaraps/wal.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'baskerville/vim-sxhkdrc'
+Plug 'lifepillar/vim-mucomplete'
 " Plug 'MikeCoder/markdown-preview.vim'
 " Plug 'JamshedVesuna/vim-markdown-preview'
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -38,7 +39,6 @@ Plug 'baskerville/vim-sxhkdrc'
 " Plug 'prabirshrestha/asyncomplete.vim'
 " Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Plug 'prabirshrestha/vim-lsp'
-Plug 'ervandew/supertab'
 call plug#end()
 " }}}
 " Vim Settings
@@ -64,7 +64,7 @@ set laststatus=2
 set timeoutlen=300 " time out for key code delays
 set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
-set completeopt=menuone,noinsert,longest " comletion
+set completeopt=menuone,noinsert,preview " comletion
 " }}}
 " UI basic {{{
 " clear sign column highlight
@@ -515,4 +515,7 @@ let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 let g:tagbar_width = max([25, winwidth(0) / 5])
 let g:tagbar_compact = 1
 " }}}
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1000
+let g:mucomplete#chain = ['path', 'omni', 'spel']
 " vim:foldmethod=marker:foldlevel=0
