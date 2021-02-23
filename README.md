@@ -12,9 +12,9 @@ Config files for everything
 - WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches)
 - Terminal Emulator: [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
 - Network Manager: systemd-networkd + systemd-resolved + iwd
-- Brightness control: brightnessctl
-- Music player: mpd + mpc + ncmpc
-- Text editor: vim
+- Brightness control: [brightnessctl](https://github.com/Hummer12007/brightnessctl)
+- Music player: [mpd](https://github.com/MusicPlayerDaemon/MPD/) + [mpc](https://github.com/MusicPlayerDaemon/mpc) + [ncmpc](https://github.com/MusicPlayerDaemon/ncmpc)
+- Text editor: [vim](https://github.com/vim/vim)
 
 ## Requirement and recommendations
 
@@ -73,7 +73,5 @@ Those configs feature:
     - `mpv --vo=drm`: more powerful
     - `mplayer -vo fbdev2`: can specify size and location in framebufffer
 - terminal programs which naturally work everywhere
-  - [brightnessctl](https://github.com/Hummer12007/brightnessctl) for change screen brightness
   - [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
-  - Color scheme: material color scheme
   - [tty-clock](https://github.com/xorg62/tty-clock) for lock screen, only without locking
