@@ -9,23 +9,24 @@ Config files for everything
 ## Environment
 
 - OS: [Archlinux](http://www.archlinux.org/)
-- WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches) and [AwesomeWM](https://awesomewm.org/)
+- WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches)
 - Terminal Emulator: [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
 - Network Manager: systemd-networkd + systemd-resolved + iwd
 - Brightness control: brightnessctl
-- Color scheme: material color scheme
+- Music player: mpd + mpc + ncmpc
+- Text editor: vim
 
 ## Requirement and recommendations
 
 - fonts
-  - [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) and [Hack](https://github.com/source-foundry/Hack) for code
-  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF) and [Unifont](http://unifoundry.com/unifont/index.html) for Unicode bitmap font (in tty)
-  - [Material Design Icons font](https://github.com/templarian/MaterialDesign/) and [Nerd Font](https://nerdfonts.com) for status bar
-- curl for vim-plug auto install (in .vimrc) and a lot other scripts
+  - [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) for terminal
+  - [Terminus](https://github.com/powerline/fonts/tree/master/Terminus/PSF) for tty
+  - [Material Design Icons font](https://github.com/templarian/MaterialDesign/) for status bar
+- curl for network operations in a lot of scripts
 - [urlscan](https://github.com/firecat53/urlscan) for mutt url extractions
-- [pass](https://www.passwordstore.org/) for store email passwords
-- [rofi](https://github.com/davatorium/rofi) for launcher
-- [picom](https://github.com/yshui/picom) for compositing (a fork of [compton](https://github.com/chjj/compton))
+- [pass](https://www.passwordstore.org/) for storing passwords (e.g. for emails)
+- [rofi](https://github.com/davatorium/rofi) and [dmenu](https://tools.suckless.org/dmenu/) for launcher
+- [picom](https://github.com/yshui/picom) (a fork of [compton](https://github.com/chjj/compton))/[xcompmgr](https://gitlab.freedesktop.org/xorg/app/xcompmgr) for compositing
 
 ## Install
 
@@ -41,14 +42,7 @@ with `<package name>` being the folder name for a specific program (except `syst
 should be installed in root with `-t /` option).
 There is no `-t` or `-v` arguments because I am using `.stowrc` file.
 
-Another way is to use the makefile:
-
-```sh
-make install
-sudo make install-system
-```
-
-### Linux console setup
+## Linux console setup
 
 ![test](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/fbterm.png?raw=true)
 *Screenshot: Playing video with `mplayer` while running `tmux` in `fbterm`*
@@ -69,7 +63,7 @@ Those configs feature:
 - Configs for `fbterm`, a more powerful (e.g. show utf-8 glyphs, faster) terminal emulator in framebuffer
 - Tmux config specifically designed for using in fbterm, for details see [the readme](tmux/) in tmux folder.
 
-#### Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
+### Program recommendations (other than most well known like vim, ncmpcpp, tmux, etc.):
 - framebuffer only
   - [fbcat](https://github.com/jwilk/fbcat) for taking screenshots
   - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
@@ -79,6 +73,7 @@ Those configs feature:
     - `mpv --vo=drm`: more powerful
     - `mplayer -vo fbdev2`: can specify size and location in framebufffer
 - terminal programs which naturally work everywhere
-  - [light](https://github.com/haikarainen/light) for change screen brightness
+  - [brightnessctl](https://github.com/Hummer12007/brightnessctl) for change screen brightness
   - [imagemagick](https://www.imagemagick.org/) for darkening the image as wallpaper
+  - Color scheme: material color scheme
   - [tty-clock](https://github.com/xorg62/tty-clock) for lock screen, only without locking
