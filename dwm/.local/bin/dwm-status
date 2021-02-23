@@ -29,15 +29,15 @@ IMAIL2=15       ICON_MAIL2=''   SMAIL2=''
 # index < 020   icon string     temp filename   update interval
 IMEM=07         ICON_MEM=󰍛      SMEM=mem        NMEM=3
 ICPU=10         ICON_CPU=󰓅      SCPU=cpu        NCPU=3
-INET=11         ICON_NET=''     SNET=net        NNET=3
-IBAT=12         ICON_BAT=''     SBAT=bat        NBAT=3
+INET=11                         SNET=net        NNET=3
+IBAT=12                         SBAT=bat        NBAT=3
 IVOL=13         ICON_VOL=''     SVOL=vol        NVOL=3
-IMPDSTAT=16     ICON_MPDSTAT=   SMPDSTAT=mpd
+IMPDSTAT=16                     SMPDSTAT=mpd
 INULL=17
 
 d
 if [ "$1" = "--daemon" ]; then
-    while true; do sh $0; sleep 1; done
+    while true; do sh "$0"; sleep 1; done
     exit
 fi
 # If you clicked some text after a delimiter \0NN in the status bar,
@@ -91,17 +91,17 @@ case "${INDEX:-$1}" in
         esac ;;
     "$IAPPS"|apps)
         case "${BUTTON-1}" in
-            1)
-                rofi -theme launcher -show drun &
-                ;;
-            3)
-                dwmbar_height=$(xwininfo -root -children | grep '("dwm" "dwm")' |
-                    sed -n 's/.*\ \+\([0-9]\+\)x\([0-9]*\)+\([0-9]*\)+\([0-9]*\)\ \+.*/\2/p')
-                screen_width=$(xrandr | sed -n 's/[ ]*\([0-9]*\)x.*\*.*/\1/p')
-                xmenu_width=$(xrdb -query | grep xmenu.width | cut -f 2)
-                xmenu_bw=$(xrdb -query | grep xmenu.borderWidth | cut -f 2)
-                xmenu-apps -p $((screen_width - xmenu_width - 2 * xmenu_bw))x${dwmbar_height} &
-                ;;
+        1)
+            rofi -theme launcher -show drun &
+            ;;
+        3)
+            dwmbar_height=$(xwininfo -root -children |
+                sed -n 's/.*("dwm" "dwm")\ *\([0-9]*\)x\([0-9]*\).*/\2/p')
+            screen_width=$(xrandr | sed -n 's/[ ]*\([0-9]*\)x.*\*.*/\1/p')
+            xmenu_width=$(xrdb -query | grep xmenu.width | cut -f 2)
+            xmenu_bw=$(xrdb -query | grep xmenu.borderWidth | cut -f 2)
+            xmenu-apps -p "$((screen_width - xmenu_width - 2 * xmenu_bw))x${dwmbar_height}" &
+            ;;
         esac ;;
     "$IMAIL1"|"$IMAIL2")
         [ "$BUTTON" -ne 3 ] && exit
