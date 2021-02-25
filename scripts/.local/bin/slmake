@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -f config.def.h ]; then
-    make clean && make && make PREFIX=~/.local/ install && make clean
-else
     rm -f config.h && make && make PREFIX=~/.local/ install && make clean && rm config.h
+else
+    make clean && make && make PREFIX=~/.local/ install && make clean
 fi
