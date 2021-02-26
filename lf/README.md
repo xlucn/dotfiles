@@ -2,6 +2,8 @@
 
 ## Image preview
 
+**NOTE:** *ueberzug will use a lot of memory (up to 2GB+. I think it a bug, at least a flaw, but the author doesn't think so) if previewing a lot of large images. So, either you be OK with that, or go implement thumbnails in your lf config, or not use image preview at all.*
+
 ![lf-ueberzug-preview](https://user-images.githubusercontent.com/12032219/103355663-c0f43f80-4ae9-11eb-9627-a70f8cec5d1c.gif)
 
 Image preview works great after [this commit](https://github.com/gokcehan/lf/commit/82f03102a51fc192b69cd9d7cc52fac9f2c67211). Before that all solutions have problems like image not cleaned or not updated. Now you have the perfect image preview in `lf`!
