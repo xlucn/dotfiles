@@ -60,3 +60,8 @@ XF86Display
 
 super + p
     setmonitor
+
+# Translate selected text with translate-shell
+# Idea from https://github.com/4lgn/word-lookup
+super + shift + t
+    st -c floating sh -c "trans \"$(xclip -o)\" | less -R"

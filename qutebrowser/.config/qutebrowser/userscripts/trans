@@ -1,6 +1,0 @@
-#!/bin/sh
-# Require translate-shell
-# st -c floating sh -c "trans \"$QUTE_SELECTED_TEXT\" | less -R"
-# st sh -c "trans '$QUTE_SELECTED_TEXT' | tr '\n' '|' | sed 's/|/\\\\\\\\n/g' | less -R"
-res=$(trans -e bing "$QUTE_SELECTED_TEXT" | tr '\n' '|' | sed 's/|/\\\\n/g')
-echo "jseval --quiet javascript:alert(\"$res\");" > "$QUTE_FIFO"
