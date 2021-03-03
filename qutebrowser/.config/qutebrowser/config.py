@@ -28,7 +28,7 @@ c.content.blocking.enabled = True
 c.content.blocking.adblock.lists = [
     "https://easylist.to/easylist/easylist.txt",
     "https://easylist.to/easylist/easyprivacy.txt",
-    "https://raw.githubusercontent.com/easylist/easylistchina/master/easylistchina.txt"
+    "https://easylist-downloads.adblockplus.org/easylistchina.txt"
 ]
 
 c.tabs.padding = {'bottom': 8, 'left': 8, 'right': 8, 'top': 8}
