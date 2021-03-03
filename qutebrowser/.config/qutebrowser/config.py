@@ -34,7 +34,9 @@ c.content.blocking.adblock.lists = [
 c.tabs.padding = {'bottom': 8, 'left': 8, 'right': 8, 'top': 8}
 c.tabs.indicator.padding = {'bottom': 2, 'left': 0, 'right': 4, 'top': 4}
 
-c.zoom.default = '200%'
+xresources_xft = read_xresources("Xft")
+xft_dpi = int(xresources_xft.get("Xft.dpi"))
+c.zoom.default = '{}%'.format(xft_dpi * 4 / 3)
 
 c.colors.tabs.bar.bg = background
 c.colors.tabs.even.bg = background
