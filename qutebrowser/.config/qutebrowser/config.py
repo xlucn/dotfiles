@@ -42,7 +42,7 @@ c.colors.tabs.odd.bg = background
 c.colors.tabs.selected.even.bg = grey
 c.colors.tabs.selected.odd.bg = grey
 c.colors.statusbar.normal.bg = background
-c.statusbar.show = 'in-mode'
+c.statusbar.show = 'never'
 c.statusbar.position = 'bottom'
 c.statusbar.widgets = ['url', 'history', 'scroll', 'progress']
 
