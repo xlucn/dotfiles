@@ -24,6 +24,12 @@ grey = xresources['*color8']
 config.load_autoconfig(False)
 
 c.content.proxy = 'socks5://localhost:1081'
+c.content.blocking.enabled = True
+c.content.blocking.adblock.lists = [
+    "https://easylist.to/easylist/easylist.txt",
+    "https://easylist.to/easylist/easyprivacy.txt",
+    "https://raw.githubusercontent.com/easylist/easylistchina/master/easylistchina.txt"
+]
 
 c.tabs.padding = {'bottom': 8, 'left': 8, 'right': 8, 'top': 8}
 c.tabs.indicator.padding = {'bottom': 2, 'left': 0, 'right': 4, 'top': 4}
