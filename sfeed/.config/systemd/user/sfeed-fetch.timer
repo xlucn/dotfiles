@@ -1,0 +1,9 @@
+[Unit]
+Description=Auto fetch for sfeed
+
+[Timer]
+OnCalendar=00/4:10
+# run every 4 hours. :10 minutes just to avoid other timers
+
+[Install]
+WantedBy=timers.target

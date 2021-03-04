@@ -1,0 +1,7 @@
+[Unit]
+Description=Auto fetch for sfeed
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=sfeed_update %h/.config/sfeedrc

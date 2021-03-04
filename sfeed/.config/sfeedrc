@@ -1,0 +1,52 @@
+# vim: ft=sh
+export sfeedpath="$XDG_DATA_HOME/sfeed/feeds"
+export maxjobs=8
+PROXY="socks5h://localhost:1081"
+USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
+
+fetch() {
+    curl -sL -A "$USER_AGENT" --proxy "$PROXY" "$2"
+}
+
+feeds() {
+    # feed <name> <feedurl> [basesiteurl] [encoding]
+    feed "xkcd" "https://xkcd.com/atom.xml" "https://xkcd.com"
+    feed 'Icarus' 'http://rss.sciencedirect.com/publication/science/00191035'
+    feed 'PASJ' 'https://academic.oup.com/rss/site_5345/3211.xml'
+    feed 'AJ' 'http://iopscience.iop.org/1538-3881?rss=1'
+    feed 'CMDA' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=10569&channel-name=Celestial%20Mechanics%20and%20Dynamical%20Astronomy'
+    feed 'MNRAS' 'https://academic.oup.com/rss/site_5326/advanceAccess_3192.xml'
+    feed 'ARA&A' 'http://www.annualreviews.org/action/showFeed?ui=0&mi=7b21jr&ai=s3&jc=astro&type=etoc&feed=rss'
+    feed 'LRR' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=41114&channel-name=Living+Reviews+in+Relativity'
+    feed 'JGCD' 'http://arc.aiaa.org/action/showFeed?type=etoc&feed=rss&jc=jgcd'
+    feed 'PDU' 'http://rss.sciencedirect.com/publication/science/22126864'
+    feed 'SSR' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=11214&channel-name=Space+Science+Reviews'
+    feed 'ApJ' 'http://iopscience.iop.org/0004-637X?rss=1'
+    feed 'ApJL' 'http://iopscience.iop.org/2041-8205?rss=1'
+    feed 'MNRASL' 'https://academic.oup.com/rss/site_5327/3193.xml'
+    feed 'PSS' 'http://rss.sciencedirect.com/publication/science/00320633'
+    feed 'PASP' 'http://iopscience.iop.org/journal/rss/1538-3873'
+    feed 'A&A' 'https://feeds.feedburner.com/edp_aa?format=xml'
+    feed 'ApSS' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=10509&channel-name=Astrophysics%20and%20Space%20Science'
+    feed 'AstPar' 'http://rss.sciencedirect.com/publication/science/09276505'
+    feed 'LRCA' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=41115&channel-name=Living+Reviews+in+Computational+Astrophysics'
+    feed 'ExpAst' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=10686&channel-name=Experimental%20Astronomy'
+    feed 'ApJS' 'http://iopscience.iop.org/0067-0049?rss=1'
+    feed 'EPJC' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=10052&channel-name=The%20European%20Physical%20Journal%20C'
+    feed 'JCAP' 'http://iopscience.iop.org/1475-7516?rss=1'
+    feed 'NatPhy' 'http://www.nature.com/nphys/current_issue/rss/'
+    feed 'MPLA' 'http://www.worldscientific.com/action/showFeed?type=etoc&feed=rss&jc=mpla'
+    feed 'IJMPD' 'http://www.worldscientific.com/action/showFeed?type=etoc&feed=rss&jc=ijmpd'
+    feed 'PLB' 'http://rss.sciencedirect.com/publication/science/03702693'
+    feed 'GRG' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=10714&channel-name=General%20Relativity%20and%20Gravitation'
+    feed 'PRL' 'http://feeds.aps.org/rss/tocsec/PRL-GravitationandAstrophysics.xml'
+    feed 'PTEP' 'https://academic.oup.com/rss/site_5341/3207.xml'
+    feed 'JMP' 'http://aip.scitation.org/action/showFeed?type=etoc&feed=rss&jc=jmp'
+    feed 'PRD' 'http://feeds.aps.org/rss/recent/prd.xml'
+    feed 'RMP' 'http://feeds.aps.org/rss/recent/rmp.xml'
+    feed 'JHEP' 'http://link.springer.com/search.rss?facet-content-type=Article&facet-journal-id=13130&channel-name=Journal+of+High+Energy+Physics'
+    feed 'CQG' 'http://iopscience.iop.org/journal/rss/0264-9381;jsessionid=912C0348C4D0705A83092716CFE7AE81.ip-10-40-1-98'
+    feed 'NatCom' 'http://feeds.nature.com/ncomms/rss/current'
+    feed 'PhyRep' 'http://rss.sciencedirect.com/publication/science/03701573'
+    feed 'PRX' 'http://feeds.aps.org/rss/recent/prx.xml'
+}
