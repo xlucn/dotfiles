@@ -1,11 +1,22 @@
 # vim: ft=sh
-export sfeedpath="$XDG_DATA_HOME/sfeed/feeds"
-export maxjobs=8
+XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.config}
 PROXY="socks5h://localhost:1081"
 USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
 
+export sfeedpath="$XDG_DATA_HOME/sfeed/feeds"
+export maxjobs=8
+
+curl -s --proxy "$PROXY" localhost
+if [ "$?" = 7 ] || [ "$?" = 6 ]; then
+    unset PROXY
+fi
+
 fetch() {
-    curl -sL -A "$USER_AGENT" --proxy "$PROXY" "$2"
+    if [ -n "$PROXY" ]; then
+        curl -sL -A "$USER_AGENT" --proxy "$PROXY" "$2"
+    else
+        curl -sL -A "$USER_AGENT" "$2"
+    fi
 }
 
 feeds() {
