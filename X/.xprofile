@@ -31,3 +31,4 @@ for id in $(xinput list --id-only); do
         xinput set-prop "$id" "libinput Accel Speed" 0.5
     fi
 done
+libinput-gestures-setup restart > /dev/null
