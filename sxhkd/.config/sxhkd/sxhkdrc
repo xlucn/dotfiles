@@ -11,7 +11,7 @@ super + x
     dmenu_run
 
 super + e
-    nemo
+    pcmanfm
 
 super + d
     rofi -theme launcher -show drun
