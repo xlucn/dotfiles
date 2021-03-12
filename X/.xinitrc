@@ -8,7 +8,7 @@ WALLPAPER=$HOME/Pictures/wallpaper.jpg
 prewm() {
     pgrep -x fcitx || fcitx -d > /dev/null 2>&1
     pgrep -x sxhkd || sxhkd > /dev/null 2>&1 &
-    pgrep -x picom || picom -b --experimental-backends
+    pgrep -x xcompmgr || xcompmgr &
     pgrep -x udiskie || udiskie > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
