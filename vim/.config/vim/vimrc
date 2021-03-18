@@ -4,7 +4,9 @@ set nocompatible
 let $VIM = $XDG_CONFIG_HOME . '/vim'
 set runtimepath+=/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
-set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+if !has('nvim')
+    set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+endif
 " }}}
 " Vim-Plug {{{
 call plug#begin($VIM . '/bundle')
