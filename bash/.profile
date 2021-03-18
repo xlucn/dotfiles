@@ -1,13 +1,8 @@
 #!/bin/sh
 
 HOME=${HOME%%/}
-# PATH
-for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$HOME/.local/share/npm/bin"; do
-    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
-        export PATH="$p:${PATH}"
-    fi
-done
-
+unset MANPATH
+MANPATH=$(manpath)
 # Environments
 export EDITOR=vim
 export VISUAL=vim
@@ -45,6 +40,9 @@ export VIMINIT=":source $MYVIMRC"
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_PACKAGES="$XDG_DATA_HOME/npm"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export RANDFILE="$XDG_CACHE_HOME/openssl_rnd"
 export DIALOGRC="$XDG_CONFIG_HOME/dialog/dialogrc"
@@ -53,6 +51,13 @@ export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
 export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
+
+# PATH
+for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$NPM_PACKAGES/bin"; do
+    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
+        export PATH="$p:${PATH}"
+    fi
+done
 
 # Set icons in lf
 export LF_ICONS="\
