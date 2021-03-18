@@ -552,7 +552,7 @@ local function network()
     net_upd:emit_signal("timeout")
 
     net_icon:buttons { awful.button({}, 1, function()
-        awful.spawn(config.float_terminal .. " -e nmtui-connect")
+        awful.spawn(config.floating_terminal .. " -e nmtui-connect")
     end) }
     local network_widget = wibox.widget {
         net_icon,
