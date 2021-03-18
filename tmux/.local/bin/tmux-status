@@ -1,0 +1,10 @@
+#!/bin/sh
+printf "#[fg=colour13] mail:%s" "$(imap-tmux)"
+printf "#[fg=colour9 ] cpu: %s" "$(cpu)"
+printf "#[fg=colour14] vol:%s %s" "$([ "$(vol -s)" = 1 ] && printf " " || printf "-")" "$(vol)"
+printf "#[fg=colour11] lit: %.0f" "$(brightnessctl -m i | awk -F, '{ print $4 }' | tr -d %)"
+printf "#[fg=colour10] %s :%3.0f" "$([ "$(ac)" = 1 ] && printf " ac" || printf "bat")" "$(battery)"
+printf "#[fg=colour10] [%s%s]" "$([ "$(network -w)" = 1 ] && printf "w")" \
+                             "$([ "$(network -e)" = 1 ] && printf "e")"
+printf "#[fg=colour3 ] %s" "$(up)"
+printf "#[fg=colour9 ] %s/%s" "$(mem -1u)" "$(mem -1t)"
