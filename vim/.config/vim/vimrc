@@ -158,6 +158,11 @@ autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=2
 autocmd FileType tex,markdown,gitcommit setlocal spell
 autocmd FileType gnuplot setlocal commentstring=#%s
 autocmd FileType mma setlocal noet commentstring=(*%s*)
+if has('nvim')
+    autocmd TermOpen term://* setlocal nonu nornu scl=no
+    autocmd TermOpen term://* startinsert
+    autocmd TermClose term://* call nvim_input('<CR>')
+endif
 " autocmd FileType tex let b:ale_lsp_root='./'
 " }}}
 " Fcitx Toggle {{{
