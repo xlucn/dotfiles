@@ -168,8 +168,11 @@ endif
 " Fcitx Toggle {{{
 " restore input method state when enter insert mode
 let s:fcitx_cmd = executable("fcitx5-remote") ? "fcitx5-remote" : "fcitx-remote"
-autocmd InsertLeave * let b:fcitx = system(s:fcitx_cmd) | call system(s:fcitx_cmd.' -c')
-autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx_cmd.' -o') | endif
+augroup fcitx
+    autocmd!
+    autocmd InsertLeave * let b:fcitx = system(s:fcitx_cmd) | call system(s:fcitx_cmd.' -c')
+    autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx_cmd.' -o') | endif
+augroup END
 " }}}
 " Netrw -> NerdTree {{{
 " Make Netrw function like NerdTree
