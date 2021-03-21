@@ -117,6 +117,7 @@ if has('gui_running')
 endif
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
+let g:termdebug_wide=1
 " }}}
 " Space Tabs Indentations {{{
 " indentations
