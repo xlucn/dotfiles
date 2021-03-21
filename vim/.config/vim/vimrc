@@ -363,7 +363,7 @@ let g:which_key_map.g = {
   \ 'b' : [ ':Gblame', 'git blame' ],
   \ 'd' : [ ':Gvdiff', 'git diff' ],
   \ 'c' : [ ':Gcommit -v', 'git commit' ],
-  \ 'g' : [ ':!tig -C "'.expand('%:p:h').'"', 'run tig' ],
+  \ 'g' : [ ':!tig -C "$(dirname "$(realpath "'.expand('%:p').'")")"', 'run tig' ],
   \ 's' : [ ':Gstatus', 'git status' ],
   \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
   \ 'u' : [ ':Gpush', 'git push' ],
