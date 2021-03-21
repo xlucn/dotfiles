@@ -150,8 +150,7 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 " }}}
 " Autocmd {{{
-autocmd VimEnter * silent exec "! echo -ne ".&t_EI
-autocmd VimLeave * silent exec "! echo -ne ".&t_SI
+autocmd VimEnter * normal! :startinsert :stopinsert
 autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
 autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
 autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
