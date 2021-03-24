@@ -3,7 +3,7 @@
 monitor = 0
 follow = mouse
 # The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "480x48-0+24"
+geometry = "720x48-48+96"
 # Show how many messages are currently hidden (because of geometry)
 indicate_hidden = yes
 # Shrink window if it's smaller than the width. Ignored if 0
