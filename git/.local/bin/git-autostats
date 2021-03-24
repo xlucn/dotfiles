@@ -16,7 +16,7 @@ search_repos()
         ! -path "*/.config/vim/*" \
         -exec dirname {} ';' |
     while read -r repo; do
-        git -C "$repo" remote get-url origin | grep -q "$user" && echo "$repo"
+        git -C "$repo" remote get-url origin | grep -iq "$user" && echo "$repo"
     done > "$CONFIG_FILE"
 }
 
