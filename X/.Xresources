@@ -1,9 +1,5 @@
 ! -- Xft settings -- !
-#if __has_include("/tmp/Xresources.Xft.dpi")
-# include "/tmp/Xresources.Xft.dpi"
-#else
 Xft.dpi       : 96
-#endif
 Xft.antialias : true
 Xft.rgba      : rgb
 Xft.hinting   : true
@@ -11,6 +7,28 @@ Xft.hintstyle : hintslight
 
 ! -- Cursor -- !
 Xcursor.theme: Breeze-Adapta-Cursor
+
+*.font: Monospace:size=12
+
+*cursorColor:   #c5a89a
+*foreground:    #a6a19b
+*background:    #212121
+*color0:        #303030
+*color1:        #826023
+*color2:        #618231
+*color3:        #7e7b28
+*color4:        #3e825c
+*color5:        #82685c
+*color6:        #749cb3
+*color7:        #a6a19b
+*color8:        #484848
+*color9:        #b48430
+*color10:       #86b443
+*color11:       #b0ab37
+*color12:       #55b47f
+*color13:       #b4907f
+*color14:       #9bb4c8
+*color15:       #d8d1c9
 
 ! -- URxvt UI -- !
 URxvt.depth              : 32
@@ -78,24 +96,10 @@ xmenu.borderWidth: 2
 xmenu.selbackground: #B0BEC5
 xmenu.selforeground: #222B39
 
-*.font: Monospace:size=12
 
-*cursorColor:   #c5a89a
-*foreground:    #a6a19b
-*background:    #212121
-*color0:        #303030
-*color1:        #826023
-*color2:        #618231
-*color3:        #7e7b28
-*color4:        #3e825c
-*color5:        #82685c
-*color6:        #749cb3
-*color7:        #a6a19b
-*color8:        #484848
-*color9:        #b48430
-*color10:       #86b443
-*color11:       #b0ab37
-*color12:       #55b47f
-*color13:       #b4907f
-*color14:       #9bb4c8
-*color15:       #d8d1c9
+#if __has_include(".Xresources.mine")
+# include ".Xresources.mine"
+#endif
+#if __has_include("/tmp/Xresources.Xft.dpi")
+# include "/tmp/Xresources.Xft.dpi"
+#endif
