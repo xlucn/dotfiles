@@ -113,7 +113,7 @@ else
 endif
 colorscheme wal
 if has('gui_running')
-    set background=light
+    colorscheme desert
 endif
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
