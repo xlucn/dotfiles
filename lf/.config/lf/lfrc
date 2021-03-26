@@ -19,6 +19,24 @@ map <m-3> open
 map <m-2> updir
 map <m-up>    up
 map <m-down>  down
+map R bulk-rename
 
 # Commands
 cmd open $ open $fx
+cmd bulk-rename ${{
+    old="$(mktemp)"
+    new="$(mktemp)"
+    [ -n "$fs" ] || fs="$(ls)"
+    printf '%s\n' "$fs" > "$old"
+    printf '%s\n' "$fs" > "$new"
+    $EDITOR "$new"
+    [ "$(wc -l "$new")" -ne "$(wc -l "$old")" ] && exit
+    paste "$old" "$new" | while IFS=$(printf "\t") read -r src dst; do
+        if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
+            continue
+        fi
+        mv -- "$src" "$dst"
+    done
+    rm -- "$old" "$new"
+    lf -remote "send $id unselect"
+}}
