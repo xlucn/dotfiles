@@ -7,10 +7,14 @@ uninstall:
 
 install-system:
 	for i in $$(find system/); do \
-		[ -d $$i ] && mkdir -p $${i#system}; \
-		[ -h $${i#system} ] && echo "file $$i is a symbolic link" && exit; \
-		[ -f $$i ] && ! { [ -f $${i#system} ] && diff $$i $${i#system} > /dev/null; } && \
+		if [ -d $$i ]; then mkdir -p $${i#system}; fi; \
+		if [ -h $${i#system} ]; then \
+			echo "file $$i is a symbolic link"; \
+			exit; \
+		fi; \
+		if [ -f $$i ] && ! { [ -f $${i#system} ] && diff $$i $${i#system} > /dev/null; }; then \
 			cp -v $$i $${i#system}; \
+		fi; \
 	done
 
 uninstall-system:
