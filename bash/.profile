@@ -1,8 +1,6 @@
 #!/bin/sh
 
 HOME=${HOME%%/}
-unset MANPATH
-MANPATH=$(manpath)
 # Environments
 export EDITOR=vim
 export VISUAL=vim
@@ -13,51 +11,79 @@ export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+# less history
 export LESSHISTFILE=-
+# elinks
 export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
+# gnupg
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+# gtk2
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+# python: ipython, jupyter, pylint
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
+export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+# mathematica
 export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME/Mathematica"
+# passwordstore
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+# mplayer
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
+# terminfo
 export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+# grip (markdown render)
 export GRIPHOME="$XDG_CONFIG_HOME/grip"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+# readline
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+# rxvt
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
+# abduco
 export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
+# ruby bundle
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+# dvdcss
 export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
+# vim
 export MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
 export MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
 export EXINIT=":source $XDG_CONFIG_HOME/ex/exrc"
 export VIMINIT=":source $MYVIMRC"
+# libice
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+# nodejs
 export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export NPM_PACKAGES="$XDG_DATA_HOME/npm"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+unset MANPATH
+MANPATH=$(manpath)
 export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+# rand
 export RANDFILE="$XDG_CACHE_HOME/openssl_rnd"
+# dialog
 export DIALOGRC="$XDG_CONFIG_HOME/dialog/dialogrc"
+# lynx
 export LYNX_CFG="$XDG_CONFIG_HOME/lynx/lynx.cfg"
 export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
+# maxima
 export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
+# android
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
 
 # PATH
-for p in "$HOME/.gem/ruby" "$HOME/.local/bin" "$NPM_PACKAGES/bin"; do
-    if [ -d "$p" ] && [ "$PATH" = "${PATH%$p*}" ]; then
-        export PATH="$p:${PATH}"
+add_to_path() {
+    if [ -d "$1" ] && [ "$PATH" = "${PATH%$1*}" ]; then
+        export PATH="$1:${PATH}"
     fi
-done
+}
+add_to_path "$HOME/.local/bin"
+add_to_path "$NPM_PACKAGES/bin"
+add_to_path "$XDG_DATA_HOME"/gem/ruby/*/bin
 
 # Set icons in lf
 export LF_ICONS="\
