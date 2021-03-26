@@ -9,6 +9,7 @@ set previewer pv
 set cleaner preview-image
 
 # Key bindings
+map e $$EDITOR $fx
 map <c-y> up
 map <c-e> down
 map <enter> open
