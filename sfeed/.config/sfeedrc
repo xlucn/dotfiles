@@ -12,11 +12,7 @@ if [ "$?" = 7 ] || [ "$?" = 6 ]; then
 fi
 
 fetch() {
-    if [ -n "$PROXY" ]; then
-        curl -sL -A "$USER_AGENT" --proxy "$PROXY" "$2"
-    else
-        curl -sL -A "$USER_AGENT" "$2"
-    fi
+    curl -sL -A "$USER_AGENT" --proxy "$PROXY" "$2"
 }
 
 feeds() {
