@@ -3,11 +3,20 @@
 FIFO="/tmp/udev-local.fifo"
 UDEV_LOCAL_LOG="/tmp/udev-local.log"
 
+# send signals with arguments, only use this in udev rules
 if [ $# -ge 1 ]; then
-    echo "$*" > $FIFO
-    echo "sending: $*" >> $UDEV_LOCAL_LOG
+    # $UID can't give the user id, why?
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "$*" > $FIFO
+    else
+        # find the user in the current console
+        xtty="$(cat /sys/class/tty/tty0/active)"
+        xuser="$(who | grep "${xtty}" | head -n 1 | cut -d' ' -f1)"
+        # direct echoing with root won't work
+        [ -n "${xuser}" ] && /bin/su - "${xuser}" -c "echo \"$*\" > $FIFO"
+    fi
     exit
-fi
+fi # other wise, monitor fifo output and respond
 
 if [ ! -p $FIFO ]; then
     rm -f $FIFO && mkfifo $FIFO || exit 1

@@ -1,21 +1,20 @@
 # map caps key to escape for all keyboards with capslock
-KERNEL       == "input[0-9]*::capslock",\
-SUBSYSTEM    == "leds",\
-ACTION       == "add",\
-RUN          += "/bin/su - oliver -c 'echo capslock > /tmp/udev-local.fifo'"
+KERNEL    == "input[0-9]*::capslock",\
+SUBSYSTEM == "leds",\
+ACTION    == "add",\
+RUN       += "/usr/local/bin/udev-local capslock"
 
 # power on/off notify
-KERNEL       == "ADP0|AC0",\
-SUBSYSTEM    == "power_supply",\
-ACTION       == "change",\
-ATTR{online} == "[01]",\
-RUN          += "/bin/su - oliver -c 'echo ac $attr{online} > /tmp/udev-local.fifo'"
+KERNEL    == "ADP0|AC0",\
+SUBSYSTEM == "power_supply",\
+ACTION    == "change",\
+RUN       += "/usr/local/bin/udev-local ac $attr{online}"
 
 # monitor change
-KERNEL       == "card0",\
-SUBSYSTEM    == "drm",\
-ACTION       == "change",\
-RUN          += "/bin/su - oliver -c 'echo drm > /tmp/udev-local.fifo'"
+KERNEL    == "card0",\
+SUBSYSTEM == "drm",\
+ACTION    == "change",\
+RUN       += "/usr/local/bin/udev-local drm"
 
 # input device, for testing rules
 # SUBSYSTEM=="hid",ENV{DISPLAY}=":0",ENV{XAUTHORITY}="/home/oliver/.Xauthority",RUN+="/bin/su - oliver -c '/usr/bin/notify-send hello input device found'"
