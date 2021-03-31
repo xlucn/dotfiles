@@ -43,6 +43,8 @@ if [ "$TERM" = "linux" ]; then
     done
 fi
 
+export PROXY="socks5h://localhost:1081"
+
 # This command is in my own dotfiles repo
 PS1='$(shell_prompt)'
 
