@@ -22,7 +22,8 @@ if [ ! -p $FIFO ]; then
     rm -f $FIFO && mkfifo $FIFO || exit 1
 fi
 
-trap "exec 3>&- && rm -f $FIFO" EXIT QUIT INT TERM
+# clean up before quit
+trap 'exec 3>&- && rm -f $FIFO' EXIT QUIT INT TERM
 
 while read -r t p; do
     echo "debug: $t" >> $UDEV_LOCAL_LOG
@@ -42,7 +43,10 @@ while read -r t p; do
             ;;
         *)
             ;;
-    esac
+    esac & # put to background so the signals are not blocked
 done < $FIFO &
+
+# keep the fifo open
 exec 3> $FIFO
+# wait for the while loop (basically until the process is killed)
 wait
