@@ -61,6 +61,6 @@ if [ -f "$CONFIG_FILE" ]; then
     fi
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
-    echo "You can use \"$(basename "$0") -s <path>\" (need fzf) to do it more easily"
+    echo "You can use \"$(basename "$0") -s <repo_owner>\" (need fzf) to do it more easily"
     exit
 fi
