@@ -30,7 +30,7 @@ alias newsboat="newsboat -q"
 alias notes="lf \$HOME/Code/notes"
 # pip update
 pip_update() {
-    pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs pip install --user --upgrade
+    pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
 }
 # arch linux update
 alias au="sudo pacman -Syu && paru -Sua"
