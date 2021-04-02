@@ -39,7 +39,7 @@ case ${1:-dwm} in
     awesome*) prewm; exec awesome;;
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
-    simple) startdwm;;
+    simple) st & startdwm;;
     dwm*) prewm; startdwm;;
     *) exec "$1";;
 esac
