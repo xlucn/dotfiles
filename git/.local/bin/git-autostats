@@ -9,23 +9,28 @@ usage()
 
 search_repos()
 {
-    user=$1
-    find "$HOME" -type d -name .git \
-        ! -path "*/.cache/*" \
-        ! -path "*/.vim/*" \
-        ! -path "*/.config/vim/*" \
-        -exec dirname {} ';' |
+    printf "Enter the username to filter repo owners (accept basic regex): "
+    read -r user
+    { if which locate > /dev/null 2>&1; then
+        locate "$HOME/*.git" | grep -v "$HOME/.\(cache\|config/vim\|vim\)/*"
+    else
+        find "$HOME" -type d -name .git \
+            ! -path "$HOME/.cache/*" \
+            ! -path "$HOME/.vim/*" \
+            ! -path "$HOME/.config/vim/*" \
+            -exec dirname {} ';'
+    fi } |
     while read -r repo; do
-        git -C "$repo" remote get-url origin | grep -iq "$user" && echo "$repo"
+        git -C "$repo" remote get-url origin | grep -iq "${user:-.}" && echo "$repo"
     done > "$CONFIG_FILE"
 }
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
 
-while getopts "hus:" p; do
+while getopts "hus" p; do
     case "$p" in
         u) flag_update=1;;
-        s) search_repos "$OPTARG"; exit;;
+        s) search_repos; exit;;
         h|*) usage; exit;;
     esac
 done
@@ -72,6 +77,6 @@ if [ -f "$CONFIG_FILE" ]; then
     fi
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
-    echo "You can use \"$(basename "$0") -s <repo_owner>\" (need fzf) to do it more easily"
+    echo "You can use \"$(basename "$0") -s\" to do it more easily"
     exit
 fi
