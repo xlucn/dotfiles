@@ -15,6 +15,7 @@
     l = log
     b = branch
     pl = log --all --decorate --oneline --graph --date-order
+    as = autostats # my own script
 [http]
     ; proxy = "socks5h://localhost:1080"
 [pull]
