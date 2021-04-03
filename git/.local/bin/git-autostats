@@ -73,7 +73,7 @@ if [ -f "$CONFIG_FILE" ]; then
     done < "$CONFIG_FILE"
 
     if [ "$flag_update" = 1 ]; then
-        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0} $staged_count $unstaged_count $untracked_count" > /tmp/git-autostats
+        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0} ${staged_count:-0} ${unstaged_count:-0} ${untracked_count:-0}" > /tmp/git-autostats
     fi
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
