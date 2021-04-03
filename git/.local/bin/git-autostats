@@ -32,15 +32,18 @@ done
 
 if [ -f "$CONFIG_FILE" ]; then
     if [ "$flag_update" != 1 ]; then
-        echo " ahead behind repo path"
+        echo " ahead behind staged unstaged untracked repo path"
     fi
 
     while read -r p; do
         [ ! -d "$p" ] && continue
-        upstream="$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")"
-        current="$(git -C "$p" branch --show-current)"
-        left="$(git -C "$p" rev-list --count --left-only "$current"..."$upstream")"
-        right="$(git -C "$p" rev-list --count --right-only "$current"..."$upstream")"
+        upstream=$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")
+        current=$(git -C "$p" branch --show-current)
+        left=$(git -C "$p" rev-list --count --left-only "$current"..."$upstream")
+        right=$(git -C "$p" rev-list --count --right-only "$current"..."$upstream")
+        staged=$(git -C "$p" diff --cached --numstat | wc -l)
+        unstaged=$(git -C "$p" diff --numstat | wc -l)
+        untracked=$(git -C "$p" ls-files --other --exclude-standard | wc -l)
         if [ "$flag_update" = 1 ]; then
             if [ "$left" = 0 ] && [ "$right" = 0 ]; then
                 uptodate=$((uptodate + 1))
@@ -51,13 +54,21 @@ if [ -f "$CONFIG_FILE" ]; then
             else # [ "$left" != 0 ] && [ "$right" != 0 ]
                 conflict=$((conflict + 1))
             fi
+            [ "$staged" != 0 ] && staged_count=$((staged_count + 1))
+            [ "$unstaged" != 0 ] && unstaged_count=$((unstaged_count + 1))
+            [ "$untracked" != 0 ] && untracked_count=$((untracked_count + 1))
         else
-            printf "\033[$((left?34:0))m%6s \033[$((right?31:0))m%6s\033[0m %s\n" "+$left" "-$right" "$p"
+            printf "\033[$((left?34:0))m%6s\033[0m " "+$left"
+            printf "\033[$((right?31:0))m%6s\033[0m " "-$right"
+            printf "\033[$((staged?34:0))m%6s\033[0m " "$staged"
+            printf "\033[$((unstaged?31:0))m%8s\033[0m " "$unstaged"
+            printf "\033[$((untracked?31:0))m%9s\033[0m " "$untracked"
+            printf "%s\n" "~${p#$HOME}"
         fi
     done < "$CONFIG_FILE"
 
     if [ "$flag_update" = 1 ]; then
-        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0}" > /tmp/git-autostats
+        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0} $staged_count $unstaged_count $untracked_count" > /tmp/git-autostats
     fi
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"

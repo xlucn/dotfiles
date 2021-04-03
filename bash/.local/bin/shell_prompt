@@ -51,12 +51,15 @@ __jobcounts() {
 
 __git_autostats() {
     if [ -f /tmp/git-autostats ]; then
-        read -r _ ahead behind conflict < /tmp/git-autostats
-        [ $((ahead + behind + conflict)) = 0 ] && return
+        read -r _ ahead behind conflict staged unstaged untracked < /tmp/git-autostats
+        [ $((ahead + behind + conflict + staged + unstaged + untracked)) = 0 ] && return
         printf " ["
-        [ "$ahead"    -gt 0 ] && printf "$green%s+$reset" "$ahead"
-        [ "$behind"   -gt 0 ] && printf "$yellow%s-$reset" "$behind"
-        [ "$conflict" -gt 0 ] && printf "$red%s±$reset" "$conflict"
+        [ "$ahead"     -gt 0 ] && printf "$green%s+$reset" "$ahead"
+        [ "$behind"    -gt 0 ] && printf "$yellow%s-$reset" "$behind"
+        [ "$conflict"  -gt 0 ] && printf "$red%s±$reset" "$conflict"
+        [ "$staged"    -gt 0 ] && printf "$green%sv$reset" "$staged"
+        [ "$unstaged"  -gt 0 ] && printf "$yellow%sx$reset" "$unstaged"
+        [ "$untracked" -gt 0 ] && printf "$red%s?$reset" "$untracked"
         printf "]"
     else
         git autostats -u > /dev/null 2>&1
