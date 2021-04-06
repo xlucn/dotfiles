@@ -27,6 +27,8 @@ set sidebar_format = "%B %?N?[%N]?%* %S"
 set forward_format = "Fwd: %s"
 # index (list of mails)
 set index_format = "%4C %Z %<[y?%<[d?%[%H:%M]&%[%m/%d]>&%[%y-%m]> %-10.10L (%?l?%4l&%4c?) %s"
+# status
+set status_format = "%f%r [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?] (%s/%S)%> (%P)"
 
 # cache folder
 set message_cachedir = ~/.cache/neomutt/bodies
