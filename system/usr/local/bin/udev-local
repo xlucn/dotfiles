@@ -39,7 +39,7 @@ while read -r t p; do
             ;;
         drm)
             notify-send -a "Display" "External monitor changed"
-            sh -c "$(which setmonitor)"
+            which setmonitor > /dev/null 2>&1 && setmonitor -q
             ;;
         *)
             ;;
