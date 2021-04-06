@@ -1,6 +1,14 @@
 #!/bin/sh
 # A script to configure multiple displays with xrandr
 
+while getopts q arg; do
+    case "$arg" in
+        q) flag_quiet=1 ;;
+        *) ;;
+    esac
+done
+shift $((OPTIND - 1))
+
 command -v dmenu > /dev/null && DMENU="dmenu" || DMENU="rofi -dmenu"
 
 all_monitors=$(xrandr | sed -n 's/\(.*\) \(dis\|\)connected.*/\1/p')
@@ -24,9 +32,6 @@ xrandr_disable_others() {
     done
 }
 
-# Cancel
-add_cmd "Cancel" true
-
 # Single Monitor
 for m in $monitors; do
     add_cmd "Single    $m" \
@@ -43,6 +48,11 @@ for m in $monitors; do
             --output $n --auto --same-as $m $(xrandr_disable_others "$m" "$n")"
     done
 done
+
+if [ "$index" = 1 ] && [ -n "$flag_quiet" ]; then
+    eval '$command_0'
+    exit
+fi
 
 choice=$(printf "%s$options" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
