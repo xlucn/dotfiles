@@ -3,6 +3,7 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
+systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
 prewm() {
