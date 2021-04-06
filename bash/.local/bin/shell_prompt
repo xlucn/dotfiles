@@ -22,7 +22,7 @@ fi
 
 __ssh_indicator() {
     [ -n "$SSH_CLIENT" ] &&
-        printf "$cyan [SSH:$magenta%s@%s$cyan]$reset" "$(whoami)" "$(hostname)"
+        printf "$cyan[SSH:$magenta%s@%s$cyan]$reset " "$(whoami)" "$(hostname)"
 }
 
 __cwd_trim() {
@@ -40,27 +40,28 @@ __cwd_trim() {
 }
 
 __curdir() {
-    printf " $boldyellow%s$reset" "$(__cwd_trim "$(basename "$PWD")")"
+    printf "$boldyellow%s$reset " "$(__cwd_trim "$(basename "$PWD")")"
+    # set terminal title
     printf "\001\033]0;[%s] %s\007\002" "$TERM" "$PWD"
 }
 
 __jobcounts() {
     jobcount=$(jobs -p | wc -l)
-    [ "$jobcount" -gt 0 ] && printf " $green(jobs:%s)$reset" "$jobcount"
+    [ "$jobcount" -gt 0 ] && printf "$green(jobs:%s)$reset " "$jobcount"
 }
 
 __git_autostats() {
     if [ -f /tmp/git-autostats ]; then
         read -r _ ahead behind conflict staged unstaged untracked < /tmp/git-autostats
         [ $((ahead + behind + conflict + staged + unstaged + untracked)) = 0 ] && return
-        printf " ["
+        printf "["
         [ "$ahead"     -gt 0 ] && printf "$green%s+$reset" "$ahead"
         [ "$behind"    -gt 0 ] && printf "$yellow%s-$reset" "$behind"
         [ "$conflict"  -gt 0 ] && printf "$red%s±$reset" "$conflict"
         [ "$staged"    -gt 0 ] && printf "$green%sv$reset" "$staged"
         [ "$unstaged"  -gt 0 ] && printf "$yellow%sx$reset" "$unstaged"
         [ "$untracked" -gt 0 ] && printf "$red%s?$reset" "$untracked"
-        printf "]"
+        printf "] "
     else
         git autostats -u > /dev/null 2>&1
     fi
@@ -68,13 +69,12 @@ __git_autostats() {
 
 __gitprompt() {
     /usr/bin/env df --output=fstype . | grep -q sshfs && return
-    printf "$(
-    __git_ps1 " (%s)" |
+    printf "$(__git_ps1 "(%s) " |
     sed -e "s/%/%%/g" \
         -e "s/\\\\\\[/\\\\001/g" \
         -e "s/\\\\\\]/\\\\002/g" \
         -e "s/\\\\\\e/\\\\033/g"
-    )%s"
+    )%s" ""
 }
 
 __ssh_indicator
@@ -82,4 +82,4 @@ __curdir
 __jobcounts
 __git_autostats
 __gitprompt
-printf "$boldyellow %s $reset" "$"
+printf "$boldyellow%s $reset" "$"
