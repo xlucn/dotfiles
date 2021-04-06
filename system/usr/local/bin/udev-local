@@ -25,7 +25,7 @@ fi
 # clean up before quit
 trap 'exec 3>&- && rm -f $FIFO' EXIT QUIT INT TERM
 
-while read -r t p; do
+while read -r t p aux; do
     echo "debug: $t" >> $UDEV_LOCAL_LOG
     case "$t" in
         capslock)
@@ -40,6 +40,15 @@ while read -r t p; do
         drm)
             notify-send -a "Display" "External monitor changed"
             which setmonitor > /dev/null 2>&1 && setmonitor -q
+            ;;
+        usb)
+            # 3 retries, there might be "Error looking up object for device" error
+            for _ in 1 2 3; do
+                if output=$(udisksctl mount --block-device "$p"); then
+                    notify-send -a "USB Storage" "$aux" "$output"
+                    break
+                fi
+            done
             ;;
         *)
             ;;
