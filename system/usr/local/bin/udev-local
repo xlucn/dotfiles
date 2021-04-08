@@ -48,6 +48,7 @@ while read -r t p aux; do
                     notify-send -a "USB Storage" "$aux" "$output"
                     break
                 fi
+                sleep 1
             done
             ;;
         *)
