@@ -1,4 +1,6 @@
 # This is Git's per-user configuration file.
+[init]
+    defaultBranch = main
 [user]
     name = Oliver Lew
     email = oliver_lew@outlook.com
