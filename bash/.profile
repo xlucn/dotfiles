@@ -74,6 +74,14 @@ export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
 # android
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
+# java applications
+export _JAVA_AWT_WM_NONREPARENTING=1
+export JDK_JAVA_OPTIONS='
+    -Dawt.useSystemAAFontSettings=on
+    -Dswing.aatext=true
+    -Dsun.java2d.opengl=true
+    -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 
 # PATH
 add_to_path() {
