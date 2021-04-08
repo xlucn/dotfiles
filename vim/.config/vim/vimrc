@@ -449,6 +449,13 @@ let g:vimtex_compiler_method = "latexmk"
 let g:vimtex_compiler_latexmk = {
     \ 'build_dir' : 'output',
     \}
+augroup autocomplete
+    autocmd!
+    autocmd FileType tex
+        \ :ab tp textperiodcentered|
+        \ :ab te textellipsis|
+        \ :ab op originalpage{}<Left>
+augroup END
 " }}}
 " Mathematica {{{
 let g:mma_candy = 2
