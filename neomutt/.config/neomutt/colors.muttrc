@@ -10,14 +10,8 @@ color underline black default
 color indicator black white
 
 # Index colors:
-color index yellow default '.*'
+color index default default '.*'
 color index brightyellow default "~N"
-color index_author red default '.*'
-color index_author brightred default "~N"
-color index_subject cyan default '.*'
-color index_subject brightcyan default "~N"
-color index_number blue default
-color index_date magenta default
 
 # Header colors (you have to put hdrdefault before others):
 color hdrdefault brightgreen default
@@ -47,7 +41,7 @@ color quoted3 yellow default
 color quoted4 red default
 color quoted5 brightred default
 color signature brightgreen default
-color progress brightyellow blue
+# color progress brightyellow blue
 
 color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
 color body blue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL

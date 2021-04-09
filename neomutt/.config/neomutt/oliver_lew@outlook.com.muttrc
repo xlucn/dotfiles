@@ -2,18 +2,16 @@
 set realname = "Xu Lu"
 
 # email address
-set my_email = "oliver_lew@outlook.com"
-set from = $my_email
-set imap_user = $my_email
+set imap_user = "oliver_lew@outlook.com"
+set from = $imap_user
 
 # imap/smtp urls
 set folder = "imaps://imap-mail.outlook.com:993/"
-set smtp_url= "smtp://$my_email@smtp-mail.outlook.com:587/"
+set smtp_url= "smtp://$imap_user@smtp-mail.outlook.com:587/"
 
 # password
-set my_pass = `pass show mail/$my_email`
-set imap_pass = $my_pass
-set smtp_pass = $my_pass
+set imap_pass = `pass show mail/oliver_lew@outlook.com`
+set smtp_pass = $imap_pass
 
 # Mailboxes
 set spoolfile = "+Inbox"
@@ -24,7 +22,6 @@ set trash = "+Deleted"
 # do not save sent email
 set copy = no
 
-# signature file
-set signature = "~/.config/neomutt/$my_email.signature"
+unset signature
 
 account-hook $folder "set imap_user=$imap_user imap_pass=$imap_pass"

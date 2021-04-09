@@ -1,0 +1,93 @@
+set my_email1 = "2869761396@qq.com"
+set my_email2 = "oliver_lew@outlook.com"
+source ~/.config/neomutt/$my_email2.muttrc
+
+folder-hook $folder 'source ~/.config/neomutt/$my_email1.muttrc'
+folder-hook $folder 'source ~/.config/neomutt/$my_email2.muttrc'
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email1.muttrc<enter><change-folder>!<enter>'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email2.muttrc<enter><change-folder>!<enter>'
+
+# editor, use vim
+set editor = "vim"
+set sig_on_top = yes
+# disable '+' markers at the beginning of every wrapped line
+unset markers
+# do not show anything for emails only for me
+set to_chars = "+ TCFL"
+
+# show sidebar
+set sidebar_visible = no
+set sidebar_width = 20
+set sidebar_short_path = yes
+set sidebar_folder_indent = yes
+set sidebar_sort_method = name
+# sidebar format: Boxname [New messages]  Total size
+set sidebar_format = "%B %?N?[%N]?%* %S"
+# forward subject formats
+set forward_format = "Fwd: %s"
+# index (list of mails)
+set index_format = "%4C %Z %[%y/%m/%d] %-15.15L (%?l?%4l&%4c?) %s"
+# status
+set status_format = "[%f](%r) [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?] (%s/%S)%>-(%P)"
+
+# cache folder
+set message_cachedir = ~/.cache/mutt/bodies
+set header_cache = ~/.cache/mutt/headers
+# interval of mail checking
+set mail_check = 60
+set timeout = 120
+# Allow Mutt to open a new IMAP connection automatically.
+unset imap_passive
+# keep the IMAP connection alive
+set imap_keepalive = 60
+# suppress pause when switching mail boxes
+set sleep_time = 0
+# default recipient and subject when reply
+set fast_reply = yes
+# include original message when reply
+set include = yes
+# check all mailboxes
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+# sort method
+set sort = "date"
+set sort_aux = "last-date-received"
+# index scroll instead of turning pages
+set menu_scroll
+
+# aliases
+set alias_file = "~/.config/neomutt/aliases.muttrc"
+set reverse_alias = yes
+source "~/.config/neomutt/aliases.muttrc"
+
+# header
+# show only those headers
+ignore *
+unignore Subject: From: To: CC: BCC: Date:
+# show by this order
+unhdr_order *
+hdr_order Subject: From: To: CC: BCC: Date:
+
+# show index on top and pager below
+set pager_context = 3
+set pager_index_lines = 5
+# stop at the bottom of a message instead of go to next message
+set pager_stop = yes
+
+# email content
+auto_view text/html                                   # view html automatically
+alternative_order text/plain text/enriched text/html  # save html for last
+
+# encoding
+set rfc2047_parameters=yes
+set assumed_charset="us-ascii:gb18030:utf-8"
+set attach_charset="us-ascii:gb18030:utf-8"
+set send_charset="utf-8"
+
+# send notify open receiving new email
+set new_mail_command="notify-send 'New Email' '%n new messages, %u unread.' &"
+
+# color configuration
+source ~/.config/neomutt/colors.muttrc
+# keybindings
+source ~/.config/neomutt/keybindings.muttrc

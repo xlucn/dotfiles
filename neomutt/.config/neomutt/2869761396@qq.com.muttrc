@@ -2,18 +2,16 @@
 set realname = "Xu Lu"
 
 # email address
-set my_email = "2869761396@qq.com"
-set from = $my_email
-set imap_user = $my_email
+set imap_user = "2869761396@qq.com"
+set from = $imap_user
 
 # imap/smtp urls
 set folder = "imaps://imap.qq.com:993/"
-set smtp_url= "smtps://$my_email@smtp.qq.com:465/"
+set smtp_url= "smtps://$imap_user@smtp.qq.com:465/"
 
 # password
-set my_pass = `pass show mail/$my_email`
-set imap_pass = $my_pass
-set smtp_pass = $my_pass
+set imap_pass = `pass show mail/2869761396@qq.com`
+set smtp_pass = $imap_pass
 
 # Mailboxes
 set spoolfile = "+Inbox"
