@@ -5,12 +5,20 @@ map H jumplist backward
 map L jumplist forward
 map <PageUp> navigate previous
 map <PageDown> navigate next
+map [presentation] gg navigate first
+map [presentation] G navigate last
 map [presentation] k navigate previous
 map [presentation] j navigate next
+map [presentation] [ navigate previous
+map [presentation] ] navigate next
+map [fullscreen] [ navigate previous
+map [fullscreen] ] navigate next
 map [fullscreen] <Left> navigate previous
 map [fullscreen] <Right> navigate next
 # UI toggling
 map b toggle_statusbar
+map [fullscreen] b toggle_statusbar
+map [presentation] b toggle_statusbar
 # Mode changing
 map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen
