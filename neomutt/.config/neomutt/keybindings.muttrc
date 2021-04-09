@@ -47,6 +47,8 @@ macro  index q      "<sync-mailbox><exit>"
 bind   generic,pager q      exit
 bind   generic,pager <left> exit
 bind   generic,pager h      exit
+macro  browser  <left>    "1<enter><select-entry>" "go parent"
+macro  browser  h         "1<enter><select-entry>" "go parent"
 bind   generic  l         select-entry
 bind   generic  <return>  select-entry
 bind   generic  <enter>   select-entry
@@ -69,6 +71,14 @@ macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailbox
 macro  generic,index,pager \cr ":source ~/.config/neomutt/muttrc\n" "Reload mutt's configuration file"
 macro  pager \cb "|urlscan\n" "call urlscan to extract URLs out of a message"
 macro  generic,index,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
+macro  compose a "<attach-file>/home/$USER<tab><tab><tab>"
+
+# Toggle the visibility of the Sidebar.
+macro  generic,index,pager B "<enter-command>toggle sidebar_visible<enter>"
+# They are only in index and pager maps
+bind   index,pager \ck sidebar-prev
+bind   index,pager \cj sidebar-next
+bind   index,pager \co sidebar-open
 
 # index navigation
 bind   index \t next-new-then-unread

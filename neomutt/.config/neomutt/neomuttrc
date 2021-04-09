@@ -16,14 +16,3 @@ color index_subject cyan default '.*'
 color index_subject brightcyan default "~N"
 color index_number blue default
 color index_date magenta default
-
-# go parent command
-bind   browser  <left>    goto-parent
-bind   browser  h         goto-parent
-
-# sidebar
-bind   generic,index,pager \ck sidebar-prev
-bind   generic,index,pager \cj sidebar-next
-bind   generic,index,pager \co sidebar-open
-# Toggle the visibility of the Sidebar.
-bind   generic,index,pager B sidebar-toggle-visible
