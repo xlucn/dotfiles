@@ -12,7 +12,8 @@ search_repos()
     printf "Enter the username to filter repo owners (accept basic regex): "
     read -r user
     { if which locate > /dev/null 2>&1; then
-        locate "$HOME/*.git" | grep -v "$HOME/.\(cache\|config/vim\|vim\)/*"
+        locate "$HOME/*.git" | grep -v "$HOME/.\(cache\|config/vim\|vim\)/*" \
+            | xargs -I {} dirname {}
     else
         find "$HOME" -type d -name .git \
             ! -path "$HOME/.cache/*" \
