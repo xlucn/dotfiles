@@ -151,6 +151,7 @@ nnoremap N Nzzzv
 " }}}
 " Autocmd {{{
 augroup normal
+    autocmd!
     autocmd VimEnter * normal! :startinsert :stopinsert
     autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
     autocmd BufNewFile,BufRead muttrc,*muttrc setfiletype neomuttrc
@@ -159,9 +160,11 @@ augroup normal
     autocmd FileType tex,markdown,gitcommit setlocal spell
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType mma setlocal noet commentstring=(*%s*)
+    autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
 augroup END
 augroup nvim
     if has('nvim')
+        autocmd!
         autocmd TermOpen term://* setlocal nonu nornu scl=no
         autocmd TermOpen term://* startinsert
         autocmd TermClose term://* call nvim_input('<CR>')
