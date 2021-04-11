@@ -1,25 +1,28 @@
 # Basic colors
-mono bold bold
+mono bold      bold
 mono underline underline
 mono indicator reverse
-mono error bold
-color normal default default
-color error red default
-color bold black default
-color underline black default
-color indicator black white
+mono error     bold
+color normal    default default
+color error     red     default
+color bold      black   default
+color underline black   default
+color indicator black   brightyellow
 
 # Index colors:
-color index default default '.*'
-color index brightyellow default "~N"
+color index default       default "~A"    # all messages
+color index brightgreen   default "~N"    # new messages
+color index brightred     default "~D"    # deleted messages
+color index brightyellow  default "~F"    # flagged messages
+color index green         default "~X 1-" # messages with attachments
 
 # Header colors (you have to put hdrdefault before others):
 color hdrdefault brightgreen default
-color header brightred default "^(Subject)"
-color header brightmagenta default "^(From)"
-color header brightblue default "^(To)"
-color header brightcyan default "^(CC|BCC):"
-color header brightwhite default "^(Date):"
+color header brightred     default "^(Subject):"
+color header brightmagenta default "^(From):"
+color header brightblue    default "^(To):"
+color header brightcyan    default "^(CC|BCC):"
+color header brightwhite   default "^(Date):"
 
 # Sidebar color
 color sidebar_highlight brightred default
@@ -41,7 +44,6 @@ color quoted3 yellow default
 color quoted4 red default
 color quoted5 brightred default
 color signature brightgreen default
-# color progress brightyellow blue
 
 color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
 color body blue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL

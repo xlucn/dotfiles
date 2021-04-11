@@ -16,3 +16,5 @@ color index_subject cyan default '.*'
 color index_subject brightcyan default "~N"
 color index_number blue default
 color index_date magenta default
+
+color progress brightyellow blue
