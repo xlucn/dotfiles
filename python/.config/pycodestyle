@@ -1,0 +1,3 @@
+# vim: ft=cfg
+[pycodestyle]
+max-line-length = 100
