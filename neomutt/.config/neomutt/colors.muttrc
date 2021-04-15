@@ -14,7 +14,7 @@ color index default       default "~A"    # all messages
 color index brightgreen   default "~N"    # new messages
 color index brightred     default "~D"    # deleted messages
 color index brightyellow  default "~F"    # flagged messages
-color index green         default "~X 1-" # messages with attachments
+color index blue          default "~T"    # tagged messages
 
 # Header colors (you have to put hdrdefault before others):
 color hdrdefault brightgreen default
