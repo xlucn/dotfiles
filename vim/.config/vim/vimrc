@@ -79,6 +79,7 @@ set title " change the terminal's title
 set showmatch " show matching characters
 set scrolloff=2 " minimum lines above and below cursor
 set splitright " split into right by default
+set splitbelow " split to below by default, better for ale's hover info
 set updatetime=100 " update time, related to fugitive sign column update, etc.
 set lazyredraw " redraw when needed
 set noerrorbells " don't beep
