@@ -69,8 +69,6 @@ set diffopt+=vertical " open diff window vertically
 set completeopt=menuone,noinsert,preview " comletion
 " }}}
 " UI basic {{{
-" clear sign column highlight
-highlight clear SignColumn
 set guioptions=di " gui options: dark, icon
 set number " show line number
 set relativenumber " show relative number
@@ -112,9 +110,11 @@ else
     let &t_EI = "\e[?8c"
 endif
 colorscheme wal
-if has('gui_running')
+if has('gui_running') || has('nvim')
     colorscheme desert
 endif
+" clear sign column highlight
+highlight clear SignColumn
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
 let g:termdebug_wide=1
