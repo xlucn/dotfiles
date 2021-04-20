@@ -82,6 +82,7 @@ export JDK_JAVA_OPTIONS='
     -Dsun.java2d.opengl=true
     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
     -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 
 # PATH
 add_to_path() {
