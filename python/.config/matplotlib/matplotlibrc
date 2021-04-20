@@ -5,3 +5,6 @@
 
 #### LaTeX customizations. See http://wiki.scipy.org/Cookbook/Matplotlib/UsingTex
 text.usetex: True
+
+## no transparency of legend border
+legend.framealpha: 0
