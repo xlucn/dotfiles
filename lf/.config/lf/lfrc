@@ -20,6 +20,7 @@ map <m-2> updir
 map <m-up>    up
 map <m-down>  down
 map R bulk-rename
+map zp set preview!
 
 # Commands
 cmd open $ open $fx
