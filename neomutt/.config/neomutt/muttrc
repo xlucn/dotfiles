@@ -54,6 +54,8 @@ set sort = "date"
 set sort_aux = "last-date-received"
 # index scroll instead of turning pages
 set menu_scroll
+# save to Archive by default
+save-hook . =Archive
 
 # aliases
 set alias_file = "~/.config/neomutt/aliases.muttrc"
