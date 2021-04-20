@@ -33,7 +33,7 @@ pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
 }
 # arch linux update
-alias au="sudo pacman -Syu && paru -Sua"
+alias au="sudo pacman -Syu && ALL_PROXY=\$PROXY paru -Sua"
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ]; then
