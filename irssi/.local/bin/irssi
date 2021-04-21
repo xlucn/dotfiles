@@ -11,8 +11,8 @@ start_irssi="/usr/bin/irssi --home=$XDG_CONFIG_HOME/irssi $*"
 
 export_passwords() {
     echo "Exporting passwords to subshell environments ..."
-    passdir=$(pass git worktree list --porcelain | awk '/worktree/{ print $2 }')
-    for network in "$passdir/irc/"*; do
+    # make sure the passwords are in $PASSWORD_STORE_DIR/irc/<network>/nickname
+    for network in "$PASSWORD_STORE_DIR/irc/"*; do
         for nickname in "$network/"*; do
             net=$(basename "$network")
             nick=$(basename "${nickname%.*}")
