@@ -82,7 +82,12 @@ export JDK_JAVA_OPTIONS='
     -Dsun.java2d.opengl=true
     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
     -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+# rust cargo
 export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
+# texlive
+export TEXMFHOME=$XDG_DATA_HOME/texmf
+export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
+export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
 
 # PATH
 add_to_path() {
