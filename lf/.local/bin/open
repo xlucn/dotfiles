@@ -11,7 +11,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         ${EDITOR:-vim} "$@" && exit ;;
     video/*)
         if [ -n "$DISPLAY" ]; then
-            mpv -- "$@" || mplayer -- "$@"
+            mpv -- "$@" || mplayer -- "$@" &
         else
             cmplayer "$@" ||
             mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
@@ -21,13 +21,13 @@ case "$(file -Lb --mime-type -- "$1")" in
         mpv -- "$@" || mplayer -- "$@" && exit ;;
     application/pdf)
         if [ -n "$DISPLAY" ]; then
-            zathura "$@"
+            zathura "$@" &
         else
             jfbview "$@"
         fi && exit ;;
     image/*)
         if [ -n "$DISPLAY" ]; then
-            sxiv "$@" || vimiv "$@"
+            sxiv "$@" || vimiv "$@" &
         else
             jfbview "$@" || fbv "$@"
         fi && exit ;;
