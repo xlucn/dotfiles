@@ -29,6 +29,11 @@ set forward_format = "Fwd: %s"
 set index_format = "%4C %Z %[%y/%m/%d] %-15.15L (%?l?%4l&%4c?) %s"
 # status
 set status_format = "[%f](%r) [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?] (%s/%S)%>-(%P)"
+# attachments
+# The "%.100d%* " ensures to show as much of the filename as possible.
+# The default "%.40d%> " will cut off at 40, and when there is not enough space,
+# the right side won't even be gauranteed to display.
+set attach_format = "%u%D%I%t%2n %T%.100d%*  [%.4m/%.10M, %.6e%?C?, %C?, %s]"
 
 # cache folder
 set message_cachedir = ~/.cache/mutt/bodies
