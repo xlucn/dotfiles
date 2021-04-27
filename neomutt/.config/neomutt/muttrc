@@ -91,9 +91,6 @@ set assumed_charset="us-ascii:gb18030:utf-8"
 set attach_charset="us-ascii:gb18030:utf-8"
 set send_charset="utf-8"
 
-# send notify open receiving new email
-set new_mail_command="notify-send 'New Email' '%n new messages, %u unread.' &"
-
 # color configuration
 source ~/.config/neomutt/colors.muttrc
 # keybindings
