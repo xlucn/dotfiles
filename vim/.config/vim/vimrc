@@ -209,8 +209,11 @@ function ExecCurrentFile()
         execute ":!sh %:p"
     elseif &ft == "python"
         execute ":!python %:p"
+    elseif &ft == "gnuplot"
+        execute ":!gnuplot %:p"
     endif
 endfunction
+nmap <F5> :call ExecCurrentFile()<CR>
 " }}}
 " Plugin Settings
 " Vim Which Key {{{
