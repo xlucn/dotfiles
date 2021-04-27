@@ -227,6 +227,8 @@ hi TabLineFill ctermfg=None ctermbg=None cterm=None
 " Vim Which Key {{{
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
+let g:which_key_centered = 0
+let g:which_key_hspace = 5
 let g:which_key_use_floating_win = 0
 let g:which_key_fallback_to_native_key = 1
 let g:which_key_map = {
