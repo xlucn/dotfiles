@@ -225,8 +225,6 @@ hi TabLine     ctermbg=None ctermfg=None cterm=None
 hi TabLineFill ctermfg=None ctermbg=None cterm=None
 " }}}
 " Vim Which Key {{{
-call which_key#register(mapleader, "g:which_key_map")
-call which_key#register(maplocalleader, "g:which_key_map_local")
 let g:which_key_centered = 0
 let g:which_key_hspace = 5
 let g:which_key_use_floating_win = 0
@@ -246,6 +244,8 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' }
   \ }
+call which_key#register(mapleader, "g:which_key_map")
+call which_key#register(maplocalleader, "g:which_key_map_local")
 nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
 vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
 nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
@@ -301,7 +301,7 @@ if has('gui_running')
     endfor
 endif
 
-let s:bg      = [ 'NONE', 'NONE' ]
+let s:bg      = [ s:Xcolors['0'], 0 ]
 let s:black   = [ s:Xcolors['0'], 0 ]
 let s:red     = [ s:Xcolors['1'], 1 ]
 let s:green   = [ s:Xcolors['2'], 2 ]
