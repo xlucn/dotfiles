@@ -216,6 +216,14 @@ endfunction
 nmap <F5> :call ExecCurrentFile()<CR>
 " }}}
 " Plugin Settings
+" {{{ buftabline
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+hi TabLineSel  ctermbg=6    ctermfg=0    cterm=None
+hi PmenuSel    ctermbg=None ctermfg=6    cterm=None
+hi TabLine     ctermbg=None ctermfg=None cterm=None
+hi TabLineFill ctermfg=None ctermbg=None cterm=None
+" }}}
 " Vim Which Key {{{
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
