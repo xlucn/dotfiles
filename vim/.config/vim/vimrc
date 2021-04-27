@@ -471,6 +471,9 @@ augroup latex
     autocmd FileType tex ab tp textperiodcentered
     autocmd FileType tex ab te textellipsis
     autocmd FileType tex ab op originalpage{}<Left>
+    " add normal font in math
+    autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
+    autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
     " add red color, or to existing text
     autocmd FileType tex xnoremap <localleader>m s{\color{red}}<Esc>P
     autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
