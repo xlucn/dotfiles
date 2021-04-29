@@ -219,6 +219,8 @@ nmap <F5> :call ExecCurrentFile()<CR>
 " {{{ buftabline
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
+let g:buftabline_show = 1
+" Have to set styles for the link targets, not BufTabLine*
 hi TabLineSel  ctermbg=6    ctermfg=0    cterm=None
 hi PmenuSel    ctermbg=None ctermfg=6    cterm=None
 hi TabLine     ctermbg=None ctermfg=None cterm=None
