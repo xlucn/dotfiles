@@ -45,9 +45,6 @@ set recolor-reverse-video true
 set recolor-darkcolor "#ECEFF1"
 set recolor-lightcolor "#212121"
 
-# Clipboard
-set selection-clipboard "clipboard"
-
 # Default
 set adjust-open "width"
 
