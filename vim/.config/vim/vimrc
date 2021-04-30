@@ -11,8 +11,6 @@ endif
 " Vim-Plug {{{
 call plug#begin($VIM . '/bundle')
 Plug 'godlygeek/tabular'
-Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
@@ -22,6 +20,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
+" Plug 'maximbaz/lightline-ale'
 Plug 'liuchengxu/vim-which-key'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
@@ -214,6 +213,48 @@ function ExecCurrentFile()
 endfunction
 nmap <F5> :call ExecCurrentFile()<CR>
 " }}}
+" statusline {{{
+augroup ALEProgress
+  autocmd!
+  autocmd User ALEJobStarted redrawstatus
+  autocmd User ALELintPost   redrawstatus
+  autocmd User ALEFixPost    redrawstatus
+augroup END
+function! ALEStatusLine()
+    let l:ale_avail = get(g:, 'ale_enabled', 0) == 1
+        \ && getbufvar(bufnr(''), 'ale_enabled', 1)
+        \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
+        \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
+    let l:checking = ale#engine#IsCheckingBuffer(bufnr(''))
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_warnings = l:counts.warning + l:counts.style_warning
+
+    if l:ale_avail == 0
+        return ''
+    elseif l:checking
+        return ' ... '
+    elseif l:counts.total == 0
+        return ' OK '
+    endif
+
+    let l:ale_status = ' '
+    let l:ale_status .= l:all_errors == 0 ? '' : printf('E:%2d ', l:all_errors)
+    let l:ale_status .= l:all_warnings == 0 ? '' : printf('W:%2d ', l:all_warnings)
+    let l:ale_status .= l:counts.info == 0 ? '' : printf('I:%2d ', l:counts.info)
+    return l:ale_status
+endfunction
+hi User1 ctermbg=0
+hi User2 ctermbg=8
+let &stl = ''
+let &stl .= '%#TabLineSel# %{mode()} %1*'
+let &stl .= '%2* %{fugitive#head(6)} %r %1*'
+let &stl .= '%< %t %m %w '
+let &stl .= '%='
+let &stl .= ' %{&ff} | %{&fenc} | %{&ft} '
+let &stl .= '%2* %3p%% | %3l:%3c %1*'
+let &stl .= '%#TabLineSel#%{ALEStatusLine()}%1*'
+" }}}
 " Plugin Settings
 " {{{ buftabline
 let g:buftabline_numbers = 2
@@ -314,59 +355,6 @@ let s:cyan    = [ s:Xcolors['6'], 6 ]
 let s:white   = [ s:Xcolors['7'], 7 ]
 let s:grey    = [ s:Xcolors['8'], 8 ]
 
-let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-let s:p.normal.left     = [ [ s:black, s:cyan    ], [ s:white, s:grey ] ]
-let s:p.normal.right    = [ [ s:black, s:white   ], [ s:white, s:grey ] ]
-let s:p.inactive.right  = [ [ s:black, s:grey    ], [ s:white, s:bg   ] ]
-let s:p.inactive.left   = [ [ s:white, s:bg      ], [ s:grey,  s:bg   ] ]
-let s:p.insert.left     = [ [ s:black, s:green   ], [ s:white, s:grey ] ]
-let s:p.replace.left    = [ [ s:black, s:magenta ], [ s:white, s:grey ] ]
-let s:p.visual.left     = [ [ s:black, s:yellow  ], [ s:white, s:grey ] ]
-let s:p.normal.middle   = [ [ s:white, s:bg      ] ]
-let s:p.normal.error    = [ [ s:black, s:red     ] ]
-let s:p.normal.warning  = [ [ s:black, s:yellow  ] ]
-let s:p.inactive.middle = [ [ s:grey,  s:bg      ] ]
-let s:p.tabline.left    = [ [ s:white, s:bg      ] ]
-let s:p.tabline.tabsel  = [ [ s:black, s:white   ] ]
-let s:p.tabline.middle  = [ [ s:grey,  s:bg      ] ]
-let s:p.tabline.right   = copy(s:p.normal.right)
-
-let g:lightline#colorscheme#base16#palette = lightline#colorscheme#flatten(s:p)
-let g:lightline = {
-    \ 'colorscheme': 'base16',
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'gitbranch', 'readonly' ],
-    \             [ 'filename', 'modified' ] ],
-    \   'right': [ [ 'linter_checking',
-    \               'linter_errors',
-    \               'linter_warnings',
-    \               'linter_infos',
-    \               'linter_ok' ],
-    \              [ 'percent', 'lineinfo', 'syntastic' ],
-    \              [ 'fileformat', 'fileencoding', 'filetype' ] ],
-    \ },
-    \ 'component': {
-    \   'filename': '%<%{expand("%:t")}'
-    \ },
-    \ 'component_expand': {
-    \   'linter_checking': 'lightline#ale#checking',
-    \   'linter_infos': 'lightline#ale#infos',
-    \   'linter_warnings': 'lightline#ale#warnings',
-    \   'linter_errors': 'lightline#ale#errors',
-    \   'linter_ok': 'lightline#ale#ok',
-    \ },
-    \ 'component_type': {
-    \   'linter_checking': 'right',
-    \   'linter_infos': 'right',
-    \   'linter_warnings': 'warning',
-    \   'linter_errors': 'error',
-    \   'linter_ok': 'right',
-    \ },
-    \ 'component_function': {
-    \   'gitbranch': 'fugitive#head',
-    \ },
-    \ }
 " }}}
 " Fugitive {{{
 " show the log in a pretty way
