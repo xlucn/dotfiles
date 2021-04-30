@@ -161,12 +161,15 @@ augroup normal
     autocmd FileType mma setlocal noet commentstring=(*%s*)
     autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
 augroup END
-augroup nvim
+augroup terminal_setup
+    autocmd!
+    tnoremap <C-\> <C-\><C-N>
     if has('nvim')
-        autocmd!
         autocmd TermOpen term://* setlocal nonu nornu scl=no
         autocmd TermOpen term://* startinsert
-        autocmd TermClose term://* call nvim_input('<CR>')
+        autocmd TermClose term://* call feedkeys("\<CR>")
+    else
+        autocmd TerminalOpen * setlocal nonu nornu scl=no
     endif
 augroup END
 " autocmd FileType tex let b:ale_lsp_root='./'
