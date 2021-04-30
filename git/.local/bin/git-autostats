@@ -3,7 +3,7 @@
 usage()
 {
     echo "Usage: $(basename "$0") [ -u ] [ -s ]"
-    echo "    -u: update the counts information of all repos"
+    echo "    -q: don't print repo informations"
     echo "    -s: search and update repos in the path"
 }
 
@@ -28,9 +28,9 @@ search_repos()
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
 
-while getopts "hus" p; do
+while getopts "hqs" p; do
     case "$p" in
-        u) flag_update=1;;
+        q) flag_quiet=1;;
         s) search_repos; exit;;
         h|*) usage; exit;;
     esac
@@ -50,20 +50,23 @@ if [ -f "$CONFIG_FILE" ]; then
         staged=$(git -C "$p" diff --cached --numstat | wc -l)
         unstaged=$(git -C "$p" diff --numstat | wc -l)
         untracked=$(git -C "$p" ls-files --other --exclude-standard | wc -l)
-        if [ "$flag_update" = 1 ]; then
-            if [ "$left" = 0 ] && [ "$right" = 0 ]; then
-                uptodate=$((uptodate + 1))
-            elif [ "$left" = 0 ] && [ "$right" != 0 ]; then
-                behind=$((behind + 1))
-            elif [ "$left" != 0 ] && [ "$right" = 0 ]; then
-                ahead=$((ahead + 1))
-            else # [ "$left" != 0 ] && [ "$right" != 0 ]
-                conflict=$((conflict + 1))
-            fi
-            [ "$staged" != 0 ] && staged_count=$((staged_count + 1))
-            [ "$unstaged" != 0 ] && unstaged_count=$((unstaged_count + 1))
-            [ "$untracked" != 0 ] && untracked_count=$((untracked_count + 1))
-        else
+
+        # update cached result
+        if [ "$left" = 0 ] && [ "$right" = 0 ]; then
+            uptodate=$((uptodate + 1))
+        elif [ "$left" = 0 ] && [ "$right" != 0 ]; then
+            behind=$((behind + 1))
+        elif [ "$left" != 0 ] && [ "$right" = 0 ]; then
+            ahead=$((ahead + 1))
+        else # [ "$left" != 0 ] && [ "$right" != 0 ]
+            conflict=$((conflict + 1))
+        fi
+        [ "$staged" != 0 ] && staged_count=$((staged_count + 1))
+        [ "$unstaged" != 0 ] && unstaged_count=$((unstaged_count + 1))
+        [ "$untracked" != 0 ] && untracked_count=$((untracked_count + 1))
+
+        # print repo informations
+        if [ "$flag_quiet" != 1 ]; then
             printf "\033[$((left?34:0))m%6s\033[0m " "+$left"
             printf "\033[$((right?31:0))m%6s\033[0m " "-$right"
             printf "\033[$((staged?34:0))m%6s\033[0m " "$staged"
