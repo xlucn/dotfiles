@@ -473,13 +473,9 @@ let g:mma_candy = 2
 " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
-xmap <leader>ss <Plug>SlimeRegionSend
-nmap <leader>ss <Plug>SlimeParagraphSend
-let g:which_key_map.s = {
-    \ "name" : "slime",
-    \ "s" : "send text with slime",
-    \ "c" : [ "<Plug>SlimeConfig", "configure slime" ],
-    \ }
+xmap <leader>s <Plug>SlimeRegionSend
+nmap <leader>s <Plug>SlimeParagraphSend
+let g:which_key_map.s = "slime"
 " set config to use the pane on the right by default
 let g:slime_default_config = {
     \ "socket_name": get(split($TMUX, ","), 0),
