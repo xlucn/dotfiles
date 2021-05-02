@@ -2,7 +2,7 @@
 
 usage()
 {
-    echo "Usage: $(basename "$0") [ -u ] [ -s ]"
+    echo "Usage: $(basename "$0") [ -q ] [ -s ]"
     echo "    -q: don't print repo informations"
     echo "    -s: search and update repos in the path"
 }
@@ -37,9 +37,7 @@ while getopts "hqs" p; do
 done
 
 if [ -f "$CONFIG_FILE" ]; then
-    if [ "$flag_update" != 1 ]; then
-        echo " ahead behind staged unstaged untracked repo path"
-    fi
+    echo " ahead behind staged unstaged untracked repo path"
 
     while read -r p; do
         [ ! -d "$p" ] && continue
@@ -76,9 +74,7 @@ if [ -f "$CONFIG_FILE" ]; then
         fi
     done < "$CONFIG_FILE"
 
-    if [ "$flag_update" = 1 ]; then
-        echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0} ${staged_count:-0} ${unstaged_count:-0} ${untracked_count:-0}" > /tmp/git-autostats
-    fi
+    echo "${uptodate:-0} ${ahead:-0} ${behind:-0} ${conflict:-0} ${staged_count:-0} ${unstaged_count:-0} ${untracked_count:-0}" > /tmp/git-autostats
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
     echo "You can use \"$(basename "$0") -s\" to do it more easily"
