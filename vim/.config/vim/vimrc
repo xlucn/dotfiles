@@ -212,6 +212,8 @@ function ExecCurrentFile()
         execute ":!python %:p"
     elseif &ft == "gnuplot"
         execute ":!gnuplot %:p"
+    elseif &ft == "maxima"
+        execute ":!maxima -b %:p"
     endif
 endfunction
 nmap <F5> :call ExecCurrentFile()<CR>
