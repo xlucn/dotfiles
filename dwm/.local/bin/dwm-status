@@ -191,7 +191,6 @@ if [ -n "$UPDATE_VOL" ] || [ -z "$STR_VOL" ] || [ $((TIME - TIME_VOL)) -gt $NVOL
 fi
 if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 
-rm -f "$TMPDIR/$SMAIL"
 STR_IMAP=
 for mail in ~/.config/mutt/*@*.muttrc; do
     mail_address=$(basename "$mail" .muttrc)
