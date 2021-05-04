@@ -38,8 +38,8 @@ set attach_format = "%u%D%I%t%2n %T%.100d%*  [%.4m/%.10M, %.6e%?C?, %C?, %s]"
 # cache folder
 set message_cachedir = ~/.cache/mutt/bodies
 set header_cache = ~/.cache/mutt/headers
-# interval of mail checking
-set mail_check = 60
+# interval of mail checking, this hangs mutt when checking
+set mail_check = 600
 set timeout = 120
 # Allow Mutt to open a new IMAP connection automatically.
 unset imap_passive
