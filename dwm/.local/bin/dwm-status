@@ -7,12 +7,6 @@ TERMINAL="st"
 FLOATTERM="$TERMINAL -c floating"
 d() { [ -n "$DEBUG" ] && /bin/date +%N; }
 
-get_emails() {
-    for mail in ~/.config/neomutt/*@*.muttrc; do
-        eval "SMAIL$((index += 1))=$(basename "$mail" .muttrc)"
-    done
-}
-
 # The index order does not matter they only serve as an identifier
 # The following won't store cached results in TMPDIR
 # index < 020   raw strings
@@ -22,8 +16,7 @@ IRUN=03         ICON_RUN=󰣖
 IAPPS=04        ICON_APPS=󰍉
 IMPD=05         ICON_MPD=󰝚
 ILIGHT=06       ICON_LIGHT=󰃟
-IMAIL1=14       ICON_MAIL1=''   SMAIL1=''
-IMAIL2=15       ICON_MAIL2=''   SMAIL2=''
+IMAIL=14        ICON_MAIL=󰇰     SMAIL=imap
 
 # The following will update with given interval and store results in TMPDIR
 # index < 020   icon string     temp filename   update interval
@@ -103,14 +96,12 @@ case "${INDEX:-$1}" in
             xmenu-apps -p "$((screen_width - xmenu_width - 2 * xmenu_bw))x${dwmbar_height}" &
             ;;
         esac ;;
-    "$IMAIL1"|"$IMAIL2")
+    "$IMAIL")
         [ "$BUTTON" -ne 3 ] && exit
-        get_emails
-        case "${INDEX:-$1}" in
-            "$IMAIL1") SMAIL=$SMAIL1 ;;
-            "$IMAIL2") SMAIL=$SMAIL2 ;;
-        esac
-        $TERMINAL -e neomutt -e "source ~/.config/neomutt/$SMAIL.muttrc"
+        mail_address=$(sort -t "@" -k 2 "$TMPDIR/$SMAIL" | dmenu -l 10 | cut -d ' ' -f 1)
+        if [ -n "$mail_address" ]; then
+            $TERMINAL -e neomutt -e "source ~/.config/neomutt/$mail_address.muttrc"
+        fi
         ;;
     "$IMPD")
         case "$BUTTON" in
@@ -134,7 +125,6 @@ d
 [ $# -gt 0 ] && [ -z "$UPDATE_LIGHT" ] && [ -z "$UPDATE_VOL" ] && [ -z "$UPDATE_MPD" ] && exit
 
 TIME=$(date +%s)
-[ -z "$SMAIL1" ] && get_emails
 mkdir -p $TMPDIR
 # read cached results
 for NAME in MEM CPU NET BAT VOL MPDSTAT; do
@@ -201,8 +191,20 @@ if [ -n "$UPDATE_VOL" ] || [ -z "$STR_VOL" ] || [ $((TIME - TIME_VOL)) -gt $NVOL
 fi
 if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 
-if [ "$(imap "$SMAIL1")" -gt 0 ]; then ICON_MAIL1="󰇮"; else ICON_MAIL1="󰇰"; fi
-if [ "$(imap "$SMAIL2")" -gt 0 ]; then ICON_MAIL2="󰇮"; else ICON_MAIL2="󰇰"; fi
+rm -f "$TMPDIR/$SMAIL"
+STR_IMAP=
+for mail in ~/.config/mutt/*@*.muttrc; do
+    mail_address=$(basename "$mail" .muttrc)
+    count=$(imap "$mail_address")
+    total_mail=$((total_mail + count))
+    if grep "$mail_address ($count)" "$TMPDIR/$SMAIL"; then
+        sed "s/$mail_address ([0-9]*)/$mail_address ($count)/" "$TMPDIR/$SMAIL"
+    else
+        echo "$mail_address ($count)" >> "$TMPDIR/$SMAIL"
+    fi
+    STR_IMAP="$STR_IMAP${STR_IMAP:+/}$count"
+done
+if [ "$total_mail" -gt 0 ]; then ICON_MAIL="󰇮"; else ICON_MAIL="󰇰"; fi
 
 STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }')
 STR_LIGHT=${STR_LIGHT:-0}
@@ -229,8 +231,7 @@ xsetroot -name "$(
     printf "\026\0$ILIGHT %s\027 %s \0$INULL" "$ICON_LIGHT" "$STR_LIGHT"
     printf " \026\0$IMPD%s\0$INULL"           "$ICON_MPD"
     printf " \027\0$IMPDSTAT%s\0$INULL "      "$STR_MPDSTAT"
-    printf " \026\0$IMAIL1%s\0$INULL"         "$ICON_MAIL1"
-    printf " \026\0$IMAIL2%s\0$INULL"         "$ICON_MAIL2"
+    printf " \026\0$IMAIL%s\027 %s \0$INULL"  "$ICON_MAIL" "$STR_IMAP"
     printf " \026\0$INET%s\0$INULL"           "$STR_NET"
     printf " \026\0$IBAT%s\0$INULL "          "$STR_BAT"
     printf " \026\0$IDATE%s\027 %s \0$INULL"  "$ICON_DATE" "$STR_DATE"
