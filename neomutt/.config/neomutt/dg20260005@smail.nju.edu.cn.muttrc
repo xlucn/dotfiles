@@ -1,0 +1,28 @@
+# name
+set realname = "Xu Lu"
+
+# email address
+set imap_user = "dg20260005@smail.nju.edu.cn"
+set from = $imap_user
+
+# imap/smtp urls
+set folder = "imaps://imap.exmail.qq.com:993/"
+set smtp_url= "smtps://$imap_user@smtp.exmail.qq.com:465/"
+
+# password
+set imap_pass = `pass show mail/dg20260005@smail.nju.edu.cn`
+set smtp_pass = $imap_pass
+
+# Mailboxes
+set spoolfile = "+Inbox"
+set record = "+Sent Messages"
+set postponed = "+Drafts"
+set trash = "+Deleted Messages"
+
+# do not save sent email
+set copy = no
+
+# signature file
+unset signature
+
+account-hook $folder "set imap_user=$imap_user imap_pass=$imap_pass"
