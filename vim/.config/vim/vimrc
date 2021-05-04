@@ -167,11 +167,11 @@ augroup terminal_setup
     autocmd!
     tnoremap <C-\> <C-\><C-N>
     if has('nvim')
-        autocmd TermOpen term://* setlocal nonu nornu scl=no
+        autocmd TermOpen term://* setlocal nonu nornu signcolumn=no
         autocmd TermOpen term://* startinsert
         autocmd TermClose term://* call feedkeys("\<CR>")
     else
-        autocmd TerminalOpen * setlocal nonu nornu scl=no
+        autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
     endif
 augroup END
 " autocmd FileType tex let b:ale_lsp_root='./'
