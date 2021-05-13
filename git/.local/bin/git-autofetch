@@ -5,5 +5,5 @@ if [ -f "$HOME/.config/git-autofetch" ]; then
         echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5
         cd "$p" && git fetch | systemd-cat --identifier="git-autofetch" --priority=5
     done < "$HOME/.config/git-autofetch"
-    "$HOME"/.local/bin/git-autostats -u
+    "$HOME"/.local/bin/git-autostats -q
 fi
