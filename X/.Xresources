@@ -11,7 +11,7 @@ Xcursor.theme: Breeze-Adapta-Cursor
 *.font: Monospace:size=12
 
 *cursorColor:   #c5a89a
-*foreground:    #a6a19b
+*foreground:    #d8d1c9
 *background:    #212121
 *color0:        #303030
 *color1:        #826023
