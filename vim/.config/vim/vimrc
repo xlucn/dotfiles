@@ -412,6 +412,7 @@ let g:which_key_map.a = {
   \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
   \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
   \ 'h' : [ '<Plug>(ale_hover)' , 'show hover info' ],
+  \ 'R' : [ '<Plug>(ale_rename)' , 'rename variable'],
   \ }
 " }}}
 " Vim Tex {{{
