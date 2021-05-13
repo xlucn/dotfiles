@@ -108,12 +108,13 @@ else
     let &t_SR = "\e[?4c"
     let &t_EI = "\e[?8c"
 endif
-colorscheme wal
-if has('gui_running') || has('nvim')
-    colorscheme desert
-endif
-" clear sign column highlight
-highlight clear SignColumn
+colorscheme slate
+hi clear SignColumn " clear sign column highlight
+hi Search ctermbg=7 ctermfg=0
+hi IncSearch ctermbg=3 ctermfg=0
+hi Folded ctermbg=None
+hi SpellBad ctermfg=9 ctermbg=None
+hi SpellCap ctermfg=11 ctermbg=None
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
 let g:termdebug_wide=1
