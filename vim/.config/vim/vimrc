@@ -110,9 +110,9 @@ else
 endif
 colorscheme slate
 hi clear SignColumn " clear sign column highlight
-hi Search ctermbg=7 ctermfg=0
+hi Search ctermbg=3 ctermfg=0
 hi IncSearch ctermbg=3 ctermfg=0
-hi Folded ctermbg=None
+hi Folded ctermbg=None ctermfg=8
 hi SpellBad ctermfg=9 ctermbg=None
 hi SpellCap ctermfg=11 ctermbg=None
 " incremental case-insensitive highlight smart case search
