@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Pdfpc
 Comment=A presenter console for pdf files
-Exec=pdfpc %U
+Exec=pdfpc %f
 Terminal=false
 Type=Application
 Icon=document-viewer
