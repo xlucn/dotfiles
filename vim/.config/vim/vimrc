@@ -252,15 +252,22 @@ function! ALEStatusLine()
     let l:ale_status .= l:counts.info == 0 ? '' : printf('I:%2d ', l:counts.info)
     return l:ale_status
 endfunction
+function StatusLeftMiddle()
+    let l:githead = fugitive#head(6)
+    let l:readonly = &ro ? "[RO]" : ""
+    let l:status = ' '
+    let l:status .= len(l:githead) ? l:githead . ' ' : ""
+    let l:status .= len(l:readonly) ? l:readonly . ' ' : ""
+    return len(l:githead) + len(l:readonly) > 0 ? l:status : ""
+    endif
+endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
 let &stl  = '%#TabLineSel# %{mode()} %1*'
-let &stl .= '%2* %{fugitive#head(6)} %r %1*'
+let &stl .= '%2*%{StatusLeftMiddle()}%1*'
 let &stl .= '%< %t %m %w '
 let &stl .= '%='
-let &stl .= ' %{&ff} |'
-let &stl .= ' %{len(&fenc) > 0 ? &fenc : split(&fencs, ",")[0]} |'
-let &stl .= ' %{len(&ft) > 0 ? &ft : "no ft"} '
+let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft : "no ft"} '
 let &stl .= '%2* %3p%% | %3l:%3c %1*'
 let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*'
 " }}}
