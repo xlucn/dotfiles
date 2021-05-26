@@ -2,7 +2,7 @@
 [init]
     defaultBranch = main
 [user]
-    name = Oliver Lew
+    name = Lu Xu
     email = oliver_lew@outlook.com
 [core]
     pager = "less -x1,5 --mouse --wheel-lines=3"
