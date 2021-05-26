@@ -21,7 +21,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         mpv -- "$@" || mplayer -- "$@" && exit ;;
     application/pdf)
         if [ -n "$DISPLAY" ]; then
-            zathura "$@" &
+            zathura "$@" 2> /dev/null &
         else
             jfbview "$@"
         fi && exit ;;
