@@ -28,6 +28,10 @@ IVOL=13         ICON_VOL=''     SVOL=vol        NVOL=3
 IMPDSTAT=16                     SMPDSTAT=mpd
 INULL=17
 
+notify() {
+    notify-send -c "dwm-status" "$@"
+}
+
 d
 if [ "$1" = "--daemon" ]; then
     while true; do sh "$0"; sleep 1; done
@@ -61,12 +65,12 @@ case "${INDEX:-$1}" in
         esac ;;
     "$INET")
         case "$BUTTON" in
-            1) notify-send -c "dwm-status" "$(cat $TMPDIR/$SNET-tooltip)" & ;;
+            1) notify -a "dwm status"  "$(cat $TMPDIR/$SNET-tooltip)" & ;;
             3) $FLOATTERM -e nmtui-connect ;;
         esac ;;
     "$IBAT")
         case "$BUTTON" in
-            1) notify-send -c "dwm-status" "$(cat $TMPDIR/$SBAT-tooltip)" & ;;
+            1) notify -a "dwm status"  "$(cat $TMPDIR/$SBAT-tooltip)" & ;;
         esac ;;
     "$IDATE")
         case "$BUTTON" in
@@ -105,7 +109,7 @@ case "${INDEX:-$1}" in
         ;;
     "$IMPD")
         case "$BUTTON" in
-            1) notify-send -c "dwm-status" "$(mpc)" & ;;
+            1) notify -a "dwm status"  "$(mpc)" & ;;
             3) $FLOATTERM -e ncmpc ;;
         esac ;;
     "$IMPDSTAT")
@@ -118,7 +122,7 @@ case "${INDEX:-$1}" in
     "$INULL")
         exit ;;
     *)
-        if [ -n "$1" ]; then notify-send "$1" Mouse"$BUTTON"; fi ;;
+        if [ -n "$1" ]; then notify "$1" Mouse"$BUTTON"; fi ;;
 esac
 d
 # Update only when needed, exit otherwise
@@ -187,7 +191,7 @@ fi
 if [ -n "$UPDATE_VOL" ] || [ -z "$STR_VOL" ] || [ $((TIME - TIME_VOL)) -gt $NVOL ]; then
     STR_VOL=$(vol)
     echo "$TIME $STR_VOL" > $TMPDIR/$SVOL
-    [ -n "$UPDATE_VOL" ] && notify-send -c "dwm-status" -h int:value:"$STR_VOL" "Volume:" "$(progress_bar "$STR_VOL")" &
+    [ -n "$UPDATE_VOL" ] && notify -t 1000 -h int:value:"$STR_VOL" -a "Volume:" -i "audio-volume-high-symbolic" "$(progress_bar "$STR_VOL")" &
 fi
 if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 
@@ -209,7 +213,7 @@ STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }
 STR_LIGHT=${STR_LIGHT:-0}
 STR_LIGHT=${STR_LIGHT%\%}
 [ -n "$UPDATE_LIGHT" ] &&
-notify-send -c "dwm-status" -h int:value:"$STR_LIGHT" "Brightness:" "$(progress_bar "$STR_LIGHT")" &
+notify -h int:value:"$STR_LIGHT" -a "Brightness:" -i "display-brightness-symbolic" "$(progress_bar "$STR_LIGHT")" &
 
 STR_DATE=$(date +"%a %b %d %H:%M")
 
