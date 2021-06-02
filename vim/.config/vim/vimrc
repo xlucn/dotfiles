@@ -148,6 +148,17 @@ nnoremap <space> za
 " center the screen when searching
 nnoremap n nzzzv
 nnoremap N Nzzzv
+" 
+noremap <leader>q :q<CR>
+noremap <leader>Q :qa<CR>
+noremap <leader>d :bd<CR>
+noremap <leader>w :w<CR>
+noremap <leader>e :e<CR>
+noremap <leader>x :x<CR>
+noremap <leader>k :call ExecCurrentFile()<CR>
+noremap <leader>. :let @/=""<CR>
+noremap <leader>r :so $MYVIMRC<CR>
+noremap <leader>z :call Goyo()<CR>
 " }}}
 " Autocmd {{{
 augroup normal
@@ -289,19 +300,25 @@ let g:which_key_hspace = 2
 let g:which_key_use_floating_win = 0
 let g:which_key_fallback_to_native_key = 1
 let g:which_key_map = {
-  \ 'q' : [ ':q',  'quit'],
-  \ 'Q' : [ ':qa', 'quit all'],
-  \ 'd' : [ ':bd', 'close buffer'],
-  \ 'w' : [ ':w',  'save'],
-  \ 'e' : [ ':e',  'edit (reload)'],
-  \ 'x' : [ ':x',  'save and quit'],
-  \ 'k' : [ ':call ExecCurrentFile()',  'run current file'],
-  \ '.' : [ ':let @/=""', 'clear search hl'],
-  \ 'r' : [ ':so $MYVIMRC', 'reload vimrc'],
-  \ 'z' : [ ':call Goyo()', 'Goyo mode'],
+  \ 'q' : 'quit',
+  \ 'Q' : 'quit all',
+  \ 'd' : 'close buffer',
+  \ 'w' : 'save',
+  \ 'e' : 'edit (reload)',
+  \ 'x' : 'save and quit',
+  \ 'k' : 'run current file',
+  \ '.' : 'clear search hl',
+  \ 'z' : 'Goyo mode',
+  \ 's' : 'slime',
+  \ 'c' : 'comment',
+  \ 'a' : { 'name' : '+ale' },
+  \ 'g' : {
+    \ 'name' : '+git-operation',
+    \ 't' : { 'name' : '+stash' },
+    \ },
   \ }
 let g:which_key_map_local = {
-  \ 'l' : { 'name' : '+vimtex' }
+  \ 'l' : { 'name' : '+vimtex' },
   \ }
 call which_key#register(mapleader, "g:which_key_map")
 call which_key#register(maplocalleader, "g:which_key_map_local")
@@ -318,7 +335,6 @@ nnoremap <silent> y :WhichKey 'y'<CR>
 nmap <leader>c <Plug>CommentaryLine
 omap <leader>c <Plug>Commentary
 xmap <leader>c <Plug>Commentary
-let g:which_key_map.c = 'comment'
 " }}}
 " Vim Endwise {{{
 " https://github.com/tpope/vim-endwise/issues/41#issuecomment-432905813
@@ -348,28 +364,28 @@ let g:mkdp_browser = 'firefox'
 " }}}
 " Fugitive {{{
 " show the log in a pretty way
-function! GitRepoLogAll()
+function! GitLog()
     silent Git log --all --decorate --oneline --graph --date-order
     redraw!
 endfunction
+function! GitTig()
+    silent !tig -C "$(dirname "$(realpath "%")")"
+    redraw!
+endfunction
 " key bindings
-let g:which_key_map.g = {
-  \ 'name' : '+git-operation',
-  \ 'b' : [ ':Gblame', 'git blame' ],
-  \ 'd' : [ ':Gvdiff', 'git diff' ],
-  \ 'c' : [ ':Gcommit -v', 'git commit' ],
-  \ 'g' : [ ':!tig -C "$(dirname "$(realpath "'.expand('%:p').'")")"', 'run tig' ],
-  \ 's' : [ ':Gstatus', 'git status' ],
-  \ 'l' : [ ':call GitRepoLogAll()', 'git show log' ],
-  \ 'u' : [ ':Gpush', 'git push' ],
-  \ 'f' : [ ':Gpull', 'git pull' ],
-  \ 't' : {
-    \ 'name' : '+stash',
-    \ 's' : [ ':Git stash', 'git stash' ],
-    \ 'p' : [ ':Git stash pop', 'git stash pop' ],
-    \ 'l' : [ ':Git stash list', 'git stash list' ]
-    \ }
-  \ }
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>gc :Gcommit -v<CR>
+nnoremap <leader>gg :call GitTig()<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gl :call GitLog()<CR>
+nnoremap <leader>gu :Gpush<CR>
+nnoremap <leader>gf :Gpull<CR>
+nnoremap <leader>gts :Git stash<CR>
+nnoremap <leader>gtp :Git stash pop<CR>
+nnoremap <leader>gtl :Git stash list<CR>
+nmap <Nop>(g) <Plug>GetDiffCharPair
+nmap <Nop>(p) <Plug>PutDiffCharPair
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
@@ -413,17 +429,14 @@ let g:ale_linters_explicit = 1
 let g:ale_c_parse_makefile = 1
 
 " Key mapping
-let g:which_key_map.a = {
-  \ 'name' : '+ale',
-  \ 'r' : [ '<Plug>(ale_find_references)', 'find references' ],
-  \ 'd' : [ '<Plug>(ale_go_to_definition)', 'go to definition' ],
-  \ 'n' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
-  \ 'p' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
-  \ 'j' : [ '<Plug>(ale_next_wrap)' , 'go to next ale mark' ],
-  \ 'k' : [ '<Plug>(ale_previous_wrap)' , 'go to previous ale mark' ],
-  \ 'h' : [ '<Plug>(ale_hover)' , 'show hover info' ],
-  \ 'R' : [ '<Plug>(ale_rename)' , 'rename variable'],
-  \ }
+nnoremap <leader>ar <Plug>(ale_find_references)
+nnoremap <leader>ad <Plug>(ale_go_to_definition)
+nnoremap <leader>an <Plug>(ale_next_wrap)
+nnoremap <leader>ap <Plug>(ale_previous_wrap)
+nnoremap <leader>aj <Plug>(ale_next_wrap)
+nnoremap <leader>ak <Plug>(ale_previous_wrap)
+nnoremap <leader>ah <Plug>(ale_hover)
+nnoremap <leader>aR <Plug>(ale_rename)
 " }}}
 " Vim Tex {{{
 let g:tex_flavor = 'latex'
@@ -465,7 +478,6 @@ let g:mma_candy = 2
 let g:slime_no_mappings = 1
 xmap <leader>s <Plug>SlimeRegionSend
 nmap <leader>s <Plug>SlimeParagraphSend
-let g:which_key_map.s = "slime"
 " set config to use the pane on the right by default
 let g:slime_default_config = {
     \ "socket_name": get(split($TMUX, ","), 0),
