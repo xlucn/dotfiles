@@ -78,7 +78,9 @@ case "${INDEX:-$1}" in
         esac ;;
     "$INOTIF")
         case "$BUTTON" in
-            1) dunstctl close-all ;;
+            # TODO: change icon in dnd mode
+            1) dunstctl set-paused toggle ;;
+            3) dunstctl close-all ;;
             4) dunstctl history-pop ;;
             5) dunstctl close ;;
         esac ;;
