@@ -112,6 +112,7 @@ bind   pager x mark-as-new
 # pager bindings
 bind   pager { half-up
 bind   pager } half-down
+bind   pager H display-toggle-weed
 
 # attach bindings
 bind   attach T view-text
