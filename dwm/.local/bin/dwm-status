@@ -106,7 +106,7 @@ case "${INDEX:-$1}" in
         [ "$BUTTON" -ne 3 ] && exit
         mail_address=$(sort -t "@" -k 2 "$TMPDIR/$SMAIL" | dmenu -l 10 | cut -d ' ' -f 1)
         if [ -n "$mail_address" ]; then
-            $TERMINAL -e neomutt -e "source ~/.config/neomutt/$mail_address.muttrc"
+            $TERMINAL -e mutt -e "source ~/.config/neomutt/$mail_address.muttrc"
         fi
         ;;
     "$IMPD")
