@@ -218,6 +218,7 @@ function ExecCurrentFile()
     elseif &ft == "maxima"
         execute ":!maxima -b %:p"
     endif
+    redraw!
 endfunction
 nmap <F5> :call ExecCurrentFile()<CR>
 " }}}
