@@ -1,3 +1,5 @@
+unbind *
+
 source muttrc
 
 # Different configurations from vanilla mutt
