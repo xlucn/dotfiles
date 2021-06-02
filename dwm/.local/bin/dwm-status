@@ -200,7 +200,7 @@ for mail in ~/.config/mutt/*@*.muttrc; do
     mail_address=$(basename "$mail" .muttrc)
     count=$(imap "$mail_address")
     total_mail=$((total_mail + count))
-    if grep "$mail_address" "$TMPDIR/$SMAIL"; then
+    if grep -q "$mail_address" "$TMPDIR/$SMAIL"; then
         sed -i "s/$mail_address ([0-9]*)/$mail_address ($count)/" "$TMPDIR/$SMAIL"
     else
         echo "$mail_address ($count)" >> "$TMPDIR/$SMAIL"
