@@ -1,7 +1,7 @@
 # Setting
 set nodrawbox
 set icons
-set hidden
+set nohidden
 set info size
 set ifs "\n"
 set filesep "\n"
