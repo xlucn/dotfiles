@@ -429,14 +429,14 @@ let g:ale_linters_explicit = 1
 let g:ale_c_parse_makefile = 1
 
 " Key mapping
-nnoremap <leader>ar <Plug>(ale_find_references)
-nnoremap <leader>ad <Plug>(ale_go_to_definition)
-nnoremap <leader>an <Plug>(ale_next_wrap)
-nnoremap <leader>ap <Plug>(ale_previous_wrap)
-nnoremap <leader>aj <Plug>(ale_next_wrap)
-nnoremap <leader>ak <Plug>(ale_previous_wrap)
-nnoremap <leader>ah <Plug>(ale_hover)
-nnoremap <leader>aR <Plug>(ale_rename)
+nmap <leader>ar <Plug>(ale_find_references)
+nmap <leader>ad <Plug>(ale_go_to_definition)
+nmap <leader>an <Plug>(ale_next_wrap)
+nmap <leader>ap <Plug>(ale_previous_wrap)
+nmap <leader>aj <Plug>(ale_next_wrap)
+nmap <leader>ak <Plug>(ale_previous_wrap)
+nmap <leader>ah <Plug>(ale_hover)
+nmap <leader>aR <Plug>(ale_rename)
 " }}}
 " Vim Tex {{{
 let g:tex_flavor = 'latex'
