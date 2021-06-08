@@ -118,8 +118,8 @@ case "${INDEX:-$1}" in
         case "$BUTTON" in
             1) mpc toggle; UPDATE_MPD=1 ;;
             2) mpc stop; UPDATE_MPD=1 ;;
-            4) mpc seek +10 ;;
-            5) mpc seek -10 ;;
+            4) mpc seek +20 ;;
+            5) mpc seek -20 ;;
         esac ;;
     "$INULL")
         exit ;;
@@ -215,7 +215,7 @@ STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }
 STR_LIGHT=${STR_LIGHT:-0}
 STR_LIGHT=${STR_LIGHT%\%}
 [ -n "$UPDATE_LIGHT" ] &&
-notify -h int:value:"$STR_LIGHT" -a "Brightness:" -i "display-brightness-symbolic" "$(progress_bar "$STR_LIGHT")" &
+notify -t 1000 -h int:value:"$STR_LIGHT" -a "Brightness:" -i "display-brightness-symbolic" "$(progress_bar "$STR_LIGHT")" &
 
 STR_DATE=$(date +"%a %b %d %H:%M")
 
