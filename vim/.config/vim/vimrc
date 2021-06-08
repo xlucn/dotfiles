@@ -544,6 +544,7 @@ let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 " tagbar {{{
 let g:tagbar_width = max([25, winwidth(0) / 5])
 let g:tagbar_compact = 1
+let g:tagbar_sort = 0
 " }}}
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#completion_delay = 1000
