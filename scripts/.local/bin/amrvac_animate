@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+import os
+import sys
+import re
+import amrvac_pytools as apt
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+
+def base_filename():
+    for line in open('amrvac.par'):
+        if re.search('base_filename=', line):
+            res = re.match("\\s*base_filename='(.*)'", line)
+            return res.groups()[0]
+
+
+def update(i):
+    d = data[i]
+    bound = bounds[i]
+    plt.title('frame={}'.format(i))
+    im = plt.imshow(d, extent=(*bound[0], *bound[1]))
+
+    axes = plt.gcf().get_axes()
+    cax = axes[1] if len(axes) > 1 else None
+    plt.colorbar(im, cax=cax, )
+    plt.clim(global_min, global_max)
+
+
+if not os.path.exists('figures'):
+    os.mkdir('figures')
+
+field = 'rho'
+if len(sys.argv) > 1:
+    field = sys.argv[1]
+basename = base_filename()
+files = os.listdir('.')
+length = len([f for f in files if f.endswith('.dat')])
+data = []
+bounds = []
+extremas = []
+for i in range(length):
+    filename = "{}{:04d}.dat".format(basename, i)
+    ds = apt.load_datfile(filename)
+    ds.load_all_data()
+    if ds.data_dict.get(field) is None:
+        print(ds.data_dict.keys())
+        exit()
+    data.append(ds.data_dict[field])
+    bounds.append(ds.get_bounds())
+    extremas.append(ds.get_extrema(field))
+
+global_max = max([extrema[1] for extrema in extremas])
+global_min = min([extrema[0] for extrema in extremas])
+
+fig = plt.figure(figsize=(4, 3))
+
+ani = FuncAnimation(fig, update, frames=length, repeat=False)
+ani.save('{}_{}.gif'.format(basename, field), fps=10, dpi=300)
