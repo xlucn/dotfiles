@@ -61,4 +61,4 @@ global_min = min([extrema[0] for extrema in extremas])
 fig = plt.figure(figsize=(4, 3))
 
 ani = FuncAnimation(fig, update, frames=length, repeat=False)
-ani.save('{}_{}.gif'.format(basename, field), fps=10, dpi=300)
+ani.save('{}_{}.mp4'.format(basename, field), fps=10, dpi=300)
