@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 import os
-import sys
 import re
-import amrvac_pytools as apt
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import argparse
 
 
-def base_filename():
-    for line in open('amrvac.par'):
+def base_filename(par_file):
+    for line in open(par_file):
         if re.search('base_filename=', line):
             res = re.match("\\s*base_filename='(.*)'", line)
             return res.groups()[0]
@@ -29,10 +26,19 @@ def update(i):
 if not os.path.exists('figures'):
     os.mkdir('figures')
 
-field = 'rho'
-if len(sys.argv) > 1:
-    field = sys.argv[1]
-basename = base_filename()
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument('-p', dest='par_file', nargs='?', default='amrvac.par')
+argparser.add_argument('-f', dest='field', nargs='?', default='rho')
+args = argparser.parse_args()
+
+
+import amrvac_pytools as apt
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+field = args.field
+basename = base_filename(args.par_file)
 files = os.listdir('.')
 length = len([f for f in files if f.endswith('.dat')])
 data = []
