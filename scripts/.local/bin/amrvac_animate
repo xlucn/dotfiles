@@ -17,7 +17,7 @@ def base_filename():
 def update(i):
     d = data[i]
     bound = bounds[i]
-    plt.title('frame={}'.format(i))
+    plt.title('frame={}/{}'.format(i, length))
     im = plt.imshow(d, extent=(*bound[0], *bound[1]))
 
     axes = plt.gcf().get_axes()
