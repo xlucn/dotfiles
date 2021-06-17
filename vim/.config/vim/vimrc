@@ -2,7 +2,7 @@
 " be iMproved, put this line at TOP of vimrc
 set nocompatible
 let $VIM = $XDG_CONFIG_HOME . '/vim'
-set runtimepath+=$VIM,/usr/share/vim/vimfiles
+set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
 if !has('nvim')
     set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
