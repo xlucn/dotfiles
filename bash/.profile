@@ -28,6 +28,7 @@ export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME/Mathematica"
 # passwordstore
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export PASSWORD_STORE_GENERATED_LENGTH=15
 # mplayer
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 # terminfo
