@@ -2,6 +2,11 @@
 import os
 import re
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+from subprocess import run, PIPE
+from multiprocessing import Pool, cpu_count
+from amrvac_pytools import load_datfile, load_vtkfile
 
 
 def base_filename(par_file):
@@ -11,54 +16,77 @@ def base_filename(par_file):
             return res.groups()[0]
 
 
-def update(i):
-    d = data[i]
-    bound = bounds[i]
-    plt.title('frame={}/{}'.format(i, length))
-    im = plt.imshow(d, extent=(*bound[0], *bound[1]))
-
-    axes = plt.gcf().get_axes()
-    cax = axes[1] if len(axes) > 1 else None
-    plt.colorbar(im, cax=cax, )
-    plt.clim(global_min, global_max)
-
-
-if not os.path.exists('figures'):
-    os.mkdir('figures')
-
-
-argparser = argparse.ArgumentParser()
-argparser.add_argument('-p', dest='par_file', nargs='?', default='amrvac.par')
-argparser.add_argument('-f', dest='field', nargs='?', default='rho')
-args = argparser.parse_args()
+def read_vtk(i):
+    ds = load_vtkfile(i, file=basename, type='vtu')
+    varnames = ds.getVarnames()
+    ds.getAll()
+    print(ds.getVarnames(), dir(ds))
+    if field not in varnames:
+        print("{} not available, need {}".format(field, ', '.join(varnames)))
+        exit(1)
+    field_data = ds.__getattribute__(field)
+    print(field_data.shape)
+    # data.append(field_data)
+    # points.append(ds.getCenterPoints())
+    # bounds.append(ds.getBounds()[:ds.getNdim()])
+    # extremas.append((field_data.min(), field_data.max()))
 
 
-import amrvac_pytools as apt
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-
-field = args.field
-basename = base_filename(args.par_file)
-files = os.listdir('.')
-length = len([f for f in files if f.endswith('.dat')])
-data = []
-bounds = []
-extremas = []
-for i in range(length):
+def read_dat(i):
     filename = "{}{:04d}.dat".format(basename, i)
-    ds = apt.load_datfile(filename)
+    ds = load_datfile(filename)
     ds.load_all_data()
     if ds.data_dict.get(field) is None:
         print(ds.data_dict.keys())
         exit()
-    data.append(ds.data_dict[field])
-    bounds.append(ds.get_bounds())
-    extremas.append(ds.get_extrema(field))
+    return ds
 
-global_max = max([extrema[1] for extrema in extremas])
-global_min = min([extrema[0] for extrema in extremas])
 
-fig = plt.figure(figsize=(4, 3))
+def plot(i):
+    # points.append(ds.get_coordinate_arrays())
+    print(f'Plotting No. {i+1}/{length}.')
+    plt.figure(figsize=(2 + 3 * global_span[0] / global_span[1], 4))
+    plt.title('frame={}/{}'.format(i, length))
+    im = plt.imshow(all_data[i].data_dict[field].T[::-1],
+                    extent=(*all_data[i].get_bounds()[0],
+                            *all_data[i].get_bounds()[1]))
 
-ani = FuncAnimation(fig, update, frames=length, repeat=False)
-ani.save('{}_{}.mp4'.format(basename, field), fps=10, dpi=300)
+    plt.colorbar(im)
+    plt.clim(global_min, global_max)
+    figname = os.path.join('figures', f'{basename}{i:04d}.png')
+    plt.tight_layout()
+    plt.savefig(figname, dpi=300)
+    plt.close()
+
+
+# Parse CLI arguments
+argparser = argparse.ArgumentParser()
+argparser.add_argument('-p', dest='par_file', nargs='?', default='amrvac.par')
+argparser.add_argument('-f', dest='field', nargs='?', default='rho')
+args = argparser.parse_args()
+field = args.field
+basename = base_filename(args.par_file)
+
+# read data files
+length = len([f for f in os.listdir('.') if f.endswith('.dat')])
+all_data = [read_dat(i) for i in range(length)]
+global_max = max([d.get_extrema(field)[1] for d in all_data])
+global_min = min([d.get_extrema(field)[0] for d in all_data])
+global_span = np.array([[b[1] - b[0] for b in d.get_bounds()] for d in all_data]).max(axis=0)
+
+# Plot individual images
+if not os.path.exists('figures'):
+    os.mkdir('figures')
+with Pool(cpu_count() - 1) as pool:
+    pool.map(plot, range(length))
+
+# Generate video from idividual frames
+vidname = f'{basename}_{field}.mp4'
+res = run(['ffmpeg', '-framerate', '10', '-y',
+           '-i', f'figures/{basename}%04d.png',
+           vidname], stderr=PIPE, stdout=PIPE)
+if res.returncode == 0:
+    print(f"{vidname} generated.")
+else:
+    print(res.stderr)
+    print("Video generation failed, see above for error messages")
