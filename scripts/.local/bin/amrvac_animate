@@ -6,8 +6,8 @@ import argparse
 
 def base_filename(par_file):
     for line in open(par_file):
-        if re.search('base_filename=', line):
-            res = re.match("\\s*base_filename='(.*)'", line)
+        if re.search('base_filename\\s*=', line):
+            res = re.match("\\s*base_filename\\s*=\\s*'(.*)'", line)
             return res.groups()[0]
 
 
