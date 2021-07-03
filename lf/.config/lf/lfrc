@@ -21,6 +21,7 @@ map <m-up>    up
 map <m-down>  down
 map R bulk-rename
 map zp set preview!
+map t $ tig -C $PWD
 
 # Commands
 cmd open $ open $fx
