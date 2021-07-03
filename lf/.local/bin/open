@@ -11,7 +11,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         ${EDITOR:-vim} "$@" && exit ;;
     video/*)
         if [ -n "$DISPLAY" ]; then
-            mpv -- "$@" || mplayer -- "$@" &
+            mpv --really-quiet -- "$@" || mplayer -- "$@" &
         else
             cmplayer "$@" ||
             mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
