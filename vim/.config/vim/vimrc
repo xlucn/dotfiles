@@ -460,8 +460,8 @@ let g:vimtex_compiler_latexmk = {
     \}
 augroup latex
     autocmd!
-    autocmd FileType tex ab tp textperiodcentered
-    autocmd FileType tex ab te textellipsis
+    autocmd FileType tex ab tp textperiodcentered{}
+    autocmd FileType tex ab te textellipsis{}
     autocmd FileType tex ab op originalpage{}<Left>
     " add normal font in math
     autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
@@ -471,6 +471,7 @@ augroup latex
     autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
     " remove red color depends on vim-surround
     autocmd FileType tex map <localleader>d <Plug>Dsurround}d11l
+    " autocmd FileType tex map <localleader>d ?\\color<CR>hmm%x`md12l
 augroup END
 " }}}
 " Mathematica {{{
