@@ -284,6 +284,7 @@ let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft :
 let &stl .= '%2* %3p%% | %3l:%3c %1*'
 let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*'
 " }}}
+let fortran_free_source=1
 " Plugin Settings
 " {{{ buftabline
 let g:buftabline_numbers = 2
