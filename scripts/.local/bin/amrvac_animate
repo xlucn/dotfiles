@@ -82,7 +82,7 @@ with Pool(cpu_count() - 1) as pool:
 
 # Generate video from idividual frames
 vidname = f'{basename}_{field}.mp4'
-res = run(['ffmpeg', '-framerate', '10', '-y',
+res = run(['ffmpeg', '-framerate', '20', '-y',
            '-i', f'figures/{basename}%04d.png',
            vidname], stderr=PIPE, stdout=PIPE)
 if res.returncode == 0:
