@@ -11,7 +11,11 @@ if !has('nvim')
 endif
 " }}}
 " Vim-Packager {{{
-" git clone https://github.com/kristijanhusak/vim-packager $VIM/pack/packager/opt/vim-packager
+if empty(glob($VIM . '/pack/packager/opt/vim-packager'))
+  silent !git clone https://github.com/kristijanhusak/vim-packager
+    \ $VIM/pack/packager/opt/vim-packager
+  packadd vim-packager
+endif
 function! s:packager_init(packager) abort
   call a:packager.add('airblade/vim-gitgutter')
   call a:packager.add('ap/vim-buftabline')
