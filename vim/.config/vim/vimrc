@@ -2,6 +2,7 @@
 " be iMproved, put this line at TOP of vimrc
 set nocompatible
 let $VIM = $XDG_CONFIG_HOME . '/vim'
+set packpath=$VIM
 set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
 set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
@@ -9,39 +10,43 @@ if !has('nvim')
     set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 endif
 " }}}
-" Vim-Plug {{{
-call plug#begin($VIM . '/bundle')
-Plug 'godlygeek/tabular'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-endwise'
-Plug 'liuchengxu/vim-which-key'
-Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar'
-Plug 'lervag/vimtex'
-Plug 'VoldikSS/vim-mma'
-Plug 'jpalardy/vim-slime'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'baskerville/vim-sxhkdrc'
-" Plug 'MikeCoder/markdown-preview.vim'
-" Plug 'JamshedVesuna/vim-markdown-preview'
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'fs111/pydoc.vim'
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/vim-lsp'
-Plug 'dense-analysis/ale'
-Plug 'fcpg/vim-altscreen'
-Plug 'lervag/vimtex'
-Plug 'ap/vim-buftabline'
-Plug 'SirVer/ultisnips'
-call plug#end()
+" Vim-Packager {{{
+" git clone https://github.com/kristijanhusak/vim-packager $VIM/pack/packager/opt/vim-packager
+function! s:packager_init(packager) abort
+  call a:packager.add('airblade/vim-gitgutter')
+  call a:packager.add('ap/vim-buftabline')
+  call a:packager.add('baskerville/vim-sxhkdrc')
+  call a:packager.add('dense-analysis/ale')
+  call a:packager.add('fcpg/vim-altscreen')
+  call a:packager.add('fs111/pydoc.vim')
+  call a:packager.add('godlygeek/tabular')
+  call a:packager.add('jpalardy/vim-slime')
+  call a:packager.add('junegunn/fzf')
+  call a:packager.add('junegunn/fzf.vim')
+  call a:packager.add('kristijanhusak/vim-packager')
+  call a:packager.add('lervag/vimtex')
+  call a:packager.add('lervag/vimtex')
+  call a:packager.add('liuchengxu/vim-which-key')
+  call a:packager.add('majutsushi/tagbar')
+  call a:packager.add('SirVer/ultisnips'))
+  call a:packager.add('tpope/vim-commentary')
+  call a:packager.add('tpope/vim-endwise')
+  call a:packager.add('tpope/vim-fugitive')
+  call a:packager.add('tpope/vim-repeat')
+  call a:packager.add('tpope/vim-sensible')
+  call a:packager.add('tpope/vim-surround')
+  call a:packager.add('VoldikSS/vim-mma')
+  call a:packager.add('w0rp/ale')
+  " call a:packager.add('MikeCoder/markdown-preview.vim')
+  " call a:packager.add('JamshedVesuna/vim-markdown-preview')
+  " call a:packager.add('iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } })
+  " call a:packager.add('prabirshrestha/async.vim')
+  " call a:packager.add('prabirshrestha/asyncomplete.vim')
+  " call a:packager.add('prabirshrestha/asyncomplete-lsp.vim')
+  " call a:packager.add('prabirshrestha/vim-lsp')
+endfunction
+packadd vim-packager
+call packager#setup(function('s:packager_init'))
 " }}}
 " Vim Settings
 " Vim Config {{{
