@@ -331,8 +331,11 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
-call which_key#register(mapleader, "g:which_key_map")
-call which_key#register(maplocalleader, "g:which_key_map_local")
+augroup vimtex
+  autocmd!
+  autocmd VimEnter * call which_key#register(mapleader, "g:which_key_map")
+  autocmd VimEnter * call which_key#register(maplocalleader, "g:which_key_map_local")
+augroup end
 nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
 vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
 nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
