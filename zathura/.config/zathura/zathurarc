@@ -28,6 +28,7 @@ map [presentation] p toggle_presentation
 # Synctex
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
+set dbus-raise-window false
 
 # User interface
 set guioptions "vh"
