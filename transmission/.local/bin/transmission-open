@@ -8,4 +8,4 @@ elif [ -f "$1.part" ]; then
 else
     dest=$(dirname "$1")
 fi
-nemo "$dest"
+pcmanfm "$dest"
