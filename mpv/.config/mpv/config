@@ -14,6 +14,7 @@ osd-border-color="#00FFFFFF"
 osd-on-seek="msg-bar"
 osd-shadow-color="#40000000"
 osd-shadow-offset=0.5
+osd-duration=3000
 # osd in terminal
 term-osd-bar=yes
 term-osd-bar-chars="[=>-]"
