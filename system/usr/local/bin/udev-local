@@ -5,16 +5,10 @@ UDEV_LOCAL_LOG="/tmp/udev-local.log"
 
 # send signals with arguments, only use this in udev rules
 if [ $# -ge 1 ]; then
-    # $UID can't give the user id, why?
-    if [ "$(id -u)" -ne 0 ]; then
-        echo "$*" > $FIFO
-    else
-        # find the user in the current console
-        xtty="$(cat /sys/class/tty/tty0/active)"
-        xuser="$(who | grep "${xtty}" | head -n 1 | cut -d' ' -f1)"
-        # direct echoing with root won't work
-        [ -n "${xuser}" ] && /bin/su - "${xuser}" -c "echo \"$*\" > $FIFO"
-    fi
+    # find the user in the current console
+    xuser=$(who | grep -f "/sys/class/tty/tty0/active" | grep -o "^[^ ]*")
+    # direct echoing with root won't work
+    [ -n "$xuser" ] && /bin/su - "$xuser" -c "echo \"$*\" > $FIFO"
     exit
 fi # other wise, monitor fifo output and respond
 
