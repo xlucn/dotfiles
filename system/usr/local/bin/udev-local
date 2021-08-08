@@ -1,56 +1,40 @@
 #!/bin/sh
 
-FIFO="/tmp/udev-local.fifo"
-UDEV_LOCAL_LOG="/tmp/udev-local.log"
+xuser=$(who | grep -f "/sys/class/tty/tty0/active" | cut -d ' ' -f 1)
+xuid=$(id -u "$xuser")
 
-# send signals with arguments, only use this in udev rules
-if [ $# -ge 1 ]; then
-    # find the user in the current console
-    xuser=$(who | grep -f "/sys/class/tty/tty0/active" | grep -o "^[^ ]*")
-    # direct echoing with root won't work
-    [ -n "$xuser" ] && /bin/su - "$xuser" -c "echo \"$*\" > $FIFO"
-    exit
-fi # other wise, monitor fifo output and respond
+run() {
+    /bin/su - "$xuser" -c " \
+        DISPLAY=:0 \
+        XAUTHORITY=/home/$xuser/.Xauthority \
+        DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$xuid/bus \
+        bash -c \"$@\""
+}
 
-if [ ! -p $FIFO ]; then
-    rm -f $FIFO && mkfifo $FIFO || exit 1
-fi
-
-# clean up before quit
-trap 'exec 3>&- && rm -f $FIFO' EXIT QUIT INT TERM
-
-while read -r t p aux; do
-    echo "debug: $t" >> $UDEV_LOCAL_LOG
-    case "$t" in
-        capslock)
-            notify-send -a "New keyboard" "Mapping CapsLock -> Escape."
-            sleep 1 # xmodmap won't work on new keyboards without this delay
-            /usr/bin/xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'
-            ;;
-        ac)
-            [ "$p" = 1 ] && notify-send -a "Power supply" "AC adapter plugged in"
-            [ "$p" = 0 ] && notify-send -a "Power supply" "AC adapter unplugged"
-            ;;
-        drm)
-            notify-send -a "Display" "External monitor changed"
-            which setmonitor > /dev/null 2>&1 && setmonitor -q
-            ;;
-        usb)
-            # 3 retries, there might be "Error looking up object for device" error
-            for _ in 1 2 3; do
-                if output=$(udisksctl mount --block-device "$p"); then
-                    notify-send -a "USB Storage" "$aux" "$output"
-                    break
-                fi
-                sleep 1
-            done
-            ;;
-        *)
-            ;;
-    esac & # put to background so the signals are not blocked
-done < $FIFO &
-
-# keep the fifo open
-exec 3> $FIFO
-# wait for the while loop (basically until the process is killed)
-wait
+case "$1" in
+capslock)
+    run "notify-send -i 'input-keyboard' -a 'New keyboard' 'Mapping CapsLock -> Escape.'"
+    sleep 1 # xmodmap won't work on new keyboards without this delay
+    run "xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'"
+    ;;
+ac)
+    status=$([ "$2" == 1 ] && echo on || echo off)
+    run "notify-send -a 'Power supply' -i 'battery' 'AC adapter $status'"
+    ;;
+drm)
+    run "notify-send -a 'Display' 'External monitor changed'"
+    run "setmonitor -q"
+    ;;
+usb)
+    # 3 retries, there might be "Error looking up object for device" error
+    for _ in 1 2 3; do
+        if output=$(udisksctl mount --block-device "$2"); then
+            run "notify-send -a 'USB Storage' '$3' '$output'"
+            break
+        fi
+        sleep 1
+    done
+    ;;
+*)
+    ;;
+esac

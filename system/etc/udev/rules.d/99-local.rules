@@ -21,4 +21,4 @@ ACTION           == "add",\
 SUBSYSTEMS       == "usb",\
 SUBSYSTEM        == "block",\
 ENV{ID_FS_USAGE} == "filesystem",\
-RUN              += "/usr/local/bin/udev-local usb $devnode $env{ID_VENDOR} $env{ID_MODEL}"
+RUN              += "/usr/local/bin/udev-local usb $devnode '$env{ID_VENDOR} $env{ID_MODEL}'"

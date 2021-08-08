@@ -13,7 +13,6 @@ prewm() {
     # pgrep -x udiskie || udiskie > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
-    pgrep -x udev-local || udev-local &
 }
 
 startdwm() {
