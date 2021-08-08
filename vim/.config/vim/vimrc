@@ -251,6 +251,10 @@ augroup ALEProgress
   autocmd User ALEFixPost    redrawstatus
 augroup END
 function! ALEStatusLine()
+    if get(g:, 'ale_enabled', 0) != 1
+        return ''
+    endif
+
     let l:ale_avail = get(g:, 'ale_enabled', 0) == 1
         \ && getbufvar(bufnr(''), 'ale_enabled', 1)
         \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
@@ -275,7 +279,11 @@ function! ALEStatusLine()
     return l:ale_status
 endfunction
 function StatusLeftMiddle()
-    let l:githead = fugitive#head(6)
+    if exists('*fugitive#head') == 1
+        let l:githead = fugitive#head(6)
+    else
+        let l:githead = ''
+    endif
     let l:readonly = &ro ? "[RO]" : ""
     let l:status = ' '
     let l:status .= len(l:githead) ? l:githead . ' ' : ""
@@ -331,19 +339,21 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
-augroup vimtex
-  autocmd!
-  autocmd VimEnter * call which_key#register(mapleader, "g:which_key_map")
-  autocmd VimEnter * call which_key#register(maplocalleader, "g:which_key_map_local")
-augroup end
-nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
-vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
-nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
-vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-" vim unimpaired
-nnoremap <silent> [ :WhichKey '['<CR>
-nnoremap <silent> ] :WhichKey ']'<CR>
-nnoremap <silent> y :WhichKey 'y'<CR>
+if exists('*which_key#register')
+    augroup vimtex
+      autocmd!
+      autocmd VimEnter * call which_key#register(mapleader, "g:which_key_map")
+      autocmd VimEnter * call which_key#register(maplocalleader, "g:which_key_map_local")
+    augroup end
+    nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+    vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+    nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+    vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+    " vim unimpaired
+    nnoremap <silent> [ :WhichKey '['<CR>
+    nnoremap <silent> ] :WhichKey ']'<CR>
+    nnoremap <silent> y :WhichKey 'y'<CR>
+endif
 " }}}
 " Vim commentary {{{
 nmap <leader>c <Plug>CommentaryLine
