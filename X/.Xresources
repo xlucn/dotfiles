@@ -68,8 +68,8 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
 URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
-dwm.barheight: 32
-dwm.borderpx: 2
+dwm.barheight: 48
+dwm.borderpx: 4
 dwm.gappx: 24
 dwm.mfact: 0.5
 
@@ -80,7 +80,7 @@ tabbed.font: Noto Sans CJK SC:size=12
 tabbed.tabwidth: 200
 
 dmenu.font: xft:Monospace:size=12
-dmenu.minheight: 32
+dmenu.minheight: 48
 dmenu.centered: 1
 dmenu.width: 0.5
 dmenu.lines: 15
