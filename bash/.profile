@@ -11,8 +11,12 @@ export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # less history
 export LESSHISTFILE=-
+# rlwrap history
+export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
 # elinks
 export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 # gnupg
@@ -77,12 +81,13 @@ export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
 # java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
-export JDK_JAVA_OPTIONS='
+export JDK_JAVA_OPTIONS="
     -Dawt.useSystemAAFontSettings=on
     -Dswing.aatext=true
     -Dsun.java2d.opengl=true
     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
-    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+    -Djava.util.prefs.userRoot='$XDG_CONFIG_HOME'/java"
 # rust cargo
 export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 # texlive
