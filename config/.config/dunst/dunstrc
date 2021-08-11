@@ -9,7 +9,7 @@ indicate_hidden = yes
 # Shrink window if it's smaller than the width. Ignored if 0
 shrink = no
 # The transparency of the window. Range: [0; 100]
-transparency = 10
+transparency = 0
 # The height of the entire notification
 notification_height = 0
 
@@ -78,7 +78,8 @@ min_icon_size = 64
 max_icon_size = 128
 
 # Paths to default icons
-icon_path = /usr/share/icons/Adwaita/48x48/status/:/usr/share/icons/Adwaita/48x48/devices/:/usr/share/icons/Adwaita/scalable/status/:/usr/share/icons/Adwaita/scalable/devices/:/usr/share/icons/Papirus-Dark/48x48/status/:/usr/share/icons/Papirus-Dark/48x48/devices/:/usr/share/icons/Papirus-Dark/symbolic/status/:/usr/share/icons/Papirus-Dark/symbolic/devices/
+# for theme in /usr/share/icons/*; do grep "Directories" "$theme//index.theme" | tr ',=' '\n' | while read -r dir; do [ -d "$theme/$dir" ] && [ ! -h "$theme/$dir" ] && [ ! -h "$theme/${dir%/*}" ] && echo "$theme/$dir"; done ; done
+icon_path = /usr/share/icons/Papirus-Dark/symbolic/actions:/usr/share/icons/Papirus-Dark/symbolic/apps:/usr/share/icons/Papirus-Dark/symbolic/categories:/usr/share/icons/Papirus-Dark/symbolic/devices:/usr/share/icons/Papirus-Dark/symbolic/emblems:/usr/share/icons/Papirus-Dark/symbolic/emotes:/usr/share/icons/Papirus-Dark/symbolic/mimetypes:/usr/share/icons/Papirus-Dark/symbolic/places:/usr/share/icons/Papirus-Dark/symbolic/status:/usr/share/icons/Papirus/48x48/actions:/usr/share/icons/Papirus/48x48/apps:/usr/share/icons/Papirus/48x48/devices:/usr/share/icons/Papirus/48x48/emblems:/usr/share/icons/Papirus/48x48/emotes:/usr/share/icons/Papirus/48x48/mimetypes:/usr/share/icons/Papirus/48x48/places:/usr/share/icons/Papirus/48x48/status:/usr/share/icons/Papirus/64x64/apps:/usr/share/icons/Papirus/64x64/devices:/usr/share/icons/Papirus/64x64/mimetypes:/usr/share/icons/Papirus/64x64/places:/usr/share/icons/Papirus/symbolic/actions:/usr/share/icons/Papirus/symbolic/apps:/usr/share/icons/Papirus/symbolic/categories:/usr/share/icons/Papirus/symbolic/devices:/usr/share/icons/Papirus/symbolic/emblems:/usr/share/icons/Papirus/symbolic/emotes:/usr/share/icons/Papirus/symbolic/mimetypes:/usr/share/icons/Papirus/symbolic/places:/usr/share/icons/Papirus/symbolic/status
 
 ### History ###
 
