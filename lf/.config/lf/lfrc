@@ -10,21 +10,21 @@ set cleaner preview-image
 
 # Key bindings
 map e $$EDITOR $fx
+map D delete
 map <c-y> up
 map <c-e> down
 map <enter> open
 map gh cd ~
 map gr cd /
-map <m-3> open
-map <m-2> updir
 map <m-up>    up
 map <m-down>  down
 map R bulk-rename
 map zp set preview!
-map t $ tig -C $PWD
+map t $tig -C $PWD
+map M push $mkdir<space>
 
 # Commands
-cmd open $ open $fx
+cmd open $open $fx
 cmd bulk-rename ${{
     old="$(mktemp)"
     new="$(mktemp)"
