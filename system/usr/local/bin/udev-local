@@ -14,11 +14,11 @@ capslock)
     run "xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'"
     ;;
 ac)
-    status=$([ "$2" == 1 ] && echo on || echo off)
-    run "notify-send -a 'Power supply' -i 'battery' 'AC adapter $status'"
+    status=$([ "$2" = 1 ] && echo on || echo off)
+    run "notify-send -i 'battery' -a 'Power supply' 'AC adapter $status'"
     ;;
 drm)
-    run "notify-send -a 'Display' 'External monitor changed'"
+    run "notify-send -i 'video-display' -a 'Display' 'External monitor changed'"
     run "setmonitor -q"
     ;;
 usb)
