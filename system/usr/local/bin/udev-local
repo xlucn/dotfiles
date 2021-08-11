@@ -4,11 +4,7 @@ xuser=$(who | grep -f "/sys/class/tty/tty0/active" | cut -d ' ' -f 1)
 xuid=$(id -u "$xuser")
 
 run() {
-    /bin/su - "$xuser" -c " \
-        DISPLAY=:0 \
-        XAUTHORITY=/home/$xuser/.Xauthority \
-        DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$xuid/bus \
-        bash -c \"$@\""
+    /bin/su - "$xuser" -c "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$xuid/bus $*"
 }
 
 case "$1" in
@@ -34,7 +30,5 @@ usb)
         fi
         sleep 1
     done
-    ;;
-*)
     ;;
 esac
