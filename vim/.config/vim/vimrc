@@ -119,12 +119,21 @@ else
     let &t_EI = "\e[?8c"
 endif
 colorscheme slate
-hi clear SignColumn " clear sign column highlight
-hi Search ctermbg=3 ctermfg=0
-hi IncSearch ctermbg=3 ctermfg=0
-hi Folded ctermbg=None ctermfg=8
-hi SpellBad ctermfg=9 ctermbg=None
-hi SpellCap ctermfg=11 ctermbg=None
+hi SignColumn   ctermfg=0   ctermbg=None
+hi Search       ctermfg=0   ctermbg=3
+hi IncSearch    ctermfg=0   ctermbg=3
+hi Folded       ctermfg=8   ctermbg=None
+hi SpellBad     ctermfg=9   ctermbg=None
+hi SpellCap     ctermfg=11  ctermbg=None
+hi Visual       ctermbg=0   ctermbg=None cterm=reverse
+hi StatusLine   ctermfg=7   ctermbg=None cterm=None
+hi StatusLineNC ctermfg=7   ctermbg=None cterm=None
+hi VertSplit    ctermfg=7   ctermbg=None cterm=None
+" Have to set styles for built-in targets related to tabbufline
+hi TabLineSel   ctermfg=0   ctermbg=6    cterm=None
+hi PmenuSel     ctermfg=6   ctermbg=None cterm=None
+hi TabLine      ctermfg=7   ctermbg=None cterm=None
+hi TabLineFill  ctermfg=7   ctermbg=None cterm=None
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
 let g:termdebug_wide=1
@@ -306,11 +315,6 @@ let fortran_free_source=1
 " {{{ buftabline
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
-" Have to set styles for the link targets, not BufTabLine*
-hi TabLineSel  ctermbg=6    ctermfg=0    cterm=None
-hi PmenuSel    ctermbg=None ctermfg=6    cterm=None
-hi TabLine     ctermbg=None ctermfg=None cterm=None
-hi TabLineFill ctermfg=None ctermbg=None cterm=None
 " }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
