@@ -1,24 +1,30 @@
 # map caps key to escape for all keyboards with capslock
-KERNEL    == "input[0-9]*::capslock",\
-SUBSYSTEM == "leds",\
-ACTION    == "add",\
-RUN       += "/usr/local/bin/udev-local capslock"
+KERNEL           == "input[0-9]*::capslock",\
+SUBSYSTEM        == "leds",\
+ACTION           == "add",\
+IMPORT{program}  += "/usr/local/bin/xpub",\
+RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local capslock'"
 
 # power on/off notify
-KERNEL    == "ADP0|AC0",\
-SUBSYSTEM == "power_supply",\
-ACTION    == "change",\
-RUN       += "/usr/local/bin/udev-local ac $attr{online}"
+KERNEL           == "ADP0|AC0",\
+SUBSYSTEM        == "power_supply",\
+ACTION           == "change",\
+IMPORT{program}  += "/usr/local/bin/xpub",\
+RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local ac $attr{online}'"
 
 # monitor change
-KERNEL    == "card0",\
-SUBSYSTEM == "drm",\
-ACTION    == "change",\
-RUN       += "/usr/local/bin/udev-local drm"
+KERNEL           == "card0",\
+SUBSYSTEM        == "drm",\
+ACTION           == "change",\
+RUN              += "/usr/local/bin/udev-local drm",\
+IMPORT{program}  += "/usr/local/bin/xpub",\
+RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local drm'"
 
 # USB storage
-ACTION           == "add",\
+ACTION           == "add|remove",\
 SUBSYSTEMS       == "usb",\
 SUBSYSTEM        == "block",\
 ENV{ID_FS_USAGE} == "filesystem",\
-RUN              += "/usr/local/bin/udev-local usb $devnode '$env{ID_VENDOR} $env{ID_MODEL}'"
+IMPORT{program}  += "/usr/local/bin/xpub",\
+RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local usb $devnode $env{ID_VENDOR} $env{ID_MODEL}'"
+# RUN              += "/usr/local/bin/udev-local mount $devnode $env{XUSER}"

@@ -1,34 +1,25 @@
 #!/bin/sh
 
-xuser=$(who | grep -f "/sys/class/tty/tty0/active" | cut -d ' ' -f 1)
-xuid=$(id -u "$xuser")
-
-run() {
-    /bin/su - "$xuser" -c "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$xuid/bus $*"
-}
-
 case "$1" in
 capslock)
-    run "notify-send -i 'input-keyboard' -a 'New keyboard' 'Mapping CapsLock -> Escape.'"
+    notify-send -i "input-keyboard" -a "New keyboard" "Mapping CapsLock -> Escape."
     sleep 1 # xmodmap won't work on new keyboards without this delay
-    run "xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape Caps_Lock'"
+    xmodmap -e "clear Lock" -e "keycode 0x42 = Escape Caps_Lock"
     ;;
 ac)
     status=$([ "$2" = 1 ] && echo on || echo off)
-    run "notify-send -i 'battery' -a 'Power supply' 'AC adapter $status'"
+    notify-send -i "battery" -a "Power supply" "AC adapter $status"
     ;;
 drm)
-    run "notify-send -i 'video-display' -a 'Display' 'External monitor changed'"
-    run "setmonitor -q"
+    notify-send -i "video-display" -a "Display" "External monitor changed"
+    setmonitor -q
     ;;
 usb)
-    # 3 retries, there might be "Error looking up object for device" error
-    for _ in 1 2 3; do
-        if output=$(udisksctl mount --block-device "$2"); then
-            run "notify-send -a 'USB Storage' '$3' '$output'"
-            break
-        fi
-        sleep 1
-    done
+    notify-send "USB Storage $2 ${ACTION%e}ed" "$3 $4"
+    ;;
+mount)
+    # should be called as root
+    LABLE=$(lsblk -n -o LABEL,UUID "$2" | { read -r l _; echo "$l"; })
+    echo systemd-mount --no-block --collect "$2" "/run/media/$3/$LABLE"
     ;;
 esac

@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# POSIX Shell script to get user's display environment variables of any TTY from anywhere.
+# Extremely simplified based on https://github.com/Ventto/xpub/blob/master/src/xpub.sh
+# The resulting script is certainly not as portable as the original version.
+#
+# The MIT License (MIT)
+# Copyright (c) 2015-2016 Thomas "Ventto" Venriès <thomas.venries@gmail.com>
+# Copyright (c) 2021 Lu Xu <oliver_lew at outlook at com>
+
+xtty="$(cat /sys/class/tty/tty0/active)"
+xuser="$(who | grep "${xtty}" | head -n 1 | cut -d" " -f1)"
+xdisplay=$(pgrep -at "${xtty}" Xorg | grep -o ":[0-9]" | head -n1)
+
+for pid in $(ps -u "${xuser}" -o pid=); do
+    env="/proc/${pid}/environ" && [ -r "$env" ] &&
+    display=$(strings "${env}" | grep "^DISPLAY=$xdisplay") &&
+    dbus=$(strings "${env}" | grep "^DBUS_SESSION_BUS_ADDRESS=") &&
+    xauth=$(strings "${env}" | grep "^XAUTHORITY=") &&
+    break
+done
+
+xauth=${xauth:-XAUTHORITY=/home/${xuser}/.Xauthority}
+
+printf "TTY=%s\nXUSER=%s\n%s\n%s\n%s\n" "${xtty}" "${xuser}" "${display}" "${xauth}" "${dbus}"
