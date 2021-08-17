@@ -1,9 +1,5 @@
 #!/bin/sh
 # Streaming the camera with mplayer/mpv
 # /dev/video0 is the common device file for the built-in front camera.
-if command -v mpv > /dev/null 2>&1; then
-    mpv "av://v4l2:/dev/video${1-0}" --profile=low-latency --untimed --x11-name=floating "$@"
-else
-    mplayer tv:// -tv driver=v4l2:width=640:height=480:device="/dev/video${1-0}" \
-        -name floating -fps 30 "$@"
-fi
+mpv "av://v4l2:/dev/video${1-0}" --profile=low-latency --untimed --vf=hflip "$@" ||
+mplayer tv:// -tv driver=v4l2:device="/dev/video${1-0}" -fps 30 -vf mirror,dsize=0:0 "$@"
