@@ -496,8 +496,7 @@ augroup latex
     autocmd FileType tex xnoremap <localleader>m s{\color{red}}<Esc>P
     autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
     " remove red color depends on vim-surround
-    autocmd FileType tex map <localleader>d <Plug>Dsurround}d11l
-    " autocmd FileType tex map <localleader>d ?\\color<CR>hmm%x`md12l
+    autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
 augroup END
 " }}}
 " Mathematica {{{
