@@ -6,8 +6,25 @@
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
-prewm() {
+startfcitx() {
+    # chinese input method
+    export GTK_IM_MODULE=fcitx
+    export QT_IM_MODULE=fcitx
+    export XMODIFIERS=@im=fcitx
     pgrep -x fcitx || fcitx -d > /dev/null 2>&1
+}
+
+startibus() {
+    # chinese input method
+    export GTK_IM_MODULE=ibus
+    export QT_IM_MODULE=ibus
+    export XMODIFIERS=@im=ibus
+    pgrep -x ibus-daemon || ibus-daemon -x -d > /dev/null 2>&1
+}
+
+prewm() {
+    startibus
+
     pgrep -x sxhkd || sxhkd > /dev/null 2>&1 &
     pgrep -x xcompmgr || xcompmgr &
     # pgrep -x udiskie || udiskie > /dev/null 2>&1 &
