@@ -9,6 +9,7 @@ set previewer pv
 set cleaner preview-image
 
 # Key bindings
+map <esc> cmd-escape
 map e $$EDITOR $fx
 map D delete
 map <c-y> up
