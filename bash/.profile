@@ -9,8 +9,11 @@ export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_DIRS="/etc/xdg"
 
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # less history
@@ -85,9 +88,10 @@ export JDK_JAVA_OPTIONS="
     -Dawt.useSystemAAFontSettings=on
     -Dswing.aatext=true
     -Dsun.java2d.opengl=true
+    -Dsun.java2d.uiScale=2
     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
-    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
-    -Djava.util.prefs.userRoot='$XDG_CONFIG_HOME'/java"
+    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 # rust cargo
 export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 # texlive
