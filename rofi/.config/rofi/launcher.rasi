@@ -2,8 +2,6 @@
 
 configuration {
     modi                : "drun";
-    columns             : 6;
-    lines               : 5;
     drun-display-format : "{name}";
 }
 
@@ -12,6 +10,11 @@ configuration {
     color               : #EEFFFF;
     /* color for highlighted things */
     selected-background : #484848;
+}
+
+listview {
+    columns             : 6;
+    lines               : 5;
 }
 
 window { width: 80%; }

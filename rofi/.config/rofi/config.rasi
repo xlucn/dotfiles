@@ -10,8 +10,12 @@ configuration {
     display-drun       : "Applications";
     display-run        : "Command";
     display-window     : "Window";
-    columns            : 1;
-    lines              : 10;
+    /* automatically select item under cursor + click to open */
+    hover-select       : true;
+    me-select-entry    : "";
+    me-accept-entry    : "MousePrimary";
+    /* fallback icon */
+    application-fallback-icon: "application-x-executable";
 }
 
 * {
@@ -46,6 +50,8 @@ button {
 
 listview {
     scrollbar       : false;
+    columns         : 1;
+    lines           : 10;
 }
 
 inputbar {
