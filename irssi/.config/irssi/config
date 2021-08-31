@@ -5,8 +5,8 @@
 
 servers = (
   {
-    address = "chat.freenode.net";
-    chatnet = "Freenode";
+    address = "irc.libera.chat";
+    chatnet = "Libera";
     port = "6697";
     use_tls = "yes";
     tls_verify = "yes";
@@ -103,9 +103,9 @@ servers = (
 );
 
 chatnets = {
-  Freenode = {
+  Libera = {
     type = "IRC";
-    autosendcmd = "/^msg nickserv identify ${pass_freenode_oliverlew}";
+    autosendcmd = "/^msg nickserv identify ${pass_libera_oliverlew}";
   };
   Rizon = {
     type = "IRC";
@@ -160,8 +160,8 @@ chatnets = {
 };
 
 channels = (
-  { name = "#freenode"; chatnet = "Freenode"; autojoin = "no"; },
-  { name = "#irssi"; chatnet = "Freenode"; autojoin = "yes"; },
+  { name = "#libera"; chatnet = "Libera"; autojoin = "no"; },
+  { name = "#irssi"; chatnet = "Libera"; autojoin = "yes"; },
   { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "no"; },
   { name = "#alpharatio"; chatnet = "AlphaRatio"; autojoin = "yes"; },
   { name = "#announce"; chatnet = "AlphaRatio"; },
@@ -191,12 +191,12 @@ channels = (
   { name = "#suckless"; chatnet = "OFTC"; autojoin = "yes"; },
   {
     name = "#archlinux-cn-offtopic";
-    chatnet = "Freenode";
-    autojoin = "yes";
+    chatnet = "Libera";
+    autojoin = "no";
   },
-  { name = "#archlinux-cn"; chatnet = "Freenode"; autojoin = "yes"; },
-  { name = "#archlinux"; chatnet = "Freenode"; autojoin = "no"; },
-  { name = "#fdroid"; chatnet = "Freenode"; autojoin = "yes"; }
+  { name = "#archlinux-cn"; chatnet = "Libera"; autojoin = "no"; },
+  { name = "#archlinux"; chatnet = "Libera"; autojoin = "no"; },
+  { name = "#fdroid"; chatnet = "Libera"; autojoin = "yes"; }
 );
 
 aliases = {
