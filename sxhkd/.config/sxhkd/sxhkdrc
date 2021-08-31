@@ -1,3 +1,10 @@
+super + Tab
+    rofi -show window \
+        -kb-cancel "Super+Escape,Escape" \
+        -kb-accept-entry '!Super-Tab,!Super+ISO_Left_Tab' \
+        -kb-row-down 'Super-Tab' \
+        -kb-row-up 'Super+ISO_Left_Tab'
+
 super + Return
     st
 
