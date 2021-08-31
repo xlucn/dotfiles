@@ -98,6 +98,8 @@ export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 export TEXMFHOME=$XDG_DATA_HOME/texmf
 export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
 export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
+# proxychains-ng
+export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
 
 # PATH
 add_to_path() {
