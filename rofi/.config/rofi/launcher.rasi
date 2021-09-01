@@ -12,18 +12,25 @@ configuration {
     selected-background : #484848;
 }
 
-listview {
-    columns             : 6;
-    lines               : 5;
+window {
+    width: 100%;
+    height: 100%;
 }
 
-window { width: 80%; }
+listview {
+    columns: 7;
+    lines:   5;
+    margin:  2%;
+}
 
-mainbox { margin: 4%; }
+inputbar {
+    children: [button-dummy, entry, button-dummy];
+}
 
-inputbar { children: [dummy, entry, dummy]; }
-
-dummy { expand: true; }
+/* button- prefix is essential, making it clickable */
+button-dummy {
+    action: "kb-cancel";
+}
 
 entry {
     background-color : @selected-background;
@@ -31,17 +38,27 @@ entry {
     padding          : 1%;
     expand           : false;
     width            : 20%;
+    margin           : 4% 0;
 }
 
 element {
     border-radius    : 16px;
     orientation      : vertical;
-    padding          : 3%;
-    color            : @text-color;
+    padding          : 3% 1%;
 }
 
-element-icon { size: 6%; }
+element selected {
+    background-color: @selected-background;
+}
 
-element-text { horizontal-align: 0.5; }
+element-icon {
+    size: 8%;
+}
 
-element selected { background-color: @selected-background; }
+element-text, element-icon {
+    horizontal-align: 0.5;
+    background-color: inherit;
+    color:            inherit;
+}
+
+/* vim: ft=css
