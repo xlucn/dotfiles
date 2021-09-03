@@ -39,7 +39,7 @@ prewm() {
             xinput set-prop "$id" "libinput Accel Speed" 0.5
         fi
     done
-    libinput-gestures-setup restart > /dev/null
+    libinput-gestures-setup restart > /dev/null 2>&1 &
 }
 
 startdwm() {
