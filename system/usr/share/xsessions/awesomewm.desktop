@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Awesome WM
-Comment=Log in using the awesomewm (without a session manager)
-Exec=/usr/bin/xinitrc-helper awesome
-TryExec=/usr/bin/xinitrc-helper
-Type=Application

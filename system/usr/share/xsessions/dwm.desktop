@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=dwm
-Comment=Log in using the dwm (without a session manager)
-Exec=/usr/bin/xinitrc-helper dwm
-TryExec=/usr/bin/xinitrc-helper
-Type=Application
