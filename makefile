@@ -1,9 +1,10 @@
 install:
-	find . -type d | grep -v "\.\/\(\.git\|system\)" | sed -n 's/\.\/[a-zA-Z]*\/\(.*\)/\1/p' | sort | uniq | while read -r dir; do mkdir -p "$$HOME/$$dir"; done
-	stow -t ~ -v `ls --ignore=.git* --ignore=system --ignore=README.md --ignore=.stowrc --ignore=makefile`
+	find * -type d -iregex "[a-z0-9]*/\..*" -printf "$$HOME/%P\n" | sort | uniq | xargs mkdir -pv
+	find . -type d -iregex "\./[a-z0-9]*" -printf "%P\n" | xargs stow -t $$HOME -Sv
 
 uninstall:
-	stow -t ~ -v -D `ls --ignore=.git* --ignore=system --ignore=README.md --ignore=.stowrc --ignore=makefile`
+	find . -type d -iregex "\./[a-z0-9]*" -printf "%P\n" | xargs stow -t $$HOME -Dv
+	find * -type d -iregex "[a-z0-9]*/\..*" -printf "$$HOME/%P\n" | sort -r | uniq | xargs -I {} find {} -maxdepth 0 -type d -empty -exec rm -dv {} \;
 
 install-system:
 	for i in $$(find system/); do \
