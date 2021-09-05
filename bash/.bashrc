@@ -46,7 +46,7 @@ fi
 export PROXY="socks5h://localhost:1081"
 
 # This command is in my own dotfiles repo
-PS1='$(shell_prompt)'
+PS1='$(command -v shell_prompt > /dev/null 2>&1 && shell_prompt || echo "$ ")'
 
 # History, https://unix.stackexchange.com/questions/18212
 HISTSIZE=-1
