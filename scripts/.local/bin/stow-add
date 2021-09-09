@@ -1,16 +1,10 @@
 #!/bin/sh
-# TODO: some args
-# TODO: multiple files
-[ "$#" != 2 ] && { echo "usage: $(basename "$0") <filename> <taraget>"; exit; }
+[ "$#" != 2 ] echo "usage: $(basename "$0") <filename> <taraget>" && exit
 
-filename=$1
-target=${2%/}
-folder=$(dirname "$(realpath "$filename")")
-folder="${folder#$HOME/}" # TODO: other than home
+folder=$(realpath --relative-to "$HOME" "$(dirname "$1")")
+target=$(realpath "$2/$folder")
 
-[ -z "$folder" ] && exit
-
-mkdir -p "$target/$folder"
-echo "moving $filename to $target/$folder"
-mv "$filename" "$target/$folder"
-echo "stow the file with \"stow $target\""
+mkdir -p "$target"
+echo "moving $1 to $target"
+mv "$1" "$target"
+echo "stow the file with 'stow ${2%/}'"
