@@ -28,6 +28,7 @@ map [presentation] p toggle_presentation
 # Synctex
 set synctex true
 set synctex-editor-command "vim +%{line} %{input}"
+# Do not raise window after forward search, from version 0.4.8
 set dbus-raise-window false
 
 # User interface
