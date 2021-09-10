@@ -19,7 +19,9 @@ usb)
     ;;
 mount)
     # should be called as root
-    LABLE=$(lsblk -n -o LABEL,UUID "$2" | { read -r l _; echo "$l"; })
-    echo systemd-mount --no-block --collect "$2" "/run/media/$3/$LABLE"
+    [ "$ACTION" = add ] || exit
+    sleep 1
+    LABEL=$(lsblk -n -o LABEL,UUID "$2" | { read -r l _; echo "$l"; })
+    systemd-mount --no-block --collect "$2" "/run/media/$XUSER/$LABEL"
     ;;
 esac
