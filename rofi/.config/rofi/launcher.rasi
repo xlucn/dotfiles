@@ -3,6 +3,10 @@
 configuration {
     modi                : "drun";
     drun-display-format : "{name}";
+    ml-row-left         : "ScrollUp";
+    ml-row-right        : "ScrollDown";
+    ml-row-up           : "ScrollLeft";
+    ml-row-down         : "ScrollRight";
 }
 
 * {
