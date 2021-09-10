@@ -3,8 +3,6 @@
 [ $# != 1 ] && exit
 if [ -f "$1" ] || [ -d "$1" ]; then
     dest="$1"
-elif [ -f "$1.part" ]; then
-    dest="$1.part"
 else
     dest=$(dirname "$1")
 fi
