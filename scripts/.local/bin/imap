@@ -1,6 +1,6 @@
 #!/bin/sh
-# Reference: https://tools.ietf.org/html/rfc5092
-#            https://tools.ietf.org/html/rfc3501
+# Reference: https://www.ietf.org/rfc/rfc5092.txt
+# Reference: https://www.ietf.org/rfc/rfc3501.txt
 
 usage() {
     cat >&2 << EOF
@@ -44,7 +44,7 @@ if [ $# = 1 ]; then email=$1; else usage; exit 1; fi
 case "${email##*@}" in
     outlook.com) server=imap-mail.outlook.com ;;
     qq.com)      server=imap.qq.com ;;
-    gmail)       server=imap.gmail.com ;;
+    gmail.com)   server=imap.gmail.com ;;
     smail.nju.edu.cn) server=imap.exmail.qq.com ;;
     *) ;;
 esac
@@ -52,7 +52,7 @@ esac
 # CLI arguments take precedence
 port=${arg_port:-993}
 server=${arg_server:-$server}
-[ -z "$server" ] && { echo Server not set. >&2; exit 1; }
+[ -z "$server" ] && server="imap.${email##*@}"
 
 # Read possible cached results
 time_now="$(date +%s)"
@@ -79,10 +79,11 @@ echo "$time_now $count" > "$tempfile"
 # Output
 echo "$count"
 
-base64_decode() { # pattern: =?$encode?$base64?$string?=
-    echo "$1" | while IFS=\? read -r _ encode base64 string _; do
-        case "$base64" in
-            b|B) echo "$string" | base64 -d | iconv -f "$encode" -t "utf-8" ;;
+# https://www.ietf.org/rfc/rfc2047.txt section 4
+base64_decode() { # pattern: =?$charset?$encoding?$string?=
+    echo "$1" | while IFS=\? read -r _ charset encoding string _; do
+        case "$encoding" in
+            b|B) echo "$string" | base64 -d | iconv -f "$charset" -t "utf-8" ;;
             *) printf "%s" "$1" ;;
         esac
     done
