@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import run, PIPE
 
 from qutebrowser.config.configfiles import ConfigAPI
 from qutebrowser.config.config import ConfigContainer
@@ -7,12 +7,12 @@ c: ConfigContainer = c
 
 
 def read_xresources(prefix):
-    props = {}
-    x = subprocess.run(['xrdb', '-query'], stdout=subprocess.PIPE)
-    lines = x.stdout.decode().split('\n')
-    for line in filter(lambda l: l.startswith(prefix), lines):
-        prop, _, value = line.partition(':\t')
-        props[prop] = value
+    props = dict()
+    res = run(['xrdb', '-query'], stdout=PIPE)
+    for line in res.stdout.decode().split('\n'):
+        if line.startswith(prefix):
+            prop, _, value = line.partition(':')
+            props[prop] = value.strip()
     return props
 
 
