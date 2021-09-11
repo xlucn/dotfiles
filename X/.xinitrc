@@ -55,14 +55,16 @@ startgnome() {
     exec gnome-session
 }
 
-if [ "${1%2x}" != "$1" ]; then
+WM=${1:-dwm2x}
+
+if [ "${WM%2x}" != "$WM" ]; then
     export XCURSOR_SIZE=32
     export QT_AUTO_SCREEN_SCALE_FACTOR=0
     echo "Xft.dpi: 144" > /tmp/Xresources.Xft.dpi
     xrdb -merge /tmp/Xresources.Xft.dpi
 fi
 
-case ${1:-dwm} in
+case "$WM" in
     awesome*) prewm; exec awesome;;
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
