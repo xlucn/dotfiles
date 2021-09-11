@@ -23,7 +23,7 @@ startibus() {
 }
 
 prewm() {
-    startibus
+    startfcitx
 
     pgrep -x sxhkd || sxhkd > /dev/null 2>&1 &
     pgrep -x xcompmgr || xcompmgr &
@@ -68,7 +68,7 @@ case "$WM" in
     awesome*) prewm; exec awesome;;
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
-    simple) st & startdwm;;
+    simple) startibus; startdwm;;
     dwm*) prewm; startdwm;;
     *) exec "$1";;
 esac
