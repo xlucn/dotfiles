@@ -1,113 +1,107 @@
-#!/bin/sh
+#!/usr/bin/env python3
 # Reference: https://www.ietf.org/rfc/rfc5092.txt
 # Reference: https://www.ietf.org/rfc/rfc3501.txt
+import imaplib
+import argparse
+import email.utils
+import email.header
+from subprocess import run, PIPE
 
-usage() {
-    cat >&2 << EOF
-Usage: $(basename "$0") [-s server] [-p port] [-P password] [-n N] email
 
-Options:
-    -s: Server address of email provider.
-        For the following email providers this option is not needed:
-            gmail, outlook, qqmail
-    -p: Imap port, default is 993
-    -P: Imap password. If not provided, the output of this command is used:
-            pass show mail/<email>
-    -n: Output the latest N emails' info.
-            Format: date, subject and sender in separate lines.
-EOF
-}
+def get_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('email')
+    parser.add_argument('-s', '--server')
+    parser.add_argument('-p', '--port', default=imaplib.IMAP4_SSL_PORT)
+    parser.add_argument('-P', '--password')
+    parser.add_argument('-n', '--download', type=int)
+    return parser
 
-# Directory to store cached results
-TMPDIR=/tmp/status
-mkdir -p "$TMPDIR"
-# Minimal time interval between two imap queries
-query_interval=120
 
-# CLI arguments
-while getopts fhn:s:p:P: param; do
-    case "$param" in
-        f) arg_force=1;;
-        s) arg_server=$OPTARG;;
-        p) arg_port=$OPTARG;;
-        P) arg_password=$OPTARG;;
-        n) arg_number=$OPTARG;;
-        h|*) usage; exit;;
-    esac
-done
-shift $((OPTIND - 1))
+def check_email(email):
+    if '@' not in email:
+        print(f"Email address not corrent: {email}")
+        exit(1)
 
-# Get the email
-if [ $# = 1 ]; then email=$1; else usage; exit 1; fi
 
-# Some predefined server and ports
-case "${email##*@}" in
-    outlook.com) server=imap-mail.outlook.com ;;
-    qq.com)      server=imap.qq.com ;;
-    gmail.com)   server=imap.gmail.com ;;
-    smail.nju.edu.cn) server=imap.exmail.qq.com ;;
-    *) ;;
-esac
+def get_server(email):
+    special_servers = {'smail.nju.edu.cn': 'imap.exmail.qq.com'}
+    domain = email.split('@')[1]
+    return special_servers.get(domain, f'imap.{domain}')
 
-# CLI arguments take precedence
-port=${arg_port:-993}
-server=${arg_server:-$server}
-[ -z "$server" ] && server="imap.${email##*@}"
 
-# Read possible cached results
-time_now="$(date +%s)"
-tempfile="$TMPDIR/imap_$email"
-[ -f "$tempfile" ] && read -r time_last count < "$tempfile"
-# TODO: -n N option not working here
-if [ -z "$arg_force" ] && [ -n "$count" ] && [ -n "$time_last" ] && \
-   [ $((time_now - time_last)) -lt "$query_interval" ]; then
-    echo "$count"; exit
-fi
+def get_password(email):
+    res = run(['pass', 'show', f'mail/{email}'], stdout=PIPE, stderr=PIPE)
+    if res.returncode == 0:
+        return res.stdout.decode().strip()
+    else:
+        print(res.stderr.decode()).strip()
+        exit(1)
 
-# Password operations are slow, put it after reading cached results above
-password=${arg_password:-$(pass show "mail/$email" 2> /dev/null)}
-[ -z "$password" ] && { echo Password not set. >&2; exit 1; }
 
-# Fetch and cache
-unseen=$(curl --fail --silent --max-time 30 --connect-timeout 30 \
-              --user "$email:$password" --url "imaps://$server:$port/INBOX" \
-              --request "UID SEARCH UNSEEN" || exit)
-unseen=$(echo "$unseen" | cut -d " " -f 3- | tr -d "\r")
-count=$(echo "$unseen" | wc -w)
-echo "$time_now $count" > "$tempfile"
+def get_args():
+    args = get_parser().parse_args()
+    check_email(args.email)
+    if args.server is None:
+        args.server = get_server(args.email)
+    if args.password is None:
+        args.password = get_password(args.email)
+    return args
 
-# Output
-echo "$count"
 
-# https://www.ietf.org/rfc/rfc2047.txt section 4
-base64_decode() { # pattern: =?$charset?$encoding?$string?=
-    echo "$1" | while IFS=\? read -r _ charset encoding string _; do
-        case "$encoding" in
-            b|B) echo "$string" | base64 -d | iconv -f "$charset" -t "utf-8" ;;
-            *) printf "%s" "$1" ;;
-        esac
-    done
-}
+def netease_workaround():
+    # reference: https://blog.csdn.net/jony_online/article/details/108638571
+    imaplib.Commands['ID'] = ('AUTH')
+    m._simple_command('ID', '("name" "IMAPClient")')
 
-# fetch email envelope
-# https://tools.ietf.org/html/rfc3501#section-7.4.2 FETCH Response
-if [ -n "$arg_number" ] && [ "$count" -gt 0 ]; then
-    # Get uid list
-    [ "$count" -ge "$arg_number" ] && start_pos=$((count - arg_number + 1))
-    uids="$(echo "$unseen" | cut -d " " -f ${start_pos:-1}- | tr " " ",")"
-    # Match patterns in ENVELOPE string
-    base64_regex='"*\(=?[^?]*?.?[^?]*?=\|[^"]*\|NIL\)"*'
-    quoted_regex='"*\([^"]*\|NIL\)"*'
-    address_list="(($base64_regex NIL $quoted_regex $quoted_regex))"
-    envelope_regex=".*ENVELOPE ($quoted_regex $base64_regex $address_list.*"
-    # Fetch and parse
-    curl --fail --silent --max-time 30 --connect-timeout 30 \
-        --user "$email:$password" --url "imaps://$server:$port/INBOX" \
-        --request "UID FETCH $uids (ENVELOPE)" |
-    sed "s/$envelope_regex/\1|\2|\3|\4|\5/" | tr -d '\r' |
-    while IFS=\| read -r date subject from user host; do
-        date -d "$date" +"%Y-%m-%d %r" || echo "Unknown date"
-        printf "%s %s\n" "$(base64_decode "$from")" "<${user#<}@${host%>}>"
-        printf "%s\n" "$(base64_decode "$subject")"
-    done 2> /dev/null
-fi
+
+def decode_header(hdr):
+    # https://www.ietf.org/rfc/rfc2047.txt section 4
+    if hdr is None:
+        return hdr
+    msg, encoding = email.header.decode_header(hdr)[0]
+    if encoding is not None:
+        msg = msg.decode(encoding)
+    return msg
+
+
+def envelope_info(msg):
+    # reference: https://www.ietf.org/rfc/rfc3501.txt section 7.4.2
+    # every msg is an ENVELOPE structure: UID (ENVELOPE (...))
+    msg = msg.decode()
+
+    # strip the outside two pairs of parenthesis, only remain "..."
+    left = msg.index('(', msg.index('(') + 1)
+    right = msg.rindex(')', 0, msg.rindex(')'))
+    envelope = msg[left + 1: right]
+
+    # convert to tuple or list format, and evaluate
+    envelope = envelope.replace('NIL', 'None,')
+    envelope = envelope.replace('" ', '", ')
+    envelope = envelope.replace(') ', '), ')
+    date, subject, (name, _, mail, host) = eval(envelope)[:3]
+
+    # export
+    date = email.utils.parsedate_to_datetime(decode_header(date))
+    # date = email.utils.parsedate_tz(decode_header(date))
+    subject = decode_header(subject)
+    name = decode_header(name)
+    mail = "{}@{}".format(decode_header(mail), decode_header(host))
+    return date, subject, name, mail
+
+
+args = get_args()
+
+m = imaplib.IMAP4_SSL(args.server, args.port)
+m.login(args.email, args.password)
+netease_workaround()  # special care for netease email
+m.select()
+uids = m.search(None, 'UNSEEN')[1][0].decode().split()
+print("Unread:", len(uids))
+if args.download:
+    for msg in m.fetch(','.join(uids[-args.download:]), '(ENVELOPE)')[1]:
+        date, subject, name, mail = envelope_info(msg)
+        date = date.astimezone().strftime("%Y-%m-%d %H:%M:%S %a")
+        print(f"\nDate: {date}\nSubjecct: {subject}\nFrom: {name}<{mail}>")
+m.close()
+m.logout()
