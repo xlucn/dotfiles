@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$PS1" ] && [ -f /usr/share/bash-completion/bash_completion ]
-then
+if [ "$PS1" ] && [ -n "$BASH" ] && \
+    [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
@@ -53,7 +53,7 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 HISTCONTROL=ignoredups:erasedups
 HISTFILE="$XDG_DATA_HOME/bash_history"
-shopt -s histappend
+[ -n "$BASH" ] && shopt -s histappend
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
