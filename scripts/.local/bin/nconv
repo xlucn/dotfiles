@@ -1,0 +1,13 @@
+#!/bin/sh
+while getopts f:t: arg; do
+    case $arg in
+        f) from=$OPTARG;;
+        t) to=$OPTARG;;
+        *) ;;
+    esac
+done
+shift $((OPTIND - 1))
+number=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+result=$(echo "obase=$to;ibase=$from;$number" | bc)
+while [ ${#result} -lt 32 ]; do result="0$result"; done
+echo "$result"
