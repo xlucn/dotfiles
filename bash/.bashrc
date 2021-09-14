@@ -45,8 +45,17 @@ fi
 
 export PROXY="socks5h://localhost:1081"
 
+# use the prompt script comes with git
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWUPSTREAM=verbose
+export GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWSTASHSTATE=1
+
 # This command is in my own dotfiles repo
-PS1='$(command -v shell_prompt > /dev/null 2>&1 && shell_prompt || echo "$ ")'
+# shellcheck disable=SC1090
+. ~/.local/bin/shell_prompt
+PS1='$(__bash_ps1)'
 
 # History, https://unix.stackexchange.com/questions/18212
 HISTSIZE=-1
