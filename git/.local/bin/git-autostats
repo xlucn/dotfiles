@@ -41,29 +41,26 @@ if [ -f "$CONFIG_FILE" ]; then
 
     while read -r p; do
         [ ! -d "$p" ] && continue
-        upstream=$(git -C "$p" for-each-ref --format='%(upstream:short)' "$(git -C "$p" symbolic-ref -q HEAD)")
-        current=$(git -C "$p" branch --show-current)
-        left=$(git -C "$p" rev-list --count --left-only "$current"..."$upstream")
-        right=$(git -C "$p" rev-list --count --right-only "$current"..."$upstream")
+        count=$(git -C "$p" rev-list --count --left-right HEAD..."@{upstream}")
         staged=$(git -C "$p" diff --cached --numstat | wc -l)
         unstaged=$(git -C "$p" diff --numstat | wc -l)
         untracked=$(git -C "$p" ls-files --other --exclude-standard | wc -l)
 
         # update cached result
-        if [ "$left" = 0 ] && [ "$right" = 0 ]; then
-            uptodate=$((uptodate + 1))
-        elif [ "$left" = 0 ] && [ "$right" != 0 ]; then
-            behind=$((behind + 1))
-        elif [ "$left" != 0 ] && [ "$right" = 0 ]; then
-            ahead=$((ahead + 1))
-        else # [ "$left" != 0 ] && [ "$right" != 0 ]
-            conflict=$((conflict + 1))
-        fi
+        case "$count" in
+            "") ;;
+            "0	0") uptodate=$((uptodate + 1)) ;;
+            "0	"*) behind=$((behind + 1)) ;;
+            *"	0") ahead=$((ahead + 1)) ;;
+            *) conflict=$((conflict + 1)) ;;
+        esac
         [ "$staged" != 0 ] && staged_count=$((staged_count + 1))
         [ "$unstaged" != 0 ] && unstaged_count=$((unstaged_count + 1))
         [ "$untracked" != 0 ] && untracked_count=$((untracked_count + 1))
 
         # print repo informations
+        left=${count%	*}
+        right=${count#*	}
         if [ "$flag_quiet" != 1 ]; then
             printf "\033[$((left?34:0))m%6s\033[0m " "+$left"
             printf "\033[$((right?31:0))m%6s\033[0m " "-$right"
