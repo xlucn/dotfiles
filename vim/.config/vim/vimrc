@@ -39,7 +39,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-sensible')
   call a:packager.add('tpope/vim-surround')
   call a:packager.add('VoldikSS/vim-mma')
-  call a:packager.add('w0rp/ale')
   " call a:packager.add('MikeCoder/markdown-preview.vim')
   " call a:packager.add('JamshedVesuna/vim-markdown-preview')
   " call a:packager.add('iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } })
@@ -75,6 +74,7 @@ set timeoutlen=300 " time out for key code delays
 set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
 set completeopt=menuone,noinsert,preview " comletion
+let fortran_free_source=1
 " }}}
 " UI basic {{{
 set guioptions=di " gui options: dark, icon
@@ -310,9 +310,8 @@ let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft :
 let &stl .= '%2* %3p%% | %3l:%3c %1*'
 let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*'
 " }}}
-let fortran_free_source=1
 " Plugin Settings
-" {{{ buftabline
+" buftabline {{{
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 " }}}
@@ -444,7 +443,7 @@ let g:ale_linters = {
   \ 'python': ['pylsp'],
   \ 'lua': ['luacheck'],
   \ 'sh': ['shellcheck'],
-  \ 'tex': ['texlab', 'chktex'],
+  \ 'tex': ['chktex'],
   \ 'fortran': ['gcc'],
   \ }
 let g:ale_fixers = {
@@ -575,7 +574,4 @@ let g:tagbar_compact = 1
 let g:tagbar_sort = 0
 nnoremap <C-B> :Tagbar<CR>
 " }}}
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 1000
-let g:mucomplete#chain = ['path', 'omni', 'spel']
 " vim:foldmethod=marker:foldlevel=0
