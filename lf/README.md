@@ -24,8 +24,8 @@ Image preview works great after [this commit](https://github.com/gokcehan/lf/com
    - After the new commit, preview region's position and dimension are passed from `lf`, use them directly.
    - Return 1 in the preview script to disable preview cache for images, this will refresh image previews.
 
-   See [the `pv` script](.local/bin/pv).
+   See [the `pv` script](.local/bin/pv) => `image/*`.
 
 4. Specify a clean script in `lfrc`. I am using the same [preview-image](.local/bin/preview-image) to preview and clean images.
 
-   See [lfrc](.config/lf/lfrc).
+   See [lfrc](.config/lf/lfrc) => `set cleaner`.
