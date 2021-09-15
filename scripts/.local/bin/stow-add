@@ -1,5 +1,5 @@
 #!/bin/sh
-[ "$#" != 2 ] echo "usage: $(basename "$0") <filename> <taraget>" && exit
+[ "$#" != 2 ] && echo "usage: $(basename "$0") <filename> <taraget>" && exit
 
 folder=$(realpath --relative-to "$HOME" "$(dirname "$1")")
 target=$(realpath "$2/$folder")
