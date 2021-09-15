@@ -10,68 +10,74 @@ BLUE="\001\033[34m\002"
 MAGENTA="\001\033[35m\002"
 CYAN="\001\033[36m\002"
 RESET="\001\033[0m\002"
-BOLDRED="\001\033[1;31m\002"
-BOLDYELLOW="\001\033[1;33m\002"
+BRED="\001\033[1;31m\002"
+BYELLOW="\001\033[1;33m\002"
 
 __ssh_indicator() {
-    [ -n "$SSH_CLIENT" ] &&
-        printf "${CYAN}[SSH:$MAGENTA%s@%s$CYAN]$RESET%s" "$(whoami)" "$(hostname)" "$SEP"
+    [ -n "$SSH_CLIENT" ] && printf "${CYAN}%s$RESET" "[SSH]" && return 0
 }
 
-__curdir() {
+__user_host() {
+    printf "$MAGENTA%s@%s$CYAN$RESET" "$(whoami)" "$(hostname)" && return 0
+}
+
+__pwd_indicator() {
     # print current directory
     pwd=$(basename "$PWD")
-    printf "$BOLDYELLOW%.*s" "$CWD_LIMIT" "$pwd"
+    printf "$BYELLOW%.*s" "$CWD_LIMIT" "$pwd"
     [ ${#pwd} -gt $CWD_LIMIT ] && printf "…"
-    printf "%s$RESET" "$SEP"
-
-    # lf indicator -- if you are in lf file manager
-    [ -n "$LF_LEVEL" ] && printf "(LF:%s)%s" "$LF_LEVEL" "$SEP"
-    # ranger indicator -- if you are in ranger file manager
-    [ -n "$RANGER_LEVEL" ] && printf "(RANGER:%s)%s" "$RANGER_LEVEL" "$SEP"
+    printf "$RESET%s"
 
     # set terminal title
     [ "$TERM" != linux ] && printf "\001\033]0;[%s] %s\007\002" "$TERM" "$PWD"
+
+    return 0
+}
+
+__nested_indicator() {
+    if [ -n "$LF_LEVEL" ]; then # if you are in lf
+        printf "(LF:%s)" "$LF_LEVEL"
+    elif [ -n "$RANGER_LEVEL" ]; then # if you are in ranger
+        printf "(RANGER:%s)" "$RANGER_LEVEL"
+    else
+        return 1
+    fi
 }
 
 __job_counts() {
     jobcount=$(jobs -p | wc -l)
-    [ "$jobcount" -gt 0 ] && printf "$GREEN(jobs:%s)$RESET " "$jobcount"
+    [ "$jobcount" -gt 0 ] && printf "$GREEN(jobs:%s)$RESET " "$jobcount" || return 1
 }
 
 __git_autostats() {
-    if [ -f /tmp/git-autostats ]; then
-        read -r _ ahead behind conflict staged unstaged untracked < /tmp/git-autostats
-        [ $((ahead + behind + conflict + staged + unstaged + untracked)) = 0 ] && return
-        printf "["
-        [ "$ahead"     -gt 0 ] && printf "$BLUE%s+$RESET" "$ahead"
-        [ "$behind"    -gt 0 ] && printf "$YELLOW%s-$RESET" "$behind"
-        [ "$conflict"  -gt 0 ] && printf "$RED%s±$RESET" "$conflict"
-        [ "$staged"    -gt 0 ] && printf "$GREEN%sv$RESET" "$staged"
-        [ "$unstaged"  -gt 0 ] && printf "$YELLOW%sx$RESET" "$unstaged"
-        [ "$untracked" -gt 0 ] && printf "$RED%s?$RESET" "$untracked"
-        printf "]%s" "$SEP"
-    else
-        git autostats -u > /dev/null 2>&1
-    fi
+    [ -f /tmp/git-autostats ] || return 1
+
+    read -r _ ahead behind conflict staged unstaged untracked < /tmp/git-autostats
+    [ $((ahead + behind + conflict + staged + unstaged + untracked)) = 0 ] && return
+    printf "["
+    [ "$ahead"     -gt 0 ] && printf "$BLUE%s+$RESET" "$ahead"
+    [ "$behind"    -gt 0 ] && printf "$YELLOW%s-$RESET" "$behind"
+    [ "$conflict"  -gt 0 ] && printf "$RED%s±$RESET" "$conflict"
+    [ "$staged"    -gt 0 ] && printf "$GREEN%sv$RESET" "$staged"
+    [ "$unstaged"  -gt 0 ] && printf "$YELLOW%sx$RESET" "$unstaged"
+    [ "$untracked" -gt 0 ] && printf "$RED%s?$RESET" "$untracked"
+    printf "]"
 }
 
 __git_prompt() {
-    [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1 || return
-
-    # shellcheck disable=SC1090,SC1091 # source location
-    . "$HOME/.config/git/git-prompt.sh"
-
-    printf "$(__git_ps1 "(%s)")%s" "$SEP"
+    git rev-parse --git-dir > /dev/null 2>&1 || return 1
+    git_prompt  # my stripped-down script from git-prompt.sh, see my repo
 }
 
 __bash_ps1() {
     exitcode=$?
-    __ssh_indicator
-    __curdir
-    __job_counts
-    __git_autostats
-    __git_prompt
-    [ $exitcode = 0 ] && EXITCOLOR=$BOLDYELLOW || EXITCOLOR=$BOLDRED
+    __ssh_indicator    && printf "$SEP%s"
+    # __user_host        && printf "$SEP%s"
+    __pwd_indicator    && printf "$SEP%s"
+    __nested_indicator && printf "$SEP%s"
+    __job_counts       && printf "$SEP%s"
+    __git_autostats    && printf "$SEP%s"
+    __git_prompt       && printf "$SEP%s"
+    [ $exitcode = 0 ] && EXITCOLOR=$BYELLOW || EXITCOLOR=$BRED
     printf "$EXITCOLOR%s%s$RESET" "$" "$SEP"
 }
