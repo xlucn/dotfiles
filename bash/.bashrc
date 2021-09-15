@@ -54,8 +54,12 @@ export GIT_PS1_SHOWSTASHSTATE=1
 
 # This command is in my own dotfiles repo
 # shellcheck disable=SC1090
-. ~/.local/bin/shell_prompt
-PS1='$(__bash_ps1)'
+if [ -f ~/.local/bin/shell_prompt ]; then
+    . ~/.local/bin/shell_prompt
+    PS1='$(__bash_ps1 2> /dev/null)'
+else
+    PS1='$ '
+fi
 
 # History, https://unix.stackexchange.com/questions/18212
 HISTSIZE=-1
