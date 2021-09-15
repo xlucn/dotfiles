@@ -1,0 +1,10 @@
+# vim filetype=config
+background "#303030"
+geometry 1x5+0-8
+grow_gravity SW
+icon_gravity SW
+icon_size 24
+slot_size 36
+skip_taskbar true
+sticky true
+vertical true
