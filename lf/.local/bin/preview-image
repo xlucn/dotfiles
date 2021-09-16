@@ -8,6 +8,6 @@ case "${1:-clear}" in
         {   printf '{ "action": "add", "identifier": "%s", "path": "%s",' "$ID" "$2"
             printf '"width": %d, "height": %d, "x": %d, "y": %d }\n' "$3" "$4" "$5" "$6"
         } > "$FIFO_UEBERZUG" ;;
-    clear)
+    clear|*)
         printf '{ "action": "remove", "identifier": "%s" }\n' "$ID" > "$FIFO_UEBERZUG" ;;
 esac
