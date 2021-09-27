@@ -46,7 +46,7 @@ __nested_indicator() {
 
 __job_counts() {
     jobcount=$(jobs -p | wc -l)
-    [ "$jobcount" -gt 0 ] && printf "$GREEN(jobs:%s)$RESET " "$jobcount" || return 1
+    [ "$jobcount" -gt 0 ] && printf "$GREEN(jobs:%s)$RESET" "$jobcount" || return 1
 }
 
 __git_autostats() {
