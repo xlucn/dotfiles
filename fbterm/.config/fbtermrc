@@ -6,15 +6,15 @@
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
 
 # Recommendations 14-8-18 16-10-20 21-12-24 26-15-30
-font-names=Monospace
-font-size=24
-font-width=15
+font-names=JetBrains Mono SemiBold,WenQuanYi Micro Hei,Noto Sans CJK SC,Monospace
+font-size=21
+font-width=12
 font-height=30
 
 # default color of foreground/background text
 color-foreground=a6a19b
 color-background=212121
-color-0=303030
+color-0=212121
 color-1=826023
 color-2=618231
 color-3=7e7b28
