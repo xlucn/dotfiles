@@ -18,5 +18,5 @@ done
 
 ffmpeg -y -f x11grab -framerate 30 \
        -video_size "$((w))x$((h))" \
-       -i ":0.0+$((x+bw)),$((y+bw))" \
+       -i ":0.0+$((x+bw)),$((y+bw))" -pix_fmt yuv420p \
        "$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mp4"
