@@ -1,29 +1,33 @@
 [options]
-font = Monospace 12
-audible_bell = false
-clickable_url = true
+allow_bold       = true
+audible_bell     = false
+clickable_url    = true
+dynamic_title    = true
+font             = Monospace 12
+icon_name        = terminal
+mouse_autohide   = true
 scrollback_lines = 10000
-allow_bold = true
-mouse_autohide = true
-icon_name = terminal
+size_hints       = false
 
 [colors]
-foreground      = #B0BEC5
-foreground_bold = #ECEFF1
+foreground      = #d8d1c9
+foreground_bold = #d8d1c9
 background      = #212121
-color0          = #546E7A
-color1          = #FF5252
-color2          = #5CF19E
-color3          = #FFD740
-color4          = #40C4FF
-color5          = #FF4081
-color6          = #64FCDA
-color7          = #FFFFFF
-color8          = #B0BEC5
-color9          = #FF8A80
-color10         = #B9F6CA
-color11         = #FFE57F
-color12         = #80D8FF
-color13         = #FF80AB
-color14         = #A7FDEB
-color15         = #FFFFFF
+color0          = #303030
+color1          = #826023
+color2          = #618231
+color3          = #7e7b28
+color4          = #3e825c
+color5          = #82685c
+color6          = #1793d1
+color7          = #a6a19b
+color8          = #484848
+color9          = #b48430
+color10         = #86b443
+color11         = #b0ab37
+color12         = #55b47f
+color13         = #b4907f
+color14         = #9bb4c8
+color15         = #d8d1c9
+
+# vim: ft=cfg
