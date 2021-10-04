@@ -27,7 +27,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         fi && exit ;;
     image/*)
         if [ -n "$DISPLAY" ]; then
-            sxiv "$@" || vimiv "$@" &
+            nsxiv "$@" || sxiv "$@" || vimiv "$@" &
         else
             jfbview "$@" || fbv "$@"
         fi && exit ;;
