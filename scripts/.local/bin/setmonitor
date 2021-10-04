@@ -56,4 +56,5 @@ fi
 
 choice=$(printf "%s$options" | $DMENU -i -l 10 -p "Set monitors:" | cut -d " " -f 1)
 
-eval "\$command_${choice:-0}"
+command_cancel=:
+eval "\$command_${choice:-cancel}"
