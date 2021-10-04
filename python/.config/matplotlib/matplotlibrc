@@ -8,3 +8,6 @@ text.usetex: True
 
 ## no transparency of legend border
 legend.framealpha: 0
+
+xtick.direction: in
+ytick.direction: in
