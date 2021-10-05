@@ -1,0 +1,13 @@
+#!/bin/sh
+while getopts 2c: arg; do
+    case "$arg" in
+        2) scale=2 ;;
+        c) crf=$OPTARG ;;
+        *) echo "$0 [-2] [-c crf]" && exit;;
+    esac
+done
+shift $((OPTIND - 1))
+
+for v in "$@"; do
+    ffmpeg -y -i "$v" -vf scale="iw/${scale:-1}:-2" -pix_fmt yuv420p -r 30 -crf "${crf:-24}" "${v%.*}-small.${v##*.}"
+done
