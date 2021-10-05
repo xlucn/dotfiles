@@ -16,7 +16,6 @@ RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local ac $attr{
 KERNEL           == "card0",\
 SUBSYSTEM        == "drm",\
 ACTION           == "change",\
-RUN              += "/usr/local/bin/udev-local drm",\
 IMPORT{program}  += "/usr/local/bin/xpub",\
 RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local drm'"
 
