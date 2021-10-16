@@ -6,7 +6,8 @@ Xft.hinting   : true
 Xft.hintstyle : hintslight
 
 ! -- Cursor -- !
-Xcursor.theme: Breeze-Adapta-Cursor
+Xcursor.theme: Breeze_Hacked
+Xcursor.size: 48
 
 *.font: Monospace:size=12
 
