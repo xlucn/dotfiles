@@ -27,7 +27,6 @@ map [presentation] p toggle_presentation
 
 # Synctex
 set synctex true
-set synctex-editor-command "vim +%{line} %{input}"
 # Do not raise window after forward search, from version 0.4.8
 set dbus-raise-window false
 
@@ -54,3 +53,6 @@ set adjust-open "width"
 set window-title-basename true
 set window-title-page true
 set window-icon-document false
+
+# larger scroll
+set scroll-step 192
