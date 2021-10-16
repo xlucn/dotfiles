@@ -92,13 +92,13 @@ def envelope_info(msg):
 
 args = get_args()
 
-m = imaplib.IMAP4_SSL(args.server, args.port)
+m = imaplib.IMAP4_SSL(args.server, args.port, timeout=10)
 m.login(args.email, args.password)
 netease_workaround()  # special care for netease email
 m.select()
 uids = m.search(None, 'UNSEEN')[1][0].decode().split()
-print("Unread:", len(uids))
-if args.download:
+print(len(uids))
+if args.download and len(uids[-args.download:]) > 0:
     for msg in m.fetch(','.join(uids[-args.download:]), '(ENVELOPE)')[1]:
         date, subject, name, mail = envelope_info(msg)
         date = date.astimezone().strftime("%Y-%m-%d %H:%M:%S %a")
