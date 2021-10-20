@@ -41,8 +41,8 @@ bind   generic,index,pager   \Cd          next-page
 bind   generic,index,pager   \Cu          previous-page
 
 # enter and exit with left/right h/l enter/q
-macro  index <left> "c?\t" "Go back to the list of mailboxes"
-macro  index h      "c?\t" "Go back to the list of mailboxes"
+macro  index <left> "c?" "Go back to the list of mailboxes"
+macro  index h      "c?" "Go back to the list of mailboxes"
 macro  index q      "<sync-mailbox><exit>"
 bind   generic,pager q      exit
 bind   generic,pager <left> exit
