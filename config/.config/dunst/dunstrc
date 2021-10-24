@@ -2,8 +2,10 @@
 # Display
 monitor = 0
 follow = mouse
-# The geometry of the window: [{width}]x{height}[+/-{x}+/-{y}]
-geometry = "0x0-24+72"
+# geometry
+width = (0, 1024)
+origin = top-right
+offset = 24x72
 # progress bar
 progress_bar = false
 # Show how many messages are currently hidden (because of geometry)
