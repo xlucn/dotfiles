@@ -20,7 +20,8 @@ Xcursor.size: 48
 *color3:        #7e7b28
 *color4:        #3e825c
 *color5:        #82685c
-*color6:        #749cb3
+!*color6:        #749cb3
+*color6:        #1793d1
 *color7:        #a6a19b
 *color8:        #484848
 *color9:        #b48430
