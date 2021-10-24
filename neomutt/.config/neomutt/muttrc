@@ -1,13 +1,5 @@
-set my_email1 = "2869761396@qq.com"
-set my_email2 = "oliver_lew@outlook.com"
-source ~/.config/neomutt/$my_email2.muttrc
+source ~/.config/neomutt/oliver_lew@outlook.com.muttrc
 
-folder-hook $folder 'source ~/.config/neomutt/$my_email1.muttrc'
-folder-hook $folder 'source ~/.config/neomutt/$my_email2.muttrc'
-macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email1.muttrc<enter><change-folder>!<enter>'
-macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/neomutt/$my_email2.muttrc<enter><change-folder>!<enter>'
-
-# editor, use vim
 set editor = "vim"
 set sig_on_top = yes
 # disable '+' markers at the beginning of every wrapped line

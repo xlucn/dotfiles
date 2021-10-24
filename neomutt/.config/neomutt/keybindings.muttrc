@@ -1,13 +1,10 @@
-# unbind all existing keybindings
-# unbind *
-
+# Note: generic map does not affect pager and editor maps
+#
 # scroll with ^Y and ^E
-bind generic,pager,editor \Ce noop
-bind generic,pager,editor h noop
-bind generic,browser \Cy previous-entry
-bind generic,browser \Ce next-entry
-bind pager,index \Cy previous-line
-bind pager,index \Ce next-line
+bind generic,browser \cy previous-entry
+bind generic,compose,browser,attach \ce next-entry
+bind pager,index \cy previous-line
+bind pager,index \ce next-line
 
 # search
 bind   generic,index,pager / search
@@ -71,7 +68,7 @@ macro  index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailbox
 macro  generic,index,pager \cr ":source ~/.config/neomutt/muttrc\n" "Reload mutt's configuration file"
 macro  pager \cb "|urlscan\n" "call urlscan to extract URLs out of a message"
 macro  generic,index,pager "$" "<imap-fetch-mail><sync-mailbox><check-stats>"
-macro  compose a "<attach-file>$PWD<tab><tab><tab>"
+macro  compose a "<attach-file>$PWD<tab><tab><tab>" " a hack to attach file of current dir
 
 # Toggle the visibility of the Sidebar.
 macro  generic,index,pager B "<enter-command>toggle sidebar_visible<enter>"
