@@ -250,17 +250,17 @@ abstracts = {
 
   # default background for all statusbars. You can also give
   # the default foreground color for statusbar items.
-  sb_background = "%4%w";
-  window_border = "%4%w";
+  sb_background = "%N";
+  window_border = "%N";
 
   # default backround for "default" statusbar group
-  #sb_default_bg = "%4";
+  sb_default_bg = "%8";
   # background for prompt / input line
   sb_prompt_bg = "%n";
   # background for info statusbar
-  sb_info_bg = "%8";
+  #sb_info_bg = "%8";
   # background for topicbar (same default)
-  #sb_topic_bg = "%4";
+  #sb_topic_bg = "%8";
 
   # text at the beginning of statusbars. "sb" already puts a space there,
   # so we don't use anything by default.
@@ -274,8 +274,8 @@ abstracts = {
 
   prompt = "[$*] ";
 
-  sb = " %c[%n$*%c]%n";
-  sbmode = "(%c+%n$*)";
+  sb = " %6[%n$*%6]%n";
+  sbmode = "(%6+%n$*)";
   sbaway = " (%GzZzZ%n)";
   sbservertag = ":$0 (change with ^X)";
   sbnickmode = "$0";
@@ -287,11 +287,20 @@ abstracts = {
   # normal text
   sb_act_text = "%c$*";
   # public message
-  sb_act_msg = "%W$*";
+  sb_act_msg = "%9%Y$*";
   # hilight
   sb_act_hilight = "%M$*";
   # hilight with specified color, $0 = color, $1 = text
   sb_act_hilight_color = "$0$1-%n";
+
+  # usercount.pl
+  sb_usercount = "{sb $0 nicks ($1-)}";
+  sb_uc_ircops = "%_*%_$*";
+  sb_uc_ops = "%_@%_$*";
+  sb_uc_halfops = "%_%%%_$*";
+  sb_uc_voices = "%_+%_$*";
+  sb_uc_normal = "$*";
+  sb_uc_space = " ";
 };
 formats = {
   "fe-common/irc" = {
@@ -308,17 +317,17 @@ formats = {
     pubmsg_me_channel = "{pubmsgmenick {menick $[-20]0$3}{msgchannel $1}}$2";
     pubmsg_hilight = "{pubmsghinick $0 $0 $[-20]1$3%n}$2";
     pubmsg_hilight_channel = "{pubmsghinick $0 $[-20]1$4{msgchannel $2}}$3";
-    pubmsg = "{pubmsgnick $2 {pubnick \00307$[-13]0}}$1";
+    pubmsg = "{pubmsgnick $2 {pubnick \00313$[-12]0}}$1";
     pubmsg_channel = "{pubmsgnick {pubnick %c$[-20]0}$2}$1";
     msg_private_query = "{privmsgnick $[-20]0}$2";
   };
   "Irssi::Script::adv_windowlist" = {
-    awl_display_header = "%8%9$C";
-    awl_display_key = "$Q${cumode_space}$H$C$S";
-    awl_display_nokey = "$Q${cumode_space}$H$C$S";
-    awl_display_key_visible = "%2$Q${cumode_space}$H$C$S";
-    awl_display_nokey_visible = "%2$Q${cumode_space}$H$C$S";
-    awl_display_key_active = "%1$Q${cumode_space}$H$C$S";
-    awl_display_nokey_active = "%1$Q${cumode_space}$H$C$S";
+    awl_display_header = "%N%w%8%9$C";
+    awl_display_key = "%N%w$Q${cumode_space}$H$C$S";
+    awl_display_nokey = "%N%w$Q${cumode_space}$H$C$S";
+    awl_display_key_visible = "%0$Q${cumode_space}$H$C$S";
+    awl_display_nokey_visible = "%0$Q${cumode_space}$H$C$S";
+    awl_display_key_active = "%8%0%Y$Q${cumode_space}$H$C$S";
+    awl_display_nokey_active = "%8%0%Y$Q${cumode_space}$H$C$S";
   };
 };
