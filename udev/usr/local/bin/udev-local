@@ -16,13 +16,6 @@ drm)
     setmonitor -q
     ;;
 usb)
-    notify-send "USB Storage $2 ${ACTION%e}ed" "$3 $4"
+    notify-send "USB Storage $2 ${ACTION%e}ed"
     ;;
-mount)
-    # should be called as root
-    [ "$ACTION" = add ] || exit
-    sleep 1
-    LABEL=$(lsblk -n -o LABEL,UUID "$2" | { read -r l _; echo "$l"; })
-    systemd-mount --no-block --collect "$2" "/run/media/$XUSER/$LABEL"
-    ;;
-esac
+esac >> /tmp/udev.log 2>&1 &

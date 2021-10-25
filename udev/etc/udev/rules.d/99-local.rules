@@ -20,10 +20,9 @@ IMPORT{program}  += "/usr/local/bin/xpub",\
 RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local drm'"
 
 # USB storage
-ACTION           == "add|remove",\
 SUBSYSTEMS       == "usb",\
 SUBSYSTEM        == "block",\
+ACTION           == "add|remove",\
 ENV{ID_FS_USAGE} == "filesystem",\
 IMPORT{program}  += "/usr/local/bin/xpub",\
-RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local usb $devnode $env{ID_VENDOR} $env{ID_MODEL}'",\
-RUN              += "/usr/local/bin/udev-local mount $devnode"
+RUN              += "/bin/su $env{XUSER} -c '/usr/local/bin/udev-local usb $devnode'"
