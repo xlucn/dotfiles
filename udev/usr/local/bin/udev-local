@@ -3,19 +3,19 @@ export PATH="/home/$XUSER/.local/bin:$PATH"
 
 case "$1" in
 capslock)
-    notify-send -i "input-keyboard" -a "New keyboard" "Mapping CapsLock -> Escape."
+    notify-send -i "input-keyboard" "New keyboard" "Mapping CapsLock -> Escape."
     sleep 1 # xmodmap won't work on new keyboards without this delay
     xmodmap -e "clear Lock" -e "keycode 0x42 = Escape Caps_Lock"
     ;;
 ac)
     status=$([ "$2" = 1 ] && echo on || echo off)
-    notify-send -i "battery" -a "Power supply" "AC adapter $status"
+    notify-send -i "battery" "Power supply" "AC adapter $status"
     ;;
 drm)
-    notify-send -i "video-display" -a "Display" "External monitor changed"
-    setmonitor -q
+    notify-send -i "video-display" "Display" "External monitor changed"
+    setmonitor
     ;;
 usb)
-    notify-send "USB Storage $2 ${ACTION%e}ed"
+    notify-send -i "drive-removable-media" "USB Storage $2 ${ACTION%e}ed"
     ;;
 esac >> /tmp/udev.log 2>&1 &
