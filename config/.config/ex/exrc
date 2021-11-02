@@ -1,8 +1,9 @@
 " vim: ft=vim
 " file: exrc
+" vi init file
 "
-" Some rules for vi init file:
-" - Starting a comment line with \", apparently :)
+" RULES:
+" - Comment starts with " (double quote)
 " - No empty lines
 "
 " Options
@@ -36,22 +37,22 @@ set notimeout
 "
 "
 " Mappings with , as <leader>. Quit, edit(reload), save and more.
-" These need 'timeout' set
-" map ,q :q
-" map ,z :q!
-" map ,e :e
-" map ,w :w
-" map ,x :wq
-" map ,r :source ~/.config/ex/exrc
+map ,q :q
+map ,z :q!
+map ,e :e
+map ,w :w
+map ,x :wq
+map ,r :source ~/.config/ex/exrc
 map  :source ~/.config/ex/exrc
 "
 "
-" Delete and navigate in normal mode instead
+"" Delete and navigate in normal mode instead
 " Make backspace delete as expected
+" Cons: not working well deleting the first char with more chars after
 " map  h
 " map!  sa
 " map!  sa
-" Bad hacks for arrow heys, lag when pressing escape
+" Bad hacks for arrow heys, make escape key lagging (it waits for arrow keys)
 " map! OA ka
 " map! OB ja
 " map! OC la
@@ -62,7 +63,7 @@ map  :source ~/.config/ex/exrc
 map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
 map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
 "
-" Do fmt command, the commented version does not work for me
+" Do fmt command (join lines), the commented version does not work for me
 " from https://hea-www.harvard.edu/~fine/Tech/vi.html
 " map v 0ma}b:'a,.j070 ?  *dwi
 map v 0ma}b:'a,.j}j
