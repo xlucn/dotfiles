@@ -65,12 +65,12 @@ case "${INDEX:-$1}" in
         esac ;;
     "$INET")
         case "$BUTTON" in
-            1) notify -a "dwm status"  "$(cat $TMPDIR/$SNET-tooltip)" & ;;
+            1) notify "dwm status"  "$(cat $TMPDIR/$SNET-tooltip)" & ;;
             3) $FLOATTERM -e nmtui-connect ;;
         esac ;;
     "$IBAT")
         case "$BUTTON" in
-            1) notify -a "dwm status"  "$(cat $TMPDIR/$SBAT-tooltip)" & ;;
+            1) notify "dwm status"  "$(cat $TMPDIR/$SBAT-tooltip)" & ;;
         esac ;;
     "$IDATE")
         case "$BUTTON" in
@@ -111,7 +111,7 @@ case "${INDEX:-$1}" in
         ;;
     "$IMPD")
         case "$BUTTON" in
-            1) notify -a "dwm status"  "$(mpc)" & ;;
+            1) notify "dwm status"  "$(mpc)" & ;;
             3) $FLOATTERM -e ncmpc ;;
         esac ;;
     "$IMPDSTAT")
@@ -193,7 +193,7 @@ fi
 if [ -n "$UPDATE_VOL" ] || [ -z "$STR_VOL" ] || [ $((TIME - TIME_VOL)) -gt $NVOL ]; then
     STR_VOL=$(vol)
     echo "$TIME $STR_VOL" > $TMPDIR/$SVOL
-    [ -n "$UPDATE_VOL" ] && notify -t 1000 -h int:value:"$STR_VOL" -a "Volume:" -i "audio-volume-high-symbolic" "$(progress_bar "$STR_VOL")" &
+    [ -n "$UPDATE_VOL" ] && notify -t 1000 -h int:value:"$STR_VOL" -i "audio-volume-high-symbolic" "Volume:" "$(progress_bar "$STR_VOL")" &
 fi
 if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 
@@ -215,7 +215,7 @@ STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }
 STR_LIGHT=${STR_LIGHT:-0}
 STR_LIGHT=${STR_LIGHT%\%}
 [ -n "$UPDATE_LIGHT" ] &&
-notify -t 1000 -h int:value:"$STR_LIGHT" -a "Brightness:" -i "display-brightness-symbolic" "$(progress_bar "$STR_LIGHT")" &
+notify -t 1000 -h int:value:"$STR_LIGHT" -i "display-brightness-symbolic" "Brightness:" "$(progress_bar "$STR_LIGHT")" &
 
 STR_DATE=$(date +"%a %b %d %H:%M")
 
