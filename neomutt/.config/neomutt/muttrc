@@ -9,7 +9,7 @@ set to_chars = "+ TCFL"
 
 # show sidebar
 set sidebar_visible = no
-set sidebar_width = 20
+set sidebar_width = 30
 set sidebar_short_path = yes
 set sidebar_folder_indent = yes
 set sidebar_sort_method = name
@@ -24,7 +24,7 @@ set status_format = "[%f](%r) [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%
 # attachments
 # The "%.999d%* " ensures to show as much of the filename as possible.
 # The default "%.40d%> " will cut off at 40, and when there is not enough space,
-# the right side won't even be gauranteed to display.
+# the mime type on the right won't even be gauranteed to display.
 set attach_format = "%u%D%I%t%2n %T%.999d%*  [%.4m/%.10M, %.6e%?C?, %C?, %s]"
 
 # cache folder
@@ -32,6 +32,7 @@ set message_cachedir = ~/.cache/mutt/bodies
 set header_cache = ~/.cache/mutt/headers
 # interval of mail checking, this hangs mutt when checking
 set mail_check = 600
+set mail_check_stats = yes
 set timeout = 120
 # Allow Mutt to open a new IMAP connection automatically.
 unset imap_passive
@@ -51,6 +52,7 @@ set sort = "date"
 set sort_aux = "last-date-received"
 # index scroll instead of turning pages
 set menu_scroll
+set mark_old = no
 # save to Archive by default
 save-hook . =Archive
 
