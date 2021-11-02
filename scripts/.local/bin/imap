@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # Reference: https://www.ietf.org/rfc/rfc5092.txt
 # Reference: https://www.ietf.org/rfc/rfc3501.txt
-import imaplib
 import argparse
 import email.utils
 import email.header
+import imaplib
+import logging
 from subprocess import run, PIPE
 
 
@@ -96,12 +97,14 @@ m = imaplib.IMAP4_SSL(args.server, args.port, timeout=10)
 m.login(args.email, args.password)
 netease_workaround()  # special care for netease email
 m.select()
+for i in m.list()[1]:
+    logging.debug(i.decode())
 uids = m.search(None, 'UNSEEN')[1][0].decode().split()
 print(len(uids))
 if args.download and len(uids[-args.download:]) > 0:
     for msg in m.fetch(','.join(uids[-args.download:]), '(ENVELOPE)')[1]:
         date, subject, name, mail = envelope_info(msg)
         date = date.astimezone().strftime("%Y-%m-%d %H:%M:%S %a")
-        print(f"\nDate: {date}\nSubjecct: {subject}\nFrom: {name}<{mail}>")
+        print(f"\nDate: {date}\nSubject: {subject}\nFrom: {name}<{mail}>")
 m.close()
 m.logout()
