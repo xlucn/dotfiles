@@ -1,2 +1,9 @@
 #!/bin/sh
-make && make PREFIX=~/.local/ install && make clean
+# Build most suckless projects and install to user home
+# This way I don't need to change the Makefile
+if [ $# = 1] && [ "$1" = install ]; then
+    make PREFIX=~/.local/ install
+elif [ $# = 0 ]; then
+    rm -f config.h
+    make
+fi
