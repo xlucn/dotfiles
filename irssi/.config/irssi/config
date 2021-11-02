@@ -194,9 +194,11 @@ channels = (
     chatnet = "Libera";
     autojoin = "no";
   },
-  { name = "#archlinux-cn"; chatnet = "Libera"; autojoin = "no"; },
+  { name = "#archlinux-cn"; chatnet = "Libera"; autojoin = "yes"; },
   { name = "#archlinux"; chatnet = "Libera"; autojoin = "no"; },
-  { name = "#fdroid"; chatnet = "Libera"; autojoin = "yes"; }
+  { name = "#fdroid"; chatnet = "Libera"; autojoin = "yes"; },
+  { name = "#mutt"; chatnet = "Libera"; autojoin = "yes"; },
+  { name = "#linuxba"; chatnet = "Libera"; autojoin = "yes"; }
 );
 
 aliases = {
