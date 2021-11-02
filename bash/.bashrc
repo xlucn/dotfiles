@@ -50,7 +50,7 @@ timeit() {
 }
 
 # Console color theme, reuse .Xresources definitions
-if [ "$TERM" = "linux" ]; then
+if [ "$TERM" = "linux" ] && tty | grep -q tty; then
     _SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
     sed -n "$_SEDCMD" "$HOME/.Xresources" | while read -r n color; do
         [ "$n" -lt 16 ] && [ "$n" -gt 0 ] && printf "\e]P%X%s" "$n" "$color"
