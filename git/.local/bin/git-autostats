@@ -11,19 +11,17 @@ search_repos()
 {
     printf "Enter the username to filter repo owners (accept basic regex): "
     read -r user
-    { if which locate > /dev/null 2>&1; then
-        locate "$HOME/*.git" | grep -v "$HOME/.\(cache\|config/vim\|vim\)/*" \
-            | xargs -I {} dirname {}
-    else
-        find "$HOME" -type d -name .git \
-            ! -path "$HOME/.cache/*" \
-            ! -path "$HOME/.vim/*" \
-            ! -path "$HOME/.config/vim/*" \
-            -exec dirname {} ';'
-    fi } |
+    locate "$HOME/*.git" |
+    grep -v "$HOME/\.\(cache\|config\|vim\)/.*" |
+    xargs dirname |
     while read -r repo; do
-        git -C "$repo" remote get-url origin | grep -iq "${user:-.}" && echo "$repo"
-    done > "$CONFIG_FILE"
+        git -C "$repo" remote show -n |
+        while read -r remote; do
+            git -C "$repo" remote get-url "$remote" |
+            grep -iq "${user:-.}" &&
+            echo "$repo"
+        done
+    done | sort -u > "$CONFIG_FILE"
 }
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
