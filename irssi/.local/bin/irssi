@@ -3,8 +3,8 @@
 # readme: https://github.com/OliverLew/dotfiles/tree/master/irssi/README.md
 # usage: irssi [irssi options]
 
-if ! command -v pass > /dev/null 2>&1; then NO_PASS=1; fi
-if ! command -v tmux > /dev/null 2>&1; then NO_TMUX=1; fi
+command -v pass > /dev/null 2>&1 || NO_PASS=1
+command -v tmux > /dev/null 2>&1 || NO_TMUX=1
 
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 start_irssi="/usr/bin/irssi --home=$XDG_CONFIG_HOME/irssi $*"
