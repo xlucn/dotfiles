@@ -5,9 +5,6 @@ if [ "$PS1" ] && [ -n "$BASH" ] && \
     . /usr/share/bash-completion/bash_completion
 fi
 
-# shellcheck disable=SC1090
-. "$HOME/.profile"
-
 # Alias
 alias sudo="doas"
 # auto color
