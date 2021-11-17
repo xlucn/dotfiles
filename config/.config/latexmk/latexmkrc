@@ -1,0 +1,2 @@
+# vim: ft=perl
+$out_dir = './output/';
