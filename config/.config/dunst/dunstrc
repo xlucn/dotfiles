@@ -40,10 +40,11 @@ icon_position = left
 # Scale larger icons up/down to this size, set max to 0 to disable
 min_icon_size = 64
 max_icon_size = 256
+icon_size = 64
 
 # Paths to default icons
 # for theme in /usr/share/icons/*; do grep "Directories" "$theme//index.theme" | tr ',=' '\n' | while read -r dir; do [ -d "$theme/$dir" ] && [ ! -h "$theme/$dir" ] && [ ! -h "$theme/${dir%/*}" ] && echo "$theme/$dir"; done ; done
-icon_path = /usr/share/icons/Papirus-Dark/symbolic/status
+icon_theme = Papirus-Dark
 
 ### History ###
 # Maximum amount of notifications kept in history
