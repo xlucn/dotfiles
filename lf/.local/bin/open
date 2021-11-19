@@ -11,12 +11,12 @@ case "$(file -Lb --mime-type -- "$1")" in
         ${EDITOR:-vim} "$@" && exit ;;
     video/*)
         if [ -n "$DISPLAY" ]; then
-            mpv --really-quiet -- "$@" || mplayer -- "$@" &
+            mpv --msg-level=all=no -- "$@" || mplayer -- "$@" &
         else
             cmplayer "$@" ||
             mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
             mpv --vo=gpu --gpu-context=drm --msg-level=all=no -- "$@"
-        fi && exit ;;
+        fi > /dev/null 2>&1 && exit ;;
     audio/*)
         mpv -- "$@" || mplayer -- "$@" && exit ;;
     application/pdf)
