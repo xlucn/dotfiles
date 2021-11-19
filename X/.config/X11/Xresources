@@ -98,10 +98,6 @@ xmenu.borderWidth: 2
 xmenu.selbackground: #B0BEC5
 xmenu.selforeground: #222B39
 
-
-#if __has_include(".Xresources.mine")
-# include ".Xresources.mine"
-#endif
 #if __has_include("/tmp/Xresources.Xft.dpi")
 # include "/tmp/Xresources.Xft.dpi"
 #endif

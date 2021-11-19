@@ -14,6 +14,5 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 # LOAD FILES
-[ -f "$HOME/.profile" ] && . "$HOME/.profile"
 [ -f "$XDG_CONFIG_HOME/X11/Xmodmap" ] && xmodmap "$XDG_CONFIG_HOME/X11/Xmodmap"
 [ -f "$XDG_CONFIG_HOME/X11/Xresources" ] && xrdb -quiet -merge "$XDG_CONFIG_HOME/X11/Xresources"
