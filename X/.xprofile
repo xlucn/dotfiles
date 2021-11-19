@@ -15,5 +15,5 @@ fi
 
 # LOAD FILES
 [ -f "$HOME/.profile" ] && . "$HOME/.profile"
-[ -f "$HOME/.Xmodmap" ] && xmodmap "$HOME/.Xmodmap"
-[ -f "$HOME/.Xresources" ] && xrdb -quiet -merge "$HOME/.Xresources"
+[ -f "$XDG_CONFIG_HOME/X11/Xmodmap" ] && xmodmap "$XDG_CONFIG_HOME/X11/Xmodmap"
+[ -f "$XDG_CONFIG_HOME/X11/Xresources" ] && xrdb -quiet -merge "$XDG_CONFIG_HOME/X11/Xresources"
