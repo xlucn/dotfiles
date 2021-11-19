@@ -92,7 +92,8 @@ EOF
         video_y=$pane_y
     fi
 
-    # This line and the line after mplayer exits is a hack to refresh tmux
+    # This line and the line after mplayer exits is a hack to refresh tmux,
+    # mplayer seems to black out the whole framebuffer when it starts
     [ -n "$TMUX_PANE" ] && { sleep 1; tmux refresh; } &
     # Mute all output and play the video!
     mplayer "$video" -vo fbdev2 -msglevel all=-1 -nolirc -noconfig user \
