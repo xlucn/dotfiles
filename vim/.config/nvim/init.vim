@@ -1,2 +1,1 @@
-let &packpath = &runtimepath
-source ~/.config/vim/vimrc
+vim/.config/vim/vimrc
