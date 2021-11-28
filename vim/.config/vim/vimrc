@@ -73,7 +73,9 @@ set laststatus=2
 set timeoutlen=300 " time out for key code delays
 set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
+set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
 set completeopt=menuone,noinsert,preview " comletion
+set fillchars+=vert:│
 let fortran_free_source=1
 " }}}
 " UI basic {{{
@@ -130,9 +132,9 @@ hi StatusLine   ctermfg=7   ctermbg=None cterm=None
 hi StatusLineNC ctermfg=7   ctermbg=None cterm=None
 hi VertSplit    ctermfg=7   ctermbg=None cterm=None
 " Have to set styles for built-in targets related to tabbufline
-hi TabLineSel   ctermfg=0   ctermbg=6    cterm=None
 hi PmenuSel     ctermfg=6   ctermbg=None cterm=None
 hi TabLine      ctermfg=7   ctermbg=None cterm=None
+hi TabLineSel   ctermfg=0   ctermbg=6    cterm=None
 hi TabLineFill  ctermfg=7   ctermbg=None cterm=None
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
@@ -189,9 +191,11 @@ augroup normal
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType tex,markdown,gitcommit setlocal spell
+    autocmd FileType c,mma setlocal noet
+    autocmd FileType markdown setlocal foldlevel=1
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType maxima setlocal commentstring=/*%s*/
-    autocmd FileType mma setlocal noet commentstring=(*%s*)
+    autocmd FileType mma setlocal commentstring=(*%s*)
     autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
 augroup END
 augroup terminal_setup
@@ -218,12 +222,12 @@ augroup END
 " }}}
 " Netrw -> NerdTree {{{
 " Make Netrw function like NerdTree
-let g:netrw_home         = $VIM
-let g:netrw_banner       = 0   " disable banner
-let g:netrw_browse_split = 4   " open file in previous (CTRL-W_p) window
-let g:netrw_winsize      = -20 " split size
-let g:netrw_dirhistmax   = 0   " disable history
-let g:netrw_liststyle    = 0   " thin listing
+let g:netrw_home         = $VIM " put temporary file there instead of $HOME
+let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
+let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
+let g:netrw_winsize      = -20  " split size, minus meaning absolute size
+let g:netrw_dirhistmax   = 0    " disable history
+let g:netrw_liststyle    = 0    " one file per line with nothing else
 nnoremap <C-N> :Lexplore<CR>
 " }}}
 " My own goyo mode {{{
@@ -240,19 +244,22 @@ endfunction
 " Execute current file {{{
 function ExecCurrentFile()
     if &ft == "sh"
-        execute ":!sh %:p"
+        execute "!sh %:p"
     elseif &ft == "python"
-        execute ":!python %:p"
+        execute "!python %:p"
     elseif &ft == "gnuplot"
-        execute ":!gnuplot %:p"
+        execute "!gnuplot %:p"
     elseif &ft == "maxima"
-        execute ":!maxima -b %:p"
+        execute "!maxima -b %:p"
+    elseif &ft == "tex"
+        let command = ["latexmk", "-xelatex", expand("%:p")]
+        call job_start(command, {"in_io": "null", "out_io": "null", "err_io": "null"})
     endif
     redraw!
 endfunction
-nmap <F5> :call ExecCurrentFile()<CR>
 " }}}
 " statusline {{{
+" update status on ALE status changes
 augroup ALEProgress
   autocmd!
   autocmd User ALEJobStarted redrawstatus
@@ -302,13 +309,13 @@ function StatusLeftMiddle()
 endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
-let &stl  = '%#TabLineSel# %{mode()} %1*'
-let &stl .= '%2*%{StatusLeftMiddle()}%1*'
-let &stl .= '%< %t %m %w '
-let &stl .= '%='
+let &stl  = '%#TabLineSel# %{mode()} %1*'       " vim modes
+let &stl .= '%2*%{StatusLeftMiddle()}%1*'       " git and readonly
+let &stl .= '%< %t %m %w '                      " basic info like filename
+let &stl .= '%='                                " split left and right
 let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft : "no ft"} '
-let &stl .= '%2* %3p%% | %3l:%3c %1*'
-let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*'
+let &stl .= '%2* %3p%% | %3l:%3c %1*'           " cursor location
+let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*' " ALE status
 " }}}
 " Plugin Settings
 " buftabline {{{
@@ -480,9 +487,6 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_matchparen_enabled = 0
 " compiler
 let g:vimtex_compiler_method = "latexmk"
-let g:vimtex_compiler_latexmk = {
-    \ 'build_dir' : 'output',
-    \}
 augroup latex
     autocmd!
     autocmd FileType tex ab tp textperiodcentered{}
