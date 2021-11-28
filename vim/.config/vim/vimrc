@@ -211,13 +211,27 @@ augroup terminal_setup
 augroup END
 " autocmd FileType tex let b:ale_lsp_root='./'
 " }}}
-" Fcitx Toggle {{{
+" IM Toggle {{{
 " restore input method state when enter insert mode
-let s:fcitx_cmd = executable("fcitx5-remote") ? "fcitx5-remote" : "fcitx-remote"
-augroup fcitx
+let s:fcitx_cmd = "fcitx-remote"
+function IMDisable()
+    if !exists("s:hasfcitx")
+        let s:hasfcitx = system(s:fcitx_cmd) =~# '^\d\n\+$'
+    endif
+    if s:hasfcitx
+        let b:fcitx = system(s:fcitx_cmd)
+        call system(s:fcitx_cmd . ' -c')
+    endif
+endfunction
+function IMEnable()
+    if exists('b:fcitx') && b:fcitx == 2
+        call system(s:fcitx_cmd . ' -o')
+    endif
+endfunction
+augroup im_toggle
     autocmd!
-    autocmd InsertLeave * let b:fcitx = system(s:fcitx_cmd) | call system(s:fcitx_cmd.' -c')
-    autocmd InsertEnter * if exists('b:fcitx') && b:fcitx == 2 | call system(s:fcitx_cmd.' -o') | endif
+    autocmd InsertLeave * call IMDisable()
+    autocmd InsertEnter * call IMEnable()
 augroup END
 " }}}
 " Netrw -> NerdTree {{{
