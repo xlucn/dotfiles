@@ -492,8 +492,10 @@ let g:tex_flavor = 'latex'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_syntax_enabled = 0
 " start vim with a server, see ':h vimtex-clientserver'
-if empty(v:servername) && exists('*remote_startserver') && !empty($DISPLAY) && empty($TMUX)
-    call remote_startserver('VIM')
+if empty(v:servername) && exists('*remote_startserver')
+    if empty($SSH_CLIENT) && !empty($DISPLAY) && empty($TMUX)
+        call remote_startserver('VIM')
+    endif
 endif
 " viewer setting
 let g:vimtex_view_method = 'zathura'
