@@ -256,20 +256,31 @@ function Goyo()
 endfunction
 " }}}
 " Execute current file {{{
+function ShowOutput(channel, msg)
+    if bufwinnr("exec_out") == -1
+        sbuffer exec_out
+    endif
+endfunction
 function ExecCurrentFile()
+    if bufexists("exec_out")
+        call deletebufline("exec_out", 1, '$')
+    endif
     if &ft == "sh"
-        execute "!sh %:p"
+        let command = ["bash", expand("%:p")]
     elseif &ft == "python"
-        execute "!python %:p"
+        let command = ["python", expand("%:p")]
     elseif &ft == "gnuplot"
-        execute "!gnuplot %:p"
+        let command = ["gnuplot", expand("%:p")]
     elseif &ft == "maxima"
-        execute "!maxima -b %:p"
+        let command = ["maxima", "-b", expand("%:p")]
     elseif &ft == "tex"
         let command = ["latexmk", "-xelatex", expand("%:p")]
-        call job_start(command, {"in_io": "null", "out_io": "null", "err_io": "null"})
     endif
-    redraw!
+    call job_start(command, {
+    \   "out_io": "buffer",
+    \   "out_name": "exec_out",
+    \   "out_cb": function('ShowOutput'),
+    \ })
 endfunction
 " }}}
 " statusline {{{
