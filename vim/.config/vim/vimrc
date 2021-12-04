@@ -262,9 +262,6 @@ function ShowOutput(channel, msg)
     endif
 endfunction
 function ExecCurrentFile()
-    if bufexists("exec_out")
-        call deletebufline("exec_out", 1, '$')
-    endif
     if &ft == "sh"
         let command = ["bash", expand("%:p")]
     elseif &ft == "python"
@@ -275,11 +272,20 @@ function ExecCurrentFile()
         let command = ["maxima", "-b", expand("%:p")]
     elseif &ft == "tex"
         let command = ["latexmk", "-xelatex", expand("%:p")]
+    else
+        echo "Not supported file type"
+        return
+    endif
+
+    if bufexists("exec_out")
+        call deletebufline("exec_out", 1, '$')
     endif
     call job_start(command, {
     \   "out_io": "buffer",
+    \   "err_io": "buffer",
     \   "out_name": "exec_out",
-    \   "out_cb": function('ShowOutput'),
+    \   "err_name": "exec_out",
+    \   "callback": function('ShowOutput'),
     \ })
 endfunction
 " }}}
