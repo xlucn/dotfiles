@@ -37,14 +37,11 @@ alignment = left
 
 # Align icons left/right/off
 icon_position = left
-# Scale larger icons up/down to this size, set max to 0 to disable
-min_icon_size = 64
-max_icon_size = 256
-icon_size = 64
 
-# Paths to default icons
-# for theme in /usr/share/icons/*; do grep "Directories" "$theme//index.theme" | tr ',=' '\n' | while read -r dir; do [ -d "$theme/$dir" ] && [ ! -h "$theme/$dir" ] && [ ! -h "$theme/${dir%/*}" ] && echo "$theme/$dir"; done ; done
+# The new icon settings
+enable_recursive_icon_lookup = true
 icon_theme = Papirus-Dark
+icon_size = 64
 
 ### History ###
 # Maximum amount of notifications kept in history
