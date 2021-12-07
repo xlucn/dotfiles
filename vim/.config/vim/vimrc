@@ -18,6 +18,7 @@ if empty(glob($VIM . '/pack/packager/opt/vim-packager'))
 endif
 function! s:packager_init(packager) abort
   call a:packager.add('airblade/vim-gitgutter')
+  call a:packager.add('kristijanhusak/vim-packager', {'type': 'opt'})
   call a:packager.add('ap/vim-buftabline')
   call a:packager.add('baskerville/vim-sxhkdrc')
   call a:packager.add('dense-analysis/ale')
@@ -27,7 +28,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('junegunn/fzf')
   call a:packager.add('junegunn/fzf.vim')
-  call a:packager.add('kristijanhusak/vim-packager')
   call a:packager.add('lervag/vimtex')
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('majutsushi/tagbar')
@@ -380,21 +380,12 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
-if exists('*which_key#register')
-    augroup vimtex
-      autocmd!
-      autocmd VimEnter * call which_key#register(mapleader, "g:which_key_map")
-      autocmd VimEnter * call which_key#register(maplocalleader, "g:which_key_map_local")
-    augroup end
-    nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
-    vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
-    nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
-    vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-    " vim unimpaired
-    nnoremap <silent> [ :WhichKey '['<CR>
-    nnoremap <silent> ] :WhichKey ']'<CR>
-    nnoremap <silent> y :WhichKey 'y'<CR>
-endif
+nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+autocmd VimEnter * call which_key#register('<leader>', 'g:which_key_map')
+autocmd VimEnter * call which_key#register('<localleader>', 'g:which_key_map_local')
 " }}}
 " Vim commentary {{{
 nmap <leader>c <Plug>CommentaryLine
@@ -567,31 +558,12 @@ else
 endif
 " }}}
 " vim-lsp {{{
-" let g:which_key_map.l = { "name": "language server" }
-" if executable('pyls')
-"     " pip install python-language-server
-"     au User lsp_setup call lsp#register_server({
-"                 \ 'name': 'pyls',
-"                 \ 'cmd': {server_info->['pyls']},
-"                 \ 'whitelist': ['python'],
-"                 \ })
-" endif
-" if executable('texlab')
-"     au User lsp_setup call lsp#register_server({
-"                 \ 'name': 'texlab',
-"                 \ 'cmd': {server_info->['texlab']},
-"                 \ 'whitelist': ['bib','tex'],
-"                 \ })
-" endif
-" function! s:on_lsp_buffer_enabled() abort
-"     setlocal omnifunc=lsp#complete
-"     setlocal signcolumn=yes
-" endfunction
-" augroup lsp_install
-"     au!
-"     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-"     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" augroup END
+let g:which_key_map.l = { "name": "language server" }
+let g:lsp_diagnostics_signs_delay = 200
+let g:lsp_diagnostics_echo_delay = 200
+let g:lsp_diagnostics_highlights_delay = 200
+let g:lsp_diagnostics_echo_cursor = 1
+autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
 " }}}
 " asyncomplete {{{
 " inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
