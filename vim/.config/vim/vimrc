@@ -209,6 +209,20 @@ augroup terminal_setup
         autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
     endif
 augroup END
+augroup latex
+    autocmd!
+    autocmd FileType tex ab tp textperiodcentered{}
+    autocmd FileType tex ab te textellipsis{}
+    autocmd FileType tex ab op originalpage{}<Left>
+    " add normal font in math
+    autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
+    autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
+    " add red color, or to existing text
+    autocmd FileType tex xnoremap <localleader>m s{\color{red}}<Esc>P
+    autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
+    " remove red color depends on vim-surround
+    autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
+augroup END
 " autocmd FileType tex let b:ale_lsp_root='./'
 " }}}
 " IM Toggle {{{
@@ -347,6 +361,20 @@ let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft :
 let &stl .= '%2* %3p%% | %3l:%3c %1*'           " cursor location
 let &stl .= '%#TabLineSel#%{ALEStatusLine()}%*' " ALE status
 " }}}
+" Git {{{
+" show the log in a pretty way
+function! GitLog()
+    silent !git log --all --decorate --oneline --graph --date-order
+    redraw!
+endfunction
+function! GitTig()
+    silent !tig -C "$(dirname "$(realpath "%")")"
+    redraw!
+endfunction
+" key bindings
+nnoremap <leader>gg :call GitTig()<CR>
+nnoremap <leader>gl :call GitLog()<CR>
+" }}}
 " Plugin Settings
 " buftabline {{{
 let g:buftabline_numbers = 2
@@ -422,31 +450,6 @@ let vim_markdown_preview_github=0
 let g:mkdp_auto_start = 0
 let g:mkdp_browser = 'firefox'
 " }}}
-" Fugitive {{{
-" show the log in a pretty way
-function! GitLog()
-    silent !git log --all --decorate --oneline --graph --date-order
-    redraw!
-endfunction
-function! GitTig()
-    silent !tig -C "$(dirname "$(realpath "%")")"
-    redraw!
-endfunction
-" key bindings
-nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gd :Gvdiff<CR>
-nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gg :call GitTig()<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gl :call GitLog()<CR>
-nnoremap <leader>gu :Gpush<CR>
-nnoremap <leader>gf :Gpull<CR>
-nnoremap <leader>gts :Git stash<CR>
-nnoremap <leader>gtp :Git stash pop<CR>
-nnoremap <leader>gtl :Git stash list<CR>
-nmap <Nop>(g) <Plug>GetDiffCharPair
-nmap <Nop>(p) <Plug>PutDiffCharPair
-" }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
@@ -515,20 +518,6 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_matchparen_enabled = 0
 " compiler
 let g:vimtex_compiler_method = "latexmk"
-augroup latex
-    autocmd!
-    autocmd FileType tex ab tp textperiodcentered{}
-    autocmd FileType tex ab te textellipsis{}
-    autocmd FileType tex ab op originalpage{}<Left>
-    " add normal font in math
-    autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
-    autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
-    " add red color, or to existing text
-    autocmd FileType tex xnoremap <localleader>m s{\color{red}}<Esc>P
-    autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
-    " remove red color depends on vim-surround
-    autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
-augroup END
 " }}}
 " Mathematica {{{
 let g:mma_candy = 2
