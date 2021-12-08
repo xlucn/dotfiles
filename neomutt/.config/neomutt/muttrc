@@ -57,9 +57,8 @@ set mark_old = no
 save-hook . =Archive
 
 # aliases
-set alias_file = "~/.config/neomutt/aliases.muttrc"
 set reverse_alias = yes
-source "~/.config/neomutt/aliases.muttrc"
+source "pass show mail/aliases |"
 
 # header
 # show only those headers
