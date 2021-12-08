@@ -205,7 +205,7 @@ augroup terminal_setup
         autocmd TermOpen term://* setlocal nonu nornu signcolumn=no
         autocmd TermOpen term://* startinsert
         autocmd TermClose term://* call feedkeys("\<CR>")
-    else
+    elseif exists("##TerminalOpen")
         autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
     endif
 augroup END
@@ -336,7 +336,6 @@ function StatusLeftMiddle()
     let l:status .= len(l:githead) ? l:githead . ' ' : ""
     let l:status .= len(l:readonly) ? l:readonly . ' ' : ""
     return len(l:githead) + len(l:readonly) > 0 ? l:status : ""
-    endif
 endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
@@ -384,8 +383,13 @@ nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
 vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
 nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
 vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-autocmd VimEnter * call which_key#register('<leader>', 'g:which_key_map')
-autocmd VimEnter * call which_key#register('<localleader>', 'g:which_key_map_local')
+function WhichKeyRegister()
+    if &rtp =~ "vim-which-key"
+        call which_key#register('<leader>', 'g:which_key_map')
+        call which_key#register('<localleader>', 'g:which_key_map_local')
+    endif
+endfunction
+autocmd VimEnter * call WhichKeyRegister()
 " }}}
 " Vim commentary {{{
 nmap <leader>c <Plug>CommentaryLine
@@ -421,7 +425,7 @@ let g:mkdp_browser = 'firefox'
 " Fugitive {{{
 " show the log in a pretty way
 function! GitLog()
-    silent Git log --all --decorate --oneline --graph --date-order
+    silent !git log --all --decorate --oneline --graph --date-order
     redraw!
 endfunction
 function! GitTig()
