@@ -1,2 +1,3 @@
 # vim: ft=perl
 $out_dir = './output/';
+$pdf_previewer = 'start zathura';
