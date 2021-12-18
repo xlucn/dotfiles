@@ -281,6 +281,20 @@ function ShowOutput(channel, msg)
         sbuffer exec_out
     endif
 endfunction
+
+function AsyncRun(cmd)
+    if bufexists("exec_out")
+        call deletebufline("exec_out", 1, '$')
+    endif
+    call job_start(a:cmd, {
+    \   "out_io": "buffer",
+    \   "err_io": "buffer",
+    \   "out_name": "exec_out",
+    \   "err_name": "exec_out",
+    \   "callback": function('ShowOutput'),
+    \ })
+endfunction
+
 function ExecCurrentFile()
     if &ft == "sh"
         let command = ["bash", expand("%:p")]
@@ -296,17 +310,12 @@ function ExecCurrentFile()
         echo "Not supported file type"
         return
     endif
+    call AsyncRun(command)
+endfunction
 
-    if bufexists("exec_out")
-        call deletebufline("exec_out", 1, '$')
-    endif
-    call job_start(command, {
-    \   "out_io": "buffer",
-    \   "err_io": "buffer",
-    \   "out_name": "exec_out",
-    \   "err_name": "exec_out",
-    \   "callback": function('ShowOutput'),
-    \ })
+function Make()
+    let makefile = findfile("Makefile", ".;")
+    call AsyncRun(["make", "-C", makefile])
 endfunction
 " }}}
 " statusline {{{
