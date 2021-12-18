@@ -128,6 +128,7 @@ else
 endif
 colorscheme slate
 hi SignColumn   ctermfg=0   ctermbg=None
+hi CursorColumn ctermbg=8
 hi Search       ctermfg=0   ctermbg=3
 hi IncSearch    ctermfg=0   ctermbg=3
 hi Folded       ctermfg=8   ctermbg=None
@@ -168,8 +169,8 @@ nnoremap <silent> k gk
 vnoremap <silent> j gj
 vnoremap <silent> k gk
 " buffers
-nnoremap <silent> <C-H> :bprevious<CR>
-nnoremap <silent> <C-L> :bnext<CR>
+nnoremap <silent> <C-K> :bprevious<CR>
+nnoremap <silent> <C-J> :bnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching
@@ -197,7 +198,7 @@ augroup normal
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType tex,markdown,gitcommit setlocal spell
-    autocmd FileType c,mma setlocal noet
+    autocmd FileType c,mma,json setlocal noet
     autocmd FileType markdown setlocal foldlevel=1
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType maxima setlocal commentstring=/*%s*/
