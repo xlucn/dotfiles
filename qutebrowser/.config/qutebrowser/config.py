@@ -21,6 +21,9 @@ background = xresources['*background']
 foreground = xresources['*foreground']
 grey = xresources['*color8']
 
+xresources_xft = read_xresources("Xft")
+xft_dpi = int(xresources_xft.get("Xft.dpi"))
+
 config.load_autoconfig(False)
 
 c.content.proxy = 'socks5://localhost:1081'
@@ -34,9 +37,7 @@ c.content.blocking.adblock.lists = [
 c.tabs.padding = {'bottom': 8, 'left': 8, 'right': 8, 'top': 8}
 c.tabs.indicator.padding = {'bottom': 2, 'left': 0, 'right': 4, 'top': 4}
 
-xresources_xft = read_xresources("Xft")
-xft_dpi = int(xresources_xft.get("Xft.dpi"))
-c.zoom.default = '{}%'.format(xft_dpi * 4 / 3)
+c.zoom.default = xft_dpi * 4 / 3
 
 c.colors.tabs.bar.bg = background
 c.colors.tabs.even.bg = background
@@ -44,11 +45,16 @@ c.colors.tabs.odd.bg = background
 c.colors.tabs.selected.even.bg = grey
 c.colors.tabs.selected.odd.bg = grey
 c.colors.statusbar.normal.bg = background
+c.colors.hints.bg = '#fff785'
 c.statusbar.show = 'never'
 c.statusbar.position = 'bottom'
 c.statusbar.widgets = ['url', 'history', 'scroll', 'progress']
 
 c.fonts.default_size = '12pt'
+c.fonts.hints = 'bold default_size monospace'
+
+c.hints.radius = 4
+c.hints.padding = {"bottom": 4, "left": 4, "right": 4, "top": 4}
 
 c.editor.command = ['st', '-c', 'floating',
                     'vim', '{file}', '-c', 'normal {line}G{column0}l']
