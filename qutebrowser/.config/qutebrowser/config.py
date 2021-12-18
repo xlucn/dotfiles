@@ -59,6 +59,21 @@ c.hints.padding = {"bottom": 4, "left": 4, "right": 4, "top": 4}
 c.editor.command = ['st', '-c', 'floating',
                     'vim', '{file}', '-c', 'normal {line}G{column0}l']
 
+c.url.searchengines = {
+    'DEFAULT': 'https://duckduckgo.com/?q={}',
+    'b': 'https://www.bing.com/search?q={}',
+    'g': 'https://www.google.com/search?q={}',
+    'bd': 'https://www.baidu.com/s?wd={}',
+    'gh': 'https://github.com/search?q={}',
+    'gl': 'https://gitlab.com/search?search={}',
+    'ap': 'https://archlinux.org/packages/?q={}',
+    'aw': 'https://wiki.archlinux.org/index.php?search={}',
+    'fd': 'https://search.f-droid.org/?q={}',
+    'ads': 'https://ui.adsabs.harvard.edu/search/q={}',
+    'aur': 'https://aur.archlinux.org/packages/?K={}',
+    'rpg': 'https://repology.org/projects/?search={}',
+}
+
 c.tabs.favicons.scale = 1.0
 c.tabs.show = 'multiple'
 
