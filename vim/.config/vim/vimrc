@@ -599,16 +599,10 @@ let g:lsp_diagnostics_echo_cursor = 1
 autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
 " }}}
 " asyncomplete {{{
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
-" let g:asyncomplete_auto_popup = 1
-" let g:asyncomplete_auto_completeopt = 0
-" }}}
-" ultisnippet {{{
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
 " }}}
 " tagbar {{{
 let g:tagbar_width = max([25, winwidth(0) / 5])
