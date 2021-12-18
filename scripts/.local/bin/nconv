@@ -1,9 +1,9 @@
 #!/bin/sh
-while getopts f:t: arg; do
+while getopts f:t:h arg; do
     case $arg in
         f) from=$OPTARG;;
         t) to=$OPTARG;;
-        *) ;;
+        h|*) echo "$(basename "$0") -f <from_base> -t <to_base> <n>"; exit;;
     esac
 done
 shift $((OPTIND - 1))
