@@ -1,4 +1,4 @@
-source ~/.config/neomutt/oliver_lew@outlook.com.muttrc
+source "mutt_bootstrap |"
 
 set editor = "vim"
 set sig_on_top = yes
@@ -6,6 +6,20 @@ set sig_on_top = yes
 unset markers
 # do not show anything for emails only for me
 set to_chars = "+ TCFL"
+
+# name
+set realname = "Xu Lu"
+# Mailboxes
+set spoolfile = "+Inbox"
+set record = "+Sent"
+set postponed = "+Drafts"
+set trash = "+Deleted"
+
+# signature file
+unset signature
+
+# do not save sent email
+set copy = no
 
 # show sidebar
 set sidebar_visible = no

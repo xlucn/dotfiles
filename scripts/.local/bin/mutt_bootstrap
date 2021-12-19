@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+"""
+mutt_bootstrap
+
+What it is/does
+    Securely, interactively, conveniently start mutt with help of pass.
+    Will set imap_user, from, folder, smtp_url, imap_pass and smtp_pass.
+    It only sets privacy related options above, not any other options.
+
+    When starting mutt, fzf will popup, letting you choose the email you
+    want to log into.
+
+Requirement
+    TUI tool fzf
+
+    Save passwords for emails with pass (password store). You have to
+    save only the password but nothing else for an email in
+        mail/email-address
+
+How to use it
+    Use 'source "python <this file> |"' in muttrc.
+"""
+import os
+import glob
+from subprocess import run, PIPE
+
+# grab all email address from 'mail' subfolder in password store
+PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
+PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
+PASS_DIR_MAIL = os.path.join(PASS_DIR, "mail")
+mails_gpg = glob.glob(os.path.join(PASS_DIR_MAIL, "*@*.gpg"))
+mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg]
+
+# use fzf to choose one email
+res = run(['fzf'], input='\n'.join(mails).encode(), stdout=PIPE)
+if res.returncode == 0:
+    mail = res.stdout.decode().strip()
+else:
+    mail = mails[0]
+
+domain = mail.split('@')[1]
+
+# use pass to retrieve password
+res = run(['pass', 'show', f'mail/{mail}'], stdout=PIPE, stderr=PIPE)
+if res.returncode == 0:
+    password = res.stdout.decode().strip()
+else:
+    password = ''
+
+# dump mutt configurations
+print(f'set imap_user = "{mail}"')
+print(f'set from = "{mail}"')
+print(f'set folder = "imaps://imap.{domain}:993/"')
+print(f'set smtp_url= "smtp://{mail}@smtp.{domain}:587/"')
+print(f'set imap_pass = {password}')
+print(f'set smtp_pass = {password}')
