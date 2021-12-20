@@ -12,10 +12,12 @@ What it is/does
 
 Requirement
     TUI tool fzf
+    Password management tool pass
 
     Save passwords for emails with pass (password store). You have to
-    save only the password but nothing else for an email in
-        mail/email-address
+    save only the password but nothing else for an email, so that
+        $ pass mail/<email-address>
+    will return the password for that email address
 
 How to use it
     Use 'source "python <this file> |"' in muttrc.
@@ -28,11 +30,15 @@ from subprocess import run, PIPE
 PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
 PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
 PASS_DIR_MAIL = os.path.join(PASS_DIR, "mail")
-mails_gpg = glob.glob(os.path.join(PASS_DIR_MAIL, "*@*.gpg"))
+mails_gpg = glob.glob(os.path.join(PASS_DIR_MAIL, "*@*.*.gpg"))
 mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg]
 
 # use fzf to choose one email
-res = run(['fzf'], input='\n'.join(mails).encode(), stdout=PIPE)
+res = run(
+    ['fzf', '--reverse'],
+    input='\n'.join(sorted(mails)).encode(),
+    stdout=PIPE
+)
 if res.returncode == 0:
     mail = res.stdout.decode().strip()
 else:
