@@ -58,54 +58,51 @@ call packager#setup(function('s:packager_init'))
 " }}}
 " Vim Settings
 " Vim Config {{{
-" leader key
+" leader key, for key mappings
 let mapleader = ','
 let maplocalleader = '\'
-" syntax
+" detect filetype and apply syntax highlighting
 syntax on
-" filetype
 filetype on
 filetype plugin on
 filetype indent on
-set backup
+set backup " create back files
 set autoread " auto reload files
-set encoding=utf-8
-set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
-set spelllang=en,cjk
-set clipboard=unnamedplus " use x11 normal clipboard
 set autowrite " automatically write a file when leaving a buffer
 set hidden
-set laststatus=2
+set encoding=utf-8
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
+set spelllang=en,cjk " spell check but exclude CJK language
+set clipboard=unnamedplus " use x11 normal clipboard
 set timeoutlen=300 " time out for key code delays
 set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
-set completeopt=menuone,noinsert,preview " comletion
-set fillchars+=vert:│
-let fortran_free_source=1
+set completeopt=menu,preview,noinsert " completion
 " }}}
 " UI basic {{{
-set guioptions=di " gui options: dark, icon
-set number " show line number
-set relativenumber " show relative number
-set signcolumn=yes " always show sign column
-set showcmd " shows what you are typing as a command
-set wildmenu " turn on wild menu on :e <Tab>
-set title " change the terminal's title
-set showmatch " show matching characters
-set scrolloff=2 " minimum lines above and below cursor
-set splitright " split into right by default
-set splitbelow " split to below by default, better for ale's hover info
-set updatetime=100 " update time, related to fugitive sign column update, etc.
-set lazyredraw " redraw when needed
-set noerrorbells " don't beep
-set shortmess+=I " don't show welcome screen
-set showtabline=2 " show tabs / buffers on top
-set noshowmode " do not show mode on the last line
-set display+=lastline " show partial line
-set background=dark " color scheme
-set mouse=a " enable mouse support in console
-" fix for urxvt and st
+set guioptions=di       " gui options: dark, icon
+set number              " show line number
+set relativenumber      " show relative number
+set showcmd             " shows what you are typing as a command
+set wildmenu            " turn on wild menu on :e <Tab>
+set title               " change the terminal's title
+set showmatch           " show matching characters
+set scrolloff=5         " minimum lines above and below cursor
+set splitright          " split into right by default
+set splitbelow          " split to below by default, better for ale's hover info
+set updatetime=100      " update time, related to fugitive sign column update, etc.
+set lazyredraw          " redraw when needed
+set noerrorbells        " don't beep
+set shortmess+=I        " don't show welcome screen
+set showtabline=2       " show tabs on top
+set laststatus=2        " show status line
+set noshowmode          " do not show mode on the last line
+set display+=lastline   " show partial line
+set background=dark     " color scheme
+set mouse=a             " enable mouse support in console
+set fillchars+=vert:│   " vertical split character
+" mouse support for urxvt and st
 if !has('nvim')
     if $TERM =~ "rxvt-unicode"
         set ttymouse=urxvt
@@ -113,19 +110,19 @@ if !has('nvim')
         set ttymouse=sgr
     endif
 endif
+" cursor shape for terminal emulators or linux console
 if $TERM != "linux"
-    " cursor shape for vte compatible terminals (usrvt, st, xterm, termite)
     let &t_SI = "\e[6 q"
     let &t_SR = "\e[4 q"
     let &t_EI = "\e[2 q"
 else
-    " cursor shape for linux console
     let &t_ve = "\e[?25h"
     let &t_vi = "\e[?25l"
     let &t_SI = "\e[?0c"
     let &t_SR = "\e[?4c"
     let &t_EI = "\e[?8c"
 endif
+" color scheme
 colorscheme slate
 hi SignColumn   ctermfg=0   ctermbg=None
 hi CursorColumn ctermbg=8
@@ -138,14 +135,17 @@ hi Visual       ctermbg=0   ctermbg=None cterm=reverse
 hi StatusLine   ctermfg=7   ctermbg=None cterm=None
 hi StatusLineNC ctermfg=7   ctermbg=None cterm=None
 hi VertSplit    ctermfg=7   ctermbg=None cterm=None
-" Have to set styles for built-in targets related to tabbufline
+" tabbufline styles are linked to built-in targets
 hi PmenuSel     ctermfg=6   ctermbg=None cterm=None
 hi TabLine      ctermfg=7   ctermbg=None cterm=None
 hi TabLineSel   ctermfg=0   ctermbg=6    cterm=None
 hi TabLineFill  ctermfg=7   ctermbg=None cterm=None
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
+" built-in plugin or file type support
 let g:termdebug_wide=1
+let g:markdown_folding = 1
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 " }}}
 " Space Tabs Indentations {{{
 " indentations
