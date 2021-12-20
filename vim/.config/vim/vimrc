@@ -357,19 +357,16 @@ function! ALEStatus()
     return l:ale_status
 endfunction
 function! VimLspStatus()
-    if exists('*lsp#get_buffer_diagnostics_counts') == 0
-        return ''
-    endif
     let l:counts = lsp#get_buffer_diagnostics_counts()
-    if l:counts.hint + l:counts.information + l:counts.error + l:counts.warning == 0
-        return ''
-    endif
-    let l:lsp_status = ' '
-    let l:lsp_status .= l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
+    let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
     let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
     let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
     let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
-    return l:lsp_status
+    if l:lsp_status != ''
+        return ' ' . l:lsp_status
+    else
+        return ''
+    endif
 endfunction
 function! LSPStatus()
     if exists("g:ale_enabled") == 1
@@ -380,26 +377,22 @@ function! LSPStatus()
         return ''
     endif
 endfunction
-function StatusLeftMiddle()
-    if exists('*fugitive#head') == 1
-        let l:githead = fugitive#head(6)
+function GitBranch()
+    silent let l:githead = system('git -C '.expand("%:h:S").' branch --show-current')
+    if v:shell_error != 0
+        return ''
     else
-        let l:githead = ''
+        return trim(l:githead) . ' '
     endif
-    let l:readonly = &ro ? "[RO]" : ""
-    let l:status = ' '
-    let l:status .= len(l:githead) ? l:githead . ' ' : ""
-    let l:status .= len(l:readonly) ? l:readonly . ' ' : ""
-    return len(l:githead) + len(l:readonly) > 0 ? l:status : ""
 endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
-let &stl  = '%#TabLineSel# %{mode()} %1*'       " vim modes
-let &stl .= '%2*%{StatusLeftMiddle()}%1*'       " git and readonly
-let &stl .= '%< %t %m %w '                      " basic info like filename
+let &stl  = '%#TabLineSel# %{mode()} %*'        " vim modes
+let &stl .= '%2*%( %{GitBranch()}%(%r%h %)%)'   " git branch, readonly, help
+let &stl .= '%1*%< %t %m %w '                   " file name, modified, preview
 let &stl .= '%='                                " split left and right
-let &stl .= ' %{&ff} | %{len(&fenc) > 0 ? &fenc : &enc} | %{len(&ft) > 0 ? &ft : "no ft"} '
-let &stl .= '%2* %3p%% | %3l:%3c %1*'           " cursor location
+let &stl .= '%{&ff} %(| %{&fenc} %)%(| %y %)'   " format, encoding and type of the file
+let &stl .= '%2* %3p%% | %3l:%3c '              " cursor location
 let &stl .= '%#TabLineSel#%{LSPStatus()}%*'     " lsp status
 " }}}
 " Git {{{
