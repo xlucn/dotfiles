@@ -2,8 +2,8 @@
 " be iMproved, put this line at TOP of vimrc
 set nocompatible
 let $VIM = $XDG_CONFIG_HOME . '/vim'
-set packpath=$VIM
-set runtimepath=$VIM,$VIMRUNTIME,$VIM/after,/usr/share/vim/vimfiles
+set packpath+=$VIM
+set runtimepath+=$VIM
 set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
 if !has('nvim')
