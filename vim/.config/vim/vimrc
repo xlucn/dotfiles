@@ -11,11 +11,6 @@ if !has('nvim')
 endif
 " }}}
 " Vim-Packager {{{
-if empty(glob($VIM . '/pack/packager/opt/vim-packager'))
-  silent !git clone https://github.com/kristijanhusak/vim-packager
-    \ $VIM/pack/packager/opt/vim-packager
-  packadd vim-packager
-endif
 function! s:packager_init(packager) abort
   " Package manager
   call a:packager.add('kristijanhusak/vim-packager', {'type': 'opt'})
@@ -53,8 +48,20 @@ function! s:packager_init(packager) abort
   " call a:packager.add('previm/previm')
   call a:packager.add('baskerville/vim-sxhkdrc')
 endfunction
-packadd vim-packager
-call packager#setup(function('s:packager_init'))
+function PackagerSetup(job, status)
+    if a:status == 0 || a:status == 128
+        packadd vim-packager
+        call packager#setup(function('s:packager_init'))
+    else
+        echoerr "clone vim-packager timed out"
+    endif
+endfunction
+let s:packager_dir = $VIM.'/pack/packager/opt/vim-packager'
+let s:packager_git = 'https://github.com/kristijanhusak/vim-packager'
+" running the git clone anyway, it won't do anything if exists
+call job_start(['git', 'clone', s:packager_git, s:packager_dir], {
+\   'exit_cb': function('PackagerSetup')
+\ })
 " }}}
 " Vim Settings
 " Vim Config {{{
