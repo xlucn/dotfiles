@@ -25,7 +25,7 @@ startibus() {
 prewm() {
     startfcitx
 
-    pgrep -x sxhkd || sxhkd > /dev/null 2>&1 &
+    pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x xcompmgr || xcompmgr &
     # pgrep -x udiskie || udiskie > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
