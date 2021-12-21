@@ -22,12 +22,16 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-surround')
   call a:packager.add('ap/vim-buftabline')
   " Language server
-  " call a:packager.add('mattn/vim-lsp-settings')
+  call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
+  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
+  call a:packager.add('hrsh7th/nvim-cmp', {'type': 'opt'})
   call a:packager.add('neoclide/coc.nvim', {'branch': 'release', 'type': 'opt'})
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
+  call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
   call a:packager.add('prabirshrestha/async.vim', {'type': 'opt'})
   call a:packager.add('prabirshrestha/asyncomplete.vim', {'type': 'opt'})
   call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
+  call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
   " Enhancements
   " call a:packager.add('godlygeek/tabular')
   " call a:packager.add('junegunn/fzf')
@@ -497,6 +501,9 @@ let g:gitgutter_max_signs = 1000
 " Mathematica {{{
 let g:mma_candy = 2
 " }}}
+" " CoC {{{
+" let g:coc_config_home = $VIM
+" " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
 xmap <leader>s <Plug>SlimeRegionSend
@@ -525,6 +532,41 @@ else
     let g:slime_target = "vimterminal"
 endif
 " }}}
+" LSP {{{
+if has('nvim')
+    packadd nvim-lspconfig
+    packadd cmp-nvim-lsp
+    packadd nvim-cmp
+    lua << EOF
+    local cmp = require('cmp')
+    cmp.setup({
+        sources = cmp.config.sources({
+            { name = 'nvim-lsp' },
+            { name = 'buffer' }
+        })
+    })
+    cmp.setup.cmdline('/', { sources = { { name = 'buffer' } } })
+    cmp.setup.cmdline(':', {
+        sources = cmp.config.sources(
+            { { name = 'path' } },
+            { { name = 'cmdline' } }
+        )
+    })
+    local cap = vim.lsp.protocol.make_client_capabilities()
+    cap = require('cmp_nvim_lsp').update_capabilities(cap)
+    require('lspconfig').pylsp.setup({ capabilities = cap })
+    require('lspconfig').bashls.setup({ capabilities = cap })
+EOF
+else
+    " packadd coc.nvim
+    " packadd vim-lsc
+    packadd vim-lsp
+    packadd vim-lsp-settings
+    packadd async.vim
+    packadd asyncomplete.vim
+    packadd asyncomplete-lsp.vim
+endif
+" }}}
 " vim-lsp {{{
 let g:which_key_map.l = { "name": "language server" }
 let g:lsp_diagnostics_signs_delay = 200
@@ -532,6 +574,29 @@ let g:lsp_diagnostics_echo_delay = 200
 let g:lsp_diagnostics_highlights_delay = 200
 let g:lsp_diagnostics_echo_cursor = 1
 autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
+" }}}
+" vim-lsc {{{
+let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'
+let g:lsc_server_commands = {
+  \     'python': {
+  \         'command': 'pylsp',
+  \         'log_level': -1,
+  \         'workspace_config': {
+  \             'pylsp.configurationSources': ['pycodestyle'],
+  \             'pylsp.plugins.yapf.enabled': v:false,
+  \         }
+  \     },
+  \     'sh': 'bash-language-server start',
+  \     'vim': 'vim-language-server --stdio',
+  \     'json': 'vscode-json-languageserver --stdio',
+  \     'lua': 'lua-language-server',
+  \     'tex': {
+  \         'command': 'texlab',
+  \         'workspace_config': {
+  \             "latex.build.args": ["-xelatex", "-synctex=1", "%f"],
+  \         }
+  \     }
+  \ }
 " }}}
 " asyncomplete {{{
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
