@@ -22,7 +22,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-surround')
   call a:packager.add('ap/vim-buftabline')
   " Language server
-  " call a:packager.add('dense-analysis/ale')
   " call a:packager.add('mattn/vim-lsp-settings')
   call a:packager.add('neoclide/coc.nvim', {'branch': 'release', 'type': 'opt'})
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
@@ -34,15 +33,12 @@ function! s:packager_init(packager) abort
   " call a:packager.add('junegunn/fzf')
   " call a:packager.add('junegunn/fzf.vim')
   " call a:packager.add('majutsushi/tagbar')
-  " call a:packager.add('SirVer/ultisnips')
-  " call a:packager.add('fcpg/vim-altscreen')
   " call a:packager.add('fs111/pydoc.vim')
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
   " File types
   " call a:packager.add('VoldikSS/vim-mma')
-  " call a:packager.add('lervag/vimtex')
   " call a:packager.add('JamshedVesuna/vim-markdown-preview')
   " call a:packager.add('D0n9X1n/markdown-preview.vim')
   " call a:packager.add('previm/previm')
@@ -497,68 +493,6 @@ let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
-" }}}
-" ALE {{{
-" automatically pop up completion candidates
-let g:ale_completion_enabled = 1
-let g:ale_completion_delay   = 0
-" set sign column characters
-let g:ale_sign_column_always   = 1
-let g:ale_sign_error           = '>'
-let g:ale_sign_warning         = '-'
-" show pop up in balloons
-let g:ale_set_balloons         = 1
-let g:ale_set_quickfix         = 1
-" only lint when leaving insert mode
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_text_changed = 'normal'
-
-" clangd needs a compile_commands.json file for the project
-let g:ale_linters = {
-  \ 'c': ['ccls'],
-  \ 'cpp': ['ccls'],
-  \ 'python': ['pylsp'],
-  \ 'lua': ['luacheck'],
-  \ 'sh': ['shellcheck'],
-  \ 'tex': ['chktex'],
-  \ 'fortran': ['gcc'],
-  \ }
-let g:ale_fixers = {
-  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'c': ['clang-format', 'clangtidy'],
-  \ 'cpp': ['clang-format', 'clangtidy'],
-  \ 'sh': ['shellcheck']
-  \ }
-let g:ale_linters_explicit = 1
-let g:ale_c_parse_makefile = 1
-
-" Key mapping
-nmap <leader>ar <Plug>(ale_find_references)
-nmap <leader>ad <Plug>(ale_go_to_definition)
-nmap <leader>an <Plug>(ale_next_wrap)
-nmap <leader>ap <Plug>(ale_previous_wrap)
-nmap <leader>aj <Plug>(ale_next_wrap)
-nmap <leader>ak <Plug>(ale_previous_wrap)
-nmap <leader>ah <Plug>(ale_hover)
-nmap <leader>aR <Plug>(ale_rename)
-" }}}
-" Vim Tex {{{
-let g:tex_flavor = 'latex'
-" enable vimtex fold
-let g:vimtex_fold_enabled = 1
-let g:vimtex_syntax_enabled = 0
-" start vim with a server, see ':h vimtex-clientserver'
-if empty(v:servername) && exists('*remote_startserver')
-    if empty($SSH_CLIENT) && !empty($DISPLAY) && empty($TMUX)
-        call remote_startserver('VIM')
-    endif
-endif
-" viewer setting
-let g:vimtex_view_method = 'zathura'
-" matching delimiters is causing performance issues
-let g:vimtex_matchparen_enabled = 0
-" compiler
-let g:vimtex_compiler_method = "latexmk"
 " }}}
 " Mathematica {{{
 let g:mma_candy = 2
