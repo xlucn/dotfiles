@@ -41,12 +41,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
-  " File types
-  " call a:packager.add('VoldikSS/vim-mma')
-  " call a:packager.add('JamshedVesuna/vim-markdown-preview')
-  " call a:packager.add('D0n9X1n/markdown-preview.vim')
-  " call a:packager.add('previm/previm')
-  call a:packager.add('baskerville/vim-sxhkdrc')
 endfunction
 function PackagerSetup(job, status)
     if a:status == 0 || a:status == 128
@@ -315,7 +309,11 @@ function ExecCurrentFile()
     elseif &ft == "tex"
         let command = ["latexmk", "-xelatex", expand("%:p")]
     else
-        echo "Not supported file type"
+        if &ft == "markdown"
+            call MarkdownPreviewToggle()
+        else
+            echo "Not supported file type"
+        endif
         return
     endif
     call AsyncRun(command)
@@ -416,6 +414,16 @@ endfunction
 nnoremap <leader>gg :call GitTig()<CR>
 nnoremap <leader>gl :call GitLog()<CR>
 " }}}
+" Markdown preview{{{
+function MarkdownPreviewToggle()
+    if !exists('b:mdp_job')
+        let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
+    else
+        call job_stop(b:mdp_job)
+        unlet b:mdp_job
+    endif
+endfunction
+" }}}
 " Plugin Settings
 " buftabline {{{
 let g:buftabline_numbers = 2
@@ -472,24 +480,6 @@ autocmd FileType tex
   \ let b:endwise_words = 'begin' |
   \ let b:endwise_pattern = '\\begin{.\{-}}' |
   \ let b:endwise_syngroups = 'texSection,texBeginEnd,texBeginEndName,texStatement'
-" }}}
-" Markdown {{{
-" vim markdown
-" fold
-let g:markdown_folding = 1
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
-
-let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_new_list_item_indent = 2
-" vim-markdown-preview
-let vim_markdown_preview_browser='firefox'
-" let vim_markdown_preview_use_xdg_open=1
-let vim_markdown_preview_temp_file=1
-let vim_markdown_preview_github=0
-" preview
-let g:mkdp_auto_start = 0
-let g:mkdp_browser = 'firefox'
 " }}}
 " Gitgutter {{{
 " the previous ~_ take two columns
