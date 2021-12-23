@@ -458,8 +458,8 @@ nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
 vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
 function WhichKeyRegister()
     if &rtp =~ "vim-which-key"
-        call which_key#register('<leader>', 'g:which_key_map')
-        call which_key#register('<localleader>', 'g:which_key_map_local')
+        call which_key#register(',', 'g:which_key_map')
+        call which_key#register('\', 'g:which_key_map_local')
     endif
 endfunction
 autocmd VimEnter * call WhichKeyRegister()
