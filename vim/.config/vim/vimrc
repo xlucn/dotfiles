@@ -303,7 +303,7 @@ function ExecCurrentFile()
     elseif &ft == "maxima"
         let command = ["maxima", "-b", expand("%:p")]
     elseif &ft == "tex"
-        let command = ["latexmk", "-xelatex", expand("%:p")]
+        let command = ["latexmk", "-xelatex", "-pvc", expand("%:p")]
     else
         if &ft == "markdown"
             call MarkdownPreviewToggle()
