@@ -4,206 +4,92 @@
 # github.com/oliverlew/dotfiles
 
 servers = (
-  {
-    address = "irc.libera.chat";
-    chatnet = "Libera";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "yes";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.rizon.net";
-    chatnet = "Rizon";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.rizon.net";
-    chatnet = "Rizon2";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.iptorrents.com";
-    chatnet = "Iptorrents";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "no";
-  },
-  {
-    address = "irc.alpharatio.cc";
-    chatnet = "AlphaRatio";
-    port = "7000";
-    use_tls = "yes";
-    tls_verify = "yes";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.filelist.io";
-    chatnet = "FileList";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.p2p-network.net";
-    chatnet = "P2PNET";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.beyond-hd.me";
-    chatnet = "BeyondHD";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.synirc.net";
-    chatnet = "synIRC";
-    port = "6667";
-    use_tls = "no";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.gazellegames.net";
-    chatnet = "GazelleGames";
-    port = "7000";
-    use_tls = "yes";
-    tls_verify = "no";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.digitalirc.org";
-    chatnet = "DigitalIRC";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "yes";
-    autoconnect = "yes";
-  },
-  {
-    address = "irc.oftc.net";
-    chatnet = "OFTC";
-    port = "6697";
-    use_tls = "yes";
-    tls_verify = "no";
-    autoconnect = "yes";
-  }
+  { address = "irc.alpharatio.cc"; chatnet = "AlphaRatio"; },
+  { address = "irc.beyond-hd.me"; chatnet = "BeyondHD"; },
+  { address = "irc.digitalirc.org"; chatnet = "DigitalIRC"; },
+  { address = "irc.filelist.io"; chatnet = "FileList"; },
+  { address = "irc.gazellegames.net"; chatnet = "GazelleGames"; },
+  { address = "irc.iptorrents.com"; chatnet = "Iptorrents"; },
+  { address = "irc.libera.chat"; chatnet = "Libera"; },
+  { address = "irc.oftc.net"; chatnet = "OFTC"; },
+  { address = "irc.p2p-network.net"; chatnet = "P2PNET"; },
+  { address = "irc.rizon.net"; chatnet = "Rizon"; },
+  { address = "irc.rizon.net"; chatnet = "Rizon2"; },
+  { address = "irc.synirc.net"; chatnet = "synIRC"; }
 );
 
 chatnets = {
   Libera = {
-    type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_libera_oliverlew}";
   };
   Rizon = {
-    type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_rizon_oliverlew}";
   };
   Rizon2 = {
-    type = "IRC";
-    nick = "Lewinat0r";
     autosendcmd = "/^msg nickserv identify ${pass_rizon_lewinat0r}";
   };
   Iptorrents = {
-    type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_iptorrents_oliverlew}";
   };
   AlphaRatio = {
-    type = "IRC";
     autosendcmd = "/^msg voyager enter ${pass_alpharatio_key}";
   };
   FileList = {
-    type = "IRC";
     nick = "Lewinat0r";
     autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
   };
   P2PNET = {
-    type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_p2p_network_oliverlew}";
   };
   BeyondHD = {
-    type = "IRC";
     # need identify to join channels
     autosendcmd = "/^msg Millie identify ${pass_beyondhd_key}; wait 2000";
   };
   synIRC = {
-    type = "IRC";
     nick = "Lewinat0r";
     autosendcmd = "/^msg nickserv identify ${pass_synirc_lewinat0r}";
   };
   GazelleGames = {
-    type = "IRC";
     autosendcmd = "/^msg nickserv identify ${pass_gazellegames_oliverlew}; wait 3000; /msg Vertigo enter OliverLew ${pass_gazellegames_key}";
   };
   DigitalIRC = {
-    type = "IRC";
     nick = "BeeBeeKing17";
     autosendcmd = "/^msg nickserv identify ${pass_digitalirc_beebeeking17}";
   };
   OFTC = {
-    type = "IRC";
     nick = "lewinat0r";
     autosendcmd = "/^msg nickserv identify ${pass_oftc_lewinat0r}; wait 3000";
   };
 };
 
 channels = (
-  { name = "#libera"; chatnet = "Libera"; autojoin = "no"; },
-  { name = "#irssi"; chatnet = "Libera"; autojoin = "yes"; },
-  { name = "#iptorrents"; chatnet = "Iptorrents"; autojoin = "no"; },
-  { name = "#alpharatio"; chatnet = "AlphaRatio"; autojoin = "yes"; },
-  { name = "#announce"; chatnet = "AlphaRatio"; },
-  { name = "#filelist"; chatnet = "FileList"; autojoin = "yes"; },
-  { name = "#english"; chatnet = "FileList"; autojoin = "yes"; },
-  { name = "#support"; chatnet = "FileList"; },
-  { name = "#privatehd"; chatnet = "Rizon"; autojoin = "yes"; },
-  { name = "#avistaz"; chatnet = "Rizon2"; autojoin = "yes"; },
-  { name = "#cinemaz"; chatnet = "Rizon2"; autojoin = "yes"; },
-  {
-    name = "#uhdbits";
-    chatnet = "P2PNET";
-    autojoin = "yes";
-    password = "uhdbits19";
-  },
-  { 
-    name = "#uhd.announce";
-    chatnet = "P2PNET";
-    password = "uhdbits19";
-  },
-  { name = "#beyondhd"; chatnet = "BeyondHD"; autojoin = "yes"; },
-  { name = "#bhd_support"; chatnet = "BeyondHD"; },
-  { name = "#bhd_announce"; chatnet = "BeyondHD"; },
-  { name = "#jpopsuki"; chatnet = "synIRC"; autojoin = "yes"; },
-  { name = "#jpopsuki-support"; chatnet = "synIRC"; },
-  { name = "#empornium"; chatnet = "DigitalIRC"; autojoin = "yes"; },
-  { name = "#suckless"; chatnet = "OFTC"; autojoin = "yes"; },
-  {
-    name = "#archlinux-cn-offtopic";
-    chatnet = "Libera";
-    autojoin = "no";
-  },
-  { name = "#archlinux-cn"; chatnet = "Libera"; autojoin = "yes"; },
-  { name = "#archlinux"; chatnet = "Libera"; autojoin = "no"; },
-  { name = "#fdroid"; chatnet = "Libera"; autojoin = "yes"; },
-  { name = "#mutt"; chatnet = "Libera"; autojoin = "yes"; },
-  { name = "#linuxba"; chatnet = "Libera"; autojoin = "yes"; }
+  { chatnet = "Libera"; name = "#libera"; autojoin = "no"; },
+  { chatnet = "Libera"; name = "#irssi"; autojoin = "yes"; },
+  { chatnet = "Libera"; name = "#archlinux-cn"; autojoin = "yes"; },
+  { chatnet = "Libera"; name = "#archlinux"; autojoin = "no"; },
+  { chatnet = "Libera"; name = "#fdroid"; autojoin = "yes"; },
+  { chatnet = "Libera"; name = "#mutt"; autojoin = "yes"; },
+  { chatnet = "Libera"; name = "#linuxba"; autojoin = "yes"; },
+  { chatnet = "AlphaRatio"; name = "#alpharatio"; autojoin = "yes"; },
+  { chatnet = "AlphaRatio"; name = "#announce"; autojoin = "no"; },
+  { chatnet = "BeyondHD"; name = "#beyondhd"; autojoin = "yes"; },
+  { chatnet = "BeyondHD"; name = "#bhd_announce"; autojoin = "no"; },
+  { chatnet = "BeyondHD"; name = "#bhd_support"; autojoin = "no"; },
+  { chatnet = "DigitalIRC"; name = "#empornium"; autojoin = "yes"; },
+  { chatnet = "FileList"; name = "#english"; autojoin = "yes"; },
+  { chatnet = "FileList"; name = "#filelist"; autojoin = "yes"; },
+  { chatnet = "FileList"; name = "#support"; autojoin = "no"; },
+  { chatnet = "Iptorrents"; name = "#iptorrents"; autojoin = "no"; },
+  { chatnet = "OFTC"; name = "#suckless"; autojoin = "yes"; },
+  { chatnet = "P2PNET"; name = "#uhd.announce"; autojoin = "no"; },
+  { chatnet = "P2PNET"; name = "#uhdbits"; autojoin = "yes"; },
+  { chatnet = "Rizon"; name = "#privatehd"; autojoin = "yes"; },
+  { chatnet = "Rizon2"; name = "#avistaz"; autojoin = "yes"; },
+  { chatnet = "Rizon2"; name = "#cinemaz"; autojoin = "yes"; },
+  { chatnet = "synIRC"; name = "#jpopsuki"; autojoin = "yes"; }
 );
 
 aliases = {
-  ATAG = "WINDOW SERVER";
-  C = "CLEAR";
   CHAT = "DCC CHAT";
   DATE = "TIME";
   DEHIGHLIGHT = "DEHILIGHT";
