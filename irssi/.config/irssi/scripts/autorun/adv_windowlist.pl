@@ -1,1 +1,0 @@
-/usr/share/irssi/scripts/adv_windowlist.pl
