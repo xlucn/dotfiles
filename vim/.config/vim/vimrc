@@ -298,12 +298,8 @@ function AsyncRun(cmd)
 endfunction
 
 function ExecCurrentFile()
-    if &ft == "sh"
-        let command = ["bash", expand("%:p")]
-    elseif &ft == "python"
-        let command = ["python", expand("%:p")]
-    elseif &ft == "gnuplot"
-        let command = ["gnuplot", expand("%:p")]
+    if index(['gnuplot', 'perl', 'python', 'sh'], &ft) >= 0
+        let command = [&ft, expand("%:p")]
     elseif &ft == "maxima"
         let command = ["maxima", "-b", expand("%:p")]
     elseif &ft == "tex"
