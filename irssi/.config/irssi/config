@@ -1,7 +1,5 @@
-# Note: The passwords variables are passed through shell environments
-# to avoid hard coded text appearing in configuration file.
-# There should be a companion script (named irssi) in my repo:
-# github.com/oliverlew/dotfiles
+# Irssi configuration file
+# https://github.com/oliverlew/dotfiles
 
 servers = (
   { address = "irc.alpharatio.cc"; chatnet = "AlphaRatio"; },
@@ -19,47 +17,20 @@ servers = (
 );
 
 chatnets = {
-  Libera = {
-    autosendcmd = "/^msg nickserv identify ${pass_libera_oliverlew}";
-  };
-  Rizon = {
-    autosendcmd = "/^msg nickserv identify ${pass_rizon_oliverlew}";
-  };
-  Rizon2 = {
-    autosendcmd = "/^msg nickserv identify ${pass_rizon_lewinat0r}";
-  };
-  Iptorrents = {
-    autosendcmd = "/^msg nickserv identify ${pass_iptorrents_oliverlew}";
-  };
-  AlphaRatio = {
-    autosendcmd = "/^msg voyager enter ${pass_alpharatio_key}";
-  };
-  FileList = {
-    nick = "Lewinat0r";
-    autosendcmd = "/^msg nickserv identify ${pass_filelist_oliverlew}; wait 3000; /^msg system invite ${pass_filelist_key}; wait 3000";
-  };
-  P2PNET = {
-    autosendcmd = "/^msg nickserv identify ${pass_p2p_network_oliverlew}";
-  };
-  BeyondHD = {
-    # need identify to join channels
-    autosendcmd = "/^msg Millie identify ${pass_beyondhd_key}; wait 2000";
-  };
-  synIRC = {
-    nick = "Lewinat0r";
-    autosendcmd = "/^msg nickserv identify ${pass_synirc_lewinat0r}";
-  };
-  GazelleGames = {
-    autosendcmd = "/^msg nickserv identify ${pass_gazellegames_oliverlew}; wait 3000; /msg Vertigo enter OliverLew ${pass_gazellegames_key}";
-  };
-  DigitalIRC = {
-    nick = "BeeBeeKing17";
-    autosendcmd = "/^msg nickserv identify ${pass_digitalirc_beebeeking17}";
-  };
-  OFTC = {
-    nick = "lewinat0r";
-    autosendcmd = "/^msg nickserv identify ${pass_oftc_lewinat0r}; wait 3000";
-  };
+  # NOTE: my script "pass_identify.pl" will automatically identify nickserv
+  # see that script for details (look for it in my dotfiles repo).
+  AlphaRatio = { type = "IRC"; };
+  BeyondHD = { type = "IRC"; };
+  DigitalIRC = { type = "IRC"; nick = "beebeeking17"; };
+  FileList = { type = "IRC"; nick = "lewinat0r"; };
+  GazelleGames = { type = "IRC"; };
+  Iptorrents = { type = "IRC"; };
+  Libera = { type = "IRC"; };
+  OFTC = { type = "IRC"; nick = "lewinat0r"; };
+  P2PNET = { type = "IRC"; };
+  Rizon = { type = "IRC"; };
+  Rizon2 = { type = "IRC"; nick = "lewinat0r"; };
+  synIRC = { type = "IRC"; nick = "lewinat0r"; };
 };
 
 channels = (

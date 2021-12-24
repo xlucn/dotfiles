@@ -3,41 +3,28 @@
 # readme: https://github.com/OliverLew/dotfiles/tree/master/irssi/README.md
 # usage: irssi [irssi options]
 
-command -v pass > /dev/null 2>&1 || NO_PASS=1
 command -v tmux > /dev/null 2>&1 || NO_TMUX=1
 
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 start_irssi="/usr/bin/irssi --home=$XDG_CONFIG_HOME/irssi $*"
 
-export_passwords() {
-    echo "Exporting passwords to subshell environments ..."
-    # make sure the passwords are in $PASSWORD_STORE_DIR/irc/<network>/nickname
-    for network in "$PASSWORD_STORE_DIR/irc/"*; do
-        for nickname in "$network/"*; do
-            net=$(basename "$network")
-            nick=$(basename "${nickname%.*}")
-            passvar=pass_"$net"_"$nick"
-            eval "export $passvar=$(pass show irc/"$net"/"$nick")"
-        done
-    done
-}
+tmux_irssi() { tmux -L irssi -f /dev/null "$@"; }
+tmux_irssi_set() { tmux_irssi set -s -t irssi "$@"; }
 
 if [ -z $NO_TMUX ]; then
     session=irssi
-    if ! tmux -L "$session" ls -F "#S" > /dev/null 2>&1; then
-        if [ -z $NO_PASS ]; then export_passwords; fi
-        tmux -L "$session" -f /dev/null new -d -s "$session" "$start_irssi"
-        tmux -L "$session" set -s -t irssi prefix None
-        tmux -L "$session" unbind-key -a
-        tmux -L "$session" bind-key -n C-\\ detach-client
-        tmux -L "$session" set -s -t irssi pane-border-style fg=7,bg=default
-        tmux -L "$session" set -s -t irssi pane-active-border-style fg=7,bg=default
-        tmux -L "$session" set -s -t irssi status off
-        tmux -L "$session" set -s -t irssi set-titles on
+    if ! tmux_irssi ls -F "#S" > /dev/null 2>&1; then
+        tmux_irssi new -d -s "$session" "$start_irssi"
+        tmux_irssi unbind-key -a  # only set a 'ctrl-\' to detach
+        tmux_irssi bind-key -n C-\\ detach-client
+        tmux_irssi_set prefix None
+        tmux_irssi_set pane-border-style fg=7,bg=default
+        tmux_irssi_set pane-active-border-style fg=7,bg=default
+        tmux_irssi_set status off
+        tmux_irssi_set set-titles on
     fi
-    tmux -L "$session" attach -t "$session"
+    tmux_irssi attach -t "$session"
 else
-    if [ -z $NO_PASS ]; then export_passwords; fi
     # /usr/bin/irssi  --home="$XDG_CONFIG_HOME/irssi" "$@"
     exec "$start_irssi"
 fi
