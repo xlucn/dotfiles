@@ -46,7 +46,10 @@ sub nickserv_identify_with_pass {
     my ($server) = @_;
     my $address = "$server->{address}";
     my $nick = "$server->{nick}";
-    my @passwords = qx{pass show irc/$address/$nick};
+
+    # query password with pass command
+    return if system("pass ls irc/$address/$nick > /dev/null 2>&1");
+    my @passwords = `pass show irc/$address/$nick`;
 
     # identify in irc with nickserv
     my $password = $passwords[0];
