@@ -33,7 +33,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
   call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
   " Enhancements
-  " call a:packager.add('godlygeek/tabular')
   " call a:packager.add('junegunn/fzf')
   " call a:packager.add('junegunn/fzf.vim')
   " call a:packager.add('majutsushi/tagbar')
@@ -492,9 +491,6 @@ let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
-" }}}
-" Mathematica {{{
-let g:mma_candy = 2
 " }}}
 " " CoC {{{
 " let g:coc_config_home = $VIM
