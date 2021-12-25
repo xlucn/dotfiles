@@ -3,6 +3,8 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
+[ -n "$XAUTHORITY" ] && [ ! -f "$XAUTHORITY" ] && touch "$XAUTHORITY"
+
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
