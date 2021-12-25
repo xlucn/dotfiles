@@ -1,38 +1,24 @@
 # Irssi configuration files
 
-Wrapping script around irssi featuring:
+- [irssi](.local/bin/irssi)
 
-- Run irssi in a tmux session to work with some irssi scripts, e.g.
-  `adv_windowlist.pl` or `tmux-nicklist-portable.pl`
-- Export irc passwords with [`pass`](passwordstore.org/) through shell environments so that they
-  can be used in irssi config (so no hard coded passwords in irssi config)
-- Detach with ctrl+\ (same as abduco)
-- You should be able to use the `irssi` script with any arguments that
-  `/usr/bin/irssi` accept with no problem.
-  However they won't work if you are attaching a existing session
+  Wrapping script runs irssi in a tmux session to work with some irssi
+  scripts, e.g., `adv_windowlist.pl` or `tmux-nicklist-portable.pl`.
 
-### Requirements (optional):
+  - Detach with ctrl+\ (same as abduco)
 
-- [`pass`](passwordstore.org/) for exporting passwords
-- `tmux` for detachable sessions and windowlist/nicklist scripts
+- [pass_identify.pl](.config/irssi/scripts/autorun/pass_identify.pl)
 
-### Note:
+  Avoid hard coded passwords in irssi config. Perl script `pass_identify.pl`
+  will automatically run `msg nickserv identify password` for you. The
+  passwords will be extracted with `pass` command.
 
-1. The passwords stored with 'pass' should be under a 'irc' subfolder
-   and has two more levels (recommend them to be network name and nick/etc),
-   e.g. you can create one password for a nick in some network with
-   ```sh
-   pass insert irc/network/nickname
-   ```
-   The exported shell variable are named as `$pass_network_nickname`.
-   Use the variables in irssi config like
-   ```conf
-   autosendcmd = "/^msg nickserv identify ${pass_network_nickname}";
-   ```
+- [autorun.pl](.config/irssi/scripts/autorun/autorun.pl)
 
-2. The script even starts tmux inside another tmux session.
-   The inner tmux session is almost undetectable since all tmux keybindings
-   are unbound and the status bar is hidden so that the outer tmux session
-   works like the nested session never exists.
+  A perl script to load other scripts. The idea is to use a text file
+  to configure autorun, instead of previously with symlinks. It works
+  well if you install the [irssi-scripts][AUR] package in Arch Linux,
+  this way you don't have to manage (download/copy) the script files
+  by yourself.
 
-   P.S. Tmux can still be controlled by `/exec tmux` command inside irssi.
+  [AUR]: https://aur.archlinux.org/packages/irssi-scripts-git
