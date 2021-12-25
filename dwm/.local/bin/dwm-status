@@ -189,7 +189,7 @@ if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 STR_IMAP=
 for mail in ~/.config/mutt/*@*.muttrc; do
     mail_address=$(basename "$mail" .muttrc)
-    count=$(imap "$mail_address")
+    # count=$(imap "$mail_address")
     total_mail=$((total_mail + count))
     if grep -q "$mail_address" "$TMPDIR/$SMAIL"; then
         sed -i "s/$mail_address ([0-9]*)/$mail_address ($count)/" "$TMPDIR/$SMAIL"

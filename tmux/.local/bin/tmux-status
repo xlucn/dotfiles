@@ -1,5 +1,5 @@
 #!/bin/sh
-printf "#[fg=colour13] mail:%s" "$(imap-tmux)"
+# printf "#[fg=colour13] mail:%s" "$(imap-tmux)"
 printf "#[fg=colour9 ] cpu: %s" "$(cpu)"
 printf "#[fg=colour14] vol:%s %s" "$([ "$(vol -s)" = 1 ] && printf " " || printf "-")" "$(vol)"
 printf "#[fg=colour11] lit: %.0f" "$(brightnessctl -m i | awk -F, '{ print $4 }' | tr -d %)"
