@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$PS1" ] && [ -n "$BASH" ] && \
     [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -30,7 +30,7 @@ pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
 }
 # arch linux update
-alias au="sudo pacman -Syu && ALL_PROXY=\$PROXY paru -Sua"
+alias au="sudo pacman -Syu && proxychains paru -Sua"
 
 # timing function for dash
 timeit() {
@@ -42,14 +42,14 @@ timeit() {
     span=$((($(date +%s%N) - begin) / 10))
 
     begin=$(date +%s%N);
-    eval "$@"
+    "$@"
     echo $((($(date +%s%N) - begin - span) / 1000)) us
 }
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ] && tty | grep -q tty; then
-    cat "$XDG_CONFIG_HOME/X11/Xresources" |
-    sed -n 's/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p' |
+    SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
+    sed -n "$SEDCMD" "$XDG_CONFIG_HOME/X11/Xresources"  |
     while read -r n color; do
         [ "$n" -lt 16 ] && [ "$n" -gt 0 ] && printf "\e]P%X%s" "$n" "$color"
     done
@@ -82,4 +82,3 @@ HISTFILE="$XDG_DATA_HOME/bash_history"
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
-# set vi mode keybinding
