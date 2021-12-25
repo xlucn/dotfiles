@@ -68,7 +68,7 @@ case "$WM" in
     awesome*) prewm; exec awesome;;
     xfce*) exec startxfce4;;
     gnome*) startgnome;;
-    simple) startibus; startdwm;;
+    simple) startdwm;;
     dwm*) prewm; startdwm;;
     *) exec "$1";;
 esac
