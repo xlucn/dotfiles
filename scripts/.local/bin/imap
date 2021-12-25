@@ -11,42 +11,31 @@ from subprocess import run, PIPE
 
 def get_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('email')
-    parser.add_argument('-s', '--server')
-    parser.add_argument('-p', '--port', default=imaplib.IMAP4_SSL_PORT)
-    parser.add_argument('-P', '--password')
-    parser.add_argument('-n', '--download', type=int)
+    parser.add_argument('email', help='email address to fetch unread information')
+    parser.add_argument('-n', dest='download', type=int, help='show info for n emails')
+    parser.add_argument('-s', dest='server', help='default guessed from email address')
+    parser.add_argument('-P', dest='password', help='default use `pass` command')
+    parser.add_argument('-p', dest='port', help='default to common ssl port')
     return parser
-
-
-def check_email(email):
-    if '@' not in email:
-        print(f"Email address not corrent: {email}")
-        exit(1)
-
-
-def get_server(email):
-    special_servers = {'smail.nju.edu.cn': 'imap.exmail.qq.com'}
-    domain = email.split('@')[1]
-    return special_servers.get(domain, f'imap.{domain}')
-
-
-def get_password(email):
-    res = run(['pass', 'show', f'mail/{email}'], stdout=PIPE, stderr=PIPE)
-    if res.returncode == 0:
-        return res.stdout.decode().strip()
-    else:
-        print(res.stderr.decode()).strip()
-        exit(1)
 
 
 def get_args():
     args = get_parser().parse_args()
-    check_email(args.email)
+    if '@' not in args.email:
+        print(f"Email address not correct: {args.email}")
+        exit(1)
+    if args.port is None:
+        args.port = imaplib.IMAP4_SSL_PORT
     if args.server is None:
-        args.server = get_server(args.email)
+        domain = args.email.split('@')[1]
+        args.server = f'imap.{domain}'
     if args.password is None:
-        args.password = get_password(args.email)
+        pass_cmd = ['pass', 'show', f'mail/{args.email}']
+        res = run(pass_cmd, stdout=PIPE, stderr=PIPE)
+        if res.returncode != 0:
+            print(res.stderr.decode().strip())
+            exit(1)
+        args.password = res.stdout.decode().strip()
     return args
 
 
@@ -58,33 +47,28 @@ def netease_workaround():
 
 def decode_header(hdr):
     # https://www.ietf.org/rfc/rfc2047.txt section 4
-    if hdr is None:
-        return hdr
     msg, encoding = email.header.decode_header(hdr)[0]
-    if encoding is not None:
-        msg = msg.decode(encoding)
-    return msg
+    return msg.decode(encoding) if encoding else msg
 
 
 def envelope_info(msg):
-    # reference: https://www.ietf.org/rfc/rfc3501.txt section 7.4.2
-    # every msg is an ENVELOPE structure: UID (ENVELOPE (...))
-    msg = msg.decode()
-
+    """
+    reference: https://www.ietf.org/rfc/rfc3501.txt section 7.4.2
+    every msg is an ENVELOPE structure: UID (ENVELOPE (...))
+    """
     # strip the outside two pairs of parenthesis, only remain "..."
     left = msg.index('(', msg.index('(') + 1)
     right = msg.rindex(')', 0, msg.rindex(')'))
     envelope = msg[left + 1: right]
 
     # convert to tuple or list format, and evaluate
-    envelope = envelope.replace('NIL', 'None,')
-    envelope = envelope.replace('" ', '", ')
-    envelope = envelope.replace(') ', '), ')
-    date, subject, (name, _, mail, host) = eval(envelope)[:3]
+    envelope = envelope.replace('NIL', 'None,')  # Null data
+    envelope = envelope.replace('" ', '", ')     # End of string
+    envelope = envelope.replace(')', '),')       # End of array
+    date, subject, ((name, _, mail, host),) = eval(envelope)[:3]
 
-    # export
+    # decode and export
     date = email.utils.parsedate_to_datetime(decode_header(date))
-    # date = email.utils.parsedate_tz(decode_header(date))
     subject = decode_header(subject)
     name = decode_header(name)
     mail = "{}@{}".format(decode_header(mail), decode_header(host))
@@ -93,18 +77,16 @@ def envelope_info(msg):
 
 args = get_args()
 
-m = imaplib.IMAP4_SSL(args.server, args.port, timeout=10)
-m.login(args.email, args.password)
-netease_workaround()  # special care for netease email
-m.select()
-for i in m.list()[1]:
-    logging.debug(i.decode())
-uids = m.search(None, 'UNSEEN')[1][0].decode().split()
-print(len(uids))
-if args.download and len(uids[-args.download:]) > 0:
-    for msg in m.fetch(','.join(uids[-args.download:]), '(ENVELOPE)')[1]:
-        date, subject, name, mail = envelope_info(msg)
-        date = date.astimezone().strftime("%Y-%m-%d %H:%M:%S %a")
-        print(f"\nDate: {date}\nSubject: {subject}\nFrom: {name}<{mail}>")
-m.close()
-m.logout()
+with imaplib.IMAP4_SSL(args.server, args.port, timeout=10) as m:
+    m.login(args.email, args.password)
+    netease_workaround()  # special care for netease email
+    m.select()
+    logging.debug([i.decode() for i in m.list()[1]])
+    uids = m.search(None, 'UNSEEN')[1][0].decode().split()
+    print(len(uids))
+    if args.download and len(uids[-args.download:]) > 0:
+        for msg in m.fetch(','.join(uids[-args.download:]), '(ENVELOPE)')[1]:
+            date, subject, name, mail = envelope_info(msg.decode())
+            date = date.astimezone().strftime("%Y-%m-%d %H:%M:%S %a")
+            print(f"\nDate: {date}\nSubject: {subject}\nFrom: {name}<{mail}>")
+    m.close()
