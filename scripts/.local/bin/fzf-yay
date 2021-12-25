@@ -1,2 +1,0 @@
-#!/bin/sh
-yay -Slq | fzf -m -q "$*" --preview 'yay -Si {1}'| xargs -ro yay -S

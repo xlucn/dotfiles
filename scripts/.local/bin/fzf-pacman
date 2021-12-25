@@ -1,2 +1,0 @@
-#!/bin/sh
-pacman -Slq | fzf -m -q "$*" --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
