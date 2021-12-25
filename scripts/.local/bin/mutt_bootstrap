@@ -42,7 +42,7 @@ res = run(
 if res.returncode == 0:
     mail = res.stdout.decode().strip()
 else:
-    mail = mails[0]
+    exit()
 
 domain = mail.split('@')[1]
 
