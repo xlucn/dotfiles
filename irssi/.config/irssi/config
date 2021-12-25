@@ -189,6 +189,7 @@ settings = {
     nicklist_height = "50";
     nicklist_width = "20";
     nicklist_smallest_main = "40";
+    # adv_windowlist.pl:
     awl_shared_sbar = "OFF";
     awl_viewer = "yes";
     awl_sort = "server";
@@ -196,10 +197,16 @@ settings = {
     awl_maxcolumns = "1";
     awl_height_adjust = "0";
     awl_viewer_launch_env = "NOTITLE=1";
+    # chansort_configurable.pl: sort with chansort_configurable_callback.pl
     chansort_configurable_autosort = "yes";
+    # nickcolor.pl
     nickcolor_truncate_value = "-12";
     nickcolor_enable_truncate = "yes";
     nickcolor_colors = "2 3 4 5 6 7 9 10 11 12 13";
+    # mouse.pl: disable the disable (click suspends the script for 5s)
+    mouse_click = "";
+    mouse_middle_click = "";
+    mouse_right_click = "";
   };
   "irc/core" = { skip_motd = "yes"; alternate_nick = "Lewinat0r"; };
   "fe-common/core" = { show_names_on_join = "no"; };
