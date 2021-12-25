@@ -137,6 +137,7 @@ hi Visual       ctermbg=0   ctermbg=None cterm=reverse
 hi StatusLine   ctermfg=7   ctermbg=None cterm=None
 hi StatusLineNC ctermfg=7   ctermbg=None cterm=None
 hi VertSplit    ctermfg=7   ctermbg=None cterm=None
+hi Pmenu        ctermfg=7   ctermbg=0
 " tabbufline styles are linked to built-in targets
 hi PmenuSel     ctermfg=6   ctermbg=None cterm=None
 hi TabLine      ctermfg=7   ctermbg=None cterm=None
@@ -435,9 +436,9 @@ let g:buftabline_indicators = 1
 " }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
-let g:which_key_centered = 0
+let g:which_key_centered = 1
 let g:which_key_hspace = 2
-let g:which_key_use_floating_win = 0
+let g:which_key_use_floating_win = 1
 let g:which_key_fallback_to_native_key = 1
 let g:which_key_map = {
   \ 'q' : 'quit',
