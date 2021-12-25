@@ -52,10 +52,11 @@ function PackagerSetup(job, status)
 endfunction
 let s:packager_dir = $VIM.'/pack/packager/opt/vim-packager'
 let s:packager_git = 'https://github.com/kristijanhusak/vim-packager'
+let s:packager_clone = ['git', 'clone', s:packager_git, s:packager_dir]
 " running the git clone anyway, it won't do anything if exists
-call job_start(['git', 'clone', s:packager_git, s:packager_dir], {
-\   'exit_cb': function('PackagerSetup')
-\ })
+if exists('*job_start')
+    call job_start(s:packager_clone, {'exit_cb': function('PackagerSetup')})
+endif
 " }}}
 " Vim Settings
 " Vim Config {{{
