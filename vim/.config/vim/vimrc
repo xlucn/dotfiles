@@ -173,6 +173,8 @@ vnoremap <silent> k gk
 " buffers
 nnoremap <silent> <C-K> :bprevious<CR>
 nnoremap <silent> <C-J> :bnext<CR>
+nnoremap <silent> <C-P> :cprevious<CR>
+nnoremap <silent> <C-N> :cnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching
@@ -233,6 +235,11 @@ augroup latex
     autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
 augroup END
 " autocmd FileType tex let b:ale_lsp_root='./'
+augroup makeprg
+    autocmd Filetype sh compiler shellcheck
+    autocmd Filetype perl compiler perl
+    autocmd Filetype tex compiler tex
+augroup END
 " }}}
 " IM Toggle {{{
 " restore input method state when enter insert mode
@@ -265,7 +272,7 @@ let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20  " split size, minus meaning absolute size
 let g:netrw_dirhistmax   = 0    " disable history
 let g:netrw_liststyle    = 0    " one file per line with nothing else
-nnoremap <C-N> :Lexplore<CR>
+" nnoremap <C-N> :Lexplore<CR>
 " }}}
 " My own goyo mode {{{
 function Goyo()
