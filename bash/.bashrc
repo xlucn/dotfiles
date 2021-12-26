@@ -1,12 +1,16 @@
 #!/bin/sh
+# If not running interactively, don't do anything
+[ $- = ${-#*i} ] && return
 
 if [ "$PS1" ] && [ -n "$BASH" ] && \
     [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
+. .profile
+
 # Alias
-alias sudo="doas"
+command -v doas > /dev/null && alias sudo="doas"
 # auto color
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
