@@ -17,6 +17,8 @@ export XDG_RUNTIME_DIR="/run/user/$USERID"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
+export MANPATH="$XDG_DATA_HOME/man:$(manpath 2> /dev/null)"
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # less history
@@ -56,8 +58,9 @@ export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
-export PATH="$GEM_HOME/bin:$PATH"
+for bin in "$XDG_DATA_DIRS/gem/ruby/*/bin"; do
+    export PATH="$bin:$PATH"
+done
 # dvdcss
 export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
 # vim
@@ -72,8 +75,6 @@ export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export NPM_PACKAGES="$XDG_DATA_HOME/npm"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-unset MANPATH
-MANPATH=$(manpath)
 export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
 # rand
 export RANDFILE="$XDG_CACHE_HOME/openssl_rnd"
