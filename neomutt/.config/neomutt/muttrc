@@ -69,6 +69,8 @@ set menu_scroll
 set mark_old = no
 # save to Archive by default
 save-hook . =Archive
+# do not check host for some providers
+account-hook ".*\.edu\.cn:.*" set ssl_verify_host = no
 
 # aliases
 set reverse_alias = yes
