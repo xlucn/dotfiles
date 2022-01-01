@@ -20,6 +20,7 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-repeat')
   call a:packager.add('tpope/vim-sensible')
   call a:packager.add('tpope/vim-surround')
+  call a:packager.add('tpope/vim-dispatch')
   call a:packager.add('ap/vim-buftabline')
   " Language server
   call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
