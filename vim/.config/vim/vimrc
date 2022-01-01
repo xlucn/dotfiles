@@ -387,22 +387,19 @@ function! LSPStatus()
     endif
 endfunction
 function GitBranch()
-    silent let l:githead = system('git -C '.expand("%:h:S").' branch --show-current')
-    if v:shell_error != 0
-        return ''
-    else
-        return trim(l:githead) . ' '
-    endif
+    let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
+    silent return trim(system(cmd)) . ' '
 endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
-let &stl  = '%#TabLineSel# %{mode()} %*'        " vim modes
+let &stl  = '%#TabLineSel# %{mode()} '        " vim modes
 let &stl .= '%2*%( %{GitBranch()}%(%r%h %)%)'   " git branch, readonly, help
 let &stl .= '%1*%< %t %m %w '                   " file name, modified, preview
 let &stl .= '%='                                " split left and right
 let &stl .= '%{&ff} %(| %{&fenc} %)%(| %y %)'   " format, encoding and type of the file
 let &stl .= '%2* %3p%% | %3l:%3c '              " cursor location
-let &stl .= '%#TabLineSel#%{LSPStatus()}%*'     " lsp status
+let &stl .= '%#TabLineSel#%{LSPStatus()}'     " lsp status
+let &stl .= '%*'
 " }}}
 " Git {{{
 " show the log in a pretty way
