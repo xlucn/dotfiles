@@ -264,7 +264,7 @@ augroup im_toggle
     autocmd InsertEnter * call IMEnable()
 augroup END
 " }}}
-" Netrw -> NerdTree {{{
+" Netrw {{{
 " Make Netrw function like NerdTree
 let g:netrw_home         = $VIM " put temporary file there instead of $HOME
 let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
@@ -272,7 +272,11 @@ let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20  " split size, minus meaning absolute size
 let g:netrw_dirhistmax   = 0    " disable history
 let g:netrw_liststyle    = 0    " one file per line with nothing else
-" nnoremap <C-N> :Lexplore<CR>
+nnoremap L :Lexplore<CR>
+augroup NetrwKeys
+    autocmd Filetype netrw nmap <buffer> h <Plug>NetrwBrowseUpDir
+    autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
+augroup END
 " }}}
 " My own goyo mode {{{
 function Goyo()
