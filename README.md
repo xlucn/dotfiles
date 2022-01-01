@@ -1,87 +1,95 @@
 # dotfiles
 
-Config files for everything
+Config files for everything. See the [topics](#topics) section for details and follow the links therein.
 
-![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/dwm.png?raw=true)
-*Screenshot: [my own fork](https://github.com/OliverLew/dwm) of dwm*
+|![](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/dwm.png?raw=true)|
+|:-:|
+|*Screenshot: [my own fork](https://github.com/OliverLew/dwm) of dwm with zathura and st running neofetch and vim*|
 
-## Manage dotfiles with `make` and `stow`
+## Manage dotfiles
 
 I manage my configuration files with [stow](https://www.gnu.org/software/stow/)
 and a simple makefile.
 
-Files that go into home directory and system root are treated separately. The reason is
+There are two kinds of files here:
+  - "Dotfiles" that go into home directory.
+  - Files that are in the system root folders.
+
+Each kind of the files is treated separately. The reason is
 that some system files doesn't work if they are symlinks, which are exactly what `stow`
 creates. So those in home directory are managed with `stow`, those in root with makefile.
 
 ### What does `stow` do:
 
 Every folder is treated as a stow "package". Under every folder there are the "dot"
-files related to one program or one topic. The "dot" files are organized in the same
-structure as they are relative to user's home directory, which can be deployed with
+files related to one program or one topic. The files in the folders are organized
+as they are relative to home directory, e.g. `package/.config/file` becomes
+`$HOME/.config/file`. The "dotfiles" can be deployed with
 ```sh
 stow -t $HOME -v <package name>
 ```
 
-### "Dot" files in user home directory
+### Use the makefile
 
 I keep all the configuration files in my home directory in/as a "dot" folder/file.
-That is, the relative path to `$HOME` must start with `.`, e.g.
-`package/.config/file` will go to `$HOME/.config/file`,
-`package/.configfile` will go to `$HOME/.configfile`.
-
-With the makefile, deploy all dotfile packages with:
+The makefile will treat all files or folders starting with `.` as "dotfiles".
+Deploy all dotfile packages with:
 ```sh
 make dotfiles
 ```
 
-### System files in root directory
-
-All the system files should not start with a dot.
-For example, `package/etc/file` will go to `/etc/file`.
-
-Deploy those files with
+All the system files should not start with a dot. For example, `package/etc/file`
+becomes `/etc/file`. Deploy those files with
 ```sh
 make system
 ```
 
 ## Environment
 
-- OS: [Archlinux](http://www.archlinux.org/)
-- WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm) with a lot of patches)
-- Terminal Emulator: [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st) with mainly scrollback and xresources patches)
-- Network Manager: systemd-networkd + systemd-resolved + iwd
+- OS: [Archlinux](http://www.archlinux.org/) for most recent versions of programs.
+- WM: [dwm](https://dwm.suckless.org/) ([my fork](https://github.com/OliverLew/dwm)).
+- Terminal Emulator: [st](https://st.suckless.org/) ([my fork](https://github.com/OliverLew/st)).
+- Network: systemd-networkd for wired connections and iwd for wireless connections.
 - Brightness control: [brightnessctl](https://github.com/Hummer12007/brightnessctl)
 - Music player: [mpd](https://github.com/MusicPlayerDaemon/MPD/) + [mpc](https://github.com/MusicPlayerDaemon/mpc) + [ncmpc](https://github.com/MusicPlayerDaemon/ncmpc)
 - Text editor: [vim](https://github.com/vim/vim)
 
-## Linux console setup
+## Topics
 
-![test](https://github.com/OliverLew/oliverlew.github.io/blob/pictures/fbterm.png?raw=true)
-*Screenshot: Playing video with `mplayer` while running `tmux` in `fbterm`*
+### Bash
 
-There are some programs that can work under linux console (tty) without GUI. After getting
-familiar with those programs, you can become quite efficient working without a DE/WM.
-And I configured a usable environment to make it more enjoyable with the help of tmux and
-fbterm.
+- Shell prompt script. From my experience, those common bash prompts
+  are sometimes too slow. So I wrote one myself, featuring basic user
+  and host information, current directory, ssh indicator, file manager
+  (lf and ranger) level, job counts, git status and so on.
+- Readline configuration, or inputrc. Readline makes bash a powerful
+  interactive shell, but the configuration needs some work.
+- Environment variables in `.profile`. Lots of them are for XDG path
+  specification, preventing some programs dump files directly in home.
 
-To install configs specifically for them:
+### MPD
 
-```sh
-stow fbterm tmux scripts
-```
+MPD is a music player daemon. You start it in background and control
+with other clients. I mostly use ncmpc as the front end. It's not as
+powerful as ncmpcpp, but enough for me.
 
-Those configs feature:
+### Mutt
 
-- Configs for `fbterm`, a more powerful (e.g. show utf-8 glyphs, faster) terminal emulator in framebuffer
-- Tmux config specifically designed for using in fbterm, for details see [the readme](tmux/) in tmux folder.
+Mutt is a TUI mail client. All things including colors, formats and
+keybindings can be customized.
 
-### Program recommendations (other than most TUI programs):
-- framebuffer only
-  - [fbcat](https://github.com/jwilk/fbcat) for taking screenshots
-  - [fbv](https://github.com/godspeed1989/fbv) for wallpaper and image viewing
-  - [jfbview](https://github.com/jichu4n/jfbview) recommended for viewing pdf/image
-- graphical programs work both under X and framebuffer
-  - [mpv](https://github.com/haikarainen/light) and [mplayer](mplayerhq.hu) for watching/streaming videos
-    - `mpv --vo=drm`: more powerful
-    - `mplayer -vo fbdev2`: can specify size and location
+I use mutt currently, since it's enough for me, and without so many
+dependencies. Most configurations are in `muttrc`, `neomuttrc` sources
+the formal one and adds neomutt specific settings.
+
+Apart from that, I created a `mutt_bootstrap` python script to support
+multiple accounts by listing and selecting an email address with `fzf`,
+and some private setup such as email addresses and passwords, with the
+help of `pass` command. This way, the information are stored securely
+in a password store, and none as plain text in muttrc.
+
+### Scripts
+
+A lot of scripts either works in status bars, or on their own such as
+print all 256 colors, print glyphs in a font, configure monitors, etc.
+For details, open the folder and see the readme therein.
