@@ -7,12 +7,12 @@ if [ "$PS1" ] && [ -n "$BASH" ] && \
     . /usr/share/bash-completion/bash_completion
 fi
 
-. .profile
+. $HOME/.profile
 
 # Alias
 command -v doas > /dev/null && alias sudo="doas"
 # auto color
-alias ls="ls --color=auto"
+alias ls="ls --color=auto --classify"
 alias grep="grep --color=auto"
 # ask when replacing files
 alias mv="mv -iv"
@@ -27,6 +27,7 @@ alias cranger="ranger --cmd='set preview_images_method w3m'"
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # quiet newsboat
 alias newsboat="newsboat -q"
+alias proxychains="proxychains -q"
 # vim note
 alias notes="lf \$HOME/Code/notes"
 # pip update
