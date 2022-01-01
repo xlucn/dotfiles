@@ -34,16 +34,13 @@ mails_gpg = glob.glob(os.path.join(PASS_DIR_MAIL, "*@*.*.gpg"))
 mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg]
 
 # use fzf to choose one email
-res = run(
-    ['fzf', '--reverse'],
-    input='\n'.join(sorted(mails)).encode(),
-    stdout=PIPE
-)
-if res.returncode == 0:
-    mail = res.stdout.decode().strip()
-else:
+input_emails = '\n'.join(sorted(mails)).encode()
+res = run(['fzf', '--reverse'], input=input_emails, stdout=PIPE)
+if res.returncode != 0:
     exit()
 
+# get basic information
+mail = res.stdout.decode().strip()
 domain = mail.split('@')[1]
 
 # use pass to retrieve password
