@@ -2,42 +2,23 @@ $include /etc/inputrc
 
 # use vi mode
 set editing-mode vi
-$if mode=vi
-    # these are for vi-command mode
-    set keymap vi-command
-    Control-l: clear-screen
-    # these are for vi-insert mode
-    set keymap vi-insert
-    Control-l: clear-screen
-$endif
-
-# Make Tab autocomplete regardless of filename case
-set completion-ignore-case on
-
 # kill the lag, do not wait after ESC
 set keyseq-timeout 0
-
+# fix arrow keys on some system
 set enable-keypad on
 
-# Be more intelligent when autocompleting by also looking at the text after
-# the cursor. For example, when the current line is "cd ~/src/mozil", and
-# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
-# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
-# Readline used by Bash 4.)
+# Completion
+# Make Tab autocomplete regardless of filename case
+set completion-ignore-case on
+# Intelligent autocompleting by also looking at the text after the cursor.
 set skip-completed-text on
-
-# Completion like zsh
-# If there are multiple matches for completion,
-# make TAB cycle through them and shift TAB backwards.
-TAB: menu-complete
-"\e[Z": menu-complete-backward
 # Display a list of the matching files
 set show-all-if-ambiguous on
 # Perform partial completion on the first Tab press, and
 # only start cycling full results on the second Tab press.
 set menu-complete-display-prefix on
 
-# Color files by types
+# Eye candies
 # Note that this may cause completion text blink in some terminals (e.g. xterm).
 set colored-stats on
 # Append char to indicate type
@@ -48,13 +29,25 @@ set mark-symlinked-directories on
 set colored-completion-prefix on
 # Color the common prefix in menu-complete
 set menu-complete-display-prefix on
+# Match parenthesis
+set blink-matching-paren on
 
-set show-mode-in-prompt on
+# Completion like zsh
+# If there are multiple matches for completion,
+# make TAB cycle through them and shift TAB (\e[Z) backwards.
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+# Re-read init file
+"\C-x\C-x": re-read-init-file
+Control-l: clear-screen
+Control-s: "\eIsudo \eA"
+
 # show mode indicators
+set show-mode-in-prompt on
 $if term=linux
-set vi-ins-mode-string "\1\e[1;34m\2+\1\e[0m\2\1\e[?0c\2 "
-set vi-cmd-mode-string "\1\e[1;31m\2:\1\e[0m\2\1\e[?8c\2 "
+    set vi-ins-mode-string "\1\e[1;34m\2+\1\e[0m\2\1\e[?0c\2 "
+    set vi-cmd-mode-string "\1\e[1;31m\2:\1\e[0m\2\1\e[?8c\2 "
 $else
-set vi-ins-mode-string "\1\e[1;34m\2+\1\e[0m\2\1\e[6 q\2 "
-set vi-cmd-mode-string "\1\e[1;31m\2:\1\e[0m\2\1\e[2 q\2 "
+    set vi-ins-mode-string "\1\e[1;34m\2+\1\e[0m\2\1\e[6 q\2 "
+    set vi-cmd-mode-string "\1\e[1;31m\2:\1\e[0m\2\1\e[2 q\2 "
 $endif
