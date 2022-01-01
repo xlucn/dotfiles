@@ -30,6 +30,8 @@ alias newsboat="newsboat -q"
 alias proxychains="proxychains -q"
 # vim note
 alias notes="lf \$HOME/Code/notes"
+# ps grep
+alias psg="pgrep -ifa"
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
