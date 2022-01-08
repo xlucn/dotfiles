@@ -4,7 +4,7 @@ osd-font-size=40
 no-keepaspect-window
 
 # Screenshot
-screenshot-format=jpg
+screenshot-format=png
 screenshot-directory=~/Pictures
 
 # OSD
