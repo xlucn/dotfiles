@@ -1,42 +1,47 @@
 " vim: ft=vim
-" file: exrc
-" vi init file
+" exrc: vi init file
+" Note: comment starts with ", and no empty lines
 "
-" RULES:
-" - Comment starts with " (double quote)
-" - No empty lines
+""""""""""""""
+" Vi Options "
+""""""""""""""
 "
-" Options
 " Automatically indent on the next line
 set autoindent
+" Auto save file after leaving the buffer
+set autowrite
 " Put buffer files in /tmp
 set directory=/tmp
 " Ignore case when searching
 set ignorecase
-" Vi will show tab as ^I, literally. It's not good looking.
+" Show tab as ^I, EOL as $, literally. It's not good looking.
 set nolist
-" Do not show line number
-" In my case, the cursor position is buggy with the line number colomns in normal mode.
-set nonumber
+" Search for 'vi:' for commands
+set modelines
+" Show line number, Arch Linux's package has a fix patch
+set number
 " No repeat mapping
 set noremap
 " Show messsage for edits exceeds this number of lines
 set report=1
-" Use bash for shell
+" Use bash for :shell command
 set shell=/bin/bash
 " Indent 4 spaces with autoindent, >> or <<
 set shiftwidth=4
 " Highlight the matching () {} when closing it.
 set showmatch
-" Don't show mode change, it's also buggy when you 'j' in the last line
-set noshowmode
+" Show mode change
+set showmode
 " Tab 4 spaces
 set tabstop=4
-" Instant escape, other wise keymapping will timeout after 1 second
+" Instant escape, otherwise keymapping will wait for 1 second
 set notimeout
 "
+""""""""""""
+" Mappings "
+""""""""""""
 "
-" Mappings with , as <leader>. Quit, edit(reload), save and more.
+" Mappings to quit, edit, save and more.
 map ,q :q
 map ,z :q!
 map ,e :e
@@ -45,37 +50,30 @@ map ,x :wq
 map ,r :source ~/.config/ex/exrc
 map  :source ~/.config/ex/exrc
 "
-"
-"" Delete and navigate in normal mode instead
-" Make backspace delete as expected
-" Cons: not working well deleting the first char with more chars after
-" map  h
+" Delete and navigate in insert mode, better not use them.
+" Make backspace to delete, with some bugs, e.g.:
+"  not working well deleting the first char with more chars after
 " map!  sa
 " map!  sa
-" Bad hacks for arrow heys, make escape key lagging (it waits for arrow keys)
+" Hacks for arrow heys, depends on timeout
 " map! OA ka
 " map! OB ja
 " map! OC la
 " map! OD ha
 "
-"
 " Complete words, famous vi macros
 map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
 map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
 "
-" Do fmt command (join lines), the commented version does not work for me
-" from https://hea-www.harvard.edu/~fine/Tech/vi.html
-" map v 0ma}b:'a,.j070 ?  *dwi
-map v 0ma}b:'a,.j}j
+" Do fmt command (join lines)
+" See https://hea-www.harvard.edu/~fine/Tech/vi.html
+map V 0ma}b:'a,.j}j
+" This does not work
+" map V 0ma}b:'a,.j070 ?  *dwi
 "
 " Execute current line (it's not working)
-" map  "ayy:@a
+map  "ayy:@a
 "
-"
-" Abbreviations
-ab #i #include
-ab #d #define
-ab cio #include <stdio.h>
-ab cstr #include <string.h>
-ab clib #include <stdlib.h>
-ab cmain int main(int argc, char **argv){}O
+"""""""""""""""""
+" Abbreviations "
+"""""""""""""""""
