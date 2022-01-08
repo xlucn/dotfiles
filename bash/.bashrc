@@ -1,6 +1,6 @@
 #!/bin/sh
 # If not running interactively, don't do anything
-[ $- = ${-#*i} ] && return
+[ "$-" = "${-#*i}" ] && return
 
 if [ "$PS1" ] && [ -n "$BASH" ] && \
     [ -f /usr/share/bash-completion/bash_completion ]; then
