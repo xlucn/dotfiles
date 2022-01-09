@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # super + d
 rofi -theme launcher -show drun
@@ -6,9 +6,9 @@ rofi -theme launcher -show drun
 # super + Tab
 rofi -show window \
     -kb-cancel "Super+Escape,Escape" \
-    -kb-accept-entry '!Super+Tab,!Super_L,!Super+Super_L,!Super+ISO_Left_Tab,Return' \
-    -kb-row-down 'Super+Tab,Super+Down,Down' \
-    -kb-row-up 'Super+ISO_Left_Tab,Super+Shift+Tab,Super+Up,Up'
+    -kb-accept-entry "!Super+Tab,!Super_L,!Super+Super_L,!Super+ISO_Left_Tab,Return" \
+    -kb-row-down "Super+Tab,Super+Down,Down" \
+    -kb-row-up "Super+ISO_Left_Tab,Super+Shift+Tab,Super+Up,Up"
 
 # super + Return
 st
@@ -18,9 +18,6 @@ st -c floating
 
 # super + w
 firefox
-
-# super + x
-dmenu_run
 
 # super + e
 pcmanfm
@@ -50,16 +47,21 @@ mpc -q seek {-,+}10
 mpc -q {next,prev,toggle}
 
 # @Print
-scrot 'Screenshot_%F_%H-%M-%S.png' -e 'mv $f ~/Pictures/'
+scrot "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
 
 # ctrl + @Print
-scrot -e 'xclip -selection clipboard -t image/png < $f && rm $f'
+tmpfile=$(mktemp -u --tmpdir scrot.temp.XXXX.png)
+scrot "$tmpfile"
+xclip -selection clipboard -t image/png < "$tmpfile"
+rm "$tmpfile"
 
 # shift + @Print
-scrot -s --line mode=edge,width=4,color=red,opacity=70 'Screenshot_%F_%H-%M-%S.png' -e 'mv $f ~/Pictures/'
+scrot -s --line mode=edge,width=4,color=red,opacity=70 "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
 
 # ctrl + shift + @Print
-scrot -s --line mode=edge,width=4,color=red,opacity=70 -e 'xclip -selection clipboard -t image/png < $f && rm $f'
+scrot -s --line mode=edge,width=4,color=red,opacity=70 "$tmpfile"
+xclip -selection clipboard -t image/png < "$tmpfile"
+rm "$tmpfile"
 
 # super + r
 rofi -show run
