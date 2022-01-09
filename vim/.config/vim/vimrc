@@ -244,8 +244,17 @@ augroup END
 " }}}
 " IM Toggle {{{
 " restore input method state when enter insert mode
-let s:fcitx_cmd = "fcitx-remote"
+function CheckFcitxCmd()
+    if !exists("s:fcitx_cmd")
+        if system("fcitx5-remote") == 1
+            let s:fcitx_cmd = "fcitx5-remote"
+        else
+            let s:fcitx_cmd = "fcitx-remote"
+        endif
+    endif
+endfunction
 function IMDisable()
+    call CheckFcitxCmd()
     if !exists("s:hasfcitx")
         let s:hasfcitx = system(s:fcitx_cmd) =~# '^\d\n\+$'
     endif
@@ -255,6 +264,7 @@ function IMDisable()
     endif
 endfunction
 function IMEnable()
+    call CheckFcitxCmd()
     if exists('b:fcitx') && b:fcitx == 2
         call system(s:fcitx_cmd . ' -o')
     endif
