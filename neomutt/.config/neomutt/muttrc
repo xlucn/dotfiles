@@ -1,106 +1,127 @@
-source "mutt_bootstrap |"
+source "mutt_bootstrap $readname test |"
 
-set editor = "vim"
-set sig_on_top = yes
-# disable '+' markers at the beginning of every wrapped line
-unset markers
-# do not show anything for emails only for me
-set to_chars = "+ TCFL"
-
-# name
+# name, will appear as `realname <youremail@address>' to the recipient
 set realname = "Xu Lu"
-# Mailboxes
-set spoolfile = "+Inbox"
-set record = "+Sent"
-set postponed = "+Drafts"
-set trash = "+Deleted"
 
-# signature file
-unset signature
+#########
+# Pager #
+#########
+# disable '+' markers at the beginning of every wrapped line
+set markers = no
+# show these headers
+ignore *
+unignore Subject: From: To: CC: BCC: Date:
+# show header by this order
+unhdr_order *
+hdr_order Subject: From: To: CC: BCC: Date:
+# show index on top and pager below
+set pager_context = 3
+set pager_index_lines = 6
+# stop at the bottom of a message instead of go to next message
+set pager_stop = yes
+# email content
+auto_view text/html                                   # view html automatically
+alternative_order text/plain text/enriched text/html  # save html for last
 
-# do not save sent email
-set copy = no
-
-# show sidebar
-set sidebar_visible = no
-set sidebar_width = 30
-set sidebar_short_path = yes
-set sidebar_folder_indent = yes
-set sidebar_sort_method = name
-# sidebar format: Boxname [New messages]  Total size
-set sidebar_format = "%B %?N?[%N]?%* %S"
-# forward subject formats
-set forward_format = "Fwd: %s"
-# index (list of mails)
-set index_format = "%4C %Z %[%y/%m/%d] %-15.15L (%?l?%4l&%4c?) %s"
-# status
-set status_format = "[%f](%r) [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?] (%s/%S)%>-(%P)"
-# attachments
-# The "%.999d%* " ensures to show as much of the filename as possible.
-# The default "%.40d%> " will cut off at 40, and when there is not enough space,
-# the mime type on the right won't even be gauranteed to display.
-set attach_format = "%u%D%I%t%2n %T%.999d%*  [%.4m/%.10M, %.6e%?C?, %C?, %s]"
-
-# cache folder
-set message_cachedir = ~/.cache/mutt/bodies
-set header_cache = ~/.cache/mutt/headers
-# interval of mail checking, this hangs mutt when checking
-set mail_check = 600
-set mail_check_stats = yes
-set timeout = 120
-# Allow Mutt to open a new IMAP connection automatically.
-unset imap_passive
-# keep the IMAP connection alive
-set imap_keepalive = 60
-# suppress pause when switching mail boxes
-set sleep_time = 0
-# default recipient and subject when reply
-set fast_reply = yes
-# include original message when reply
-set include = yes
-# check all mailboxes
-set imap_check_subscribed = yes
-set imap_list_subscribed = yes
+#########
+# index #
+#########
 # sort method
 set sort = "date"
 set sort_aux = "last-date-received"
 # index scroll instead of turning pages
 set menu_scroll
+# do not show indicators for emails only for me in index
+set to_chars = "+ TCFL"
+# default operate on tagged messages
+set auto_tag = yes
+# merge text attributes between layers
+set cursor_overlay = yes
+# do not show help message on top
+set help = no
+# Show alias entry name instead of email address in the index
+set reverse_alias = yes
+
+###########
+# sidebar #
+###########
+set sidebar_visible = no
+set sidebar_width = 24
+set sidebar_short_path = yes
+set sidebar_folder_indent = yes
+set sidebar_sort_method = name
+
+###########
+# Formats #
+###########
+# attachments, The "%.999d%* " ensures to show as much of the filename as possible.
+set attach_format = "%u%D%I%t%2n %T%.999d%*  [%.4m/%.10M, %.6e%?C?, %C?, %s]"
+# forward subject formats
+set forward_format = "Fwd: %s"
+# index (list of mails)
+set index_format = "%4C %Z %[%y/%m/%d] %-15.15L (%?l?%4l&%4c?) %s"
+# pager format
+set pager_format = "<%Z> %C/%m: %.999s%*  %n -- (%P)"
+# sidebar format: Boxname [New messages]  Total size
+set sidebar_format = "%B %?N?[%N]?%* %S"
+# statusline
+set status_format = "[%f](%r) [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?] (%s/%S)%>-(%P)"
+
+#########
+# local #
+#########
+# cache folder for message body and headers
+set message_cachedir = "~/.cache/mutt/bodies"
+set header_cache = "~/.cache/mutt/headers"
+# save attachments to downloads folder
+set attach_save_dir = "~/Downloads"
+
+##############
+# connection #
+##############
+# tell mutt to open this mailbox
+set spoolfile = "+INBOX"
+# interval of mail checking, this hangs mutt when checking
+set mail_check = 600
+set mail_check_stats = yes
+set timeout = 120
+# suppress pause when switching mail boxes
+set sleep_time = 0
+# keep the IMAP connection alive
+set imap_keepalive = 60
+# check all mailboxes
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+# never mark unread new messages as old
 set mark_old = no
-# save to Archive by default
-save-hook . =Archive
 # do not check host for some providers
 account-hook ".*\.edu\.cn:.*" set ssl_verify_host = no
+# save to Archive by default
+save-hook . "=Archive"
 
-# aliases
-set reverse_alias = yes
-source "pass show mail/aliases |"
+###############
+# send emails #
+###############
+# default recipient and subject when reply
+set fast_reply = yes
+# include original message when reply
+set include = yes
+# do not save sent email. otherwise, save to `record'
+set copy = no
+set record = "+Sent"
+# Mailboxes, '+' are replaced with $folder variable
+set postponed = "+Drafts"
 
-# header
-# show only those headers
-ignore *
-unignore Subject: From: To: CC: BCC: Date:
-# show by this order
-unhdr_order *
-hdr_order Subject: From: To: CC: BCC: Date:
-
-# show index on top and pager below
-set pager_context = 3
-set pager_index_lines = 5
-# stop at the bottom of a message instead of go to next message
-set pager_stop = yes
-
-# email content
-auto_view text/html                                   # view html automatically
-alternative_order text/plain text/enriched text/html  # save html for last
-
-# encoding
+############
+# encoding #
+############
 set rfc2047_parameters=yes
 set assumed_charset="us-ascii:gb18030:utf-8"
 set attach_charset="us-ascii:gb18030:utf-8"
-set send_charset="utf-8"
 
 # color configuration
 source ~/.config/neomutt/colors.muttrc
 # keybindings
 source ~/.config/neomutt/keybindings.muttrc
+# aliases
+source "pass show mail/aliases |"
