@@ -15,18 +15,15 @@ osd-on-seek="msg-bar"
 osd-shadow-color="#40000000"
 osd-shadow-offset=0.5
 osd-duration=3000
+
 # osd in terminal
 term-osd-bar=yes
 term-osd-bar-chars="[=>-]"
 
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
-# I am using default vo=gpu with gpu-context=x11egl because hdr tone mapping
-# can't work if using vo=vaapi, see
 hwdec=vaapi
 gpu-context=x11egl
-hwdec-codecs=h264,vc1,hevc,vp9
 
 # HDR settings
-tone-mapping=reinhard
+tone-mapping=bt.2390
 tone-mapping-param=0.5
-tone-mapping-desaturate=1.0
