@@ -1,3 +1,0 @@
-! Swap caps lock and escape
-clear Lock
-keycode 0x42 = Escape Caps_Lock

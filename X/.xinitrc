@@ -27,6 +27,8 @@ startibus() {
 prewm() {
     startfcitx
 
+    setxkbmap -option "caps:swapescape"
+
     pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x xcompmgr || xcompmgr &
     # pgrep -x udiskie || udiskie > /dev/null 2>&1 &
