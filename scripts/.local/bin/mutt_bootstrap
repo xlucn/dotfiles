@@ -46,7 +46,7 @@ domain = mail.split('@')[1]
 # use pass to retrieve password
 res = run(['pass', 'show', f'mail/{mail}'], stdout=PIPE, stderr=PIPE)
 if res.returncode == 0:
-    password = res.stdout.decode().strip()
+    password = res.stdout.decode().split('\n')[0]
 else:
     password = ''
 
