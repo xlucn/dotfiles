@@ -5,16 +5,16 @@
 # force font width (and/or height), usually for non-fixed width fonts
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
 
-# Recommendations 14-8-18 16-10-20 21-12-24 26-15-30
+# Recommendations 14-8-18 16-10-20 21-12-24 26-15-32
 font-names=JetBrains Mono SemiBold,WenQuanYi Micro Hei,Noto Sans CJK SC,Monospace
-font-size=21
-font-width=12
-font-height=30
+font-size=26
+font-width=15
+font-height=36
 
 # default color of foreground/background text
-color-foreground=a6a19b
-color-background=212121
-color-0=212121
+color-background=235
+color-foreground=254
+color-0=303030
 color-1=826023
 color-2=618231
 color-3=7e7b28
@@ -30,6 +30,8 @@ color-12=55b47f
 color-13=b4907f
 color-14=9bb4c8
 color-15=d8d1c9
+color-235=212121
+color-254=d8d1c9
 
 # max scroll-back history lines of every window, value must be [0 - 65535], 0 means disable it
 history-lines=0
@@ -51,8 +53,8 @@ word-chars=._-
 screen-rotate=0
 
 # specify the favorite input method program to run
-input-method=fcitx-fbterm
+input-method=fcitx5-fbterm
 
 ## do not turn on this when using tmux, tmux will have display problems
 ## treat ambiguous width characters as wide
-# ambiguous-wide=yes
+ambiguous-wide=no
