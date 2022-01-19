@@ -1,9 +1,10 @@
 #!/bin/sh
 while getopts o:s:t:h arg; do
     case "$arg" in
+        o) output=$OPTARG ;;
         s) size=$OPTARG ;;
         t) time=$OPTARG ;;
-        h|*) echo "$(basename "$0") [-s WIDTH] [-t SECONDS]" && exit;;
+        h|*) echo "$(basename "$0") [-o BASENAME] [-s WIDTH] [-t SECONDS]" && exit;;
     esac
 done
 shift $((OPTIND - 1))
@@ -14,5 +15,5 @@ for v in "$@"; do
         -vcodec "cinepak" -min_strips 3 \
         -vf "scale=${size:-320}:-1" \
         -acodec "pcm_u8" -ac 2 -ar 22050 \
-        "${v%.*}-old.avi"
+        "${output:-${v%.*}-old}.avi"
 done
