@@ -29,6 +29,9 @@ as they are relative to home directory, e.g. `package/.config/file` becomes
 stow -t $HOME -v <package name>
 ```
 
+I have a `.stowrc` to ensure even without arguments, the files are stowed to $HOME,
+and all README files are ignored.
+
 ### Use the makefile
 
 I keep all the configuration files in my home directory in/as a "dot" folder/file.

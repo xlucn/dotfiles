@@ -65,7 +65,7 @@ map  :source ~/.config/ex/exrc
 map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
 map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
 "
-" Do fmt command (join lines)
+" Do fmt command (join lines in a paragraph)
 " See https://hea-www.harvard.edu/~fine/Tech/vi.html
 map V 0ma}b:'a,.j}j
 " This does not work

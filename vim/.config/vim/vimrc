@@ -203,7 +203,7 @@ augroup normal
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType tex,markdown,gitcommit setlocal spell
-    autocmd FileType c,mma,json setlocal noet
+    autocmd FileType c,cpp,mma,json setlocal noet
     autocmd FileType markdown setlocal foldlevel=1
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType maxima setlocal commentstring=/*%s*/

@@ -11,13 +11,12 @@ What it is/does
     want to log into.
 
 Requirement
-    TUI tool fzf
-    Password management tool pass
+    fzf: TUI tool
+    pass: Password management tool
 
-    Save passwords for emails with pass (password store). You have to
-    save only the password but nothing else for an email, so that
+Setup
+    Save passwords for emails with pass (password store) like this
         $ pass mail/<email-address>
-    will return the password for that email address
 
 How to use it
     Use 'source "python <this file> |"' in muttrc.
