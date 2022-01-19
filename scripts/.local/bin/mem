@@ -42,7 +42,7 @@ info() {
     # format
     [ -n "$flag_byte" ] && echo "$mem" && return
     for unit in KB MB GB TB; do
-        [ "$mem" -lt 1024 ] && echo "$mem.${decimal:-0} $unit" && break
+        [ "$mem" -lt 1024 ] && echo "$mem.${decimal:-0}$unit" && break
         decimal=$(printf "%03d" "$((mem % 1024))" | cut -c -"${precision:-3}")
         mem=$((mem / 1024))
     done
