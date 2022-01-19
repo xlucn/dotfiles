@@ -1,0 +1,18 @@
+#!/bin/sh
+while getopts o:s:t:h arg; do
+    case "$arg" in
+        s) size=$OPTARG ;;
+        t) time=$OPTARG ;;
+        h|*) echo "$(basename "$0") [-s WIDTH] [-t SECONDS]" && exit;;
+    esac
+done
+shift $((OPTIND - 1))
+
+for v in "$@"; do
+    [ "${v#-}" != "$v" ] && echo "ignoreing $v" && continue
+    ffmpeg -y -t "${time:-300}" -i "$v" -r 15 \
+        -vcodec "cinepak" -min_strips 3 \
+        -vf "scale=${size:-320}:-1" \
+        -acodec "pcm_u8" -ac 2 -ar 22050 \
+        "${v%.*}-old.avi"
+done
