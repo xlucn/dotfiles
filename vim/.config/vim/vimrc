@@ -21,11 +21,15 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-sensible')
   call a:packager.add('tpope/vim-surround')
   call a:packager.add('tpope/vim-dispatch')
+  call a:packager.add('tpope/vim-unimpaired')
   call a:packager.add('ap/vim-buftabline')
   " Language server
   call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
-  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
   call a:packager.add('hrsh7th/nvim-cmp', {'type': 'opt'})
+  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
+  call a:packager.add('hrsh7th/vim-vsnip', {'type': 'opt'})
+  call a:packager.add('hrsh7th/cmp-vsnip', {'type': 'opt'})
+  call a:packager.add('hrsh7th/vim-vsnip-integ', {'type': 'opt'})
   call a:packager.add('neoclide/coc.nvim', {'branch': 'release', 'type': 'opt'})
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
   call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
@@ -41,6 +45,7 @@ function! s:packager_init(packager) abort
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
+  call a:packager.add('BourgeoisBear/clrzr', {'type': 'opt'})
 endfunction
 function PackagerSetup(job, status)
     if a:status == 0 || a:status == 128
@@ -80,7 +85,7 @@ set timeoutlen=300 " time out for key code delays
 set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
-set completeopt=menu,preview,noinsert " completion
+set completeopt=menu,preview " completion
 " }}}
 " UI basic {{{
 set guioptions=di       " gui options: dark, icon
@@ -94,6 +99,7 @@ set scrolloff=5         " minimum lines above and below cursor
 set splitright          " split into right by default
 set splitbelow          " split to below by default, better for ale's hover info
 set updatetime=100      " update time, related to fugitive sign column update, etc.
+set signcolumn=yes      " always show sign column
 set lazyredraw          " redraw when needed
 set noerrorbells        " don't beep
 set shortmess+=I        " don't show welcome screen
@@ -176,6 +182,8 @@ nnoremap <silent> <C-K> :bprevious<CR>
 nnoremap <silent> <C-J> :bnext<CR>
 nnoremap <silent> <C-P> :cprevious<CR>
 nnoremap <silent> <C-N> :cnext<CR>
+nnoremap <silent> [l :lprevious<CR>
+nnoremap <silent> ]l :lnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching
@@ -189,7 +197,6 @@ noremap <leader>w :w<CR>
 noremap <leader>e :e<CR>
 noremap <leader>x :x<CR>
 noremap <leader>k :call ExecCurrentFile()<CR>
-noremap <leader>. :let @/=""<CR>
 noremap <leader>r :so $MYVIMRC<CR>
 noremap <leader>z :call Goyo()<CR>
 " }}}
@@ -239,7 +246,8 @@ augroup END
 augroup makeprg
     autocmd Filetype sh compiler shellcheck
     autocmd Filetype perl compiler perl
-    autocmd Filetype tex compiler tex
+    autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
+    autocmd BufWrite tex exe 'Make'
 augroup END
 " }}}
 " IM Toggle {{{
@@ -449,17 +457,11 @@ let g:buftabline_indicators = 1
 let g:which_key_group_dicts = ''
 let g:which_key_centered = 1
 let g:which_key_hspace = 2
-let g:which_key_use_floating_win = 1
+let g:which_key_use_floating_win = 1        " so won't change current window
 let g:which_key_fallback_to_native_key = 1
+let g:which_key_disable_default_offset = 1  " fill the width
 let g:which_key_map = {
-  \ 'q' : 'quit',
-  \ 'Q' : 'quit all',
-  \ 'd' : 'close buffer',
-  \ 'w' : 'save',
-  \ 'e' : 'edit (reload)',
-  \ 'x' : 'save and quit',
   \ 'k' : 'run current file',
-  \ '.' : 'clear search hl',
   \ 'z' : 'Goyo mode',
   \ 's' : 'slime',
   \ 'c' : 'comment',
@@ -536,29 +538,69 @@ else
 endif
 " }}}
 " LSP {{{
+" start vim with a server, see ':h vimtex-clientserver'
+if empty(v:servername) && exists('*remote_startserver')
+    if empty($SSH_CLIENT) && !empty($DISPLAY) && empty($TMUX)
+        call remote_startserver('VIM')
+    endif
+endif
 if has('nvim')
     packadd nvim-lspconfig
     packadd cmp-nvim-lsp
     packadd nvim-cmp
+    packadd cmp-vsnip
+    packadd vim-vsnip
+    packadd vim-vsnip-integ
     lua << EOF
+    local lsp = require('lspconfig')
     local cmp = require('cmp')
     cmp.setup({
+        snippet = {
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+          end,
+        },
         sources = cmp.config.sources({
-            { name = 'nvim-lsp' },
-            { name = 'buffer' }
+          { name = 'nvim_lsp' },
+          { name = 'vsnip' },
+        }, {
+          { name = 'buffer' },
         })
-    })
-    cmp.setup.cmdline('/', { sources = { { name = 'buffer' } } })
-    cmp.setup.cmdline(':', {
-        sources = cmp.config.sources(
-            { { name = 'path' } },
-            { { name = 'cmdline' } }
-        )
     })
     local cap = vim.lsp.protocol.make_client_capabilities()
     cap = require('cmp_nvim_lsp').update_capabilities(cap)
-    require('lspconfig').pylsp.setup({ capabilities = cap })
-    require('lspconfig').bashls.setup({ capabilities = cap })
+    lsp['pylsp'].setup({ capabilities = cap })
+    lsp['bashls'].setup({ capabilities = cap })
+    lsp['texlab'].setup({
+        capabilities = cap,
+        settings = {
+            texlab = {
+                build = {
+                    args = {
+                        "-xelatex",
+                        "-pv",
+                        "-interaction=nonstopmode",
+                        "-synctex=1",
+                        "%f"
+                    },
+                    executable = "latexmk",
+                    onSave = true,
+                },
+                forwardSearch = {
+                    args = {
+                        "--synctex-forward",
+                        "%l:1:%f",
+                        "--synctex-editor-command",
+                        "nvim --remote-silent +%{line} %{input}",
+                        "%p"
+                    },
+                    executable = "zathura",
+                },
+                auxDirectory = "./output",
+                rootDirectory = "."
+            }
+        }
+    })
 EOF
 else
     " packadd coc.nvim
@@ -605,7 +647,7 @@ let g:lsc_server_commands = {
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_auto_completeopt = 1
 " }}}
 " tagbar {{{
 let g:tagbar_width = max([25, winwidth(0) / 5])
