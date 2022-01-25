@@ -2,6 +2,7 @@
 
 HOME=${HOME%%/}
 USERID=$(id -u)
+MANPATH=$(manpath 2> /dev/null)
 # Environments
 export EDITOR=vim
 export VISUAL=vim
@@ -17,10 +18,9 @@ export XDG_RUNTIME_DIR="/run/user/$USERID"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
-export MANPATH="$XDG_DATA_HOME/man:$(manpath 2> /dev/null)"
+export MANPATH="$XDG_DATA_HOME/man:$MANPATH"
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # less history
 export LESSHISTFILE=-
 # rlwrap history
@@ -58,7 +58,7 @@ export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-for bin in "$XDG_DATA_DIRS/gem/ruby/*/bin"; do
+for bin in "$XDG_DATA_DIRS"/gem/ruby/*/bin; do
     export PATH="$bin:$PATH"
 done
 # dvdcss
@@ -101,17 +101,17 @@ export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 # rust cargo
 export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 # texlive
-export TEXMFHOME=$XDG_DATA_HOME/texmf
-export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
-export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
+export TEXMFHOME="$XDG_DATA_HOME/texmf"
+export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 # proxychains-ng
 export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
 # dash interactive mode
-export ENV=$HOME/.bashrc
+export ENV="$HOME/.bashrc"
 
 # PATH
 add_to_path() {
-    if [ -d "$1" ] && [ "$PATH" = "${PATH%$1*}" ]; then
+    if [ -d "$1" ] && [ "$PATH" = "${PATH%"$1*"}" ]; then
         export PATH="$1:${PATH}"
     fi
 }
