@@ -1,19 +1,123 @@
 #!/bin/sh
-while getopts o:s:t:h arg; do
+#
+# Licence: MIT
+# Author: Lu Xu <oliver_lew@outlook.com>
+#
+# Script to re-encode video for playback under Windows 3.1 in XingMPEG
+# Enjoy the vintage multimedia!
+#
+# Idea: VCD playback was already well supported in Windows 3.1 era, so
+# the script tries to re-encode the video close to that standard. For
+# details see `man ffmpeg` -target. XingMPEG was one of the best players
+# to play mpg video or VCDs.
+#   I have considered other codecs, such as Microsoft Video 1 or cinepak
+# supported by Video for Windows, but the former is crap quality and the
+# latter is terribly slow, I am talking about ffmpeg's encode.
+
+usage() {
+    cat << EOF
+$(basename "$0") original_video [new_video]
+
+A script to re-encode video for playback in Windows 3.1 or similar.
+EOF
+}
+
+while getopts h arg; do
     case "$arg" in
-        o) output=$OPTARG ;;
-        s) size=$OPTARG ;;
-        t) time=$OPTARG ;;
-        h|*) echo "$(basename "$0") [-o BASENAME] [-s WIDTH] [-t SECONDS]" && exit;;
+        h|*) usage; exit 1 ;;
     esac
 done
 shift $((OPTIND - 1))
 
-for v in "$@"; do
-    [ "${v#-}" != "$v" ] && echo "ignoreing $v" && continue
-    ffmpeg -y -t "${time:-300}" -i "$v" -r 15 \
-        -vcodec "cinepak" -min_strips 3 \
-        -vf "scale=${size:-320}:-1" \
-        -acodec "pcm_u8" -ac 2 -ar 22050 \
-        "${output:-${v%.*}-old}.avi"
-done
+if [ $# = 2 ]; then
+    orig=$1
+    dest=${2%.mpg}.mpg
+elif [ $# = 1 ]; then
+    orig=$1
+    printf "Enter the name for new video: "
+    read -r dest
+    [ -z "$dest" ] && echo Aborting && exit 1
+    dest=${dest%.mpg}.mpg
+else
+    usage
+fi
+
+# Video resolution, will add padding to top and bottom
+WIDTH=352                   # width of VCD
+HEIGHT=$((WIDTH * 3 / 4))   # height of 4:3 ratio
+
+# Similar to -target *-vcd, but with some changes
+# Video part
+video_codec=mpeg1video          # use video codec for VCDs
+video_fps=25                    # frame rate being 25
+video_quality=0                 # better video quality (0 is good)
+video_scale="scale=$WIDTH:-4"   # keep ratio, and make resolution dividable by 4
+# Audio part
+audio_codec=mp2                 # use audio codec for VCDs
+audio_rate=44100                # common sample rate, multiplies of 11025 Hz
+audio_channel=2                 # stereo, 2 channels
+audio_bitrate=224k              # control the audio bitrate, default was 384k
+
+# Add black bars (each of half (out_h - in_h)) to top and bottom to make it 4:3
+pad_filter=",pad=$WIDTH:$HEIGHT:0:-(oh-ih)/2"
+
+# Burn subtitles, try external srt or ass subtitle, fallback to internal subtitles
+if [ -f "${1%.*}.srt" ]; then
+    subtitle_filter=",subtitles=${1%.*}.srt"
+    echo "Burning subtitle file ${1%.*}.srt into the video"
+elif [ -f "${1%.*}.ass" ]; then
+    subtitle_filter=",ass=${1%.*}.ass:original_size="
+    echo "Burning subtitle file ${1%.*}.ass into the video"
+else
+    # Find first subtitle
+    first_sub=$(ffprobe "$orig" -v error \
+        -select_streams s:0 \
+        -show_entries stream=index \
+        -of csv=nk=1:p=0)
+    if [ -n "$first_sub" ]; then
+        # List all subtitles
+        echo Subtitles in the video:
+        ffprobe -v error \
+            -select_streams s \
+            -show_entries "stream=index,codec_long_name:stream_tags=language,title" \
+            -of csv=nk=0:p=0 -i "$orig" |
+        sed -e "s/index=\([0-9]\+\)/Subtitle \1/" \
+            -e "s/codec_long_name=/ /" \
+            -e "s/tag:language=\([^,]\+\)/ [\1]/" \
+            -e "s/tag:title=/ /" |
+        awk -v "start=$first_sub" '{
+            printf "- %s %d,", $1, $2 - start;
+            for (i = 3; i <= NF; i ++) {
+                printf " %s", $i
+            };
+            printf "\n"
+        }'
+        printf "Enter the subtitle index you want to burn into the video.\n"
+        printf "E.g. 0, 1. Press enter to skip: "
+        read -r index
+        if [ -n "$index" ]; then
+            echo "Using subtitle No. $index"
+            subtitle_filter=",subtitles=$orig:si=$index"
+        else
+            echo "Not burning any subtitles"
+        fi
+    fi
+fi
+
+video_filter=$video_scale$pad_filter$subtitle_filter
+
+# The -bufsize and -maxrate is to fix some playback issue with XingMPEG,
+# apparently default values breaks something.
+ffmpeg -i "$orig" -f vcd \
+    -v error -stats \
+    -c:v $video_codec \
+    -bufsize 327680 -maxrate:v 1150k \
+    -r $video_fps \
+    -q:v $video_quality \
+    -vf "$video_filter" \
+    -c:a $audio_codec \
+    -ar $audio_rate \
+    -ac $audio_channel \
+    -b:a $audio_bitrate \
+    "$dest"
+[ $? = 0 ] && echo "Generated video: $dest"
