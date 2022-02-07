@@ -32,6 +32,13 @@ alias proxychains="proxychains -q"
 alias notes="lf \$HOME/Code/notes"
 # ps grep
 alias psg="pgrep -ifa"
+# du tree
+alias sdu="tree --du --sort=size -CFhrax"
+# ffmpeg, quiet!
+alias ffmpeg="ffmpeg -hide_banner"
+alias ffprobe="ffprobe -hide_banner"
+# gdu show relative size bar
+alias gdu="gdu -Bx"
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
