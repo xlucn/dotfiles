@@ -83,15 +83,8 @@ set attach_save_dir = "~/Downloads"
 set spoolfile = "+INBOX"
 # interval of mail checking, this hangs mutt when checking
 set mail_check = 600
-set mail_check_stats = yes
-set timeout = 120
-# suppress pause when switching mail boxes
-set sleep_time = 0
-# keep the IMAP connection alive
-set imap_keepalive = 60
 # check all mailboxes
 set imap_check_subscribed = yes
-set imap_list_subscribed = yes
 # never mark unread new messages as old
 set mark_old = no
 # do not check host for some providers
