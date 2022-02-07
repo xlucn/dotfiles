@@ -3,17 +3,15 @@
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
 
-[ -n "$XAUTHORITY" ] && [ ! -f "$XAUTHORITY" ] && touch "$XAUTHORITY"
-
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
 startfcitx() {
     # chinese input method
-    export GTK_IM_MODULE=fcitx
-    export QT_IM_MODULE=fcitx
-    export XMODIFIERS=@im=fcitx
-    pgrep -x fcitx || fcitx -d > /dev/null 2>&1
+    export GTK_IM_MODULE=fcitx5
+    export QT_IM_MODULE=fcitx5
+    export XMODIFIERS=@im=fcitx5
+    pgrep -x fcitx5 || fcitx5 -d > /dev/null 2>&1
 }
 
 startibus() {
@@ -26,8 +24,6 @@ startibus() {
 
 prewm() {
     startfcitx
-
-    setxkbmap -option "caps:swapescape"
 
     pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x xcompmgr || xcompmgr &
@@ -66,13 +62,14 @@ if [ "${WM%2x}" != "$WM" ]; then
     export QT_AUTO_SCREEN_SCALE_FACTOR=0
     echo "Xft.dpi: 144" > /tmp/Xresources.Xft.dpi
     xrdb -merge /tmp/Xresources.Xft.dpi
+else
+    echo "Xft.dpi: 96" > /tmp/Xresources.Xft.dpi
+    xrdb -merge /tmp/Xresources.Xft.dpi
 fi
 
 case "$WM" in
     awesome*) prewm; exec awesome;;
-    xfce*) exec startxfce4;;
-    gnome*) startgnome;;
-    simple) startdwm;;
     dwm*) prewm; startdwm;;
-    *) exec "$1";;
+    simple) startdwm;;
+    *) exec "$@";;
 esac

@@ -21,6 +21,8 @@ export XDG_CONFIG_DIRS="/etc/xdg"
 export MANPATH="$XDG_DATA_HOME/man:$MANPATH"
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
+export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
+export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
 # less history
 export LESSHISTFILE=-
 # rlwrap history
