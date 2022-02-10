@@ -59,9 +59,9 @@ For details, open the folder and see the readme therein.
 ### [Miscellaneous](config)
 
 All other configuration files. Some interesting ones I like:
-- Gnu `info` keybings for vim users. Now you know more than pressing q to quit!
-- `Top` (the system monitor, the one from procs-ng) settings to colorize the UI and show memory and cpu bars, much better than the default monochrome, all-text interface.
-- `Ex`/`Vi` configuration. Try this old text editor, read their documentation, you will learn vi(m) faster this way.
+- Gnu [`info` keybings](config/.config/infokey) for vim users. Now you know more than pressing q to quit!
+- `Top` (the system monitor, the one from procps-ng) [settings](config/.config/procps) to colorize the UI and show memory and cpu bars, much better than the default monochrome, all-text interface.
+- `Ex`/`Vi` [configuration](config/.config/ex/exrc). Try this old text editor, read their documentation, you will learn vi(m) faster this way.
 
 ## Manage dotfiles
 
