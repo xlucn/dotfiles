@@ -25,6 +25,8 @@ alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-pl
 alias cranger="ranger --cmd='set preview_images_method w3m'"
 # vcsi alias with template
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
+# info with infokey file
+alias info="info --init-file=\$XDG_CONFIG_HOME/infokey"
 # quiet newsboat
 alias newsboat="newsboat -q"
 alias proxychains="proxychains -q"

@@ -1,0 +1,50 @@
+#info
+
+# Moving the cursor
+j       next-line
+\kd     next-line
+k       prev-line
+\ku     prev-line
+0       beginning-of-line
+\kh     beginning-of-line
+$       end-of-line
+\ke     end-of-line
+l       forward-char
+\kr     forward-char
+h       backward-char
+\kl     backward-char
+w       forward-word
+b       backward-word
+g       beginning-of-node
+G       end-of-node
+
+# Moving text within a window
+<SPC>   scroll-forward
+^f      scroll-forward
+<BS>    scroll-backward
+^b      scroll-backward
+^d      scroll-half-screen-down
+^u      scroll-half-screen-up
+^y      up-line
+^e      down-line
+
+# Selecting a node
+^n      next-node
+^p      prev-node
+o       goto-node
+
+# Searching an info file
+n       search-next
+N       search-previous
+
+# Window commands
+^w^w    next-window
+^w^n    next-window
+^w^p    prev-window
+
+#echo-area
+
+#var
+link-style=blue
+active-link-style=red,bold
+match-style=white,standout
