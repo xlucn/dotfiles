@@ -61,9 +61,6 @@ export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-for bin in "$XDG_DATA_DIRS"/gem/ruby/*/bin; do
-    export PATH="$bin:$PATH"
-done
 # dvdcss
 export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
 # vim
@@ -114,12 +111,15 @@ export ENV="$HOME/.bashrc"
 
 # PATH
 add_to_path() {
-    if [ -d "$1" ] && [ "$PATH" = "${PATH%"$1*"}" ]; then
-        export PATH="$1:${PATH}"
-    fi
+    for path in "$@"; do
+        if [ -d "$path" ] && [ "$PATH" = "${PATH%$path*}" ]; then
+            export PATH="$path:${PATH}"
+        fi
+    done
 }
 add_to_path "$HOME/.local/bin"
 add_to_path "$NPM_PACKAGES/bin"
+add_to_path "$XDG_DATA_HOME"/gem/ruby/*/bin
 
 # Set icons in lf
 export LF_ICONS="\
