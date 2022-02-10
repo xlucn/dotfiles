@@ -50,9 +50,19 @@ in a password store, instead of as plain text in muttrc.
 
 ### [Scripts](scripts)
 
-A lot of scripts either works in status bars, or on their own such as
-print all 256 colors, print glyphs in a font, configure monitors, etc.
+A lot of scripts either works in status bars, or on their own such as:
+- print all 256 colors in a terminal
+- print glyphs in a font
+- configure monitors, etc.
 For details, open the folder and see the readme therein.
+
+### [Miscellaneous](config)
+
+All other configuration files. Some interesting ones I like:
+- Gnu `info` keybings for vim users. Now you know more than pressing q to quit!
+- `Top` (the system monitor, the one from procs-ng) settings to colorize the UI and show memory and cpu bars, much better than the default monochrome, all-text interface.
+- `Ex`/`Vi` configuration. Try this old text editor, read their documentation, you will learn vi(m) faster this way.
+
 ## Manage dotfiles
 
 I manage my configuration files with [stow](https://www.gnu.org/software/stow/)
