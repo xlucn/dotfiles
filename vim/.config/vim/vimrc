@@ -206,7 +206,6 @@ augroup normal
     autocmd VimEnter * normal! :startinsert :stopinsert
     autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
     autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
-    autocmd BufNewFile,BufRead muttrc,*muttrc setlocal ft=neomuttrc
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType tex,markdown,gitcommit setlocal spell
@@ -578,7 +577,6 @@ if has('nvim')
                 build = {
                     args = {
                         "-xelatex",
-                        "-pv",
                         "-interaction=nonstopmode",
                         "-synctex=1",
                         "%f"
@@ -587,17 +585,13 @@ if has('nvim')
                     onSave = true,
                 },
                 forwardSearch = {
-                    args = {
-                        "--synctex-forward",
-                        "%l:1:%f",
-                        "--synctex-editor-command",
-                        "nvim --remote-silent +%{line} %{input}",
-                        "%p"
-                    },
+                    args = { "--synctex-forward", "%l:1:%f", "%p" },
                     executable = "zathura",
                 },
                 auxDirectory = "./output",
-                rootDirectory = "."
+                chktex = {
+                    onOpenAndSave = false,
+                }
             }
         }
     })
@@ -610,6 +604,18 @@ else
     packadd async.vim
     packadd asyncomplete.vim
     packadd asyncomplete-lsp.vim
+    nmap <buffer> <C-]> <plug>(lsp-definition)
+    nmap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
+    nmap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> <leader>lr <plug>(lsp-references)
+    nmap <buffer> <leader>li <plug>(lsp-implementation)
+    nmap <buffer> <leader>lt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>lR <plug>(lsp-rename)
+    nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]d <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <leader>lb <plug>(lsp-document-build)
+    nmap <buffer> <leader>lf <plug>(lsp-document-forwardsearch)
 endif
 " }}}
 " vim-lsp {{{
