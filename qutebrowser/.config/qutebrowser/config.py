@@ -27,6 +27,7 @@ xft_dpi = int(xresources_xft.get("Xft.dpi"))
 config.load_autoconfig(False)
 
 c.content.proxy = 'socks5://localhost:1081'
+c.content.javascript.can_access_clipboard = True
 c.content.blocking.enabled = True
 c.content.blocking.adblock.lists = [
     "https://easylist.to/easylist/easylist.txt",
@@ -49,6 +50,8 @@ c.colors.hints.bg = '#fff785'
 c.statusbar.show = 'never'
 c.statusbar.position = 'bottom'
 c.statusbar.widgets = ['url', 'history', 'scroll', 'progress']
+
+c.scrolling.smooth = True
 
 c.fonts.default_size = '12pt'
 c.fonts.hints = 'bold default_size monospace'

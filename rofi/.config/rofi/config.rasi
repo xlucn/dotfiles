@@ -26,10 +26,14 @@ configuration {
     background-color : #212121;
 }
 
+window {
+    width              : 70%;
+}
+
 listview {
     scrollbar       : false;
     columns         : 1;
-    lines           : 10;
+    lines           : 15;
 }
 
 inputbar {
@@ -38,7 +42,7 @@ inputbar {
 }
 
 element, inputbar {
-    padding         : 2%;
+    padding         : 1%;
 }
 
 element-icon {

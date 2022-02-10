@@ -43,7 +43,7 @@ else
 fi
 
 # Video resolution, will add padding to top and bottom
-WIDTH=352                   # width of VCD
+WIDTH=${WIDTH:-352}         # width of VCD
 HEIGHT=$((WIDTH * 3 / 4))   # height of 4:3 ratio
 
 # Similar to -target *-vcd, but with some changes

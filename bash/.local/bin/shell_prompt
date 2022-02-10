@@ -76,7 +76,7 @@ __bash_ps1() {
     __pwd_indicator    && printf "$SEP%s"
     __nested_indicator && printf "$SEP%s"
     __job_counts       && printf "$SEP%s"
-    __git_autostats    && printf "$SEP%s"
+    # __git_autostats    && printf "$SEP%s"
     __git_prompt       && printf "$SEP%s"
     [ $exitcode = 0 ] && EXITCOLOR=$BYELLOW || EXITCOLOR=$BRED
     printf "$EXITCOLOR%s%s$RESET" "$" "$SEP"

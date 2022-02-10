@@ -6,6 +6,7 @@ MANPATH=$(manpath 2> /dev/null)
 # Environments
 export EDITOR=vim
 export VISUAL=vim
+export BROWSER=firefox
 export NOTES_DIRECTORY="$HOME/Code/notes"
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 

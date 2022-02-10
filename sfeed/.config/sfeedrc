@@ -1,5 +1,5 @@
-# vim: ft=sh
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.config}
+#!/bin/sh
+XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 PROXY="socks5h://localhost:1081"
 USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
 

@@ -32,6 +32,7 @@ G       end-of-node
 ^n      next-node
 ^p      prev-node
 o       goto-node
+'       history-node
 
 # Searching an info file
 n       search-next

@@ -4,7 +4,7 @@ auto-reload no  # disable auto reload, I use a systemd timer
 suppress-first-reload yes
 reload-threads 8
 download-retries 3
-download-timeout 60
+download-timeout 10
 # UI
 reload-only-visible-feeds yes
 feed-sort-order title  # the title is specified with "~TITLE" tag
@@ -49,7 +49,8 @@ highlight articlelist "(lens|astrometry)" green default bold
 # Filters
 define-filter "Empty feeds" "total_count = 0"
 
-# Proxy
+# Connections
+user-agent "Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
 use-proxy yes
 proxy-type socks5h
 proxy localhost:1081
