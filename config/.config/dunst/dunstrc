@@ -74,8 +74,4 @@ foreground = "#ffffff"
 frame_color = "#ff5252"
 timeout = 0
 
-[dwm-status]
-category = "dwm-status"
-set_stack_tag = "dwm-status"
-
 # vim: ft=cfg

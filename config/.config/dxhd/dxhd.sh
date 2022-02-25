@@ -29,22 +29,27 @@ rofi -theme launcher -show drun
 slock
 
 # super + {bracketleft,bracketright,backslash}
-dwm-status vol {down,up,toggle}
+amixer -q sset Master {4%-,4%+,toggle}
+pkill -RTMIN+3 -f "[0-9 ]*python.*statusd"
 
 # XF86Audio{LowerVolume,RaiseVolume,Mute}
-dwm-status vol {down,up,toggle}
+amixer -q sset Master {4%-,4%+,toggle}
+pkill -RTMIN+3 -f "[0-9 ]*python.*statusd"
 
 # super + {minus,equal}
-dwm-status light {down,up}
+brightnessctl -c backlight -q s 4%{-,+}
+pkill -RTMIN+4 -f "[0-9 ]*python.*statusd"
 
 # XF86MonBrightness{Down,Up}
-dwm-status light {down,up}
+brightnessctl -c backlight -q s 4%{-,+}
+pkill -RTMIN+4 -f "[0-9 ]*python.*statusd"
 
 # super + shift + {minus,equal}
 mpc -q seek {-,+}10
 
 # super + shift + {bracketright,bracketleft,backslash}
 mpc -q {next,prev,toggle}
+pkill -RTMIN+5 -f "[0-9 ]*python.*statusd"
 
 # @Print
 scrot "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"

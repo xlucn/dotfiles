@@ -1,5 +1,0 @@
-#!/bin/sh
-for account in oliver_lew@outlook.com 2869761396@qq.com
-do
-    printf " %s" "$(imap "$account")"
-done

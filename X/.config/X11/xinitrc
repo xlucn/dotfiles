@@ -44,7 +44,7 @@ prewm() {
 
 startdwm() {
     pgrep -x xwallpaper || xwallpaper --zoom "$WALLPAPER" --daemon
-    pgrep -x dwm-status || dwm-status --daemon &
+    pgrep -f statusd || statusd &
     exec dwm
 }
 

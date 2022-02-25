@@ -1,97 +1,13 @@
 #!/bin/sh
 # Script to set dwm status bar and response to mouse clicks
 
-PATH=/opt/sbase/bin:$PATH
-TMPDIR=/tmp/status
-TERMINAL="st"
-FLOATTERM="$TERMINAL -c floating"
-d() { [ -n "$DEBUG" ] && /bin/date +%N; }
-
-# The index order does not matter they only serve as an identifier
-# The following won't store cached results in TMPDIR
-# index < 020   raw strings
-IDATE=01        ICON_DATE=󰃰
-INOTIF=02       ICON_NOTIF=󰂞
-IRUN=03         ICON_RUN=󰣖
-IAPPS=04        ICON_APPS=󰍉
-IMPD=05         ICON_MPD=󰝚
-ILIGHT=06       ICON_LIGHT=󰃟
-IMAIL=14        ICON_MAIL=󰇰     SMAIL=imap
-
-# The following will update with given interval and store results in TMPDIR
-# index < 020   icon string     temp filename   update interval
-IMEM=07         ICON_MEM=󰍛      SMEM=mem        NMEM=3
-ICPU=10         ICON_CPU=󰓅      SCPU=cpu        NCPU=3
-INET=11                         SNET=net        NNET=3
-IBAT=12                         SBAT=bat        NBAT=3
-IVOL=13         ICON_VOL=''     SVOL=vol        NVOL=3
-IMPDSTAT=16                     SMPDSTAT=mpd
-INULL=17
-
-notify() {
-    notify-send -c "dwm-status" "$@"
-}
-
-d
-if [ "$1" = "--daemon" ]; then
-    while true; do sh "$0"; sleep 1; done
-    exit
-fi
 # If you clicked some text after a delimiter \0NN in the status bar,
 # the hexadecimal value of it will be passed as $1
 [ "${#1}" -eq 1 ] && INDEX=$(printf "%02o" $((0x$1)))
 case "${INDEX:-$1}" in
-    "$IMEM")
-        case "$BUTTON" in
-            3) $FLOATTERM -e top -o RES ;;
-        esac ;;
-    "$ICPU")
-        case "$BUTTON" in
-            3) $FLOATTERM -e top -o %CPU ;;
-        esac ;;
-    "$IVOL"|vol)
-        [ "$1" = "vol" ] && BUTTON=$2
-        case "$BUTTON" in
-            1|toggle) amixer -q sset Master toggle; UPDATE_VOL=1 ;;
-            3)        $FLOATTERM -e alsamixer ;;
-            4|up)     amixer -q sset Master 4%+; UPDATE_VOL=1 ;;
-            5|down)   amixer -q sset Master 4%-; UPDATE_VOL=1 ;;
-        esac ;;
-    "$ILIGHT"|light)
-        [ "$1" = "light" ] && BUTTON=$2
-        case "$BUTTON" in
-            4|up)   brightnessctl -c backlight -q s 4%+ 2> /dev/null; UPDATE_LIGHT=1 ;;
-            5|down) brightnessctl -c backlight -q s 4%- 2> /dev/null; UPDATE_LIGHT=1 ;;
-        esac ;;
     "$INET")
         case "$BUTTON" in
             1) notify "dwm status"  "$(cat $TMPDIR/$SNET-tooltip)" & ;;
-            3) $FLOATTERM -e nmtui-connect ;;
-        esac ;;
-    "$IBAT")
-        case "$BUTTON" in
-            1) notify "dwm status"  "$(cat $TMPDIR/$SBAT-tooltip)" & ;;
-        esac ;;
-    "$IDATE")
-        case "$BUTTON" in
-            1) ;;
-        esac ;;
-    "$INOTIF")
-        case "$BUTTON" in
-            # TODO: change icon in dnd mode
-            1) dunstctl set-paused toggle ;;
-            3) dunstctl close-all ;;
-            4) dunstctl history-pop ;;
-            5) dunstctl close ;;
-        esac ;;
-    "$IRUN"|run)
-        case "${BUTTON-1}" in
-            1) rofi -show run & ;;
-        esac ;;
-    "$IAPPS"|apps)
-        case "${BUTTON-1}" in
-            1) rofi -theme launcher -show drun & ;;
-            3) xmenu-apps ;;
         esac ;;
     "$IMAIL")
         case "${BUTTON-1}" in
@@ -103,88 +19,16 @@ case "${INDEX:-$1}" in
             1) notify "dwm status"  "$(mpc)" & ;;
             3) $FLOATTERM -e ncmpc ;;
         esac ;;
-    "$IMPDSTAT")
-        case "$BUTTON" in
-            1) mpc toggle; UPDATE_MPD=1 ;;
-            2) mpc stop; UPDATE_MPD=1 ;;
-            4) mpc seek +20 ;;
-            5) mpc seek -20 ;;
-        esac ;;
-    "$INULL")
-        exit ;;
-    *)
-        if [ -n "$1" ]; then notify "$1" Mouse"$BUTTON"; fi ;;
 esac
-d
-# Update only when needed, exit otherwise
-[ $# -gt 0 ] && [ -z "$UPDATE_LIGHT" ] && [ -z "$UPDATE_VOL" ] && [ -z "$UPDATE_MPD" ] && exit
-
-TIME=$(date +%s)
-mkdir -p $TMPDIR
-# read cached results
-for NAME in MEM CPU NET BAT VOL MPDSTAT; do
-    eval FN=\$TMPDIR/\$S$NAME
-    eval [ -f "$FN" ] && read -r TIME_$NAME STR_$NAME < "$FN"
-done
-
-d
-progress_bar() { # https://stackoverflow.com/a/5349842/10530288
-    [ "$1" -eq "$1" ] && [ "$1" -ge 0 ] && [ "$1" -le 100 ] || return
-    printf "["
-    [ "$1" -ge 4   ] && printf "%.0s=" $(seq $(($1 / 4)))
-    [ "$1" -lt 100 ] && printf ">"
-    [ "$1" -lt 96  ] && printf "%.0s " $(seq $((24 - $1 / 4)))
-    printf "]"
-}
 
 if [ -z "$STR_NET" ] || [ $((TIME - TIME_NET)) -gt $NNET ]; then
-    if [ "$(network -e)" = 1 ]; then
-        STR_NET="󰈀"
-    else
-        WIFI_ICONS="󰤯 󰤟 󰤢 󰤥 󰤨"
-        IFS='|' read -r WIFI_SSID WIFI_LEVEL _ << EOF
+    IFS='|' read -r WIFI_SSID WIFI_LEVEL _ << EOF
 $(network -wc | tr '\n' '|')
 EOF
-        WIFI_INDEX=$(((WIFI_LEVEL + 20) / 25 + 1))
-        STR_NET=$(echo "$WIFI_ICONS" | cut -d ' ' -f "$WIFI_INDEX")
-    fi
+    STR_NET=$(echo "$WIFI_ICONS" | cut -d ' ' -f "$WIFI_INDEX")
     echo "$TIME $STR_NET" > $TMPDIR/$SNET
     echo "Wifi: $WIFI_SSID Signal: $WIFI_LEVEL" > $TMPDIR/$SNET-tooltip
 fi
-
-if [ -z "$STR_BAT" ] || [ $((TIME - TIME_BAT)) -gt $NBAT ]; then
-    BAT_NORMAL="󰂎 󰁺 󰁻 󰁼 󰁽 󰁾 󰁿 󰂀 󰂁 󰂂 󰁹"
-    BAT_CHARGE="󰢟 󰢜 󰂆 󰂇 󰂈 󰢝 󰂉 󰢞 󰂊 󰂋 󰂅"
-    BAT_UNKNOWN="󱉞"
-    BAT_LEVEL=$(battery)
-    if [ "$BAT_LEVEL" = "-1" ]; then
-        STR_BAT=$BAT_UNKNOWN
-    else
-        [ "$(battery -c)" = 1 ] && BAT_SYMS="$BAT_CHARGE" || BAT_SYMS="$BAT_NORMAL"
-        BAT_INDEX=$(((BAT_LEVEL + 5) / 10 + 1))
-        STR_BAT=$(echo "$BAT_SYMS" | cut -d ' ' -f "$BAT_INDEX")
-    fi
-    echo "$TIME $STR_BAT" > $TMPDIR/$SBAT
-    echo "Battery: $BAT_LEVEL" > $TMPDIR/$SBAT-tooltip
-fi
-
-if [ -z "$STR_MEM" ] || [ $((TIME - TIME_MEM)) -gt $NMEM ]; then
-    STR_MEM="$((100 - 100 * $(mem -Ba) / $(mem -Bt)))"
-    echo "$TIME $STR_MEM" > $TMPDIR/$SMEM
-fi
-
-if [ -z "$STR_CPU" ] || [ $((TIME - TIME_CPU)) -gt $NCPU ]; then
-    STR_CPU="$(printf "%02d" "$(cpu)")"
-    echo "$TIME $STR_CPU" > $TMPDIR/$SCPU
-fi
-# TODO: only update this when change volume
-# TODO: do not do other things when operating
-if [ -n "$UPDATE_VOL" ] || [ -z "$STR_VOL" ] || [ $((TIME - TIME_VOL)) -gt $NVOL ]; then
-    STR_VOL=$(vol)
-    echo "$TIME $STR_VOL" > $TMPDIR/$SVOL
-    [ -n "$UPDATE_VOL" ] && notify -t 1000 -h int:value:"$STR_VOL" -i "audio-volume-high-symbolic" "Volume:" "$(progress_bar "$STR_VOL")" &
-fi
-if [ "$(vol -s)" = 1 ]; then ICON_VOL="󰕾"; else ICON_VOL="󰖁"; fi
 
 STR_IMAP=
 for mail in ~/.config/mutt/*@*.muttrc; do
@@ -200,37 +44,4 @@ for mail in ~/.config/mutt/*@*.muttrc; do
 done
 if [ "$total_mail" -gt 0 ]; then ICON_MAIL="󰇮"; else ICON_MAIL="󰇰"; fi
 
-STR_LIGHT=$(brightnessctl -c backlight -m i 2> /dev/null | awk -F, '{ print $4 }')
-STR_LIGHT=${STR_LIGHT:-0}
-STR_LIGHT=${STR_LIGHT%\%}
-[ -n "$UPDATE_LIGHT" ] &&
-notify -t 1000 -h int:value:"$STR_LIGHT" -i "display-brightness-symbolic" "Brightness:" "$(progress_bar "$STR_LIGHT")" &
-
-STR_DATE=$(date +"%a %b %d %H:%M")
-
-if [ $# = 0 ] || [ -n "$UPDATE_MPD" ]; then
-    case "$(mpc status 2> /dev/null | sed -n 's/\[\(paused\|playing\)\].*/\1/p')" in
-        "playing") STR_MPDSTAT=󰏤 ;;
-        "paused")  STR_MPDSTAT=󰐊 ;;
-        *)         STR_MPDSTAT=󰓛 ;;
-    esac
-    echo "$TIME $STR_MPDSTAT" > "$TMPDIR/$SMPDSTAT"
-fi
-d
-xsetroot -name "$(
-    # \02x: different colors
-    printf "\026\0$IMEM %s\027 %s \0$INULL"   "$ICON_MEM" "$STR_MEM"
-    printf "\026\0$ICPU %s\027 %s \0$INULL"   "$ICON_CPU" "$STR_CPU"
-    printf "\026\0$IVOL %s\027 %s \0$INULL"   "$ICON_VOL" "$STR_VOL"
-    printf "\026\0$ILIGHT %s\027 %s \0$INULL" "$ICON_LIGHT" "$STR_LIGHT"
-    printf " \026\0$IMPD%s\0$INULL"           "$ICON_MPD"
-    printf " \027\0$IMPDSTAT%s\0$INULL "      "$STR_MPDSTAT"
-    printf " \026\0$IMAIL%s\027 %s \0$INULL"  "$ICON_MAIL" "$STR_IMAP"
-    printf " \026\0$INET%s\0$INULL"           "$STR_NET"
-    printf " \026\0$IBAT%s\0$INULL "          "$STR_BAT"
-    printf " \026\0$IDATE%s\027 %s \0$INULL"  "$ICON_DATE" "$STR_DATE"
-    printf "\026\0$INOTIF %s \0$INULL"        "$ICON_NOTIF"
-    printf "\026\0$IRUN %s \0$INULL"          "$ICON_RUN"
-    printf "\026\0$IAPPS %s \0$INULL"         "$ICON_APPS"
-)"
-d
+printf " \021\0$IMAIL%s%s \0$INULL"  "$ICON_MAIL" "$STR_IMAP"

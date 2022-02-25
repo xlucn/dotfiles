@@ -1,2 +1,0 @@
-#!/bin/sh
-find /sys/class/power_supply/ \( -name "AC*" -o -name "ADP*" \) -exec cat {}/online \; | grep -c 1
