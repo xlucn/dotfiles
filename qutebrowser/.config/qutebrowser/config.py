@@ -29,6 +29,7 @@ config.load_autoconfig(False)
 c.content.proxy = 'socks5://localhost:1081'
 c.content.javascript.can_access_clipboard = True
 c.content.blocking.enabled = True
+c.content.blocking.method = 'both'
 c.content.blocking.adblock.lists = [
     "https://easylist.to/easylist/easylist.txt",
     "https://easylist.to/easylist/easyprivacy.txt",
@@ -90,6 +91,4 @@ config.bind('<Ctrl-Tab>', 'tab-next')
 config.bind('<Ctrl-Shift-Tab>', 'tab-prev')
 config.bind('<Ctrl-r>', 'reload')
 config.bind('<Ctrl-Shift-i>', 'devtools')
-config.bind('<,><p>', 'spawn --userscript password_fill')
-config.bind('j', 'scroll-px 0 144')
-config.bind('k', 'scroll-px 0 -144')
+config.bind('<,><p>', 'spawn --userscript qute-pass --username-target path')

@@ -11,7 +11,7 @@ visualizer_data_source = /tmp/mpd.fifo
 visualizer_output_name = Visualizer feed
 # If you set format to 44100:16:2, make it 'yes'.
 visualizer_in_stereo = yes
-visualizer_color = 5, 13, 7, 15, 3, 11, 12, 4, 10, 2, 14, 6
+visualizer_color = 47, 83, 119, 155, 191, 227, 221, 215, 209, 203, 197, 161
 
 
 # editor

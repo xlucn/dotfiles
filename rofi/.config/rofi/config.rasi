@@ -6,6 +6,7 @@ configuration {
     scroll-method      : 0;
     cycle              : false;
     sidebar-mode       : false;
+    run-shell-command  : "st -e bash -c '{cmd}'";
     /* automatically select item under cursor + click to open */
     hover-select       : true;
     me-select-entry    : "";
