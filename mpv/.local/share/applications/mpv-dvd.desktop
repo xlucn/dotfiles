@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Play DVD with MPV
+GenericName=Multimedia player
+Comment=Play movies and songs
+Icon=mpv
+Exec=mpv dvd:// --player-operation-mode=pseudo-gui --force-window --idle --dvd-device=%f
+Terminal=false
+Categories=AudioVideo;Audio;Video;Player;TV;
