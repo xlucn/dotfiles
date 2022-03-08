@@ -6,6 +6,7 @@ no-keepaspect-window
 # Screenshot
 screenshot-format=png
 screenshot-directory=~/Pictures
+screenshot-template="mpv-%F-%P-%#n"
 
 # OSD
 osd-font="DejaVu Sans"
