@@ -7,3 +7,4 @@ Icon=mpv
 Exec=mpv dvd:// --player-operation-mode=pseudo-gui --force-window --idle --dvd-device=%f
 Terminal=false
 Categories=AudioVideo;Audio;Video;Player;TV;
+MimeType=application/x-iso9660-image;

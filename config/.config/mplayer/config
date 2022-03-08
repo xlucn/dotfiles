@@ -1,3 +1,5 @@
+osdlevel=3
+
 vo=vdpau,
 
 slang = en
