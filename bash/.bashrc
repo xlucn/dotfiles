@@ -27,6 +27,8 @@ alias cranger="ranger --cmd='set preview_images_method w3m'"
 alias vcsi="vcsi -t --template \$HOME/.config/vcsi/template.txt"
 # info with infokey file
 alias info="info --init-file=\$XDG_CONFIG_HOME/infokey"
+# x11vnc rc file
+alias x11vnc="x11vnc -rc \$XDG_CONFIG_HOME/x11vncrc"
 # quiet newsboat
 alias newsboat="newsboat -q"
 alias proxychains="proxychains -q"
