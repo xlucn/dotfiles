@@ -1,47 +1,63 @@
-#info
+# Keybinding for `info' command, to make vim users happy
+# Note: keep the "#info", "#echo-area" and "#var" lines, they are required.
 
-# Moving the cursor
+#info
+# Section "info"
+
+## Moving the cursor
+### hjkl and arrow keys
 j       next-line
 \kd     next-line
 k       prev-line
 \ku     prev-line
-0       beginning-of-line
-\kh     beginning-of-line
-$       end-of-line
-\ke     end-of-line
 l       forward-char
 \kr     forward-char
 h       backward-char
 \kl     backward-char
+### some vim navigation keys
+0       beginning-of-line
+\kh     beginning-of-line
+$       end-of-line
+\ke     end-of-line
 w       forward-word
 b       backward-word
 g       beginning-of-node
 G       end-of-node
 
-# Moving text within a window
+## Scolling within a window
+### some vim navigation keys
 <SPC>   scroll-forward
-^f      scroll-forward
 <BS>    scroll-backward
+^f      scroll-forward
 ^b      scroll-backward
 ^d      scroll-half-screen-down
 ^u      scroll-half-screen-up
 ^y      up-line
 ^e      down-line
 
-# Selecting a node
+## Selecting a node
+### for ctrl-t, think of vim's tag jumping
 ^n      next-node
+J       next-node
 ^p      prev-node
+K       prev-node
+^h      up-node
+H       up-node
 o       goto-node
-'       history-node
+^t      history-node
 
-# Searching an info file
+## Searching an info file
 n       search-next
 N       search-previous
 
-# Window commands
+## Window commands
+### vim's window switching
 ^w^w    next-window
 ^w^n    next-window
 ^w^p    prev-window
+
+## Others
+?       get-help-window
 
 #echo-area
 
@@ -49,3 +65,5 @@ N       search-previous
 link-style=blue
 active-link-style=red,bold
 match-style=white,standout
+scroll-behavior=Page Only
+cursor-movement-scrolls=Off
