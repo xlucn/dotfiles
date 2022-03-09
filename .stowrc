@@ -1,3 +1,4 @@
 --target=$HOME
 --ignore=README.md
+--ignore=Readme.md
 --verbose
