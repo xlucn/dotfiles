@@ -12,26 +12,61 @@ Xcursor.size: 48
 
 *.font: Monospace:size=12
 
-*cursorColor:   #c5a89a
-*foreground:    #d8d1c9
-*background:    #212121
-*color0:        #303030
-*color1:        #826023
-*color2:        #618231
-*color3:        #7e7b28
-*color4:        #3e825c
-*color5:        #82685c
-!*color6:        #749cb3
-*color6:        #1793d1
-*color7:        #a6a19b
-*color8:        #484848
-*color9:        #b48430
-*color10:       #86b443
-*color11:       #b0ab37
-*color12:       #55b47f
-*color13:       #b4907f
-*color14:       #9bb4c8
-*color15:       #d8d1c9
+/* *color0:        #303030 */
+/* *color1:        #826023 */
+/* *color2:        #618231 */
+/* *color3:        #7e7b28 */
+/* *color4:        #3e825c */
+/* *color5:        #82685c */
+/* *color6:        #749cb3 */
+/* *color7:        #a6a19b */
+/* *color8:        #484848 */
+/* *color9:        #b48430 */
+/* *color10:       #86b443 */
+/* *color11:       #b0ab37 */
+/* *color12:       #55b47f */
+/* *color13:       #b4907f */
+/* *color14:       #9bb4c8 */
+/* *color15:       #d8d1c9 */
+
+# 229
+*cursorColor:   #ffffaf
+# 254
+*foreground:    #e4e4e4
+# 234
+*background:    #1c1c1c
+# 235
+*color0:        #262626
+# 166
+*color1:        #d75f00
+# 71
+*color2:        #5faf5f
+# 136
+*color3:        #af8700
+# 27
+*color4:        #0087d7
+# 92
+*color5:        #875fff
+# 31
+*color6:        #0087af
+# 249
+*color7:        #b2b2b2
+# 239
+*color8:        #4e4e4e
+# 173
+*color9:        #d7875f
+# 77
+*color10:       #5fd75f
+# 178
+*color11:       #d7af00
+# 33
+*color12:       #00afd7
+# 134
+*color13:       #af5fff
+# 37
+*color14:       #00afaf
+# 254
+*color15:       #e4e4e4
 
 ! -- URxvt UI -- !
 URxvt.depth              : 32
