@@ -7,7 +7,6 @@ use Irssi;
 foreach my $s (
     '/usr/share/irssi/scripts/adv_windowlist.pl',
     '/usr/share/irssi/scripts/chansort_configurable.pl',
-    '/usr/share/irssi/scripts/mouse.pl',
     '/usr/share/irssi/scripts/nickcolor.pl',
     '/usr/share/irssi/scripts/tmux-nicklist-portable.pl',
     '/usr/share/irssi/scripts/trackbar.pl',
