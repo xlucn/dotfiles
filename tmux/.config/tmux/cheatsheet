@@ -1,4 +1,4 @@
-┌~─`────┬!─1────┬@─2────┬#─3────┬$─4────┬%─5────┬^─6────┬&─7────┬*─8────┬(─9────┬)─0────┬_─-────┬+─=────┬─Backspace---──┐
+┌~─`────┬!─1────┬@─2────┬#─3────┬$─4────┬%─5────┬^─6────┬&─7────┬*─8────┬(─9────┬)─0────┬_─-────┬+─=────┬─Backspace─────┐
 │       │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │ViewW  │LightDn│LightUp│               │
 │       │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │MvToW  │Mpd -10│Mpd +10│               │
 │       │       │       │       │       │       │       │       │       │       │       │       │       │               │
@@ -14,16 +14,17 @@
 │                 │       │TmuxCmd│Copy   │Paste  │HideBar│       │Zoom   │PrevW  │NextW  │       │                     │
 │                 │       │       │       │       │       │       │       │MvPrevW│MvNextW│       │                     │
 │                 │       │       │       │       │       │       │       │       │       │       │                     │
-├──Ctrl───┬───────┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴─Alt───┼───────┴─┬─────────┬──Ctrl───┤
+├──Ctrl───┬─Win───┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴─Alt───┼───────┴─┬─────────┬──Ctrl───┤
 │         │         │         │ MoveToMaster                                    │         │         │         │         │
 │         │         │         │                                                 │         │         │         │         │
 │         │         │         │                                                 │         │         │         │         │
 └─────────┴─────────┴─────────┴─────────────────────────────────────────────────┴─────────┴─────────┴─────────┴─────────┘
 
-Note: 1. Different meanings for each line
-            First line  -> Alt + Key,
-            Second line -> Alt + Shift + Key,
-            Third line  -> Alt + Ctrl + Key,   Usually session-wide keybindings
-      2. You need to make sure Shift+Alt+Key works if using tty, see loadkeys(1)
-      3. Single character notations:
-            M -> master pane,   S -> stack panes,   W -> window,    P -> pane
+Note:
+1. Different meanings for each line
+    First line:  Alt-,
+    Second line: Shift-Alt-,
+    Third line:  Ctrl-Alt-,   Usually session-wide keybindings
+2. You need to make sure Shift+Alt+Key works if using tty, see loadkeys(1)
+3. What does the last single character mean:
+    M -> master pane,   S -> stack panes,   W -> window,    P -> pane
