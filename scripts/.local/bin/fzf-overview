@@ -1,3 +1,4 @@
+#!/bin/sh
 pactree -l base >> /tmp/pacman-summary-base
 for pkg in $(pacman -Qqg base-devel); do
     pactree -l "$pkg"

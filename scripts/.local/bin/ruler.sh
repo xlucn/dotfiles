@@ -23,7 +23,7 @@ for x3 in 72; do
   offset3=$((x3 - 12))
   labelstring="$labelstring text $offset3,60 '$x3' "
 done
-for x4 in $(seq 144 72 $rulerlength); do
+for x4 in $(seq 144 72 "$rulerlength"); do
   offset4=$((x4 - 18))
   labelstring="$labelstring text $offset4,60 '$x4' "
 done

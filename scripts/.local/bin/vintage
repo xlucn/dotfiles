@@ -119,5 +119,5 @@ ffmpeg -i "$orig" -f vcd \
     -ar $audio_rate \
     -ac $audio_channel \
     -b:a $audio_bitrate \
-    "$dest"
-[ $? = 0 ] && echo "Generated video: $dest"
+    "$dest" && \
+echo "Generated video: $dest"

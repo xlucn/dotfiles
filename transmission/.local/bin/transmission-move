@@ -35,7 +35,7 @@ while getopts "hdaT:L:N:h:n:" arg; do
         N) name_sub="$OPTARG";;
         L) loc_sub="$OPTARG";;
         T) tracker_sub="$OPTARG";;
-        h|*) usage; exit;;
+        *) usage; exit;;
     esac
 done
 
@@ -54,7 +54,7 @@ resume_dir="$config_dir"/resume
 
 transmission-remote "$remote_args" -tall -i |
 grep "Id\|Name\|Hash\|Location\|Magnet" |
-while IFS=': ' read key value; do
+while IFS=': ' read -r key value; do
     case "$key" in
     Id)
         id=$value
@@ -64,9 +64,9 @@ while IFS=': ' read key value; do
             continue
         fi
 
-        if ! { { [ -n "$loc_sub" ] && [ "${location%$loc_sub*}" = "$location" ]; } ||
-        { [ -n "$tracker_sub" ] && [ "${trackers%$tracker_sub*}" = "$trackers" ]; } ||
-        { [ -n "$name_sub" ] && [ "${name%$name_sub*}" = "$name" ]; } ||
+        if ! { { [ -n "$loc_sub" ] && [ "${location#*"$loc_sub"}" = "$location" ]; } ||
+        { [ -n "$tracker_sub" ] && [ "${trackers#*"$tracker_sub"}" = "$trackers" ]; } ||
+        { [ -n "$name_sub" ] && [ "${name#*"$name_sub"}" = "$name" ]; } ||
         [ ! -f "$resume_file" ] || [ ! -f "$torrent_file" ]; }; then
             if [ -n "$dry_run" ]; then
                 printf "# (dryrun): %s\n" "$id"

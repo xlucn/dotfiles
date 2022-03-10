@@ -36,11 +36,9 @@ else
 fi
 
 # find the torrent ids
-for i in $(transmission-remote -l | grep -o "^[[:space:]]*[[:digit:]]*")
-do
+for i in $(transmission-remote -l | grep -o "^ *[0-9]\+"); do
     pid=$(transmission-remote -t"$i" -i | awk -F"$old_key%3D" "$old_pattern"'{print $2}')
-    if [ -n "$pid" ]
-    then
+    if [ -n "$pid" ]; then
         transmission-remote -t"$i" -tr 0 -td "$new_url/announce.php?$old_key=$pid"
     fi
 done

@@ -1,5 +1,6 @@
 #!/bin/sh
 # A script to configure multiple displays with xrandr
+# TODO: automatically configure if there is only one active monitor
 
 # Don't run if another $0 is already running
 [ "$(pgrep -cx "${0##*/}")" -gt 1 ] && exit

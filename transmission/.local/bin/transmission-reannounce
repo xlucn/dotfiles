@@ -1,8 +1,6 @@
 #!/bin/sh
-for i in $(transmission-remote -l | grep -o "^[[:space:]]*[[:digit:]]*")
-do
-    if transmission-remote -t"$i" -it | grep error > /dev/null
-    then
+for i in $(transmission-remote -l | grep -o "^ *[0-9]*"); do
+    if transmission-remote -t"$i" -it | grep error > /dev/null; then
         echo "$i"
         transmission-remote -t"$i" --reannounce
         sleep 1
