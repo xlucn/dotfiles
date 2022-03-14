@@ -6,9 +6,7 @@ reload-threads 8
 download-retries 3
 download-timeout 10
 # UI
-reload-only-visible-feeds yes
 feed-sort-order title  # the title is specified with "~TITLE" tag
-swap-title-and-hints yes
 
 # Keys
 bind-key ^Y up
@@ -28,7 +26,7 @@ bind-key h quit
 bind-key \ toggle-show-read-feeds
 
 # Formats
-articlelist-format "%4i %f %D %?T?<%-12T> ?%t"
+articlelist-format "%4i %f %D %?T?<%-12T> &?%t"
 feedlist-format "%4i%S%n %11u %-12t %l"
 articlelist-title-format "%N %V - Feed '%T'%?F? matching filter '%F'&?%> (%u/%t)"
 feedlist-title-format "%N %V - Feeds%?F? - filter '%F'&?%?T? - tag '%T'&?%> (%u/%t)"
@@ -36,15 +34,16 @@ feedlist-title-format "%N %V - Feeds%?F? - filter '%F'&?%?T? - tag '%T'&?%> (%u/
 # Colors
 color listnormal          default default
 color listfocus           default default   reverse
-color listnormal_unread   default default   bold
-color listfocus_unread    default default   bold reverse
+color listnormal_unread   yellow  default   bold
+color listfocus_unread    yellow  default   bold reverse
 color info                cyan    default
 highlight article "^Feed:.*"    yellow default bold
 highlight article "^Title:.*"   cyan   default bold
-highlight article "^Author:.*"  white  default
+highlight article "^Author:.*"  white  default bold
 highlight article "^Date:.*"    white  default
 highlight article "^Link:.*"    yellow default
-highlight articlelist "(lens|astrometry)" green default bold
+highlight articlelist "(lens|astrometry|gaia|csst)" green default bold
+highlight articlelist "(globular|cluster|halo|dark)" green default
 
 # Filters
 define-filter "Empty feeds" "total_count = 0"
