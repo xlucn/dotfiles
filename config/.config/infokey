@@ -19,8 +19,6 @@ h       backward-char
 \kh     beginning-of-line
 $       end-of-line
 \ke     end-of-line
-w       forward-word
-b       backward-word
 g       beginning-of-node
 G       end-of-node
 
@@ -29,9 +27,13 @@ G       end-of-node
 <SPC>   scroll-forward
 <BS>    scroll-backward
 ^f      scroll-forward
+f       scroll-forward
 ^b      scroll-backward
+b       scroll-backward
 ^d      scroll-half-screen-down
+d       scroll-half-screen-down
 ^u      scroll-half-screen-up
+u       scroll-half-screen-up
 ^y      up-line
 ^e      down-line
 
