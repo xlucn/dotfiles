@@ -6,28 +6,28 @@ import xml.etree.ElementTree as ET
 def math2text(math):
     if list(math) == []:
         return math.text if math.text else ""
+    # recursive call
+    texts = [math2text(i) for i in list(math)]
+    if math.tag == "msup":
+        return texts[0] + "^" + texts[1]
+    elif math.tag == "msub":
+        return texts[0] + "_" + texts[1]
+    elif math.tag == "msubsup":
+        return texts[0] + "_" + texts[1] + "^" + texts[2]
     else:
-        texts = [math2text(i) for i in list(math)]
-        if math.tag == "msup":
-            return texts[0] + "^" + texts[1]
-        elif math.tag == "msub":
-            return texts[0] + "_" + texts[1]
-        elif math.tag == "msubsup":
-            return texts[0] + "_" + texts[1] + "^" + texts[2]
-        else:
-            return "".join(texts)
+        return "".join(texts)
 
 
 if __name__ == "__main__":
     string = sys.stdin.read()
     while True:
-        math_start = string.find("<math")
+        math_start = string.find("<math>")
         math_end = string.find("</math>", math_start)
         if math_start == -1 or math_end == -1:
             break
-        math = string[math_start:math_end + 7]
-        math_text = math2text(ET.fromstring(math))
-        string = string.replace(math, math_text)
+        math_tag = string[math_start:math_end + len("</math>")]
+        math_text = math2text(ET.fromstring(math_tag))
+        string = string.replace(math_tag, math_text)
     string = string.replace("<em>", "").replace("</em>", "")
     string = string.replace("<sub>", "_").replace("</sub>", "")
     string = string.replace("<sup>", "^").replace("</sup>", "")
