@@ -1,7 +1,4 @@
 text/plain; vim %s; needsterminal
-text/html; iconv -f %{charset} -t UTF-8 | elinks -dump -dump-width 200; copiousoutput;
-# text/html; lynx -dump -stdin; copiousoutput;
-# text/html; html2text; copiousoutput;
-# text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/html; iconv -f %{charset} | elinks -dump -dump-width 100; copiousoutput;
 image/*; xdg-open %s &; copiousoutput
 application/*; xdg-open %s &; copiousoutput
