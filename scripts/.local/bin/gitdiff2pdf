@@ -10,13 +10,16 @@ parser.add_argument("-o", "--output",
                     help="Ouput file, default to stdout.")
 parser.add_argument("-c", "--ctex", action="store_true",
                     help="Use ctex package for CJK content.")
-parser.add_argument("-g", "--git-object", nargs="?", const="HEAD",
-                    help="Use a git object. Default is %(default)s.")
-parser.add_argument("-d", "--unstaged-diff", metavar="text_file",
-                    help="Use unstaged change from a file.")
 parser.add_argument("-m", "--make", action="store_true",
                     help="Compile with latexmk after created file. "
                     "Ignored if output to stdout")
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument("-g", "--git-object", nargs="?", const="HEAD",
+                   help="Use a git object. Default is %(default)s.")
+group.add_argument("-d", "--unstaged-diff", metavar="text_file",
+                   help="Use unstaged change from a file.")
+group.add_argument("-f", "--files", nargs=2, metavar="file",
+                   help="Two files to compare.")
 args = parser.parse_args()
 
 git = shutil.which("git")
@@ -28,13 +31,17 @@ if args.unstaged_diff:
     diffcmd = [git, 'diff', '-U1000', '--word-diff-regex=.', args.unstaged_diff]
 elif args.git_object:
     diffcmd = [git, 'show', '-U1000', '--word-diff-regex=.', "--format=tformat:", args.git_object]
+elif args.files:
+    diffcmd = [git, 'diff', '-U1000', '--word-diff-regex=.', '--no-index', *args.files]
+    print(args.files, diffcmd)
 else:
     print("Choose a method to provide diff information, see help message.", file=sys.stderr)
     exit(1)
 result = run(diffcmd, stdout=PIPE, stderr=PIPE)
 
-if result.returncode != 0:
-    print("git diff error:\n{}".format(result.stderr), file=sys.stderr)
+if result.returncode != 0 and (diffcmd[1] != 'diff' or result.returncode != 1):
+    print(f"Git command returned {result.returncode}:", file=sys.stderr)
+    print(result.stderr.decode(), file=sys.stderr)
     exit(1)
 
 tex = """\\documentclass{article}
@@ -53,7 +60,7 @@ for line in result.stdout.decode().splitlines()[5:]:
     if line.find("{+") >= 0 or line.find("[-") >= 0:
         old = re.sub("\\[-([^]]*)-\\]", "{\\\\color{red}\\1}", line)
         old = re.sub("{\\+([^}]*)\\+}", "", old)
-        tex += (old + "\\\\")
+        tex += (old + "\\\\\n")
         new = re.sub("{\\+([^}]*)\\+}", "{\\\\color{blue}\\1}", line)
         new = re.sub("\\[-([^]]*)-\\]", "", new)
         tex += (new + "\\\\\n")
@@ -62,8 +69,7 @@ for line in result.stdout.decode().splitlines()[5:]:
     else:
         tex += "\n"
 tex += "\\end{document}"
-tex = tex.replace("\\\\\n\n", "\n\n") \
-         .replace("~", "\\~")
+tex = tex.replace("\\\\\n\n", "\n\n").replace("~", "\\~")
 
 if args.output is not None and args.output != "/dev/stdout":
     with open(args.output, 'w') as texfile:
