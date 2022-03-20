@@ -11,13 +11,13 @@ export NOTES_DIRECTORY="$HOME/Code/notes"
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
 # XDG base directories
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
-export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/run/user/$USERID}
-export XDG_DATA_DIRS=${XDG_DATE_DIRS:-/usr/share:/usr/local/share}
-export XDG_CONFIG_DIRS=${XDG_CONFIG_DIRS:-/etc/xdg}
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$USERID}"
+export XDG_DATA_DIRS="${XDG_DATE_DIRS:-/usr/share:/usr/local/share}"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 
 export MANPATH="$XDG_DATA_HOME/man:$MANPATH"
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
@@ -108,11 +108,13 @@ export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
 # dash interactive mode
 export ENV="$HOME/.bashrc"
+# zsh
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # PATH
 add_to_path() {
     for path in "$@"; do
-        if [ -d "$path" ] && [ "$PATH" = "${PATH%$path*}" ]; then
+        if [ -d "$path" ] && [ "$PATH" = "${PATH%"$path*"}" ]; then
             export PATH="$path:${PATH}"
         fi
     done
