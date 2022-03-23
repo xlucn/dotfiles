@@ -75,6 +75,8 @@ set message_cachedir = "~/.cache/mutt/bodies"
 set header_cache = "~/.cache/mutt/headers"
 # save attachments to downloads folder
 set attach_save_dir = "~/Downloads"
+set abort_noattach = ask-yes
+set abort_noattach_regexp = "attach|附件|查收"
 
 ##############
 # connection #
