@@ -60,16 +60,18 @@ for line in result.stdout.decode().splitlines()[5:]:
     if line.find("{+") >= 0 or line.find("[-") >= 0:
         old = re.sub("\\[-([^]]*)-\\]", "{\\\\color{red}\\1}", line)
         old = re.sub("{\\+([^}]*)\\+}", "", old)
-        tex += (old + "\\\\\n")
+        if len(old) > 0:
+            tex += (old + "\\\\\n")
         new = re.sub("{\\+([^}]*)\\+}", "{\\\\color{blue}\\1}", line)
         new = re.sub("\\[-([^]]*)-\\]", "", new)
-        tex += (new + "\\\\\n")
+        if len(new) > 0:
+            tex += (new + "\\\\\n")
     elif len(line) > 0:
         tex += (line + "\\\\\n")
     else:
         tex += "\n"
 tex += "\\end{document}"
-tex = tex.replace("\\\\\n\n", "\n\n").replace("~", "\\~")
+tex = tex.replace("\\\\\n\n", "\n\n").replace("~", "\\textasciitilde")
 
 if args.output is not None and args.output != "/dev/stdout":
     with open(args.output, 'w') as texfile:
