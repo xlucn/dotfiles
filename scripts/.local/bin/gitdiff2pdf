@@ -51,6 +51,9 @@ tex = """\\documentclass{article}
 \\setlength\\parindent{0pt}
 \\setlength\\parskip{1em}
 \\renewcommand\\baselinestretch{1.5}
+\\setmainfont{Liberation Serif}
+\\setsansfont{Liberation Sans}
+\\setmonofont{Liberation Mono}
 \\setCJKmainfont{Noto Serif CJK SC}
 \\setCJKsansfont{Noto Sans CJK SC}
 \\setCJKmonofont{Noto Sans Mono CJK SC}
@@ -71,7 +74,8 @@ for line in result.stdout.decode().splitlines()[5:]:
     else:
         tex += "\n"
 tex += "\\end{document}"
-tex = tex.replace("\\\\\n\n", "\n\n").replace("~", "\\textasciitilde")
+tex = tex.replace("\\\\\n\n", "\n\n")
+tex = tex.replace("~", "\\textasciitilde")
 
 if args.output is not None and args.output != "/dev/stdout":
     with open(args.output, 'w') as texfile:
