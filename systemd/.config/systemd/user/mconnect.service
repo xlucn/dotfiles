@@ -1,0 +1,11 @@
+[Unit]
+Description=Mconnect daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=mconnect
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
