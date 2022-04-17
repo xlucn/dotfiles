@@ -38,6 +38,9 @@ alias notes="lf \$HOME/Code/notes"
 alias psg="pgrep -ifa"
 # du tree
 alias sdu="tree --du --sort=size -CFhrax"
+hdu() {
+    du -haxd 1 $@ 2> /dev/null | sort -h
+}
 # ffmpeg, quiet!
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffprobe="ffprobe -hide_banner"
