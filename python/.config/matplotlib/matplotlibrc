@@ -9,5 +9,9 @@ text.usetex: True
 ## no transparency of legend border
 legend.framealpha: 0
 
+# show ticks inwards
 xtick.direction: in
 ytick.direction: in
+
+# line width
+lines.linewidth: 1
