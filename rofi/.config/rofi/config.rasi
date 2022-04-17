@@ -1,6 +1,5 @@
 configuration {
-    dpi                : 1;
-    font               : "Monospace 7";
+    font               : "Monospace 12";
     show-icons         : true;
     icon-theme         : "Papirus";
     scroll-method      : 0;
