@@ -127,7 +127,7 @@ Xautolock.time: 10
 Xautolock.locker: slock
 
 xmenu.font: JetBrains Mono:size=12, Noto Sans CJK SC:size=12
-xmenu.height: 32
+xmenu.height: 48
 xmenu.width: 256
 xmenu.border: #B0BEC5
 xmenu.borderWidth: 2
