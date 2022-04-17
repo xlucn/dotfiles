@@ -4,16 +4,17 @@
 servers = (
   { address = "irc.alpharatio.cc"; chatnet = "AlphaRatio"; },
   { address = "irc.beyond-hd.me"; chatnet = "BeyondHD"; },
-  { address = "irc.digitalirc.org"; chatnet = "DigitalIRC"; },
+  { address = "irc.digitalirc.org"; chatnet = "DigitalIRC"; port = "6697"; use_tls = "yes"; },
   { address = "irc.filelist.io"; chatnet = "FileList"; },
   { address = "irc.gazellegames.net"; chatnet = "GazelleGames"; },
   { address = "irc.iptorrents.com"; chatnet = "Iptorrents"; },
   { address = "irc.libera.chat"; chatnet = "Libera"; },
-  { address = "irc.oftc.net"; chatnet = "OFTC"; },
+  { address = "irc.oftc.net"; chatnet = "OFTC"; port = "6697"; use_tls = "yes"; },
   { address = "irc.p2p-network.net"; chatnet = "P2PNET"; },
   { address = "irc.rizon.net"; chatnet = "Rizon"; },
   { address = "irc.rizon.net"; chatnet = "Rizon2"; },
-  { address = "irc.synirc.net"; chatnet = "synIRC"; }
+  { address = "irc.synirc.net"; chatnet = "synIRC"; },
+  { address = "irc.digitalirc.org"; chatnet = "DigitalIRC"; port = "6697"; use_tls = "yes"; }
 );
 
 chatnets = {
@@ -65,20 +66,16 @@ aliases = {
   DATE = "TIME";
   DEHIGHLIGHT = "DEHILIGHT";
   DESCRIBE = "ACTION";
-  EXIT = "QUIT";
   GOTO = "SCROLLBACK GOTO";
   HIGHLIGHT = "HILIGHT";
   HOST = "USERHOST";
   LAST = "LASTLOG";
-  M = "MSG";
   NMSG = "^MSG";
   RESET = "SET -default";
   SAY = "MSG *";
   SB = "SCROLLBACK";
   SBAR = "STATUSBAR";
-  T = "TOPIC";
   UNSET = "SET -clear";
-  W = "WHO";
   WC = "WINDOW CLOSE";
   WG = "WINDOW GOTO";
   WI = "WHOIS";
