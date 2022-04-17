@@ -55,21 +55,34 @@ startgnome() {
     exec gnome-session
 }
 
-WM=${1:-dwm2x}
+WM=${1:-dwm}
 
 if [ "${WM%2x}" != "$WM" ]; then
     export XCURSOR_SIZE=48
     export QT_AUTO_SCREEN_SCALE_FACTOR=0
-    echo "Xft.dpi: 144" > /tmp/Xresources.Xft.dpi
+    {   echo "Xft.dpi: 144"
+        echo "Xcursor.size: 48"
+        echo "xmenu.height: 48"
+        echo "dwm.borderpx: 4"
+        echo "dwm.barheight: 48"
+        echo "dmenu.minheight: 48"
+    } > /tmp/Xresources.Xft.dpi
     xrdb -merge /tmp/Xresources.Xft.dpi
 else
-    echo "Xft.dpi: 96" > /tmp/Xresources.Xft.dpi
+    {   echo "Xft.dpi: 96"
+        echo "Xcursor.size: 36"
+        echo "xmenu.height: 36"
+        echo "dwm.borderpx: 3"
+        echo "dwm.barheight: 36"
+        echo "dmenu.minheight: 36"
+    } > /tmp/Xresources.Xft.dpi
     xrdb -merge /tmp/Xresources.Xft.dpi
 fi
 
 case "$WM" in
     awesome*) prewm; exec awesome;;
     dwm*) prewm; startdwm;;
-    simple) startdwm;;
+    gnome*) startgnome;;
+    simple*) startdwm;;
     *) exec "$@";;
 esac
