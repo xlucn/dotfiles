@@ -110,6 +110,8 @@ export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
 export ENV="$HOME/.bashrc"
 # zsh
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+# BibTool
+export BIBTOOLRSC="$XDG_CONFIG_HOME/bibtool/resource"
 
 # PATH
 add_to_path() {
