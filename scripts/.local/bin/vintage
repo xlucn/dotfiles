@@ -16,9 +16,17 @@
 
 usage() {
     cat << EOF
-$(basename "$0") original_video [new_video]
+$(basename "$0") input_video [output_video]
 
 A script to re-encode video for playback in Windows 3.1 or similar.
+
+Video name:
+    The output video name defaults to input_video.mpg (including extension).
+
+Subtitles:
+    The script will look for subtitles in the video's internal tracks and
+    in the local folder, and prompt you to choose one to burn into the
+    output video.
 EOF
 }
 
@@ -34,10 +42,7 @@ if [ $# = 2 ]; then
     dest=${2%.mpg}.mpg
 elif [ $# = 1 ]; then
     orig=$1
-    printf "Enter the name for new video: "
-    read -r dest
-    [ -z "$dest" ] && echo Aborting && exit 1
-    dest=${dest%.mpg}.mpg
+    dest=$orig.mpg
 else
     usage
 fi
@@ -58,7 +63,8 @@ audio_rate=44100                # common sample rate, multiplies of 11025 Hz
 audio_channel=2                 # stereo, 2 channels
 audio_bitrate=224k              # control the audio bitrate, default was 384k
 
-# Add black bars (each of half (out_h - in_h)) to top and bottom to make it 4:3
+# Add black bars (each of (out_h - in_h) / 2) to top and bottom,
+# so that the video keeps it's original aspect ratio.
 pad_filter=",pad=$WIDTH:$HEIGHT:0:-(oh-ih)/2"
 
 # Burn subtitles, try external srt or ass subtitle, fallback to internal subtitles
@@ -93,7 +99,7 @@ else
             printf "\n"
         }'
         printf "Enter the subtitle index you want to burn into the video.\n"
-        printf "E.g. 0, 1. Press enter to skip: "
+        printf "E.g. 0, 1. Press only Enter to skip: "
         read -r index
         if [ -n "$index" ]; then
             echo "Using subtitle No. $index"
@@ -111,7 +117,8 @@ video_filter=$video_scale$pad_filter$subtitle_filter
 ffmpeg -i "$orig" -f vcd \
     -v error -stats \
     -c:v $video_codec \
-    -bufsize 327680 -maxrate:v 1150k \
+    -bufsize 327680 \
+    -maxrate:v 1150k \
     -r $video_fps \
     -q:v $video_quality \
     -vf "$video_filter" \
