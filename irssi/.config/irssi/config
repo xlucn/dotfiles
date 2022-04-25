@@ -13,8 +13,7 @@ servers = (
   { address = "irc.p2p-network.net"; chatnet = "P2PNET"; },
   { address = "irc.rizon.net"; chatnet = "Rizon"; },
   { address = "irc.rizon.net"; chatnet = "Rizon2"; },
-  { address = "irc.synirc.net"; chatnet = "synIRC"; },
-  { address = "irc.digitalirc.org"; chatnet = "DigitalIRC"; port = "6697"; use_tls = "yes"; }
+  { address = "irc.synirc.net"; chatnet = "synIRC"; }
 );
 
 chatnets = {
