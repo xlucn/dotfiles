@@ -1,22 +1,31 @@
 #!/bin/sh
-while IFS=: read -r k v; do
-    case "$k" in
-    *"Absolute upper-left X"*) x=$v;;
-    *"Absolute upper-left Y"*) y=$v;;
-    *"Border width"*) bw=$v ;;
-    *"Width"*) w=$v;;
-    *"Height"*) h=$v;;
-    esac
-done << EOF
-    $(xwininfo)
+
+if ! command -v slop > /dev/null; then
+    echo Please install slop
+    exit 1
+fi
+
+echo Select the area to record, after which there will be a 3-second count down.
+echo Press any key or right click to cancle.
+
+read -r w h x y << EOF
+$(slop -f "%w %h %x %y")
 EOF
 
+if [ -z "$w$h$x$y" ]; then
+    exit
+fi
+
+# make them multiply of 2 to make ffmpeg happy
+w=$((w/2*2))
+h=$((h/2*2))
+
+echo Counting down, press Ctrl+C to cancle ...
 for i in 3 2 1; do
     notify-send -t 1000 -c "recording" "$i"
     sleep 1
 done
 
 ffmpeg -y -f x11grab -framerate 30 \
-       -video_size "$((w))x$((h))" \
-       -i ":0.0+$((x+bw)),$((y+bw))" -pix_fmt yuv420p \
+       -video_size "${w}x${h}" -i ":0.0+$x,$y" -pix_fmt yuv420p \
        "$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mp4"
