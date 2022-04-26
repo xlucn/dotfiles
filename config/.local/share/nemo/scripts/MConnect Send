@@ -1,0 +1,17 @@
+#!/bin/sh
+# send files with mconnect
+
+mconnectctl list-devices |
+grep /org/mconnect/device |
+while read -r device id _ name; do
+    if mconnectctl show-device "$device" | grep -iq "connected:\s*true"; then
+        echo "$device $name"
+    fi
+done |
+dmenu -p "Send those files to" |
+{   read -r device name
+    printf "$NEMO_SCRIPT_SELECTED_FILE_PATHS" |
+    while read -r file; do
+        mconnectctl share-file "$device" "$file"
+    done
+}
