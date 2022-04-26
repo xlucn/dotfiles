@@ -24,7 +24,3 @@ term-osd-bar-chars="[=>-]"
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
 hwdec=vaapi
 gpu-context=x11egl
-
-# HDR settings
-tone-mapping=bt.2390
-tone-mapping-param=0.5
