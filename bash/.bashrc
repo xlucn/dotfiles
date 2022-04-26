@@ -52,6 +52,13 @@ pip_update() {
 }
 # arch linux update
 alias au="sudo pacman -Syu && proxychains paru -Sua"
+# start xorg
+x() {
+    tty=$(tty)
+    [ "${tty#/dev/tty}" = "$tty" ] && echo Not tty, exiting && return
+    tty=${tty#/dev/tty}
+    xinit $@ -- :"$tty"
+}
 
 # timing function for dash
 timeit() {
