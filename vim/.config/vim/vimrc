@@ -41,7 +41,7 @@ function! s:packager_init(packager) abort
   " Enhancements
   " call a:packager.add('junegunn/fzf')
   " call a:packager.add('junegunn/fzf.vim')
-  " call a:packager.add('majutsushi/tagbar')
+  call a:packager.add('majutsushi/tagbar')
   " call a:packager.add('fs111/pydoc.vim')
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
@@ -657,9 +657,12 @@ let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 1
 " }}}
 " tagbar {{{
-let g:tagbar_width = max([25, winwidth(0) / 5])
 let g:tagbar_compact = 1
+let g:tagbar_indent = 1
+let g:tagbar_left = 1
+let g:tagbar_silent = 1
 let g:tagbar_sort = 0
+let g:tagbar_width = min([25, winwidth(0) / 4])
 nnoremap <C-B> :Tagbar<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0
