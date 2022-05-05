@@ -6,5 +6,6 @@ Comment=Play movies and songs
 Icon=mpv
 Exec=mpv dvd:// --player-operation-mode=pseudo-gui --force-window --idle --dvd-device=%f
 Terminal=false
+NoDisplay=true
 Categories=AudioVideo;Audio;Video;Player;TV;
 MimeType=application/x-iso9660-image;
