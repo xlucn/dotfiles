@@ -57,7 +57,9 @@ x() {
     tty=$(tty)
     [ "${tty#/dev/tty}" = "$tty" ] && echo Not tty, exiting && return
     tty=${tty#/dev/tty}
+    xauth add :"$tty" . "$(od -An -N16 -tx /dev/urandom | tr -d ' ')"
     xinit $@ -- :"$tty"
+    xauth remove :"$tty"
 }
 
 # timing function for dash
