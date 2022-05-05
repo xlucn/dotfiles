@@ -22,5 +22,6 @@ term-osd-bar=yes
 term-osd-bar-chars="[=>-]"
 
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
+vo=gpu-next
 hwdec=vaapi
 gpu-context=x11egl
