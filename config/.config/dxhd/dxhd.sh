@@ -20,7 +20,7 @@ st -c floating
 firefox
 
 # super + e
-pcmanfm
+nemo
 
 # super + d
 rofi -theme launcher -show drun
