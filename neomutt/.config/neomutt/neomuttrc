@@ -19,4 +19,11 @@ color index_subject brightcyan default "~N"
 color index_number blue default
 color index_date magenta default
 
+# Sidebar color
+color sidebar_highlight brightred default
+color sidebar_divider brightblack default
+color sidebar_flagged cyan default
+color sidebar_new green black
+color sidebar_indicator black brightblack
+
 color progress brightyellow blue

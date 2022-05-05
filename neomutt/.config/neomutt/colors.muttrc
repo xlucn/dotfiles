@@ -24,13 +24,6 @@ color header brightblue    default "^(To):"
 color header brightcyan    default "^(CC|BCC):"
 color header brightwhite   default "^(Date):"
 
-# Sidebar color
-color sidebar_highlight brightred default
-color sidebar_divider brightblack default
-color sidebar_flagged cyan default
-color sidebar_new green black
-color sidebar_indicator black brightblack
-
 color tilde black default
 color message cyan default
 color markers red white
