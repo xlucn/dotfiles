@@ -4,10 +4,12 @@
 
 if [ "$PS1" ] && [ -n "$BASH" ] && \
     [ -f /usr/share/bash-completion/bash_completion ]; then
+    # shellcheck disable=1091
     . /usr/share/bash-completion/bash_completion
 fi
 
-. $HOME/.profile
+# shellcheck disable=1091
+. "$HOME"/.profile
 
 # Alias
 command -v doas > /dev/null && alias sudo="doas"
@@ -39,7 +41,7 @@ alias psg="pgrep -ifa"
 # du tree
 alias sdu="tree --du --sort=size -CFhrax"
 hdu() {
-    du -haxd 1 $@ 2> /dev/null | sort -h
+    du -haxd 1 "$@" 2> /dev/null | sort -h
 }
 # ffmpeg, quiet!
 alias ffmpeg="ffmpeg -hide_banner"
@@ -58,7 +60,7 @@ x() {
     [ "${tty#/dev/tty}" = "$tty" ] && echo Not tty, exiting && return
     tty=${tty#/dev/tty}
     xauth add :"$tty" . "$(od -An -N16 -tx /dev/urandom | tr -d ' ')"
-    xinit $@ -- :"$tty"
+    xinit "$@" -- :"$tty"
     xauth remove :"$tty"
 }
 
@@ -84,8 +86,6 @@ if [ "$TERM" = "linux" ] && tty | grep -q tty; then
         [ "$n" -lt 16 ] && [ "$n" -gt 0 ] && printf "\e]P%X%s" "$n" "$color"
     done
 fi
-
-export PROXY="socks5h://localhost:1081"
 
 # use the prompt script comes with git
 export GIT_PS1_SHOWDIRTYSTATE=1
