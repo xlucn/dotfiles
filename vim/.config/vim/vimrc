@@ -2,9 +2,8 @@
 " be iMproved, put this line at TOP of vimrc
 set nocompatible
 let $VIM = $XDG_CONFIG_HOME.'/vim'
-let $PACK = $XDG_DATA_HOME.'/vim'
-set packpath^=$PACK  " prepend my own vim directory
 set runtimepath^=$VIM   " prepend my own vim directory
+set packpath^=$XDG_DATA_HOME/vim
 set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
 if !has('nvim')
@@ -46,7 +45,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
-  call a:packager.add('BourgeoisBear/clrzr', {'type': 'opt'})
 endfunction
 function PackagerSetup(job, status)
     if a:status == 0 || a:status == 128
@@ -207,6 +205,7 @@ augroup normal
     autocmd VimEnter * normal! :startinsert :stopinsert
     autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
     autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
+    autocmd BufNewFile,BufRead *.muttrc setlocal ft=muttrc
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType tex,markdown,gitcommit setlocal spell
@@ -506,9 +505,6 @@ let g:gitgutter_sign_modified_removed   = '^'
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
 " }}}
-" " CoC {{{
-" let g:coc_config_home = $VIM
-" " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
 xmap <leader>s <Plug>SlimeRegionSend
@@ -551,7 +547,7 @@ if has('nvim')
     packadd cmp-vsnip
     packadd vim-vsnip
     packadd vim-vsnip-integ
-    lua << EOF
+lua << EOF
     local lsp = require('lspconfig')
     local cmp = require('cmp')
     cmp.setup({
@@ -567,12 +563,9 @@ if has('nvim')
           { name = 'buffer' },
         })
     })
-    local cap = vim.lsp.protocol.make_client_capabilities()
-    cap = require('cmp_nvim_lsp').update_capabilities(cap)
-    lsp['pylsp'].setup({ capabilities = cap })
-    lsp['bashls'].setup({ capabilities = cap })
+    lsp['pylsp'].setup({})
+    lsp['bashls'].setup({})
     lsp['texlab'].setup({
-        capabilities = cap,
         settings = {
             texlab = {
                 build = {
