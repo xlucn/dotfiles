@@ -565,32 +565,6 @@ lua << EOF
     })
     lsp['pylsp'].setup({})
     lsp['bashls'].setup({})
-    lsp['diagnosticls'].setup({
-        filetypes = { "sh" },
-        init_options = {
-            linters = {
-              shellcheck = {
-                sourceName = "shellcheck",
-                command = "shellcheck",
-                args = { "--format=json", "-" },
-                parseJson = {
-                  line = "line",
-                  column = "column",
-                  security = "level",
-                  message = "[${code}] ${message}"
-                },
-                securities  = {
-                  error = "error",
-                  warning = "warning",
-                  note = "info"
-                }
-              }
-            },
-            filetypes = {
-              sh = "shellcheck"
-            }
-        }
-    })
     lsp['texlab'].setup({
         settings = {
             texlab = {
@@ -645,36 +619,6 @@ let g:lsp_diagnostics_echo_delay = 200
 let g:lsp_diagnostics_highlights_delay = 200
 let g:lsp_diagnostics_echo_cursor = 1
 autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
-if executable('diagnostic-languageserver')
-  au User lsp_setup call lsp#register_server({
-    \ "name": "diagnostic-languageserver",
-    \ "cmd": ["diagnostic-languageserver", "--stdio"],
-    \ "allowlist": ["sh"],
-    \ "initialization_options": {
-    \   "linters": {
-    \     "shellcheck": {
-    \       "command": "shellcheck",
-    \       "sourceName": "shellcheck",
-    \       "args": ["--format=json", "-"],
-    \       "parseJson": {
-    \         "line": "line",
-    \         "column": "column",
-    \         "security": "level",
-    \         "message": "[${code}] ${message}"
-    \       },
-    \       "securities": {
-    \         "error": "error",
-    \         "warning": "warning",
-    \         "note": "info"
-    \       }
-    \     }
-    \   },
-    \   "filetypes": {
-    \     "sh": "shellcheck"
-    \   }
-    \ }
-    \ })
-endif
 " }}}
 " vim-lsc {{{
 let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'
