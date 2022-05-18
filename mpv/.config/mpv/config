@@ -3,6 +3,8 @@ sub-font-size=40
 osd-font-size=40
 no-keepaspect-window
 
+slang=eng,chs
+
 # Screenshot
 screenshot-format=png
 screenshot-directory=~/Pictures
