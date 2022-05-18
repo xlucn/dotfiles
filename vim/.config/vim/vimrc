@@ -1,8 +1,7 @@
 " vim basic {{{
 " be iMproved, put this line at TOP of vimrc
 set nocompatible
-let $VIM = $XDG_CONFIG_HOME.'/vim'
-set runtimepath^=$VIM   " prepend my own vim directory
+set runtimepath^=$XDG_CONFIG_HOME/vim
 set packpath^=$XDG_DATA_HOME/vim
 set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
@@ -54,7 +53,7 @@ function PackagerSetup(job, status)
         echoerr "clone vim-packager timed out"
     endif
 endfunction
-let s:packager_dir = $VIM.'/pack/packager/opt/vim-packager'
+let s:packager_dir = $XDG_DATA_HOME.'/vim/pack/packager/opt/vim-packager'
 let s:packager_git = 'https://github.com/kristijanhusak/vim-packager'
 let s:packager_clone = ['git', 'clone', s:packager_git, s:packager_dir]
 " running the git clone anyway, it won't do anything if exists
@@ -284,7 +283,7 @@ augroup END
 " }}}
 " Netrw {{{
 " Make Netrw function like NerdTree
-let g:netrw_home         = $VIM " put temporary file there instead of $HOME
+let g:netrw_home         = $XDG_DATA_HOME.'/vim'
 let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
 let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20  " split size, minus meaning absolute size
