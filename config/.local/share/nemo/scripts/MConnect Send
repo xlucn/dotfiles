@@ -1,6 +1,11 @@
 #!/bin/sh
 # send files with mconnect
 
+if ! command -v mconnectctl; then
+    notify-send "Nemo" "Mconnect not installed"
+    exit 1
+fi
+
 mconnectctl list-devices |
 grep /org/mconnect/device |
 while read -r device id _ name; do
