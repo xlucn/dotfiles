@@ -29,7 +29,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('hrsh7th/vim-vsnip', {'type': 'opt'})
   call a:packager.add('hrsh7th/cmp-vsnip', {'type': 'opt'})
   call a:packager.add('hrsh7th/vim-vsnip-integ', {'type': 'opt'})
-  call a:packager.add('neoclide/coc.nvim', {'branch': 'release', 'type': 'opt'})
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
   call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
   call a:packager.add('prabirshrestha/async.vim', {'type': 'opt'})
@@ -95,7 +94,7 @@ set title               " change the terminal's title
 set showmatch           " show matching characters
 set scrolloff=5         " minimum lines above and below cursor
 set splitright          " split into right by default
-set splitbelow          " split to below by default, better for ale's hover info
+set splitbelow          " split to below by default
 set updatetime=100      " update time, related to fugitive sign column update, etc.
 set signcolumn=yes      " always show sign column
 set lazyredraw          " redraw when needed
@@ -112,7 +111,7 @@ set fillchars+=vert:│   " vertical split character
 if !has('nvim')
     if $TERM =~ "rxvt-unicode"
         set ttymouse=urxvt
-    elseif $TERM == "st" || $TERM == "st-256color"
+    elseif $TERM =~ "st"
         set ttymouse=sgr
     endif
 endif
@@ -129,7 +128,6 @@ else
     let &t_EI = "\e[?8c"
 endif
 " color scheme
-colorscheme slate
 hi SignColumn   ctermfg=0   ctermbg=None
 hi CursorColumn ctermbg=8
 hi Search       ctermfg=0   ctermbg=3
@@ -240,7 +238,6 @@ augroup latex
     " remove red color depends on vim-surround
     autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
 augroup END
-" autocmd FileType tex let b:ale_lsp_root='./'
 augroup makeprg
     autocmd Filetype sh compiler shellcheck
     autocmd Filetype perl compiler perl
@@ -350,62 +347,22 @@ function Make()
 endfunction
 " }}}
 " statusline {{{
-" update status on ALE status changes
+" update status on LSP status changes
 augroup UpdateStatus
   autocmd!
-  autocmd User ALEJobStarted redrawstatus
-  autocmd User ALELintPost   redrawstatus
-  autocmd User ALEFixPost    redrawstatus
   autocmd User lsp_diagnostics_updated redrawstatus
 augroup END
-function! ALEStatus()
-    if get(g:, 'ale_enabled', 0) != 1
+function! LSPStatus()
+    if exists('*lsp#get_buffer_diagnostics_counts') == 0
         return ''
     endif
-
-    let l:ale_avail = get(g:, 'ale_enabled', 0) == 1
-        \ && getbufvar(bufnr(''), 'ale_enabled', 1)
-        \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
-        \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
-    let l:checking = ale#engine#IsCheckingBuffer(bufnr(''))
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_warnings = l:counts.warning + l:counts.style_warning
-
-    if l:ale_avail == 0
-        return ''
-    elseif l:checking
-        return ' ... '
-    elseif l:counts.total == 0
-        return ' OK '
-    endif
-
-    let l:ale_status = ' '
-    let l:ale_status .= l:all_errors == 0 ? '' : printf('E:%2d ', l:all_errors)
-    let l:ale_status .= l:all_warnings == 0 ? '' : printf('W:%2d ', l:all_warnings)
-    let l:ale_status .= l:counts.info == 0 ? '' : printf('I:%2d ', l:counts.info)
-    return l:ale_status
-endfunction
-function! VimLspStatus()
     let l:counts = lsp#get_buffer_diagnostics_counts()
     let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
     let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
     let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
     let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
-    if l:lsp_status != ''
-        return ' ' . l:lsp_status
-    else
-        return ''
-    endif
-endfunction
-function! LSPStatus()
-    if exists("g:ale_enabled") == 1
-        return ALEStatus()
-    elseif exists('*lsp#get_buffer_diagnostics_counts') == 1
-        return VimLspStatus()
-    else
-        return ''
-    endif
+    let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
+    return ' ' . l:lsp_status
 endfunction
 function GitBranch()
     let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
@@ -463,7 +420,6 @@ let g:which_key_map = {
   \ 'z' : 'Goyo mode',
   \ 's' : 'slime',
   \ 'c' : 'comment',
-  \ 'a' : { 'name' : '+ale' },
   \ 'g' : {
     \ 'name' : '+git-operation',
     \ 't' : { 'name' : '+stash' },
@@ -590,7 +546,6 @@ lua << EOF
     })
 EOF
 else
-    " packadd coc.nvim
     " packadd vim-lsc
     packadd vim-lsp
     packadd vim-lsp-settings
