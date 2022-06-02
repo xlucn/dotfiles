@@ -52,4 +52,4 @@ define-filter "Empty feeds" "total_count = 0"
 user-agent "Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
 use-proxy yes
 proxy-type socks5h
-proxy localhost:1081
+proxy proxy-host:1081

@@ -107,6 +107,7 @@ export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 # proxychains-ng
 export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
+export PROXY="socks5h://proxy-host:1081"
 # dash interactive mode
 export ENV="$HOME/.bashrc"
 # zsh

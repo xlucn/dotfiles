@@ -26,7 +26,7 @@ xft_dpi = int(xresources_xft.get("Xft.dpi"))
 
 config.load_autoconfig(False)
 
-c.content.proxy = 'socks5://localhost:1081'
+c.content.proxy = 'socks5://proxy-host:1081'
 c.content.javascript.can_access_clipboard = True
 c.content.blocking.enabled = True
 c.content.blocking.method = 'both'
