@@ -1,6 +1,7 @@
 " vim basic {{{
-" be iMproved, put this line at TOP of vimrc
+" be Vi IMproved, put this line at TOP of vimrc
 set nocompatible
+" XDG Base Directories
 set runtimepath^=$XDG_CONFIG_HOME/vim
 set packpath^=$XDG_DATA_HOME/vim
 set backupdir=$XDG_CACHE_HOME/vim/backup
@@ -56,6 +57,7 @@ let s:packager_dir = $XDG_DATA_HOME.'/vim/pack/packager/opt/vim-packager'
 let s:packager_git = 'https://github.com/kristijanhusak/vim-packager'
 let s:packager_clone = ['git', 'clone', s:packager_git, s:packager_dir]
 " running the git clone anyway, it won't do anything if exists
+" TODO: not good
 if exists('*job_start')
     call job_start(s:packager_clone, {'exit_cb': function('PackagerSetup')})
 endif
@@ -160,14 +162,14 @@ set cindent
 set tabstop=4
 set shiftwidth=0  " make it the same as tabstop
 set softtabstop=-1  " make it the same as shiftwidth
-set expandtab
+set expandtab       " change tab to spaces
 set smarttab
 " show tabs and trailing white space
 set list
 set listchars=tab:>-,trail:.
 " }}}
 " Navigations {{{
-" go up/down
+" go up/down in one wrapped long line
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 vnoremap <silent> j gj
@@ -182,9 +184,10 @@ nnoremap <silent> ]l :lnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching
+" n/N: search, zz: center, zv: unfold
 nnoremap n nzzzv
 nnoremap N Nzzzv
-" 
+" some simple key bindings
 noremap <leader>q :q<CR>
 noremap <leader>Q :qa<CR>
 noremap <leader>d :bd<CR>
@@ -198,18 +201,25 @@ noremap <leader>z :call Goyo()<CR>
 " Autocmd {{{
 augroup normal
     autocmd!
+    " make sure the cursor reset to block shape, see the cursor shape settings
     autocmd VimEnter * normal! :startinsert :stopinsert
+    " some file types
     autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
     autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
     autocmd BufNewFile,BufRead *.muttrc setlocal ft=muttrc
+    " load Xresources on save
     autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
+    " tabs for these file types
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
-    autocmd FileType tex,markdown,gitcommit setlocal spell
     autocmd FileType c,cpp,mma,json setlocal noet
+    " spell check for these file types
+    autocmd FileType tex,markdown,gitcommit setlocal spell
     autocmd FileType markdown setlocal foldlevel=1
+    " comment strings for vim-commentary
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType maxima setlocal commentstring=/*%s*/
     autocmd FileType mma setlocal commentstring=(*%s*)
+    " wrap lines even in diff
     autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
 augroup END
 augroup terminal_setup
