@@ -258,19 +258,16 @@ augroup END
 " restore input method state when enter insert mode
 function CheckFcitxCmd()
     if !exists("s:fcitx_cmd")
-        if system("fcitx5-remote") == 1
-            let s:fcitx_cmd = "fcitx5-remote"
-        else
-            let s:fcitx_cmd = "fcitx-remote"
-        endif
+        let s:find_exe = "command -v fcitx-remote || command -v fcitx5-remote"
+        let s:fcitx_cmd = trim(system(s:find_exe))
     endif
 endfunction
 function IMDisable()
     call CheckFcitxCmd()
-    if !exists("s:hasfcitx")
-        let s:hasfcitx = system(s:fcitx_cmd) =~# '^\d\n\+$'
+    if !exists("s:fcitxon")
+        let s:fcitxon = system(s:fcitx_cmd) =~ '^\d'
     endif
-    if s:hasfcitx
+    if s:fcitxon
         let b:fcitx = system(s:fcitx_cmd)
         call system(s:fcitx_cmd . ' -c')
     endif
@@ -391,7 +388,7 @@ let &stl .= '%3*%{LSPStatus()}%*'                   " lsp status
 " Git {{{
 " show the log in a pretty way
 function! GitLog()
-    silent !git log --all --decorate --oneline --graph --date-order
+    silent !git -C "$(dirname "$(realpath "%")")" log --all --decorate --oneline --graph --date-order
     redraw!
 endfunction
 function! GitTig()
@@ -538,6 +535,7 @@ lua << EOF
     })
     lsp['pylsp'].setup({})
     lsp['bashls'].setup({})
+    lsp['sumneko_lua'].setup({})
     lsp['texlab'].setup({
         settings = {
             texlab = {
