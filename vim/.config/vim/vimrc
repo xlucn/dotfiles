@@ -437,10 +437,12 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
-nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
-vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
-nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
-vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+if &rtp =~ "vim-which-key"
+    nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+    vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+    nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+    vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+endif
 function WhichKeyRegister()
     if &rtp =~ "vim-which-key"
         call which_key#register(',', 'g:which_key_map')
@@ -450,9 +452,11 @@ endfunction
 autocmd VimEnter * call WhichKeyRegister()
 " }}}
 " Vim commentary {{{
-nmap <leader>c <Plug>CommentaryLine
-omap <leader>c <Plug>Commentary
-xmap <leader>c <Plug>Commentary
+if &rtp =~ "vim-commentary"
+    nmap <leader>c <Plug>CommentaryLine
+    omap <leader>c <Plug>Commentary
+    xmap <leader>c <Plug>Commentary
+endif
 " }}}
 " Vim Endwise {{{
 " https://github.com/tpope/vim-endwise/issues/41#issuecomment-432905813
@@ -473,9 +477,11 @@ hi GitGUtterChange ctermbg=none ctermfg=3
 hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " vim-slime {{{
-let g:slime_no_mappings = 1
-xmap <leader>s <Plug>SlimeRegionSend
-nmap <leader>s <Plug>SlimeParagraphSend
+if &rtp =~ 'vim-slime'
+    let g:slime_no_mappings = 1
+    xmap <leader>s <Plug>SlimeRegionSend
+    nmap <leader>s <Plug>SlimeParagraphSend
+endif
 " set config to use the pane on the right by default
 let g:slime_default_config = {
     \ "socket_name": get(split($TMUX, ","), 0),
