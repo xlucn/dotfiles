@@ -129,15 +129,14 @@ else
 endif
 " color scheme
 hi SignColumn   ctermfg=0   ctermbg=None
-hi CursorColumn ctermbg=8
-hi Search       ctermfg=0   ctermbg=3
-hi IncSearch    ctermfg=0   ctermbg=3
+hi CursorColumn             ctermbg=0
+hi ColorColumn              ctermbg=0
 hi Folded       ctermfg=8   ctermbg=None
 hi SpellBad     ctermfg=9   ctermbg=None
 hi SpellCap     ctermfg=11  ctermbg=None
-hi Visual       ctermbg=0   ctermbg=None cterm=reverse
-hi StatusLine   ctermfg=7   ctermbg=None cterm=None
-hi StatusLineNC ctermfg=7   ctermbg=None cterm=None
+hi Visual                   ctermbg=None cterm=reverse
+hi StatusLine   ctermfg=7   ctermbg=None
+hi StatusLineNC ctermfg=7   ctermbg=None
 hi VertSplit    ctermfg=7   ctermbg=None cterm=None
 hi Pmenu        ctermfg=7   ctermbg=0
 " tabbufline styles are linked to built-in targets
@@ -370,14 +369,14 @@ function GitBranch()
 endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
-let &stl  = '%#TabLineSel# %{mode()} '        " vim modes
-let &stl .= '%2*%( %{GitBranch()}%(%r%h %)%)'   " git branch, readonly, help
-let &stl .= '%1*%< %t %m %w '                   " file name, modified, preview
-let &stl .= '%='                                " split left and right
-let &stl .= '%{&ff} %(| %{&fenc} %)%(| %y %)'   " format, encoding and type of the file
-let &stl .= '%2* %3p%% | %3l:%3c '              " cursor location
-let &stl .= '%#TabLineSel#%{LSPStatus()}'     " lsp status
-let &stl .= '%*'
+hi User3 ctermfg=0 ctermbg=6
+let &stl  = '%3* %{mode()} %*'                      " vim modes
+let &stl .= '%2*%( %{GitBranch()}%(%r%h %)%)%*'     " git branch, readonly, help
+let &stl .= '%1*%< %t %m %w %*'                     " file name, modified, preview
+let &stl .= '%1*%=%*'                               " split left and right
+let &stl .= '%1*%{&ff}%( | %{&fenc}%)%( | %y%) %*'  " format, encoding and type of the file
+let &stl .= '%2* %3p%% | %3l:%3c %*'                " cursor location
+let &stl .= '%3*%{LSPStatus()}%*'                   " lsp status
 " }}}
 " Git {{{
 " show the log in a pretty way
@@ -459,6 +458,9 @@ let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
+hi GitGUtterAdd    ctermbg=none ctermfg=2
+hi GitGUtterChange ctermbg=none ctermfg=3
+hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
