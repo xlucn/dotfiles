@@ -8,6 +8,8 @@ set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
 if !has('nvim')
     set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+else
+    luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
 " }}}
 " Vim-Packager {{{
@@ -24,12 +26,6 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-unimpaired')
   call a:packager.add('ap/vim-buftabline')
   " Language server
-  call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
-  call a:packager.add('hrsh7th/nvim-cmp', {'type': 'opt'})
-  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
-  call a:packager.add('hrsh7th/vim-vsnip', {'type': 'opt'})
-  call a:packager.add('hrsh7th/cmp-vsnip', {'type': 'opt'})
-  call a:packager.add('hrsh7th/vim-vsnip-integ', {'type': 'opt'})
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
   call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
   call a:packager.add('prabirshrestha/async.vim', {'type': 'opt'})
@@ -37,29 +33,23 @@ function! s:packager_init(packager) abort
   call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
   call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
   " Enhancements
-  " call a:packager.add('junegunn/fzf')
-  " call a:packager.add('junegunn/fzf.vim')
   call a:packager.add('majutsushi/tagbar')
-  " call a:packager.add('fs111/pydoc.vim')
   call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
 endfunction
-function PackagerSetup(job, status)
-    if a:status == 0 || a:status == 128
-        packadd vim-packager
+if !has("nvim")
+    packadd vim-packager
+    if exists("*packager#setup")
         call packager#setup(function('s:packager_init'))
     else
-        echoerr "clone vim-packager timed out"
+        let packager_dir = $XDG_DATA_HOME.'/vim/pack/packager/opt/vim-packager'
+        let packager_git = 'https://github.com/kristijanhusak/vim-packager'
+        let packager_clone = ['git', 'clone', packager_git, packager_dir]
+        let packager_clone = 'git clone '.packager_git.' '.packager_dir
+        command! PackagerClone :echo system(packager_clone)
+        echo "Use PackagerClone to install vim-packager, and use packadd to add it"
     endif
-endfunction
-let s:packager_dir = $XDG_DATA_HOME.'/vim/pack/packager/opt/vim-packager'
-let s:packager_git = 'https://github.com/kristijanhusak/vim-packager'
-let s:packager_clone = ['git', 'clone', s:packager_git, s:packager_dir]
-" running the git clone anyway, it won't do anything if exists
-" TODO: not good
-if exists('*job_start')
-    call job_start(s:packager_clone, {'exit_cb': function('PackagerSetup')})
 endif
 " }}}
 " Vim Settings
@@ -510,58 +500,7 @@ if empty(v:servername) && exists('*remote_startserver')
         call remote_startserver('VIM')
     endif
 endif
-if has('nvim')
-    packadd nvim-lspconfig
-    packadd cmp-nvim-lsp
-    packadd nvim-cmp
-    packadd cmp-vsnip
-    packadd vim-vsnip
-    packadd vim-vsnip-integ
-lua << EOF
-    local lsp = require('lspconfig')
-    local cmp = require('cmp')
-    cmp.setup({
-        snippet = {
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-          end,
-        },
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'vsnip' },
-        }, {
-          { name = 'buffer' },
-        })
-    })
-    lsp['pylsp'].setup({})
-    lsp['bashls'].setup({})
-    lsp['sumneko_lua'].setup({})
-    lsp['texlab'].setup({
-        settings = {
-            texlab = {
-                build = {
-                    args = {
-                        "-xelatex",
-                        "-interaction=nonstopmode",
-                        "-synctex=1",
-                        "%f"
-                    },
-                    executable = "latexmk",
-                    onSave = true,
-                },
-                forwardSearch = {
-                    args = { "--synctex-forward", "%l:1:%f", "%p" },
-                    executable = "zathura",
-                },
-                auxDirectory = "./output",
-                chktex = {
-                    onOpenAndSave = false,
-                }
-            }
-        }
-    })
-EOF
-else
+if !has('nvim')
     " packadd vim-lsc
     packadd vim-lsp
     packadd vim-lsp-settings
