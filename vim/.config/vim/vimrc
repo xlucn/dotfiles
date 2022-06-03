@@ -98,44 +98,47 @@ set noshowmode          " do not show mode on the last line
 set display+=lastline   " show partial line
 set background=dark     " color scheme
 set mouse=a             " enable mouse support in console
-set fillchars+=vert:│   " vertical split character
 " mouse support for urxvt and st
 if !has('nvim')
     if $TERM =~ "rxvt-unicode"
         set ttymouse=urxvt
-    elseif $TERM =~ "st"
+    elseif $TERM =~ "st*"
         set ttymouse=sgr
     endif
 endif
 " cursor shape for terminal emulators or linux console
-if $TERM != "linux"
-    let &t_SI = "\e[6 q"
-    let &t_SR = "\e[4 q"
-    let &t_EI = "\e[2 q"
-else
-    let &t_ve = "\e[?25h"
-    let &t_vi = "\e[?25l"
-    let &t_SI = "\e[?0c"
-    let &t_SR = "\e[?4c"
-    let &t_EI = "\e[?8c"
+if has("gui_running") == 0
+    if $TERM != "linux"
+        let &t_SI = "\e[6 q"
+        let &t_SR = "\e[4 q"
+        let &t_EI = "\e[2 q"
+    else
+        let &t_ve = "\e[?25h"
+        let &t_vi = "\e[?25l"
+        let &t_SI = "\e[?0c"
+        let &t_SR = "\e[?4c"
+        let &t_EI = "\e[?8c"
+    endif
 endif
 " color scheme
-hi SignColumn   ctermfg=0   ctermbg=None
-hi CursorColumn             ctermbg=0
-hi ColorColumn              ctermbg=0
-hi Folded       ctermfg=8   ctermbg=None
-hi SpellBad     ctermfg=9   ctermbg=None
-hi SpellCap     ctermfg=11  ctermbg=None
-hi Visual                   ctermbg=None cterm=reverse
-hi StatusLine   ctermfg=7   ctermbg=None
-hi StatusLineNC ctermfg=7   ctermbg=None
-hi VertSplit    ctermfg=7   ctermbg=None cterm=None
-hi Pmenu        ctermfg=7   ctermbg=0
-" tabbufline styles are linked to built-in targets
-hi PmenuSel     ctermfg=6   ctermbg=None cterm=None
-hi TabLine      ctermfg=7   ctermbg=None cterm=None
-hi TabLineSel   ctermfg=0   ctermbg=6    cterm=None
-hi TabLineFill  ctermfg=7   ctermbg=None cterm=None
+hi SignColumn   ctermbg=None ctermfg=0
+hi CursorColumn ctermbg=0
+hi ColorColumn  ctermbg=0
+hi Folded       ctermbg=None ctermfg=8
+hi SpellBad     ctermbg=None ctermfg=9
+hi SpellCap     ctermbg=None ctermfg=11
+hi Visual       ctermbg=None             cterm=reverse
+hi VertSplit    ctermbg=None ctermfg=7   cterm=None
+" popup menu
+hi Pmenu        ctermbg=0    ctermfg=7
+hi PmenuSel     ctermbg=None ctermfg=6   cterm=None
+" status line
+hi StatusLine   ctermbg=None ctermfg=7
+hi StatusLineNC ctermbg=None ctermfg=7
+" tab line
+hi TabLine      ctermbg=None ctermfg=7   cterm=None
+hi TabLineSel   ctermbg=6    ctermfg=0   cterm=None
+hi TabLineFill  ctermbg=None ctermfg=7   cterm=None
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
 " built-in plugin or file type support
