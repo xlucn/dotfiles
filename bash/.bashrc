@@ -48,6 +48,8 @@ alias ffmpeg="ffmpeg -hide_banner"
 alias ffprobe="ffprobe -hide_banner"
 # gdu show relative size bar
 alias gdu="gdu -Bx"
+# ncdu within one file system
+alias ncdu="ncdu -x"
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
