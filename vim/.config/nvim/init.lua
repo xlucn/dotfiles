@@ -49,23 +49,31 @@ cmp.setup({
 })
 lsp['pylsp'].setup({})
 lsp['bashls'].setup({})
-lsp['sumneko_lua'].setup({})
+lsp['sumneko_lua'].setup({
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
+    }
+})
 lsp['texlab'].setup({
     settings = {
         texlab = {
             build = {
+                executable = "latexmk",
                 args = {
                     "-xelatex",
                     "-interaction=nonstopmode",
                     "-synctex=1",
                     "%f"
                 },
-                executable = "latexmk",
                 onSave = true,
             },
             forwardSearch = {
-                args = { "--synctex-forward", "%l:1:%f", "%p" },
                 executable = "zathura",
+                args = { "--synctex-forward", "%l:1:%f", "%p" },
             },
             auxDirectory = "./output",
             chktex = {
