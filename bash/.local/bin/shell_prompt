@@ -24,7 +24,8 @@ __user_host() {
 __pwd_indicator() {
     # print current directory
     pwd=$(basename "$PWD")
-    printf "$BYELLOW%.*s" "$CWD_LIMIT" "$pwd"
+    printf "$BYELLOW%s"
+    printf "$pwd%s" | colrm "$CWD_LIMIT" | tr -d ' \n'
     [ ${#pwd} -gt $CWD_LIMIT ] && printf "…"
     printf "$RESET%s"
 
@@ -70,14 +71,13 @@ __git_prompt() {
 }
 
 __bash_ps1() {
-    exitcode=$?
+    [ $? = 0 ] && EXITCOLOR=$BYELLOW || EXITCOLOR=$BRED
     __ssh_indicator    && printf "$SEP%s"
+    __job_counts       && printf "$SEP%s"
     # __user_host        && printf "$SEP%s"
     __pwd_indicator    && printf "$SEP%s"
     __nested_indicator && printf "$SEP%s"
-    __job_counts       && printf "$SEP%s"
     # __git_autostats    && printf "$SEP%s"
     __git_prompt       && printf "$SEP%s"
-    [ $exitcode = 0 ] && EXITCOLOR=$BYELLOW || EXITCOLOR=$BRED
     printf "$EXITCOLOR%s%s$RESET" "$" "$SEP"
 }
