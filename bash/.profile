@@ -4,8 +4,8 @@ HOME=${HOME%%/}
 USERID=$(id -u)
 MANPATH=$(manpath 2> /dev/null)
 # Environments
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 export BROWSER=firefox
 export NOTES_DIRECTORY="$HOME/Code/notes"
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
@@ -114,6 +114,8 @@ export ENV="$HOME/.bashrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # BibTool
 export BIBTOOLRSC="$XDG_CONFIG_HOME/bibtool/resource"
+# TMSU
+export TMSU_DB="$XDG_DATA_HOME/tmsu.db"
 
 # PATH
 add_to_path() {

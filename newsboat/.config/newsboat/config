@@ -24,6 +24,7 @@ bind-key g home
 bind-key l open
 bind-key h quit
 bind-key \ toggle-show-read-feeds
+bind-key ! edit-flags
 
 # Formats
 articlelist-format "%4i %f %D %?T?<%-12T> &?%t"
