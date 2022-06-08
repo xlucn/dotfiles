@@ -19,6 +19,8 @@ require('packager').setup(function(packager)
     packager.add('hrsh7th/cmp-vsnip', {type = 'opt'});
     packager.add('hrsh7th/vim-vsnip-integ', {type = 'opt'});
     -- Enhancements
+    packager.add('nvim-lua/plenary.nvim')
+    packager.add('nvim-telescope/telescope.nvim')
     packager.add('majutsushi/tagbar')
     packager.add('liuchengxu/vim-which-key')
     packager.add('jpalardy/vim-slime')
