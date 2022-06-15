@@ -34,6 +34,18 @@ vim.cmd('packadd cmp-vsnip')
 vim.cmd('packadd vim-vsnip')
 vim.cmd('packadd vim-vsnip-integ')
 
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, opts)
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 local lsp = require('lspconfig')
 local cmp = require('cmp')
 cmp.setup({
@@ -42,6 +54,11 @@ cmp.setup({
         vim.fn["vsnip#anonymous"](args.body)
       end,
     },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       { name = 'vsnip' },
@@ -49,9 +66,18 @@ cmp.setup({
       { name = 'buffer' },
     })
 })
-lsp['pylsp'].setup({})
-lsp['bashls'].setup({})
+
+local servers = {
+    'clangd',
+    'pylsp',
+    'bashls',
+}
+for _, server in ipairs(servers) do
+    lsp[server].setup({ capabilities = capabilities })
+end
+
 lsp['sumneko_lua'].setup({
+    capabilities = capabilities,
     settings = {
         Lua = {
             diagnostics = {
@@ -61,6 +87,7 @@ lsp['sumneko_lua'].setup({
     }
 })
 lsp['texlab'].setup({
+    capabilities = capabilities,
     settings = {
         texlab = {
             build = {

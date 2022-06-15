@@ -445,26 +445,28 @@ let g:which_key_map = {
 let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
-if &rtp =~ "vim-which-key"
-    nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
-    vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
-    nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
-    vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-endif
 function WhichKeyRegister()
-    if &rtp =~ "vim-which-key"
+    if exists("*which_key#register")
         call which_key#register(',', 'g:which_key_map')
         call which_key#register('\', 'g:which_key_map_local')
     endif
+    if exists(":WhichKey")
+        nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+        vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+        nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+        vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+    endif
+    if exists(":Commentary")
+        nnoremap <leader>c <Plug>CommentaryLine
+        onoremap <leader>c <Plug>Commentary
+        xnoremap <leader>c <Plug>Commentary
+    endif
+    if exists(":SlimeRegionSend")
+        xmap <leader>s <Plug>SlimeRegionSend
+        nmap <leader>s <Plug>SlimeParagraphSend
+    endif
 endfunction
 autocmd VimEnter * call WhichKeyRegister()
-" }}}
-" Vim commentary {{{
-if &rtp =~ "vim-commentary"
-    nmap <leader>c <Plug>CommentaryLine
-    omap <leader>c <Plug>Commentary
-    xmap <leader>c <Plug>Commentary
-endif
 " }}}
 " Vim Endwise {{{
 " https://github.com/tpope/vim-endwise/issues/41#issuecomment-432905813
@@ -485,11 +487,7 @@ hi GitGUtterChange ctermbg=none ctermfg=3
 hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " vim-slime {{{
-if &rtp =~ 'vim-slime'
-    let g:slime_no_mappings = 1
-    xmap <leader>s <Plug>SlimeRegionSend
-    nmap <leader>s <Plug>SlimeParagraphSend
-endif
+let g:slime_no_mappings = 1
 " set config to use the pane on the right by default
 let g:slime_default_config = {
     \ "socket_name": get(split($TMUX, ","), 0),
@@ -576,6 +574,7 @@ let g:lsc_server_commands = {
 " asyncomplete {{{
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 1
 " }}}
