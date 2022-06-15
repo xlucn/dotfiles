@@ -32,6 +32,11 @@ function! s:packager_init(packager) abort
   call a:packager.add('prabirshrestha/asyncomplete.vim', {'type': 'opt'})
   call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
   call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
+  " Snippets
+  call a:packager.add('hrsh7th/vim-vsnip')
+  call a:packager.add('hrsh7th/vim-vsnip-integ')
+  call a:packager.add('honza/vim-snippets')
+  call a:packager.add('rafamadriz/friendly-snippets')
   " Enhancements
   call a:packager.add('majutsushi/tagbar')
   call a:packager.add('liuchengxu/vim-which-key')
@@ -125,6 +130,7 @@ hi SignColumn   ctermbg=None ctermfg=0
 hi CursorColumn ctermbg=0
 hi ColorColumn  ctermbg=0
 hi Folded       ctermbg=None ctermfg=8
+hi NonText      ctermbg=None ctermfg=8
 hi SpellBad     ctermbg=None ctermfg=9
 hi SpellCap     ctermbg=None ctermfg=11
 hi Visual       ctermbg=None             cterm=reverse
