@@ -351,17 +351,35 @@ augroup UpdateStatus
   autocmd!
   autocmd User lsp_diagnostics_updated redrawstatus
 augroup END
+lua << EOF
+function LSPStatus()
+    local E = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+    local W = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+    local I = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+    local H = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+    local message = ''
+    if E > 0 then message = message .. 'E: ' .. E end
+    if W > 0 then message = message .. 'W: ' .. W end
+    if I > 0 then message = message .. 'I: ' .. I end
+    if H > 0 then message = message .. 'H: ' .. H end
+    return message
+end
+EOF
+
 function! LSPStatus()
-    if exists('*lsp#get_buffer_diagnostics_counts') == 0
-        return ''
+    if has('nvim')
+        return luaeval('LSPStatus()')
+    elseif exists('*lsp#get_buffer_diagnostics_counts')
+        let l:counts = lsp#get_buffer_diagnostics_counts()
+        let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
+        let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
+        let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
+        let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
+        let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
+        return ' ' . l:lsp_status
+    else
+        return ""
     endif
-    let l:counts = lsp#get_buffer_diagnostics_counts()
-    let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
-    let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
-    let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
-    let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
-    let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
-    return ' ' . l:lsp_status
 endfunction
 function GitBranch()
     let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
