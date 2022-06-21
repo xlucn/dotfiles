@@ -7,8 +7,7 @@ Xft.hintstyle : hintslight
 
 ! -- Cursor -- !
 Xcursor.theme: capitaine-cursors-light
-! Xcursor.theme: Breeze-Adapta-Cursor
-Xcursor.size: 48
+Xcursor.size: 36
 
 *.font: Monospace:size=12
 
