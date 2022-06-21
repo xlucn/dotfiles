@@ -5,4 +5,4 @@
 
 # Url supported: http, ftp, mailto, magnet link, local file
 grep -aEo "((https?|ftp|file)://|(mailto|magnet):|www.)[^[:space:],;'\">\\)]*[^][:space:],.;:'\">\\)}]" \
-| uniq | dmenu -i -p 'Select url to open:' -l 10 | xargs firefox --new-tab
+| uniq | dmenu -i -p 'Select url to open:' -l 10 | xargs -r firefox --new-tab
