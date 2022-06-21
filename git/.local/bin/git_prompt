@@ -74,10 +74,10 @@ __git_ps1_show_upstream ()
 {
     # parse configuration values
     for option in ${GIT_PS1_SHOWUPSTREAM}; do
-    case "$option" in
-    verbose) verbose=1 ;;
-    name)    name=1 ;;
-    esac
+        case "$option" in
+            verbose) verbose=1 ;;
+            name)    name=1 ;;
+        esac
     done
 
     # Find how many commits we are ahead/behind our upstream
@@ -85,34 +85,24 @@ __git_ps1_show_upstream ()
 
     # calculate the result
     if [ -z "$verbose" ]; then
-    case "$count" in
-    "") # no upstream
-    p="" ;;
-    "0	0") # equal to upstream
-    p="=" ;;
-    "0	"*) # ahead of upstream
-    p=">" ;;
-    *"	0") # behind upstream
-    p="<" ;;
-    *)	    # diverged from upstream
-    p="<>" ;;
-    esac
+        case "$count" in
+            "")     p="" ;; # no upstream
+            "0	0") p="=" ;; # equal to upstream
+            "0	"*) p=">" ;; # ahead of upstream
+            *"	0") p="<" ;; # behind upstream
+            *)      p="<>" ;;# diverged from upstream
+        esac
     else
-    case "$count" in
-    "") # no upstream
-    p="" ;;
-    "0	0") # equal to upstream
-    p=" u=" ;;
-    "0	"*) # ahead of upstream
-    p=" u+${count#0	}" ;;
-    *"	0") # behind upstream
-    p=" u-${count%	0}" ;;
-    *)	    # diverged from upstream
-    p=" u+${count#*	}-${count%	*}" ;;
-    esac
-    if [ -n "$count" ] && [ -n "$name" ]; then
-    p="$p $(git rev-parse --abbrev-ref "@{upstream}" 2>/dev/null)"
-    fi
+        case "$count" in
+            "")     p="" ;; # no upstream
+            "0	0") p=" u=" ;; # equal to upstream
+            "0	"*) p=" u+${count#0	}" ;; # ahead of upstream
+            *"	0") p=" u-${count%	0}" ;; # behind upstream
+            *)      p=" u+${count#*	}-${count%	*}" ;; # diverged from upstream
+        esac
+        if [ -n "$count" ] && [ -n "$name" ]; then
+            p="$p $(git rev-parse --abbrev-ref "@{upstream}" 2>/dev/null)"
+        fi
     fi
 }
 
@@ -134,9 +124,9 @@ __git_ps1_colorize_gitstring ()
 
     branch_color=""
     if [ "$detached" = no ]; then
-    branch_color="$ok_color"
+        branch_color="$ok_color"
     else
-    branch_color="$bad_color"
+        branch_color="$bad_color"
     fi
     c="$branch_color$c"
 
@@ -188,12 +178,12 @@ elif [ -d "$g/rebase-apply" ]; then
     __git_eread "$g/rebase-apply/next" step
     __git_eread "$g/rebase-apply/last" total
     if [ -f "$g/rebase-apply/rebasing" ]; then
-    __git_eread "$g/rebase-apply/head-name" git_b
-    r="|REBASE"
+        __git_eread "$g/rebase-apply/head-name" git_b
+        r="|REBASE"
     elif [ -f "$g/rebase-apply/applying" ]; then
-    r="|AM"
+        r="|AM"
     else
-    r="|AM/REBASE"
+        r="|AM/REBASE"
     fi
 elif [ -f "$g/MERGE_HEAD" ]; then
     r="|MERGING"
@@ -210,13 +200,13 @@ elif test -f "$g/REVERT_HEAD"; then
 elif __git_eread "$g/sequencer/todo" todo; then
     case "${todo-}" in
     p[\ \	]|pick[\ \	]*)
-    r="|CHERRY-PICKING"
-    return 0
-    ;;
+        r="|CHERRY-PICKING"
+        return 0
+        ;;
     revert[\ \	]*)
-    r="|REVERTING"
-    return 0
-    ;;
+        r="|REVERTING"
+        return 0
+        ;;
     esac
 elif [ -f "$g/BISECT_LOG" ]; then
     r="|BISECTING"
@@ -230,28 +220,28 @@ elif [ -h "$g/HEAD" ]; then
 else
     head=""
     if ! __git_eread "$g/HEAD" head; then
-    return
+        return
     fi
     # is it a symbolic ref?
     git_b="${head#ref: }"
     if [ "$head" = "$git_b" ]; then
-    detached=yes
-    git_b="$(
-    case "${GIT_PS1_DESCRIBE_STYLE-}" in
-    (contains)
-    git describe --contains HEAD ;;
-    (branch)
-    git describe --contains --all HEAD ;;
-    (tag)
-    git describe --tags HEAD ;;
-    (describe)
-    git describe HEAD ;;
-    (*)
-    git describe --tags --exact-match HEAD ;;
-    esac 2>/dev/null)" ||
+        detached=yes
+        git_b="$(
+        case "${GIT_PS1_DESCRIBE_STYLE-}" in
+        (contains)
+            git describe --contains HEAD ;;
+        (branch)
+            git describe --contains --all HEAD ;;
+        (tag)
+            git describe --tags HEAD ;;
+        (describe)
+            git describe HEAD ;;
+        (*)
+            git describe --tags --exact-match HEAD ;;
+        esac 2>/dev/null)" ||
 
-    git_b="$short_sha..."
-    git_b="($git_b)"
+        git_b="$short_sha..."
+        git_b="($git_b)"
     fi
 fi
 
@@ -262,31 +252,31 @@ fi
 w="" i="" s="" u="" c="" p=""
 if [ "true" = "$inside_gitdir" ]; then
     if [ "true" = "$bare_repo" ]; then
-    c="BARE:"
+        c="BARE:"
     else
-    git_b="GIT_DIR!"
+        git_b="GIT_DIR!"
     fi
 elif [ "true" = "$inside_worktree" ]; then
     if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ]; then
-    git diff --no-ext-diff --quiet || w="*"
-    git diff --no-ext-diff --cached --quiet || i="+"
-    if [ -z "$short_sha" ] && [ -z "$i" ]; then
-    i="#"
-    fi
+        git diff --no-ext-diff --quiet || w="*"
+        git diff --no-ext-diff --cached --quiet || i="+"
+        if [ -z "$short_sha" ] && [ -z "$i" ]; then
+            i="#"
+        fi
     fi
     if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ] &&
        git rev-parse --verify --quiet refs/stash >/dev/null; then
-    s="$"
+        s="$"
     fi
 
     if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ] &&
        git ls-files --others --exclude-standard --directory --no-empty-directory \
        --error-unmatch -- ':/*' >/dev/null 2>/dev/null; then
-    u="?"
+        u="?"
     fi
 
     if [ -n "${GIT_PS1_SHOWUPSTREAM-}" ]; then
-    __git_ps1_show_upstream
+        __git_ps1_show_upstream
     fi
 fi
 
