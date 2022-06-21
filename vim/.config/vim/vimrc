@@ -357,21 +357,6 @@ augroup UpdateStatus
   autocmd!
   autocmd User lsp_diagnostics_updated redrawstatus
 augroup END
-lua << EOF
-function LSPStatus()
-    local E = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-    local W = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-    local I = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-    local H = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-    local message = ''
-    if E > 0 then message = message .. 'E: ' .. E end
-    if W > 0 then message = message .. 'W: ' .. W end
-    if I > 0 then message = message .. 'I: ' .. I end
-    if H > 0 then message = message .. 'H: ' .. H end
-    return message
-end
-EOF
-
 function! LSPStatus()
     if has('nvim')
         return luaeval('LSPStatus()')
