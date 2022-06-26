@@ -6,7 +6,6 @@
     email = oliver_lew@outlook.com
 [core]
     pager = "less -x1,5 --mouse --wheel-lines=3"
-    editor = vim
     filemode = true
 [gui]
     spellingdictionary = none
