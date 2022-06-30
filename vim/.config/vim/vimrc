@@ -8,8 +8,6 @@ set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
 if !has('nvim')
     set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-else
-    luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
 " }}}
 " Vim-Packager {{{
@@ -26,12 +24,18 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-unimpaired')
   call a:packager.add('ap/vim-buftabline')
   " Language server
+  " vim
   call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
   call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
   call a:packager.add('prabirshrestha/async.vim', {'type': 'opt'})
   call a:packager.add('prabirshrestha/asyncomplete.vim', {'type': 'opt'})
   call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
   call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
+  " neovim
+  call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
+  call a:packager.add('hrsh7th/nvim-cmp', {'type': 'opt'})
+  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
+  call a:packager.add('hrsh7th/cmp-vsnip', {'type': 'opt'})
   " Snippets
   call a:packager.add('hrsh7th/vim-vsnip')
   call a:packager.add('hrsh7th/vim-vsnip-integ')
@@ -39,9 +43,13 @@ function! s:packager_init(packager) abort
   call a:packager.add('rafamadriz/friendly-snippets')
   " Enhancements
   call a:packager.add('majutsushi/tagbar')
-  call a:packager.add('liuchengxu/vim-which-key')
   call a:packager.add('jpalardy/vim-slime')
   call a:packager.add('airblade/vim-gitgutter')
+  call a:packager.add('liuchengxu/vim-which-key', {'type': 'opt'})
+  " neovim
+  call a:packager.add('folke/which-key.nvim', {'type': 'opt'})
+  call a:packager.add('nvim-lua/plenary.nvim', {'type': 'opt'})
+  call a:packager.add('nvim-telescope/telescope.nvim', {'type': 'opt'})
 endfunction
 if !has("nvim")
     packadd vim-packager
@@ -55,6 +63,21 @@ if !has("nvim")
         command! PackagerClone :echo system(packager_clone)
         echo "Use PackagerClone to install vim-packager, and use packadd to add it"
     endif
+    packadd vim-lsp
+    packadd vim-lsp-settings
+    packadd async.vim
+    packadd asyncomplete.vim
+    packadd asyncomplete-lsp.vim
+    packadd vim-which-key
+else
+    packadd which-key.nvim
+    packadd nvim-lspconfig
+    packadd cmp-nvim-lsp
+    packadd nvim-cmp
+    packadd cmp-vsnip
+    packadd vim-vsnip
+    packadd vim-vsnip-integ
+    luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
 " }}}
 " Vim Settings
@@ -207,7 +230,7 @@ augroup normal
     autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
     autocmd BufNewFile,BufRead *.muttrc setlocal ft=muttrc
     " load Xresources on save
-    autocmd BufWritePost *Xresources silent call system("DISPLAY=:0 xrdb -load ".expand('%'))
+    autocmd BufWritePost Xresources,*Xresources call system("xrdb -load ".expand('%'))
     " tabs for these file types
     autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2 cole=0
     autocmd FileType c,cpp,mma,json setlocal noet
@@ -359,7 +382,7 @@ augroup UpdateStatus
 augroup END
 function! LSPStatus()
     if has('nvim')
-        return luaeval('LSPStatus()')
+        return luaeval('NvimLSPStatus()')
     elseif exists('*lsp#get_buffer_diagnostics_counts')
         let l:counts = lsp#get_buffer_diagnostics_counts()
         let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
@@ -379,13 +402,13 @@ endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
 hi User3 ctermfg=0 ctermbg=6
-let &stl  = '%3* %{mode()} %*'                      " vim modes
-let &stl .= '%2*%( %{GitBranch()}%(%r%h %)%)%*'     " git branch, readonly, help
-let &stl .= '%1*%< %t %m %w %*'                     " file name, modified, preview
-let &stl .= '%1*%=%*'                               " split left and right
-let &stl .= '%1*%{&ff}%( | %{&fenc}%)%( | %y%) %*'  " format, encoding and type of the file
-let &stl .= '%2* %3p%% | %3l:%3c %*'                " cursor location
-let &stl .= '%3*%{LSPStatus()}%*'                   " lsp status
+let &stl = '%3* %{mode()} %*'                             " vim modes
+let &stl = &stl . '%2*%( %{GitBranch()}%(%r%h %)%)%*'     " git branch, readonly, help
+let &stl = &stl . '%1*%< %t %m %w %*'                     " file name, modified, preview
+let &stl = &stl . '%1*%=%*'                               " split left and right
+let &stl = &stl . '%1*%{&ff}%( | %{&fenc}%)%( | %y%) %*'  " format, encoding and type of the file
+let &stl = &stl . '%2* %3p%% | %3l:%3c %*'                " cursor location
+let &stl = &stl . '%3*%{LSPStatus()}%*'                   " lsp status
 " }}}
 " Git {{{
 " show the log in a pretty way
@@ -437,6 +460,9 @@ let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
 function WhichKeyRegister()
+    if has('nvim')
+        return
+    endif
     if exists("*which_key#register")
         call which_key#register(',', 'g:which_key_map')
         call which_key#register('\', 'g:which_key_map_local')
@@ -511,12 +537,6 @@ if empty(v:servername) && exists('*remote_startserver')
     endif
 endif
 if !has('nvim')
-    " packadd vim-lsc
-    packadd vim-lsp
-    packadd vim-lsp-settings
-    packadd async.vim
-    packadd asyncomplete.vim
-    packadd asyncomplete-lsp.vim
     nmap <buffer> <C-]> <plug>(lsp-definition)
     nmap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
     nmap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
