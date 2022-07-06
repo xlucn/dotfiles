@@ -133,6 +133,9 @@ xmenu.borderWidth: 2
 xmenu.selbackground: #B0BEC5
 xmenu.selforeground: #222B39
 
+fv.background:    #e4e4e4
+fv.foreground:    #1c1c1c
+
 #if __has_include("/tmp/Xresources.Xft.dpi")
 # include "/tmp/Xresources.Xft.dpi"
 #endif
