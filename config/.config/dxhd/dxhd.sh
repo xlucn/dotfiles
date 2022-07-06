@@ -62,6 +62,7 @@ rm "$tmpfile"
 scrot -s --line mode=edge,width=4,color=red,opacity=70 "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
 
 # ctrl + shift + @Print
+tmpfile=$(mktemp -u --tmpdir scrot.temp.XXXX.png)
 scrot -s --line mode=edge,width=4,color=red,opacity=70 "$tmpfile"
 xclip -selection clipboard -t image/png < "$tmpfile"
 rm "$tmpfile"
@@ -74,6 +75,9 @@ setmonitor
 
 # super + p
 setmonitor
+
+# super + shift + p
+openpdf
 
 ## Translate selected text with translate-shell
 ## Idea from https://github.com/4lgn/word-lookup
