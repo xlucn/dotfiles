@@ -39,12 +39,6 @@ cmp.setup({
     })
 })
 
--- servers with simple setup
-local servers = {
-    'clangd',
-    'pylsp',
-    'bashls',
-}
 local on_attach = function(_, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -64,6 +58,12 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', ',la', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', ',lf', vim.lsp.buf.formatting, bufopts)
 end
+-- servers with simple setup
+local servers = {
+    'clangd',
+    'pylsp',
+    'bashls',
+}
 for _, server in ipairs(servers) do
     lsp[server].setup({
         capabilities = capabilities,
@@ -109,7 +109,9 @@ lsp['texlab'].setup({
     }
 })
 
-local whichkey = require("which-key")
-whichkey.register({
-    l = { name = "language server" }
-}, { prefix = "<leader>" })
+require("which-key").register({
+    l = { name = "language server" },
+    c = "Commentary"
+}, {
+    prefix = "<leader>"
+})

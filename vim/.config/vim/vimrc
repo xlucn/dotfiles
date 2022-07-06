@@ -460,6 +460,15 @@ let g:which_key_map_local = {
   \ 'l' : { 'name' : '+vimtex' },
   \ }
 function WhichKeyRegister()
+    if exists(":Commentary")
+        nnoremap <leader>c <Plug>CommentaryLine
+        onoremap <leader>c <Plug>Commentary
+        xnoremap <leader>c <Plug>Commentary
+    endif
+    if exists(":SlimeRegionSend")
+        xmap <leader>s <Plug>SlimeRegionSend
+        nmap <leader>s <Plug>SlimeParagraphSend
+    endif
     if has('nvim')
         return
     endif
@@ -472,15 +481,6 @@ function WhichKeyRegister()
         vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
         nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
         vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-    endif
-    if exists(":Commentary")
-        nnoremap <leader>c <Plug>CommentaryLine
-        onoremap <leader>c <Plug>Commentary
-        xnoremap <leader>c <Plug>Commentary
-    endif
-    if exists(":SlimeRegionSend")
-        xmap <leader>s <Plug>SlimeRegionSend
-        nmap <leader>s <Plug>SlimeParagraphSend
     endif
 endfunction
 autocmd VimEnter * call WhichKeyRegister()
