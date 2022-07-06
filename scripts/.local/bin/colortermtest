@@ -1,11 +1,16 @@
 #!/bin/sh
-for i in $(seq 0 9); do
-    for f in $(seq 30 37); do
-        for b in $(seq 40 47); do
-            color="[$i;$f;${b}m"
-            printf "\033%s^%s\033[0m" "$color" "$color"
+
+block() {
+    for i in $(seq 0 9); do
+        for f in $(seq 30 37) $(seq 90 97); do
+            for b in $(seq 40 47); do
+                color="[${i};${f};$((b + $1 * 60))m"
+                printf "\033%s^%s\033[0m" "$color" "$color"
+                [ $((b % 10)) = 7 ] && printf "\n"
+            done
         done
-        printf "\n"
     done
-done
-printf "\n"
+}
+
+block 0
+block 1
