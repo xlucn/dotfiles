@@ -43,7 +43,7 @@ highlight article "^Title:.*"   cyan   default bold
 highlight article "^Author:.*"  white  default bold
 highlight article "^Date:.*"    white  default
 highlight article "^Link:.*"    yellow default
-highlight articlelist "(lens|astrometry|gaia|csst)" green default bold
+highlight articlelist "(lens|astrometry|gaia|csst|black|hole)" green default bold
 highlight articlelist "(globular|cluster|halo|dark)" green default
 
 # Filters
@@ -51,6 +51,6 @@ define-filter "Empty feeds" "total_count = 0"
 
 # Connections
 user-agent "Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101"
-use-proxy yes
+use-proxy no
 proxy-type socks5h
 proxy proxy-host:1081

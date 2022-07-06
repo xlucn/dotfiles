@@ -39,7 +39,6 @@ alignment = left
 icon_position = left
 
 # The new icon settings
-enable_recursive_icon_lookup = true
 icon_theme = Papirus-Dark
 icon_size = 64
 
