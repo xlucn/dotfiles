@@ -116,6 +116,8 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export BIBTOOLRSC="$XDG_CONFIG_HOME/bibtool/resource"
 # TMSU
 export TMSU_DB="$XDG_DATA_HOME/tmsu.db"
+# fv the fits viewer
+export FVTMP="$XDG_CACHE_HOME/fvtmp"
 
 # PATH
 add_to_path() {
