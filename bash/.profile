@@ -85,7 +85,7 @@ export DIALOGRC="$XDG_CONFIG_HOME/dialog/dialogrc"
 export LYNX_CFG="$XDG_CONFIG_HOME/lynx/lynx.cfg"
 export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
 # maxima
-export MAXIMA_USERDIR="$XDG_CONFIG_HOME/maxima"
+export MAXIMA_USERDIR="$XDG_DATA_HOME/maxima"
 # android
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
