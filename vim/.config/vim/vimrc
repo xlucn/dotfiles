@@ -465,9 +465,9 @@ function WhichKeyRegister()
         onoremap <leader>c <Plug>Commentary
         xnoremap <leader>c <Plug>Commentary
     endif
-    if exists(":SlimeRegionSend")
-        xmap <leader>s <Plug>SlimeRegionSend
-        nmap <leader>s <Plug>SlimeParagraphSend
+    if exists(":SlimeSend")
+        xmap <leader>s <Plug>SlimeSend
+        nmap <leader>s <Plug>SlimeSend
     endif
     if has('nvim')
         return
