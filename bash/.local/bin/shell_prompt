@@ -25,7 +25,7 @@ __pwd_indicator() {
     # print current directory
     pwd=$(basename "$PWD")
     printf "$BYELLOW%s"
-    printf "$pwd%s" | colrm "$CWD_LIMIT" | tr -d ' \n'
+    printf "$pwd%s" | colrm "$CWD_LIMIT" | tr -d '\n'
     [ ${#pwd} -gt $CWD_LIMIT ] && printf "…"
     printf "$RESET%s"
 
