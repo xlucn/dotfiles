@@ -121,11 +121,7 @@ export FVTMP="$XDG_CACHE_HOME/fvtmp"
 
 # PATH
 add_to_path() {
-    for path in "$@"; do
-        if [ -d "$path" ] && [ "$PATH" = "${PATH%"$path*"}" ]; then
-            export PATH="$path:${PATH}"
-        fi
-    done
+    [ "$PATH" = "${PATH#*"$*"}" ] && export PATH="$*:${PATH}"
 }
 add_to_path "$HOME/.local/bin"
 add_to_path "$NPM_PACKAGES/bin"
