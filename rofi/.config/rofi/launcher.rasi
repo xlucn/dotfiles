@@ -3,10 +3,6 @@
 configuration {
     modi                : "drun";
     drun-display-format : "{name}";
-    ml-row-left         : "ScrollUp";
-    ml-row-right        : "ScrollDown";
-    ml-row-up           : "ScrollLeft";
-    ml-row-down         : "ScrollRight";
 }
 
 * {
@@ -25,6 +21,7 @@ listview {
     columns: 7;
     lines:   5;
     margin:  2%;
+    flow: horizontal;
 }
 
 inputbar {
