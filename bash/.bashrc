@@ -40,9 +40,6 @@ alias notes="lf \$HOME/Code/notes"
 alias psg="pgrep -ifa"
 # du tree
 alias sdu="tree --du --sort=size -CFhrax"
-hdu() {
-    du -haxd 1 "$@" 2> /dev/null | sort -h
-}
 # ffmpeg, quiet!
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffprobe="ffprobe -hide_banner"
@@ -50,12 +47,18 @@ alias ffprobe="ffprobe -hide_banner"
 alias gdu="gdu -Bx"
 # ncdu within one file system
 alias ncdu="ncdu -x"
+# arch linux update
+alias au="sudo pacman -Syu && proxychains paru -Sua"
+# fricas
+alias fricas="fricas -nox -noht -rl"
+
+hdu() {
+    du -haxd 1 "$@" 2> /dev/null | sort -h
+}
 # pip update
 pip_update() {
     pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
 }
-# arch linux update
-alias au="sudo pacman -Syu && proxychains paru -Sua"
 # start xorg
 x() {
     tty=$(tty)
