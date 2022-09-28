@@ -1,0 +1,4 @@
+show-apparent-size: false
+show-relative-size: true
+no-cross: true
+write-config: false

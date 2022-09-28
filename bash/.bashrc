@@ -43,8 +43,6 @@ alias sdu="tree --du --sort=size -CFhrax"
 # ffmpeg, quiet!
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffprobe="ffprobe -hide_banner"
-# gdu show relative size bar
-alias gdu="gdu -Bx"
 # ncdu within one file system
 alias ncdu="ncdu -x"
 # arch linux update
