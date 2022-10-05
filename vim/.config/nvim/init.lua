@@ -39,25 +39,28 @@ cmp.setup({
     })
 })
 
-local on_attach = function(_, bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.api.nvim_buf_set_option(args.buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    -- Mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', ',li', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', ',lr', vim.lsp.buf.references, bufopts)
-    vim.keymap.set('n', ',lR', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', ',la', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', ',lf', vim.lsp.buf.formatting, bufopts)
-end
+        -- Mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local bufopts = { noremap=true, silent=true, buffer=args.buf }
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+        vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+        vim.keymap.set('n', ',li', vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set('n', ',lr', vim.lsp.buf.references, bufopts)
+        vim.keymap.set('n', ',lR', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', ',la', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set('n', ',lf', vim.lsp.buf.formatting, bufopts)
+    end
+})
+
 -- servers with simple setup
 local servers = {
     'clangd',
@@ -67,13 +70,11 @@ local servers = {
 for _, server in ipairs(servers) do
     lsp[server].setup({
         capabilities = capabilities,
-        on_attach = on_attach,
     })
 end
 
 lsp['sumneko_lua'].setup({
     capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         Lua = {
             diagnostics = {
@@ -84,7 +85,6 @@ lsp['sumneko_lua'].setup({
 })
 lsp['texlab'].setup({
     capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         texlab = {
             build = {
