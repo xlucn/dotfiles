@@ -2,21 +2,28 @@
 # send files with mconnect
 
 if ! command -v mconnectctl; then
-    notify-send "Nemo" "Mconnect not installed"
+    notify-send "MConnect Send" "Mconnect not installed"
     exit 1
 fi
 
 mconnectctl list-devices |
 grep /org/mconnect/device |
-while read -r device id _ name; do
+while read -r device _ _ name; do
     if mconnectctl show-device "$device" | grep -iq "connected:\s*true"; then
         echo "$device $name"
     fi
 done |
 dmenu -p "Send those files to" |
-{   read -r device name
-    printf "$NEMO_SCRIPT_SELECTED_FILE_PATHS" |
+{   read -r device _
+    if [ -z "$device" ]; then
+        notify-send "MConnect Send" "No devices found/selected"
+        exit 1
+    fi
+    echo "$NEMO_SCRIPT_SELECTED_FILE_PATHS" |
     while read -r file; do
-        mconnectctl share-file "$device" "$file"
+        if [ -n "$file" ]; then
+            notify-send "MConnect Send" "Sending $file"
+            mconnectctl share-file "$device" "$file"
+        fi
     done
 }
