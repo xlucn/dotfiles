@@ -7,24 +7,15 @@
 │           │Detach │       │       │       │       │       │       │       │       │       │MpdPrev│MpdNext│MpdToggle  │
 │           │QuitAll│       │       │Reload │       │       │       │       │       │       │       │       │           │
 ├──Esc──────┴─┬─A───┴─┬─S───┴─┬─D───┴─┬─F───┴─┬─G───┴─┬─H───┴─┬─J───┴─┬─K───┴─┬─L───┴─┬:─;──┴─┬"─'──┴─┬─────┴─Enter─────┤
-│LastWindow   │ShowAll│ShowKey│       │       │       │ResizeM│NextP  │PrevP  │ResizeM│       │       │NewTerm          │
-│             │       │       │       │       │       │ResizeS│MvPrevP│MvNextP│ResizeS│       │       │                 │
+│LastWindow   │ShowAll│ShowKey│       │       │       │HResize│NextP  │PrevP  │HResize│       │       │NewTerm          │
+│             │       │       │       │       │       │VResize│MvPrevP│MvNextP│VResize│       │       │                 │
 │             │       │       │       │       │       │       │       │       │Lock   │       │       │                 │
 ├──Shift──────┴───┬─Z─┴───┬─X─┴───┬─C─┴───┬─V─┴───┬─B─┴───┬─N─┴───┬─M─┴───┬<─,┴───┬>─.┴───┬?─/┴───┬───┴─Shift───────────┤
 │                 │       │TmuxCmd│Copy   │Paste  │HideBar│       │Zoom   │PrevW  │NextW  │       │                     │
 │                 │       │       │       │       │       │       │       │MvPrevW│MvNextW│       │                     │
 │                 │       │       │       │       │       │       │       │       │       │       │                     │
-├──Ctrl───┬─Win───┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴─Alt───┼───────┴─┬─────────┬──Ctrl───┤
-│         │         │         │ MoveToMaster                                    │         │         │         │         │
-│         │         │         │                                                 │         │         │         │         │
-│         │         │         │                                                 │         │         │         │         │
-└─────────┴─────────┴─────────┴─────────────────────────────────────────────────┴─────────┴─────────┴─────────┴─────────┘
-
-Note:
-1. Different meanings for each line
-    First line:  Alt-,
-    Second line: Shift-Alt-,
-    Third line:  Ctrl-Alt-,   Usually session-wide keybindings
-2. You need to make sure Shift+Alt+Key works if using tty, see loadkeys(1)
-3. What does the last single character mean:
-    M -> master pane,   S -> stack panes,   W -> window,    P -> pane
+├──Ctrl───┬─Win───┴─┬─Alt─┴───┬───┴───────┴───────┴─Space─┴───────┴───────┴─────┬─┴───────┴───────┴─────────────────────┤
+│         │         │         │ MoveToMaster         Note: 1st line: Alt        │  Explanation of the last character:   │
+│         │         │         │                            2nd line: Shift+Alt  │  W -> window   M -> master pane       │
+│         │         │         │                            3rd line: Ctrl+Alt   │  P -> pane     S -> stack panes       │
+└─────────┴─────────┴─────────┴─────────────────────────────────────────────────┴───────────────────────────────────────┘
