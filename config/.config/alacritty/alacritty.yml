@@ -5,29 +5,29 @@ font:
 
 colors:
   primary:
-   background: '#212121'
-   foreground: '#ECEFF1'
+   background: '#1c1c1c'
+   foreground: '#e4e4e4'
 
   cursor:
     text: CellBackground
-    cursor: '#B0BEC5'
+    cursor: '#ffffaf'
 
   normal:
-    black:   '#546E7A'
-    red:     '#FF5252'
-    green:   '#5CF19E'
-    yellow:  '#FFD740'
-    blue:    '#40C4FF'
-    magenta: '#FF4081'
-    cyan:    '#64FCDA'
-    white:   '#ECEFF1'
+    black:   '#262626'
+    red:     '#d75f00'
+    green:   '#5faf5f'
+    yellow:  '#af8700'
+    blue:    '#0087d7'
+    magenta: '#875fff'
+    cyan:    '#0087af'
+    white:   '#b2b2b2'
 
   bright:
-    black:   '#B0BEC5'
-    red:     '#FF8A80'
-    green:   '#B9F6CA'
-    yellow:  '#FFE57F'
-    blue:    '#80D8FF'
-    magenta: '#FF80AB'
-    cyan:    '#A7FDEB'
-    white:   '#FFFFFF'
+    black:   '#4e4e4e'
+    red:     '#d7875f'
+    green:   '#5fd75f'
+    yellow:  '#d7af00'
+    blue:    '#00afd7'
+    magenta: '#af5fff'
+    cyan:    '#00afaf'
+    white:   '#e4e4e4'
