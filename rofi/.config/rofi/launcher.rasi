@@ -6,13 +6,14 @@ configuration {
 }
 
 * {
-    background-color    : #212121;
-    color               : #EEFFFF;
+    background-color    : #21212100;
+    color               : #EEFFFFFF;
     /* color for highlighted things */
-    selected-background : #484848;
+    selected-background : #EEFFFF40;
 }
 
 window {
+    background-color    : #21212180;
     width: 100%;
     height: 100%;
 }
@@ -26,6 +27,7 @@ listview {
 
 inputbar {
     children: [button-dummy, entry, button-dummy];
+    padding: 4% 2% 0% 2%;
 }
 
 /* button- prefix is essential, making it clickable */
@@ -58,8 +60,9 @@ element-icon {
 
 element-text, element-icon {
     horizontal-align: 0.5;
-    background-color: inherit;
+    background-color: none;
     color:            inherit;
 }
 
+/* vim magic line below, but don't add closing comment, since vim can't parse them */
 /* vim: ft=css
