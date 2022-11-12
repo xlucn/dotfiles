@@ -6,7 +6,7 @@ configuration {
     cycle              : false;
     sidebar-mode       : false;
     run-shell-command  : "st -e bash -c '{cmd}'";
-    /* automatically select item under cursor + click to open */
+    /* automatically highlight item under cursor, click to open */
     hover-select       : true;
     me-select-entry    : "";
     me-accept-entry    : "MousePrimary";
@@ -14,9 +14,11 @@ configuration {
     application-fallback-icon: "application-x-executable";
 }
 
+/* make my own theme */
 @theme "/dev/null"
 
 * {
+    /* minimalism style */
     separator-style  : "none";
     margin           : 0px;
     padding          : 0px;
@@ -27,7 +29,7 @@ configuration {
 }
 
 window {
-    width              : 70%;
+    width              : 61.8%;
 }
 
 listview {
@@ -39,19 +41,22 @@ listview {
 inputbar {
     children        : [prompt, entry];
     spacing         : 2%;
+    padding         : 2%;
 }
 
-element, inputbar {
-    padding         : 1%;
+element {
+    padding         : 0.5%;
 }
 
 element-icon {
     size            : 3%;
+    /* change according to highlight */
     background-color: inherit;
 }
 
 element-text {
     vertical-align: 0.5;
+    /* change according to highlight */
     background-color: inherit;
 }
 
@@ -65,4 +70,5 @@ element selected normal { background-color: #4a4a4a; }
 element selected urgent { background-color: #FFCB6B; }
 element selected active { background-color: #F07178; }
 
+/* vim magic line below, but don't add closing comment, since vim can't parse them */
 /* vim: ft=css
