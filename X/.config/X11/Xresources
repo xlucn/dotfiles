@@ -11,106 +11,36 @@ Xcursor.size: 36
 
 *.font: Monospace:size=12
 
-/* *color0:        #303030 */
-/* *color1:        #826023 */
-/* *color2:        #618231 */
-/* *color3:        #7e7b28 */
-/* *color4:        #3e825c */
-/* *color5:        #82685c */
-/* *color6:        #749cb3 */
-/* *color7:        #a6a19b */
-/* *color8:        #484848 */
-/* *color9:        #b48430 */
-/* *color10:       #86b443 */
-/* *color11:       #b0ab37 */
-/* *color12:       #55b47f */
-/* *color13:       #b4907f */
-/* *color14:       #9bb4c8 */
-/* *color15:       #d8d1c9 */
-
-# 229
+# the color are from 256 colors, in order:
+# 229 254 234
+# 235 166 71 136 27 92 31 249
+# 239 173 77 178 33 134 37 254
 *cursorColor:   #ffffaf
-# 254
 *foreground:    #e4e4e4
-# 234
 *background:    #1c1c1c
-# 235
 *color0:        #262626
-# 166
 *color1:        #d75f00
-# 71
 *color2:        #5faf5f
-# 136
 *color3:        #af8700
-# 27
 *color4:        #0087d7
-# 92
 *color5:        #875fff
-# 31
 *color6:        #0087af
-# 249
 *color7:        #b2b2b2
-# 239
 *color8:        #4e4e4e
-# 173
 *color9:        #d7875f
-# 77
 *color10:       #5fd75f
-# 178
 *color11:       #d7af00
-# 33
 *color12:       #00afd7
-# 134
 *color13:       #af5fff
-# 37
 *color14:       #00afaf
-# 254
 *color15:       #e4e4e4
-
-! -- URxvt UI -- !
-URxvt.depth              : 32
-! URxvt.geometry           : 80x24
-URxvt.internalBorder     : 0
-URxvt.externalBorder     : 0
-URxvt.letterSpace        : 0
-URxvt.saveLines          : 10000
-URxvt.scrollBar          : false
-URxvt.scrollstyle        : rxvt
-
-! Do not scroll in less, etc (do not seem to be working?)
-URxvt.secondaryScreen: 1
-URxvt.secondaryScroll: 0
-! do not scroll with output
-URxvt.scrollTtyOutput: false
-! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
-URxvt.scrollWithBuffer: true
-! scroll back to the bottom on keypress
-URxvt.scrollTtyKeypress: true
-
-! -- Perl extensions -- !
-URxvt.perl-ext-common: default,matcher,selection-to-clipboard
-! Right click to open url
-URxvt.matcher.button: 3
-URxvt.url-launcher: /usr/bin/xdg-open
-URxvt.underlineURLs: True
-! disable ctrl-shift keybinding
-URxvt.iso14755: false
-URxvt.iso14755_52: false
-! copy and paste with S+C+c/v
-URxvt.clipboard.autocopy: true
-URxvt.keysym.Shift-Control-V: eval:paste_clipboard
-URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
-
-! -- Fonts -- !
-URxvt.font: xft:Hack:size=12, xft: WenQuanYi Micro Hei:size=12
-URxvt.boldFont: xft:Hack:style=Bold:size=12, xft: WenQuanYi Micro Hei:size=12
 
 dwm.barheight: 48
 dwm.borderpx: 4
 dwm.gappx: 24
 dwm.mfact: 0.5
 
-st.alpha: 1.0
+st.alpha: 0.8
 st.borderpx: 0
 
 tabbed.font: Noto Sans CJK SC:size=12
