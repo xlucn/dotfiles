@@ -12,20 +12,17 @@ require('illuminate').configure({
 })
 
 function NvimLSPStatus()
-    local total, count = 0, 0
-    local message = ' '
+    local messages = {}
     local levels = { E = 'ERROR', W = 'WARN', I = 'INFO', H = 'HINT' }
-    for k, v in pairs(levels) do
-        count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[v] })
+    for key, severity in pairs(levels) do
+        local count = #vim.diagnostic.get(0, {
+            severity = vim.diagnostic.severity[severity]
+        })
         if count > 0 then
-            message = message .. k .. ': ' .. count .. ' '
-            total = total + count
+            table.insert(messages, key .. ':' .. count)
         end
     end
-    if total == 0 then
-        message = message .. 'OK '
-    end
-    return message
+    return next(messages) and table.concat(messages) or 'OK'
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
