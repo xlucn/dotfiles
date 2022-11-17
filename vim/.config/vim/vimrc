@@ -50,6 +50,8 @@ function! s:packager_init(packager) abort
   call a:packager.add('folke/which-key.nvim', {'type': 'opt'})
   call a:packager.add('nvim-lua/plenary.nvim', {'type': 'opt'})
   call a:packager.add('nvim-telescope/telescope.nvim', {'type': 'opt'})
+  call a:packager.add('RRethy/vim-illuminate', {'type': 'opt'})
+  call a:packager.add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
 endfunction
 if !has("nvim")
     packadd vim-packager
@@ -70,6 +72,7 @@ if !has("nvim")
     packadd asyncomplete-lsp.vim
     packadd vim-which-key
 else
+    packadd vim-illuminate
     packadd which-key.nvim
     packadd nvim-lspconfig
     packadd cmp-nvim-lsp
@@ -77,6 +80,7 @@ else
     packadd cmp-vsnip
     packadd vim-vsnip
     packadd vim-vsnip-integ
+    packadd nvim-treesitter
     luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
 " }}}
@@ -168,6 +172,10 @@ hi StatusLineNC ctermbg=None ctermfg=7
 hi TabLine      ctermbg=None ctermfg=7   cterm=None
 hi TabLineSel   ctermbg=6    ctermfg=0   cterm=None
 hi TabLineFill  ctermbg=None ctermfg=7   cterm=None
+" symbol hightlight
+hi IlluminatedWordText  ctermbg=8
+hi IlluminatedWordRead  ctermbg=8
+hi IlluminatedWordWrite ctermbg=8
 " incremental case-insensitive highlight smart case search
 set incsearch ignorecase smartcase hlsearch
 " built-in plugin or file type support

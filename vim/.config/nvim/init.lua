@@ -1,3 +1,16 @@
+require("nvim-treesitter.configs").setup({
+    ensure_installed = { 'c', 'bash', 'python', 'lua' },
+    highlight = { enable = true, disable = { 'latex' } },
+})
+
+require('illuminate').configure({
+    filetypes_denylist = {
+        'mail',
+        'markdown',
+        '',  -- default empty filetype
+    },
+})
+
 function NvimLSPStatus()
     local total, count = 0, 0
     local message = ' '
