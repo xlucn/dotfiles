@@ -64,11 +64,9 @@ export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
 # dvdcss
 export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
-# vim
-export MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
-export MYGVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+# ex/vi/vim/nvim
 export EXINIT=":source $XDG_CONFIG_HOME/ex/exrc"
-export VIMINIT=":source $MYVIMRC"
+export VIMINIT=":source $XDG_CONFIG_HOME/vim/vimrc"
 # libice
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 # nodejs
