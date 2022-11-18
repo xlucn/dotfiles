@@ -1,15 +1,41 @@
-require("nvim-treesitter.configs").setup({
-    ensure_installed = { 'c', 'bash', 'python', 'lua' },
-    highlight = { enable = true, disable = { 'latex' } },
-})
+-- nvim configuration
+vim.o.mousemodel = 'extend'
+vim.o.cmdheight = 0
 
-require('illuminate').configure({
-    filetypes_denylist = {
-        'mail',
-        'markdown',
-        '',  -- default empty filetype
-    },
-})
+require('packer').startup(function(use)
+    -- packer itself
+    use("wbthomason/packer.nvim")
+    -- lsp related
+    use('neovim/nvim-lspconfig')
+    use('hrsh7th/nvim-cmp')
+    use('hrsh7th/cmp-nvim-lsp')
+    use('hrsh7th/cmp-vsnip')
+    use('hrsh7th/vim-vsnip')
+    use('hrsh7th/vim-vsnip-integ')
+    -- others
+    use({'RRethy/vim-illuminate', config=function()
+        require('illuminate').configure({
+            filetypes_denylist = { '', 'mail', 'markdown' },
+        })
+    end})
+    use({'folke/which-key.nvim', config=function()
+        require("which-key").register({
+            l = { name = "language server" },
+            c = "Commentary"
+        }, {
+            prefix = "<leader>"
+        })
+    end})
+    use('nvim-lua/plenary.nvim')
+    use('nvim-lualine/lualine.nvim')
+    use('nvim-telescope/telescope.nvim')
+    use({'nvim-treesitter/nvim-treesitter', config=function()
+        require("nvim-treesitter.configs").setup({
+            ensure_installed = { 'c', 'bash', 'python', 'lua' },
+            highlight = { enable = true, disable = { 'latex' } },
+        })
+    end})
+end)
 
 function NvimLSPStatus()
     local messages = {}
@@ -25,11 +51,10 @@ function NvimLSPStatus()
     return next(messages) and table.concat(messages) or 'OK'
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
 local lsp = require('lspconfig')
 local cmp = require('cmp')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 cmp.setup({
     snippet = {
       expand = function(args)
@@ -54,7 +79,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         -- Enable completion triggered by <c-x><c-o>
         vim.api.nvim_buf_set_option(args.buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-        -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local bufopts = { noremap=true, silent=true, buffer=args.buf }
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
@@ -76,35 +100,24 @@ local servers = {
     'clangd',
     'pylsp',
     'bashls',
+    'marksman',
 }
 for _, server in ipairs(servers) do
-    lsp[server].setup({
-        capabilities = capabilities,
-    })
+    lsp[server].setup({ capabilities = capabilities })
 end
 
 lsp['sumneko_lua'].setup({
     capabilities = capabilities,
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { 'vim' }
-            }
-        }
-    }
+    settings = { Lua = { diagnostics = { globals = { 'vim' } } } },
 })
+
 lsp['texlab'].setup({
     capabilities = capabilities,
     settings = {
         texlab = {
             build = {
                 executable = "latexmk",
-                args = {
-                    "-xelatex",
-                    "-interaction=nonstopmode",
-                    "-synctex=1",
-                    "%f"
-                },
+                args = { "-xelatex", "-interaction=nonstopmode", "-synctex=1", "%f" },
                 onSave = true,
             },
             forwardSearch = {
@@ -117,11 +130,4 @@ lsp['texlab'].setup({
             }
         }
     }
-})
-
-require("which-key").register({
-    l = { name = "language server" },
-    c = "Commentary"
-}, {
-    prefix = "<leader>"
 })

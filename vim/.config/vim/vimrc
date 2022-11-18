@@ -1,91 +1,11 @@
-" vim basic {{{
-" be Vi IMproved, put this line at TOP of vimrc
-set nocompatible
-" XDG Base Directories
-set runtimepath^=$XDG_CONFIG_HOME/vim
-set packpath^=$XDG_DATA_HOME/vim
-set backupdir=$XDG_CACHE_HOME/vim/backup
-set directory=$XDG_CACHE_HOME/vim/swap
-if !has('nvim')
-    set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-endif
-" }}}
-" Vim-Packager {{{
-function! s:packager_init(packager) abort
-  " Package manager
-  call a:packager.add('kristijanhusak/vim-packager', {'type': 'opt'})
-  " Basic
-  call a:packager.add('tpope/vim-commentary')
-  call a:packager.add('tpope/vim-endwise')
-  call a:packager.add('tpope/vim-repeat')
-  call a:packager.add('tpope/vim-sensible')
-  call a:packager.add('tpope/vim-surround')
-  call a:packager.add('tpope/vim-dispatch')
-  call a:packager.add('tpope/vim-unimpaired')
-  call a:packager.add('ap/vim-buftabline')
-  " Language server
-  " vim
-  call a:packager.add('prabirshrestha/vim-lsp', {'type': 'opt'})
-  call a:packager.add('mattn/vim-lsp-settings', {'type': 'opt'})
-  call a:packager.add('prabirshrestha/async.vim', {'type': 'opt'})
-  call a:packager.add('prabirshrestha/asyncomplete.vim', {'type': 'opt'})
-  call a:packager.add('prabirshrestha/asyncomplete-lsp.vim', {'type': 'opt'})
-  call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
-  " neovim
-  call a:packager.add('neovim/nvim-lspconfig', {'type': 'opt'})
-  call a:packager.add('hrsh7th/nvim-cmp', {'type': 'opt'})
-  call a:packager.add('hrsh7th/cmp-nvim-lsp', {'type': 'opt'})
-  call a:packager.add('hrsh7th/cmp-vsnip', {'type': 'opt'})
-  " Snippets
-  call a:packager.add('hrsh7th/vim-vsnip')
-  call a:packager.add('hrsh7th/vim-vsnip-integ')
-  call a:packager.add('honza/vim-snippets')
-  call a:packager.add('rafamadriz/friendly-snippets')
-  " Enhancements
-  call a:packager.add('majutsushi/tagbar')
-  call a:packager.add('jpalardy/vim-slime')
-  call a:packager.add('airblade/vim-gitgutter')
-  call a:packager.add('liuchengxu/vim-which-key', {'type': 'opt'})
-  " neovim
-  call a:packager.add('folke/which-key.nvim', {'type': 'opt'})
-  call a:packager.add('nvim-lua/plenary.nvim', {'type': 'opt'})
-  call a:packager.add('nvim-telescope/telescope.nvim', {'type': 'opt'})
-  call a:packager.add('RRethy/vim-illuminate', {'type': 'opt'})
-  call a:packager.add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
-endfunction
+" Vim or NeoVim? {{{
 if !has("nvim")
-    packadd vim-packager
-    if exists("*packager#setup")
-        call packager#setup(function('s:packager_init'))
-    else
-        let packager_dir = $XDG_DATA_HOME.'/vim/pack/packager/opt/vim-packager'
-        let packager_git = 'https://github.com/kristijanhusak/vim-packager'
-        let packager_clone = ['git', 'clone', packager_git, packager_dir]
-        let packager_clone = 'git clone '.packager_git.' '.packager_dir
-        command! PackagerClone :echo system(packager_clone)
-        echo "Use PackagerClone to install vim-packager, and use packadd to add it"
-    endif
-    packadd vim-lsp
-    packadd vim-lsp-settings
-    packadd async.vim
-    packadd asyncomplete.vim
-    packadd asyncomplete-lsp.vim
-    packadd vim-which-key
+    so $XDG_CONFIG_HOME/vim/vim.vimrc
 else
-    packadd vim-illuminate
-    packadd which-key.nvim
-    packadd nvim-lspconfig
-    packadd cmp-nvim-lsp
-    packadd nvim-cmp
-    packadd cmp-vsnip
-    packadd vim-vsnip
-    packadd vim-vsnip-integ
-    packadd nvim-treesitter
     luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
 " }}}
-" Vim Settings
-" Vim Config {{{
+" Vim basic config {{{
 " leader key, for key mappings
 let mapleader = ','
 let maplocalleader = '\'
@@ -107,6 +27,8 @@ set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
 set completeopt=menu,preview " completion
+set formatoptions+=mM " better multibyte (CJK) support
+set incsearch ignorecase smartcase hlsearch
 " }}}
 " UI basic {{{
 set guioptions=di       " gui options: dark, icon
@@ -130,14 +52,6 @@ set noshowmode          " do not show mode on the last line
 set display+=lastline   " show partial line
 set background=dark     " color scheme
 set mouse=a             " enable mouse support in console
-" mouse support for urxvt and st
-if !has('nvim')
-    if $TERM =~ "rxvt-unicode"
-        set ttymouse=urxvt
-    elseif $TERM =~ "st*"
-        set ttymouse=sgr
-    endif
-endif
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
     if $TERM != "linux"
@@ -176,9 +90,8 @@ hi TabLineFill  ctermbg=None ctermfg=7   cterm=None
 hi IlluminatedWordText  ctermbg=8
 hi IlluminatedWordRead  ctermbg=8
 hi IlluminatedWordWrite ctermbg=8
-" incremental case-insensitive highlight smart case search
-set incsearch ignorecase smartcase hlsearch
-" built-in plugin or file type support
+" }}}
+" built-in plugins or file type supports {{{
 let g:termdebug_wide=1
 let g:markdown_folding = 1
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
@@ -187,7 +100,6 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 " indentations
 set autoindent
 set smartindent
-set cindent
 " tabs
 set tabstop=4
 set shiftwidth=0  " make it the same as tabstop
@@ -256,18 +168,15 @@ augroup terminal_setup
     autocmd!
     tnoremap <C-\> <C-\><C-N>
     if has('nvim')
-        autocmd TermOpen term://* setlocal nonu nornu signcolumn=no
-        autocmd TermOpen term://* startinsert
-        autocmd TermClose term://* call feedkeys("\<CR>")
+        autocmd TermOpen term://* setlocal nonu nornu signcolumn=no  " no left columns
+        autocmd TermOpen term://* startinsert  " no need to 'I' into command line
+        autocmd TermClose term://* call feedkeys("\<CR>")  " no need to 'Enter' to exit
     elseif exists("##TerminalOpen")
         autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
     endif
 augroup END
 augroup latex
     autocmd!
-    autocmd FileType tex ab tp textperiodcentered{}
-    autocmd FileType tex ab te textellipsis{}
-    autocmd FileType tex ab op originalpage{}<Left>
     " add normal font in math
     autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
     autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
@@ -278,6 +187,7 @@ augroup latex
     autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
 augroup END
 augroup makeprg
+    autocmd!
     autocmd Filetype sh compiler shellcheck
     autocmd Filetype perl compiler perl
     autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
@@ -322,8 +232,9 @@ let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20  " split size, minus meaning absolute size
 let g:netrw_dirhistmax   = 0    " disable history
 let g:netrw_liststyle    = 0    " one file per line with nothing else
-nnoremap L :Lexplore<CR>
+nnoremap L :silent Lexplore<CR>
 augroup NetrwKeys
+    autocmd!
     autocmd Filetype netrw nmap <buffer> h <Plug>NetrwBrowseUpDir
     autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
 augroup END
@@ -384,10 +295,6 @@ endfunction
 " }}}
 " statusline {{{
 " update status on LSP status changes
-augroup UpdateStatus
-  autocmd!
-  autocmd User lsp_diagnostics_updated redrawstatus
-augroup END
 function! LSPStatus()
     if has('nvim')
         return luaeval('NvimLSPStatus()')
@@ -441,63 +348,38 @@ nnoremap <leader>gl :call GitLog()<CR>
 " Markdown preview{{{
 function MarkdownPreviewToggle()
     if !exists('b:mdp_job')
-        let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
+        if has('nvim')
+            let b:mdp_job = jobstart(['grip', '-b', expand("%:p")])
+        else
+            let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
+        endif
     else
-        call job_stop(b:mdp_job)
+        if has('nvim')
+            call jobstop(b:mdp_job)
+        else
+            call job_stop(b:mdp_job)
+        endif
         unlet b:mdp_job
     endif
 endfunction
 " }}}
-" Plugin Settings
+" Plugin Settings (for common plugins between vim and nvim)
+" commentary {{{
+if exists(":Commentary")
+    nnoremap <leader>c <Plug>CommentaryLine
+    onoremap <leader>c <Plug>Commentary
+    xnoremap <leader>c <Plug>Commentary
+endif
+" }}}
+" slime {{{
+if exists(":SlimeSend")
+    xmap <leader>s <Plug>SlimeSend
+    nmap <leader>s <Plug>SlimeSend
+endif
+" }}}
 " buftabline {{{
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
-" }}}
-" Vim Which Key {{{
-let g:which_key_group_dicts = ''
-let g:which_key_centered = 1
-let g:which_key_hspace = 2
-let g:which_key_use_floating_win = 1        " so won't change current window
-let g:which_key_fallback_to_native_key = 1
-let g:which_key_disable_default_offset = 1  " fill the width
-let g:which_key_map = {
-  \ 'k' : 'run current file',
-  \ 'z' : 'Goyo mode',
-  \ 's' : 'slime',
-  \ 'c' : 'comment',
-  \ 'g' : {
-    \ 'name' : '+git-operation',
-    \ 't' : { 'name' : '+stash' },
-    \ },
-  \ }
-let g:which_key_map_local = {
-  \ 'l' : { 'name' : '+vimtex' },
-  \ }
-function WhichKeyRegister()
-    if exists(":Commentary")
-        nnoremap <leader>c <Plug>CommentaryLine
-        onoremap <leader>c <Plug>Commentary
-        xnoremap <leader>c <Plug>Commentary
-    endif
-    if exists(":SlimeSend")
-        xmap <leader>s <Plug>SlimeSend
-        nmap <leader>s <Plug>SlimeSend
-    endif
-    if has('nvim')
-        return
-    endif
-    if exists("*which_key#register")
-        call which_key#register(',', 'g:which_key_map')
-        call which_key#register('\', 'g:which_key_map_local')
-    endif
-    if exists(":WhichKey")
-        nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
-        vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
-        nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
-        vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
-    endif
-endfunction
-autocmd VimEnter * call WhichKeyRegister()
 " }}}
 " Vim Endwise {{{
 " https://github.com/tpope/vim-endwise/issues/41#issuecomment-432905813
@@ -542,66 +424,6 @@ elseif match($TERM, "screen") != -1
 else
     let g:slime_target = "vimterminal"
 endif
-" }}}
-" LSP {{{
-" start vim with a server, see ':h vimtex-clientserver'
-if empty(v:servername) && exists('*remote_startserver')
-    if empty($SSH_CLIENT) && !empty($DISPLAY) && empty($TMUX)
-        call remote_startserver('VIM')
-    endif
-endif
-if !has('nvim')
-    nmap <buffer> <C-]> <plug>(lsp-definition)
-    nmap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
-    nmap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> <leader>lr <plug>(lsp-references)
-    nmap <buffer> <leader>li <plug>(lsp-implementation)
-    nmap <buffer> <leader>lt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>lR <plug>(lsp-rename)
-    nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nmap <buffer> <leader>lb <plug>(lsp-document-build)
-    nmap <buffer> <leader>lf <plug>(lsp-document-forwardsearch)
-endif
-" }}}
-" vim-lsp {{{
-let g:which_key_map.l = { "name": "language server" }
-let g:lsp_diagnostics_signs_delay = 200
-let g:lsp_diagnostics_echo_delay = 200
-let g:lsp_diagnostics_highlights_delay = 200
-let g:lsp_diagnostics_echo_cursor = 1
-autocmd User lsp_buffer_enabled setlocal omnifunc=lsp#complete
-" }}}
-" vim-lsc {{{
-let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'
-let g:lsc_server_commands = {
-  \     'python': {
-  \         'command': 'pylsp',
-  \         'log_level': -1,
-  \         'workspace_config': {
-  \             'pylsp.configurationSources': ['pycodestyle'],
-  \             'pylsp.plugins.yapf.enabled': v:false,
-  \         }
-  \     },
-  \     'sh': 'bash-language-server start',
-  \     'vim': 'vim-language-server --stdio',
-  \     'json': 'vscode-json-languageserver --stdio',
-  \     'lua': 'lua-language-server',
-  \     'tex': {
-  \         'command': 'texlab',
-  \         'workspace_config': {
-  \             "latex.build.args": ["-xelatex", "-synctex=1", "%f"],
-  \         }
-  \     }
-  \ }
-" }}}
-" asyncomplete {{{
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt = 1
 " }}}
 " tagbar {{{
 let g:tagbar_compact = 1
