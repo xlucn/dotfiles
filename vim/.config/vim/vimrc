@@ -4,6 +4,7 @@ if !has("nvim")
 else
     luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
+set backupdir=$XDG_CACHE_HOME/vim/backup
 " }}}
 " Vim basic config {{{
 " leader key, for key mappings
@@ -52,6 +53,7 @@ set noshowmode          " do not show mode on the last line
 set display+=lastline   " show partial line
 set background=dark     " color scheme
 set mouse=a             " enable mouse support in console
+set foldcolumn=0
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
     if $TERM != "linux"
@@ -71,6 +73,7 @@ hi SignColumn   ctermbg=None ctermfg=0
 hi CursorColumn ctermbg=0
 hi ColorColumn  ctermbg=0
 hi Folded       ctermbg=None ctermfg=8
+hi FoldColumn   ctermbg=None ctermfg=7
 hi NonText      ctermbg=None ctermfg=8
 hi SpellBad     ctermbg=None ctermfg=9
 hi SpellCap     ctermbg=None ctermfg=11
@@ -365,17 +368,13 @@ endfunction
 " }}}
 " Plugin Settings (for common plugins between vim and nvim)
 " commentary {{{
-if exists(":Commentary")
-    nnoremap <leader>c <Plug>CommentaryLine
-    onoremap <leader>c <Plug>Commentary
-    xnoremap <leader>c <Plug>Commentary
-endif
+nnoremap <leader>c <Plug>CommentaryLine
+onoremap <leader>c <Plug>Commentary
+xnoremap <leader>c <Plug>Commentary
 " }}}
 " slime {{{
-if exists(":SlimeSend")
-    xmap <leader>s <Plug>SlimeSend
-    nmap <leader>s <Plug>SlimeSend
-endif
+xmap <leader>s <Plug>SlimeSend
+nmap <leader>s <Plug>SlimeSend
 " }}}
 " buftabline {{{
 let g:buftabline_numbers = 2

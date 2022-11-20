@@ -3,7 +3,6 @@ set nocompatible
 " XDG Base Directories
 set runtimepath^=$XDG_CONFIG_HOME/vim
 set packpath^=$XDG_DATA_HOME/vim
-set backupdir=$XDG_CACHE_HOME/vim/backup
 set directory=$XDG_CACHE_HOME/vim/swap
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 " Vim-Packager {{{
@@ -18,6 +17,11 @@ function! s:packager_init(packager) abort
   call a:packager.add('tpope/vim-surround')
   call a:packager.add('tpope/vim-dispatch')
   call a:packager.add('ap/vim-buftabline')
+  " Enhancements
+  call a:packager.add('majutsushi/tagbar')
+  call a:packager.add('jpalardy/vim-slime')
+  call a:packager.add('airblade/vim-gitgutter')
+  call a:packager.add('liuchengxu/vim-which-key')
   " vim language server
   call a:packager.add('prabirshrestha/vim-lsp')
   call a:packager.add('mattn/vim-lsp-settings')
@@ -28,11 +32,6 @@ function! s:packager_init(packager) abort
   " Snippets
   call a:packager.add('honza/vim-snippets')
   call a:packager.add('rafamadriz/friendly-snippets')
-  " Enhancements
-  call a:packager.add('majutsushi/tagbar')
-  call a:packager.add('jpalardy/vim-slime')
-  call a:packager.add('airblade/vim-gitgutter')
-  call a:packager.add('liuchengxu/vim-which-key')
 endfunction
 packadd vim-packager
 if exists("*packager#setup")

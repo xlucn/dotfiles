@@ -1,10 +1,22 @@
 -- nvim configuration
 vim.o.mousemodel = 'extend'
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
+
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldenable = false
 
 require('packer').startup(function(use)
     -- packer itself
     use("wbthomason/packer.nvim")
+    -- basic
+    use('tpope/vim-commentary')
+    use('tpope/vim-endwise')
+    use('tpope/vim-repeat')
+    use('tpope/vim-sensible')
+    use('tpope/vim-surround')
+    use('tpope/vim-dispatch')
+    use('ap/vim-buftabline')
     -- lsp related
     use('neovim/nvim-lspconfig')
     use('hrsh7th/nvim-cmp')
@@ -13,17 +25,21 @@ require('packer').startup(function(use)
     use('hrsh7th/vim-vsnip')
     use('hrsh7th/vim-vsnip-integ')
     -- others
+    use('majutsushi/tagbar')
+    use('jpalardy/vim-slime')
+    use('airblade/vim-gitgutter')
     use({'RRethy/vim-illuminate', config=function()
         require('illuminate').configure({
             filetypes_denylist = { '', 'mail', 'markdown' },
         })
     end})
     use({'folke/which-key.nvim', config=function()
-        require("which-key").register({
+        local which_key = require("which-key")
+        -- which_key.setup()
+        which_key.register({
             l = { name = "language server" },
-            c = "Commentary"
         }, {
-            prefix = "<leader>"
+            prefix = ","
         })
     end})
     use('nvim-lua/plenary.nvim')
@@ -51,9 +67,10 @@ function NvimLSPStatus()
     return next(messages) and table.concat(messages) or 'OK'
 end
 
+-- LSP configs
 local lsp = require('lspconfig')
-local cmp = require('cmp')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local cmp = require('cmp')
 
 cmp.setup({
     snippet = {
