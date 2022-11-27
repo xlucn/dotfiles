@@ -298,6 +298,10 @@ endfunction
 " }}}
 " statusline {{{
 " update status on LSP status changes
+augroup UpdateStatus
+  autocmd!
+  autocmd User lsp_diagnostics_updated redrawstatus
+augroup END
 function! LSPStatus()
     if has('nvim')
         return luaeval('NvimLSPStatus()')
@@ -317,16 +321,29 @@ function GitBranch()
     let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
     silent return trim(system(cmd))
 endfunction
+" statusline
+let s:modestr = {
+    \   'c': 'COMMAND',
+    \   'i': 'INSERT',
+    \   'n': 'NORMAL',
+    \   'R': 'REPLACE',
+    \   's': 'SELECT',
+    \   't': 'TERMINAL',
+    \   'v': 'VISUAL',
+    \   'V': 'V-LINE',
+    \   '': 'S-BLOCK',
+    \   '': 'V-BLOCK',
+    \ }
+function GetModeStr()
+    let mode = mode()
+    return get(s:modestr, mode, mode)
+endfunction
+" NOTE: %{} will be evaluated upon update
+" NOTE: keep the spaces in the %(%) group
 hi User1 ctermbg=0
 hi User2 ctermbg=8
 hi User3 ctermfg=0 ctermbg=6
-
-augroup UpdateStatus
-  autocmd!
-  autocmd User lsp_diagnostics_updated redrawstatus
-augroup END
-" NOTE: keep the spaces in the %(%) group
-let stl1 = ' %{mode()} '                          " vim modes
+let stl1 = ' %{GetModeStr()} '                    " vim modes
 let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
 let stl3 = '%< %t %m %w '                         " file name, modified, preview
 let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
