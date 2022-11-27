@@ -6,52 +6,182 @@ vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldenable = false
 
-require('packer').startup(function(use)
-    -- packer itself
-    use("wbthomason/packer.nvim")
+-- check or install dep plugin manager
+local deppath = vim.fn.stdpath("data") .. "/site/pack/deps/opt/dep"
+local depurl = "https://github.com/chiyadev/dep"
+if vim.fn.empty(vim.fn.glob(deppath)) > 0 then
+  vim.fn.system({ "git", "clone", "--depth=1", depurl, deppath })
+end
+vim.cmd("packadd dep")
+
+require('dep')({
     -- basic
-    use('tpope/vim-commentary')
-    use('tpope/vim-endwise')
-    use('tpope/vim-repeat')
-    use('tpope/vim-sensible')
-    use('tpope/vim-surround')
-    use('tpope/vim-dispatch')
-    use('ap/vim-buftabline')
+    {'tpope/vim-commentary'},
+    {'tpope/vim-endwise'},
+    {'tpope/vim-repeat'},
+    {'tpope/vim-sensible'},
+    {'tpope/vim-surround'},
+    {'tpope/vim-dispatch'},
+    {'ap/vim-buftabline'},
     -- lsp related
-    use('neovim/nvim-lspconfig')
-    use('hrsh7th/nvim-cmp')
-    use('hrsh7th/cmp-nvim-lsp')
-    use('hrsh7th/cmp-vsnip')
-    use('hrsh7th/vim-vsnip')
-    use('hrsh7th/vim-vsnip-integ')
-    -- others
-    use('majutsushi/tagbar')
-    use('jpalardy/vim-slime')
-    use('airblade/vim-gitgutter')
-    use({'RRethy/vim-illuminate', config=function()
-        require('illuminate').configure({
-            filetypes_denylist = { '', 'mail', 'markdown' },
+    {'neovim/nvim-lspconfig', function()
+        -- LSP configs
+        local lsp = require('lspconfig')
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+        -- servers with simple setup
+        local servers = {
+            'clangd',
+            'pylsp',
+            'bashls',
+            'marksman',
+        }
+
+        for _, server in ipairs(servers) do
+            lsp[server].setup({ capabilities = capabilities })
+        end
+
+        lsp['sumneko_lua'].setup({
+            capabilities = capabilities,
+            settings = { Lua = {
+                diagnostics = { globals = { 'vim' } }
+            } },
         })
-    end})
-    use({'folke/which-key.nvim', config=function()
+
+        lsp['texlab'].setup({
+            capabilities = capabilities,
+            settings = { texlab = {
+                build = {
+                    executable = "latexmk",
+                    args = { "-xelatex",
+                             "-interaction=nonstopmode",
+                             "-synctex=1",
+                             "%f" },
+                    onSave = true,
+                },
+                forwardSearch = {
+                    executable = "zathura",
+                    args = { "--synctex-forward", "%l:1:%f", "%p" },
+                },
+                auxDirectory = "./output",
+                chktex = {
+                    onOpenAndSave = false,
+                }
+            } }
+        })
+    end},
+    {'hrsh7th/nvim-cmp', function()
+        local cmp = require('cmp')
+
+        cmp.setup({
+            snippet = {
+              expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body)
+              end,
+            },
+            mapping = cmp.mapping.preset.insert({
+              ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+              ['<C-f>'] = cmp.mapping.scroll_docs(4),
+              ['<CR>'] = cmp.mapping.confirm({ select = false }),
+            }),
+            sources = cmp.config.sources({
+              { name = 'nvim_lsp' },
+              { name = 'vsnip' },
+              { name = 'buffer' },
+              { name = 'path' },
+            })
+        })
+    end},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'hrsh7th/cmp-buffer'},
+    {'hrsh7th/cmp-path'},
+    {'hrsh7th/cmp-vsnip'},
+    {'hrsh7th/vim-vsnip'},
+    {'hrsh7th/vim-vsnip-integ'},
+    {'honza/vim-snippets'},
+    {'rafamadriz/friendly-snippets'},
+    -- -- others
+    {'majutsushi/tagbar'},
+    {'jpalardy/vim-slime'},
+    {'airblade/vim-gitgutter'},
+    {'RRethy/vim-illuminate', function()
+        require('illuminate').configure({
+            filetypes_denylist = { '', 'mail', 'markdown', 'text' },
+        })
+    end},
+    {'ggandor/leap.nvim', function()
+        require('leap').add_default_mappings()
+    end},
+    {'folke/which-key.nvim', function()
         local which_key = require("which-key")
-        -- which_key.setup()
         which_key.register({
             l = { name = "language server" },
         }, {
             prefix = ","
         })
-    end})
-    use('nvim-lua/plenary.nvim')
-    use('nvim-lualine/lualine.nvim')
-    use('nvim-telescope/telescope.nvim')
-    use({'nvim-treesitter/nvim-treesitter', config=function()
+    end},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-lualine/lualine.nvim'},
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-treesitter/nvim-treesitter', function()
         require("nvim-treesitter.configs").setup({
-            ensure_installed = { 'c', 'bash', 'python', 'lua' },
-            highlight = { enable = true, disable = { 'latex' } },
+            highlight = { enable = true },
         })
-    end})
-end)
+    end},
+    sync="never"
+})
+
+-- require('packer').startup(function(use)
+--     -- packer itself
+--     use({'wbthomason/packer.nvim'})
+--     -- basic
+--     use({'tpope/vim-commentary'})
+--     use({'tpope/vim-endwise'})
+--     use({'tpope/vim-repeat'})
+--     use({'tpope/vim-sensible'})
+--     use({'tpope/vim-surround'})
+--     use({'tpope/vim-dispatch'})
+--     use({'ap/vim-buftabline'})
+--     -- lsp related
+--     use({'neovim/nvim-lspconfig'})
+--     use({'hrsh7th/nvim-cmp'})
+--     use({'hrsh7th/cmp-nvim-lsp'})
+--     use({'hrsh7th/cmp-buffer'})
+--     use({'hrsh7th/cmp-path'})
+--     use({'hrsh7th/cmp-vsnip'})
+--     use({'hrsh7th/vim-vsnip'})
+--     use({'hrsh7th/vim-vsnip-integ'})
+--     use({'honza/vim-snippets'})
+--     use({'rafamadriz/friendly-snippets'})
+--     -- -- others
+--     use({'majutsushi/tagbar'})
+--     use({'jpalardy/vim-slime'})
+--     use({'airblade/vim-gitgutter'})
+--     use({'RRethy/vim-illuminate', config=function()
+--         require('illuminate').configure({
+--             filetypes_denylist = { '', 'mail', 'markdown' },
+--         })
+--     end})
+--     use({'ggandor/leap.nvim', config=SetupLeap})
+--     use({'folke/which-key.nvim', config=function()
+--         local which_key = require("which-key")
+--         -- which_key.setup()
+--         which_key.register({
+--             l = { name = "language server" },
+--         }, {
+--             prefix = ","
+--         })
+--     end})
+--     use({'nvim-lua/plenary.nvim'})
+--     use({'nvim-lualine/lualine.nvim'})
+--     use({'nvim-telescope/telescope.nvim'})
+--     use({'nvim-treesitter/nvim-treesitter', config=function()
+--         require("nvim-treesitter.configs").setup({
+--             ensure_installed = { 'c', 'bash', 'python', 'lua', 'latex' },
+--             highlight = { enable = true, disable = { } },
+--         })
+--     end})
+-- end)
 
 function NvimLSPStatus()
     local messages = {}
@@ -66,30 +196,6 @@ function NvimLSPStatus()
     end
     return next(messages) and table.concat(messages) or 'OK'
 end
-
--- LSP configs
-local lsp = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local cmp = require('cmp')
-
-cmp.setup({
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    }),
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
-    }, {
-      { name = 'buffer' },
-    })
-})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
@@ -110,41 +216,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', ',la', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', ',lf', vim.lsp.buf.formatting, bufopts)
     end
-})
-
--- servers with simple setup
-local servers = {
-    'clangd',
-    'pylsp',
-    'bashls',
-    'marksman',
-}
-for _, server in ipairs(servers) do
-    lsp[server].setup({ capabilities = capabilities })
-end
-
-lsp['sumneko_lua'].setup({
-    capabilities = capabilities,
-    settings = { Lua = { diagnostics = { globals = { 'vim' } } } },
-})
-
-lsp['texlab'].setup({
-    capabilities = capabilities,
-    settings = {
-        texlab = {
-            build = {
-                executable = "latexmk",
-                args = { "-xelatex", "-interaction=nonstopmode", "-synctex=1", "%f" },
-                onSave = true,
-            },
-            forwardSearch = {
-                executable = "zathura",
-                args = { "--synctex-forward", "%l:1:%f", "%p" },
-            },
-            auxDirectory = "./output",
-            chktex = {
-                onOpenAndSave = false,
-            }
-        }
-    }
 })
