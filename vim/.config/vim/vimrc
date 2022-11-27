@@ -93,6 +93,10 @@ hi TabLineFill  ctermbg=None ctermfg=7   cterm=None
 hi IlluminatedWordText  ctermbg=8
 hi IlluminatedWordRead  ctermbg=8
 hi IlluminatedWordWrite ctermbg=8
+" git gutter
+hi GitGUtterAdd    ctermbg=none ctermfg=2
+hi GitGUtterChange ctermbg=none ctermfg=3
+hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " built-in plugins or file type supports {{{
 let g:termdebug_wide=1
@@ -140,7 +144,7 @@ noremap <leader>w :w<CR>
 noremap <leader>e :e<CR>
 noremap <leader>x :x<CR>
 noremap <leader>k :call ExecCurrentFile()<CR>
-noremap <leader>r :so $MYVIMRC<CR>
+noremap <leader>r :so $XDG_CONFIG_HOME/vim/vimrc<CR>
 noremap <leader>z :call Goyo()<CR>
 " }}}
 " Autocmd {{{
@@ -411,9 +415,6 @@ let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
-hi GitGUtterAdd    ctermbg=none ctermfg=2
-hi GitGUtterChange ctermbg=none ctermfg=3
-hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
