@@ -11,10 +11,10 @@ Xcursor.size: 36
 
 *.font: Monospace:size=12
 
-# the color are from 256 colors, in order:
-# 229 254 234
-# 235 166 71 136 27 92 31 249
-# 239 173 77 178 33 134 37 254
+! the color are from 256 colors, in order:
+! 229 254 234
+! 235 166 71 136 27 92 31 249
+! 239 173 77 178 33 134 37 254
 *cursorColor:   #ffffaf
 *foreground:    #e4e4e4
 *background:    #1c1c1c
