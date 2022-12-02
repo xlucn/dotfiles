@@ -11,7 +11,8 @@
 	},
 	"InteractiveShellApp": {
 		"exec_lines": [
-			"import numpy as np"
+			"import numpy as np",
+			"from astropy import units as u, constants as ac"
 		]
 	}
 }
