@@ -1,0 +1,17 @@
+{
+	"TerminalIPythonApp": {
+		"display_banner": false
+	},
+	"TerminalInteractiveShell": {
+		"auto_match": true,
+		"confirm_exit": false,
+		"editing_mode": "vi",
+		"timeoutlen": 0.01,
+		"prompt_includes_vi_mode": false
+	},
+	"InteractiveShellApp": {
+		"exec_lines": [
+			"import numpy as np"
+		]
+	}
+}
