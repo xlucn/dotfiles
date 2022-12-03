@@ -8,11 +8,5 @@
 		"editing_mode": "vi",
 		"timeoutlen": 0.01,
 		"prompt_includes_vi_mode": false
-	},
-	"InteractiveShellApp": {
-		"exec_lines": [
-			"import numpy as np",
-			"from astropy import units as u, constants as ac"
-		]
 	}
 }
