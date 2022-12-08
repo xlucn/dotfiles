@@ -1,9 +1,16 @@
 #!/bin/sh
 
-if [ -f "$HOME/.config/git-autofetch" ]; then
-    while read -r p; do
-        echo git fetch in "$p" | systemd-cat --identifier="git-autofetch" --priority=5
-        cd "$p" && git fetch | systemd-cat --identifier="git-autofetch" --priority=5
-    done < "$HOME/.config/git-autofetch"
-    "$HOME"/.local/bin/git-autostats -q
-fi
+autofetch_list="$HOME/.config/git-autofetch"
+
+fetch_all()
+{
+    if [ -f "$autofetch_list" ]; then
+        while read -r p; do
+            echo git fetch in "$p"
+            cd "$p" && git fetch -q
+        done < "$autofetch_list"
+    fi
+}
+
+fetch_all 2>&1 | systemd-cat --identifier="git-autofetch" --priority=5
+git-autostats -q

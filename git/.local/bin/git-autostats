@@ -2,9 +2,11 @@
 
 usage()
 {
-    echo "Usage: $(basename "$0") [ -q ] [ -s ]"
-    echo "    -q: don't print repo informations"
-    echo "    -s: search and update repos in the path"
+    cat << EOF
+Usage: $(basename "$0") [ -q ] [ -s ]
+    -q: don't print repo informations, only update info
+    -s: search and update repos in the path
+EOF
 }
 
 search_repos()
@@ -12,16 +14,16 @@ search_repos()
     printf "Enter the username to filter repo owners (accept basic regex): "
     read -r user
     locate "$HOME/*.git" |
-    grep -v "$HOME/\.\(cache\|config\|vim\)/.*" |
-    xargs dirname |
+    grep -v "\($XDG_DATA_HOME\|$XDG_CACHE_HOME\|$XDG_CONFIG_HOME\)" |
+    xargs -d '\n' dirname |
     while read -r repo; do
         git -C "$repo" remote show -n |
         while read -r remote; do
             git -C "$repo" remote get-url "$remote" |
-            grep -iq "${user:-.}" &&
-            echo "$repo"
+            grep -iq "${user:-.}" && echo "$repo"
         done
-    done | sort -u > "$CONFIG_FILE"
+    done |
+    sort -u > "$CONFIG_FILE"
 }
 
 CONFIG_FILE="$HOME/.config/git-autofetch"
@@ -65,7 +67,7 @@ if [ -f "$CONFIG_FILE" ]; then
             printf "\033[$((staged?34:0))m%6s\033[0m " "$staged"
             printf "\033[$((unstaged?31:0))m%8s\033[0m " "$unstaged"
             printf "\033[$((untracked?31:0))m%9s\033[0m " "$untracked"
-            printf "%s\n" "~${p#$HOME}"
+            printf "%s\n" "~${p#"$HOME"}"
         fi
     done < "$CONFIG_FILE"
 
@@ -73,5 +75,4 @@ if [ -f "$CONFIG_FILE" ]; then
 else
     echo "Create $CONFIG_FILE with repos you want to auto-fetch/track one in each line"
     echo "You can use \"$(basename "$0") -s\" to do it more easily"
-    exit
 fi
