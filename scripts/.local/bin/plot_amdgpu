@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+from subprocess import Popen, DEVNULL, PIPE
+from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
+
+
+def run_each(i, n):
+    line = processes[n].stdout.readline().decode().split(",")
+    if len(line) > 2:
+        gpu = float(line[1].split()[1].rstrip("%"))
+        vram = float(line[12].split()[1].rstrip("%"))
+        clock = float(line[14].split()[1].rstrip("%"))
+        sample[n][0].append(gpu)
+        sample[n][1].append(vram)
+        sample[n][2].append(clock)
+
+        axes[n].cla()
+        axes[n].plot(sample[n][0], 'r-', label='gpu')
+        axes[n].plot(sample[n][1], 'g-', label='vram')
+        axes[n].plot(sample[n][2], 'b-', label='clock')
+        axes[n].set_ylim(0, 100)
+        axes[n].legend()
+
+
+def run_redeontop(i):
+    run_each(i, 0)
+    run_each(i, 1)
+
+
+sample = [[[], [], []], [[], [], []]]
+
+processes = [
+    Popen(["radeontop", "-d", "-"], stdout=PIPE, stderr=DEVNULL),
+    Popen(["radeontop", "-d", "-", "-t", "40"], stdout=PIPE, stderr=DEVNULL)
+]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+
+ani = FuncAnimation(fig, run_redeontop, interval=1000)
+
+plt.show()
+
+processes[0].terminate()
+processes[1].terminate()
