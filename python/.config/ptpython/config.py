@@ -7,11 +7,14 @@ def configure(repl):
     # Input
     repl.vi_mode = True
     repl.confirm_exit = False
-    # Vim-like text selecting
-    repl.enable_mouse_support = True
+    # Disable mouse in order to scroll in tmux
+    repl.enable_mouse_support = False
     repl.enable_auto_suggest = True
     # When using ptipython, use IPython's visual mode
     repl.enable_open_in_editor = False
+    # These two are mutually exclusive
+    repl.enable_history_search = True
+    repl.complete_while_typing = False
 
     # Display
     # Pop-up will show completion type (e.g., function, keyword)
