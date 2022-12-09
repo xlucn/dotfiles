@@ -15,9 +15,6 @@ Hot-key daemon:
 Text-mode web browser:
 - elinks
 
-Old text editor vi/ex:
-- ex
-
 Gnu info, making it easier to use for vim users:
 - infokey
 
