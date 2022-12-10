@@ -70,5 +70,6 @@ element selected normal { background-color: #4a4a4a; }
 element selected urgent { background-color: #FFCB6B; }
 element selected active { background-color: #F07178; }
 
-/* vim magic line below, but don't add closing comment, since vim can't parse them */
-/* vim: ft=css
+/* vim magic line below, but use multiline comment
+ * vim: ft=css
+ */

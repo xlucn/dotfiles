@@ -1,8 +1,16 @@
 /* rofi config for launcher, need my main config.rasi file */
 
 configuration {
-    modi                : "drun";
-    drun-display-format : "{name}";
+    modi:                 "drun";
+    drun-display-format:  "{name}";
+    /* Here disable the Left and Right keys for line editing,
+     * so you can use them to move the selection */
+    kb-move-char-back:    "Control+b";
+    kb-move-char-forward: "Control+f";
+    kb-row-left:          "Left";
+    kb-row-right:         "Right";
+    kb-row-up:            "Up";
+    kb-row-down:          "Down";
 }
 
 * {
