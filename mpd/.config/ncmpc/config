@@ -21,9 +21,9 @@ hardware-cursor     = no
 visible-bitrate     = yes
 set-xterm-title     = yes
 status-message-time = 5
-list-format         = "[[%artist% - ]%title%]|%file%"
-status-format       = "[[%artist% - ]%title%]|%shortfile%"
-xterm-title-format  = "ncmpc - [[[%artist% - ]%title%]|%shortfile%]"
+list-format         = "[#[%album%#] ][##%track% ][%artist% - ][%title%|%file%]"
+status-format       = "[#[%album%#] ][##%track% ][%artist% - ][%title%|%file%]"
+xterm-title-format  = "ncmpc - [%artist% - ][%title%|%file%]"
 # colors
 enable-colors       = yes
 color background    = none
