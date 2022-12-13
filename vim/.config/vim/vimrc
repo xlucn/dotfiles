@@ -44,6 +44,7 @@ set splitright          " split into right by default
 set splitbelow          " split to below by default
 set updatetime=100      " update time, related to fugitive sign column update, etc.
 set signcolumn=yes      " always show sign column
+set colorcolumn=80      " highlight column 80
 set lazyredraw          " redraw when needed
 set noerrorbells        " don't beep
 set shortmess+=I        " don't show welcome screen
@@ -69,30 +70,31 @@ if has("gui_running") == 0
     endif
 endif
 " color scheme
-hi SignColumn   ctermbg=None ctermfg=0
+hi SignColumn   ctermbg=None ctermfg=0    cterm=None
 hi CursorColumn ctermbg=0
+hi CursorLine   ctermbg=0
 hi ColorColumn  ctermbg=0
 hi Folded       ctermbg=None ctermfg=8
 hi FoldColumn   ctermbg=None ctermfg=7
 hi NonText      ctermbg=None ctermfg=8
-hi SpellBad     ctermbg=None ctermfg=9
+hi SpellBad     ctermbg=None ctermfg=None cterm=undercurl
 hi SpellCap     ctermbg=None ctermfg=11
-hi Visual       ctermbg=None             cterm=reverse
-hi VertSplit    ctermbg=None ctermfg=7   cterm=None
+hi Visual       ctermbg=8    ctermfg=None cterm=nocombine
+hi VertSplit    ctermbg=None ctermfg=7    cterm=None
 " popup menu
 hi Pmenu        ctermbg=0    ctermfg=7
-hi PmenuSel     ctermbg=None ctermfg=6   cterm=None
+hi PmenuSel     ctermbg=None ctermfg=6    cterm=None
 " status line
 hi StatusLine   ctermbg=None ctermfg=7
 hi StatusLineNC ctermbg=None ctermfg=7
 " tab line
-hi TabLine      ctermbg=None ctermfg=7   cterm=None
-hi TabLineSel   ctermbg=6    ctermfg=0   cterm=None
-hi TabLineFill  ctermbg=None ctermfg=7   cterm=None
+hi TabLine      ctermbg=None ctermfg=7    cterm=None
+hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
+hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
 " symbol hightlight
-hi IlluminatedWordText  ctermbg=8
-hi IlluminatedWordRead  ctermbg=8
-hi IlluminatedWordWrite ctermbg=8
+hi IlluminatedWordText  ctermbg=0
+hi IlluminatedWordRead  ctermbg=0
+hi IlluminatedWordWrite ctermbg=0
 " git gutter
 hi GitGUtterAdd    ctermbg=none ctermfg=2
 hi GitGUtterChange ctermbg=none ctermfg=3
@@ -106,7 +108,6 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 " Space Tabs Indentations {{{
 " indentations
 set autoindent
-set smartindent
 " tabs
 set tabstop=4
 set shiftwidth=0  " make it the same as tabstop
@@ -355,7 +356,7 @@ let stl1 = ' %{GetModeStr()} '                    " vim modes
 let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
 let stl3 = '%< %t %m %w '                         " file name, modified, preview
 let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
-let stl5 = ' %p%% | %l:%c '                       " cursor location
+let stl5 = ' %p%% | %l:%v '                       " cursor location
 let stl6 = ' %{LSPStatus()} '                     " lsp status
 let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
 " }}}

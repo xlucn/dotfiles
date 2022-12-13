@@ -2,10 +2,6 @@
 vim.o.mousemodel = 'extend'
 vim.o.cmdheight = 1
 
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.o.foldenable = false
-
 function NvimLSPStatus()
     local messages = {}
     local levels = { E = 'ERROR', W = 'WARN', I = 'INFO', H = 'HINT' }
@@ -83,7 +79,7 @@ local dep_nvim_lspconfig = function()
 
     -- servers with simple setup
     local servers = {
-        'clangd',
+        'ccls',
         'pylsp',
         'bashls',
         'marksman',
@@ -162,6 +158,10 @@ local dep_which_key = function()
 end
 
 local dep_nvim_treesitter = function()
+    vim.o.foldmethod = 'expr'
+    vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+    vim.o.foldenable = false
+
     require("nvim-treesitter.configs").setup({
         highlight = { enable = true },
     })
