@@ -20,7 +20,7 @@ use_console_editor = yes
 
 
 # interface
-user_interface = alternative
+user_interface = classic
 colors_enabled = yes
 
 playlist_display_mode = columns
@@ -33,6 +33,7 @@ centered_cursor = yes
 progressbar_look = =>-
 display_bitrate = yes
 display_remaining_time = no
+connected_message_on_startup = no
 
 startup_screen = playlist
 screen_switcher_mode = playlist, browser, search_engine, media_library, playlist_editor, tag_editor, outputs, visualizer

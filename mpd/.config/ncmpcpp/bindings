@@ -77,13 +77,7 @@ def_key "end"
 def_key "h"
   previous_column
 
-def_key "left"
-  previous_column
-
 def_key "l"
-  next_column
-
-def_key "right"
   next_column
 
 # directories
@@ -210,6 +204,12 @@ def_key "Z"
 # }}}
 
 # Player control {{{
+def_key "left"
+  seek_backward
+
+def_key "right"
+  seek_forward
+
 def_key "h"
   require_screen "playlist"
   seek_backward
@@ -340,7 +340,7 @@ def_key "8"
 def_key "ctrl-g"
   jump_to_position_in_song
 
-def_key "O"
+def_key "backspace"
   jump_to_playing_song
 
 def_key "ctrl-l"
