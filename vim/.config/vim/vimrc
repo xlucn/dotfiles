@@ -322,8 +322,12 @@ function! LSPStatus()
     endif
 endfunction
 function GitBranch()
-    let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
-    silent return trim(system(cmd))
+    if has('nvim')
+        return luaeval('NvimGitBranch()')
+    else
+        let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
+        silent return trim(system(cmd))
+    endif
 endfunction
 " statusline
 let s:modestr = {

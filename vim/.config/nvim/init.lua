@@ -20,6 +20,27 @@ function NvimLSPStatus()
     return next(messages) and table.concat(messages) or 'OK'
 end
 
+function NvimGitBranch()
+    -- look for .git/HEAD, might not work in all cases
+    local path, fp, master
+    for seg in string.gmatch(vim.fn.expand('%:p:h'), '[^/]*') do
+        path = table.concat({path or '', seg}, '/')
+        fp = io.open(path .. '.git/HEAD')
+        if fp ~= nil then
+            master = fp:read()
+            fp:close()
+        end
+    end
+    if master == nil then return '' end
+
+    master = string.gsub(master, '.*/', '')
+    -- commit hash
+    if string.match(master, '%x+') == master then
+        master = string.sub(master, 0, 7)
+    end
+    return master
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         -- Enable completion triggered by <c-x><c-o>
