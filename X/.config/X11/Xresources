@@ -12,13 +12,13 @@ Xcursor.size: 36
 *.font: Monospace:size=12
 
 ! the color are from 256 colors, in order:
-! 229 254 234
-! 235 166 71 136 27 92 31 249
-! 239 173 77 178 33 134 37 254
+! 229 254 233
+! 236 166 71 136 27 92 31 249
+! 241 173 77 178 33 134 37 254
 *cursorColor:   #ffffaf
 *foreground:    #e4e4e4
-*background:    #1c1c1c
-*color0:        #262626
+*background:    #121212
+*color0:        #3a3a3a
 *color1:        #d75f00
 *color2:        #5faf5f
 *color3:        #af8700
@@ -26,7 +26,7 @@ Xcursor.size: 36
 *color5:        #875fff
 *color6:        #0087af
 *color7:        #b2b2b2
-*color8:        #4e4e4e
+*color8:        #626262
 *color9:        #d7875f
 *color10:       #5fd75f
 *color11:       #d7af00
