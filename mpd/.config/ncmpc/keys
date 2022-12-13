@@ -100,14 +100,17 @@ key rfind-next = 'N'
 key jump = 'J'
 
 ## View the selected and the currently playing song
-key view = 'i',  '6',  F6
+key view = '9',  F9
 
 ## Lyrics screen
-key screen-lyrics = '7',  F7
+key screen-lyrics = '6',  F6
 
 ## Update Lyrics
 key lyrics-update = 0
 
+## Outputs screen
+key screen-outputs = '7',  F7
+
 ## Chat screen
-key screen-chat = '9',  F9
+key screen-chat = '8',  F8
 
