@@ -5,6 +5,19 @@ set runtimepath^=$XDG_CONFIG_HOME/vim
 set packpath^=$XDG_DATA_HOME/vim
 set directory=$XDG_CACHE_HOME/vim/swap
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+" vim only settings
+set autoindent
+set autoread " auto reload files
+set encoding=utf-8
+set hidden
+set incsearch hlsearch
+" UI
+set background=dark     " color scheme
+set belloff=all         " don't beep
+set display+=lastline   " show partial line
+set laststatus=2        " show status line
+set ttimeoutlen=50      " do not wait too long after escape key
+set wildmenu            " turn on wild menu on :e <Tab>
 " Vim-Packager {{{
 function! s:packager_init(packager) abort
   " Package manager
@@ -39,6 +52,7 @@ if exists("*packager#setup")
 endif
 " }}}
 " Vim Settings
+set mouse=a             " enable mouse support in console
 " mouse support for urxvt and st
 if $TERM =~ "rxvt-unicode"
     set ttymouse=urxvt

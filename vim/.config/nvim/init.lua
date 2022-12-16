@@ -1,25 +1,35 @@
 -- nvim configuration
 vim.o.mousemodel = 'extend'
 vim.o.cmdheight = 1
+vim.o.laststatus = 3
+vim.cmd('nnoremap <M-j> <C-W>v')
+vim.cmd('nnoremap <M-k> <C-W>W')
+vim.cmd('nnoremap <M-J> <C-W>r')
+vim.cmd('nnoremap <M-K> <C-W>R')
+vim.cmd('nnoremap <M-h> <C-W><')
+vim.cmd('nnoremap <M-l> <C-W>>')
+vim.cmd('nnoremap <M-H> <C-W>-')
+vim.cmd('nnoremap <M-L> <C-W>+')
 
 function NvimLSPStatus()
-    local messages = {}
+    local messages, count = '', 0
     local levels = { E = 'ERROR', W = 'WARN', I = 'INFO', H = 'HINT' }
     for key, severity in pairs(levels) do
-        local count = #vim.diagnostic.get(0, {
-            severity = vim.diagnostic.severity[severity]
-        })
+        severity = vim.diagnostic.severity[severity]
+        count = #vim.diagnostic.get(0, { severity = severity })
         if count > 0 then
-            table.insert(messages, key .. ':' .. count)
+            messages = messages .. key .. ':' .. count
         end
     end
-    return next(messages) and table.concat(messages) or 'OK'
+    return string.len(messages) == 0 and 'OK' or messages
 end
 
 function NvimGitBranch()
     -- look for .git/HEAD, might not work in all cases
     local path, fp, master
-    for seg in string.gmatch(vim.fn.expand('%:p:h'), '[^/]*') do
+    local current_file = vim.fn.expand('%:p')
+    local real_path = vim.fn.resolve(current_file)
+    for seg in string.gmatch(real_path, '[^/]*') do
         path = table.concat({path or '', seg}, '/')
         fp = io.open(path .. '.git/HEAD')
         if fp ~= nil then
@@ -60,19 +70,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local dep_bootstrap = function ()
     -- check or install dep plugin manager
-    local deppath = vim.fn.stdpath("data") .. "/site/pack/deps/opt/dep"
-    local depurl = "https://github.com/chiyadev/dep"
-    if vim.fn.empty(vim.fn.glob(deppath)) > 0 then
-      vim.fn.system({ "git", "clone", "--depth=1", depurl, deppath })
+    local dep_path = vim.fn.stdpath("data") .. "/site/pack/deps/opt/dep"
+    local dep_url = "https://github.com/chiyadev/dep"
+    if vim.fn.empty(vim.fn.glob(dep_path)) > 0 then
+      vim.fn.system({ "git", "clone", "--depth=1", dep_url, dep_path })
     end
     vim.cmd("packadd dep")
 end
 
-local dep_leap = function ()
+local config_leap = function ()
     require('leap').add_default_mappings()
 end
 
-local dep_nvim_lspconfig = function()
+local config_nvim_lspconfig = function()
     -- LSP configs
     local lsp = require('lspconfig')
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -119,7 +129,7 @@ local dep_nvim_lspconfig = function()
     })
 end
 
-local dep_nvim_cmp = function()
+local config_nvim_cmp = function()
     local cmp = require('cmp')
 
     cmp.setup({
@@ -142,13 +152,13 @@ local dep_nvim_cmp = function()
     })
 end
 
-local dep_vim_illuminate = function()
+local config_vim_illuminate = function()
     require('illuminate').configure({
         filetypes_denylist = { '', 'mail', 'markdown', 'text' },
     })
 end
 
-local dep_which_key = function()
+local config_which_key = function()
     local which_key = require("which-key")
     which_key.register({
         l = { name = "language server" },
@@ -157,7 +167,7 @@ local dep_which_key = function()
     })
 end
 
-local dep_nvim_treesitter = function()
+local config_nvim_treesitter = function()
     vim.o.foldmethod = 'expr'
     vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
     vim.o.foldenable = false
@@ -173,13 +183,12 @@ require('dep')({
     { 'tpope/vim-commentary' },
     { 'tpope/vim-endwise' },
     { 'tpope/vim-repeat' },
-    { 'tpope/vim-sensible' },
     { 'tpope/vim-surround' },
     { 'tpope/vim-dispatch' },
     { 'ap/vim-buftabline' },
     -- lsp related
-    { 'neovim/nvim-lspconfig', dep_nvim_lspconfig },
-    { 'hrsh7th/nvim-cmp', dep_nvim_cmp },
+    { 'neovim/nvim-lspconfig', config_nvim_lspconfig },
+    { 'hrsh7th/nvim-cmp', config_nvim_cmp },
     { 'hrsh7th/cmp-nvim-lsp' },
     { 'hrsh7th/cmp-buffer' },
     { 'hrsh7th/cmp-path' },
@@ -192,12 +201,12 @@ require('dep')({
     { 'majutsushi/tagbar' },
     { 'jpalardy/vim-slime' },
     { 'airblade/vim-gitgutter' },
-    { 'RRethy/vim-illuminate', dep_vim_illuminate },
-    { 'ggandor/leap.nvim', dep_leap },
-    { 'folke/which-key.nvim', dep_which_key },
+    { 'RRethy/vim-illuminate', config_vim_illuminate },
+    { 'ggandor/leap.nvim', config_leap },
+    { 'folke/which-key.nvim', config_which_key },
     { 'nvim-lua/plenary.nvim' },
     { 'nvim-lualine/lualine.nvim' },
     { 'nvim-telescope/telescope.nvim' },
-    { 'nvim-treesitter/nvim-treesitter', dep_nvim_treesitter },
+    { 'nvim-treesitter/nvim-treesitter', config_nvim_treesitter },
     sync="never"
 })

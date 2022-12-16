@@ -16,27 +16,22 @@ filetype on
 filetype plugin on
 filetype indent on
 set backup " create back files
-set autoread " auto reload files
 set autowrite " automatically write a file when leaving a buffer
-set hidden
-set encoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set spelllang=en,cjk " spell check but exclude CJK language
 set clipboard=unnamedplus " use x11 normal clipboard
 set timeoutlen=300 " time out for key code delays
-set ttimeoutlen=0 " do not wait after escape key
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
 set completeopt=menu,preview " completion
-set formatoptions+=mM " better multibyte (CJK) support
-set incsearch ignorecase smartcase hlsearch
+set formatoptions+=jormB " ro for comments, mB for CJK
+set ignorecase smartcase
 " }}}
 " UI basic {{{
 set guioptions=di       " gui options: dark, icon
 set number              " show line number
 set relativenumber      " show relative number
 set showcmd             " shows what you are typing as a command
-set wildmenu            " turn on wild menu on :e <Tab>
 set title               " change the terminal's title
 set showmatch           " show matching characters
 set scrolloff=5         " minimum lines above and below cursor
@@ -46,14 +41,9 @@ set updatetime=100      " update time, related to fugitive sign column update, e
 set signcolumn=yes      " always show sign column
 set colorcolumn=80      " highlight column 80
 set lazyredraw          " redraw when needed
-set noerrorbells        " don't beep
-set shortmess+=I        " don't show welcome screen
+set shortmess+=Ic       " don't show welcome screen
 set showtabline=2       " show tabs on top
-set laststatus=2        " show status line
 set noshowmode          " do not show mode on the last line
-set display+=lastline   " show partial line
-set background=dark     " color scheme
-set mouse=a             " enable mouse support in console
 set foldcolumn=0
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
@@ -81,33 +71,60 @@ hi SpellBad     ctermbg=None ctermfg=None cterm=undercurl
 hi SpellCap     ctermbg=None ctermfg=11
 hi Visual       ctermbg=8    ctermfg=None cterm=nocombine
 hi VertSplit    ctermbg=None ctermfg=7    cterm=None
+" Diff
+hi DiffAdd      ctermbg=None ctermfg=10
+hi DiffChange   ctermbg=None ctermfg=11
+hi DiffDelete   ctermbg=None ctermfg=9
 " popup menu
 hi Pmenu        ctermbg=0    ctermfg=7
 hi PmenuSel     ctermbg=None ctermfg=6    cterm=None
 " status line
-hi StatusLine   ctermbg=None ctermfg=7
-hi StatusLineNC ctermbg=None ctermfg=7
+hi StatusLine   ctermbg=None ctermfg=7    cterm=None
+hi StatusLineNC ctermbg=None ctermfg=7    cterm=None
 " tab line
 hi TabLine      ctermbg=None ctermfg=7    cterm=None
 hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
 hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
 " symbol hightlight
-hi IlluminatedWordText  ctermbg=0
-hi IlluminatedWordRead  ctermbg=0
-hi IlluminatedWordWrite ctermbg=0
+hi LspReferenceText  ctermbg=238
+hi LspReferenceRead  ctermbg=238
+hi LspReferenceWrite ctermbg=238
+hi IlluminatedWordText  ctermbg=238
+hi IlluminatedWordRead  ctermbg=238
+hi IlluminatedWordWrite ctermbg=238
 " git gutter
 hi GitGUtterAdd    ctermbg=none ctermfg=2
 hi GitGUtterChange ctermbg=none ctermfg=3
 hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " built-in plugins or file type supports {{{
+let g:loaded_gzip = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_logiPat = 1
+let g:loaded_rrhelper = 1
+
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
+let g:loaded_python3_provider = 0
 let g:termdebug_wide=1
 let g:markdown_folding = 1
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sh', 'c']
 " }}}
 " Space Tabs Indentations {{{
-" indentations
-set autoindent
 " tabs
 set tabstop=4
 set shiftwidth=0  " make it the same as tabstop
@@ -234,7 +251,6 @@ augroup END
 " }}}
 " Netrw {{{
 " Make Netrw function like NerdTree
-let g:netrw_home         = $XDG_DATA_HOME.'/vim'
 let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
 let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
 let g:netrw_winsize      = -20  " split size, minus meaning absolute size
@@ -362,17 +378,15 @@ let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
 " }}}
 " Git {{{
 " show the log in a pretty way
-function! GitLog()
-    silent !git -C "$(dirname "$(realpath "%")")" log --all --decorate --oneline --graph --date-order
-    redraw!
-endfunction
 function! GitTig()
-    silent !tig -C "$(dirname "$(realpath "%")")"
-    redraw!
+    if has('nvim')
+        silent !tig -C "$(dirname "$(realpath "%")")" --all
+        redraw!
+    else
+        terminal tig -C "$(dirname "$(realpath "%")")" --all
+    endif
 endfunction
-" key bindings
 nnoremap <leader>gg :call GitTig()<CR>
-nnoremap <leader>gl :call GitLog()<CR>
 " }}}
 " Markdown preview{{{
 function MarkdownPreviewToggle()
@@ -453,7 +467,7 @@ let g:tagbar_indent = 1
 let g:tagbar_left = 1
 let g:tagbar_silent = 1
 let g:tagbar_sort = 0
-let g:tagbar_width = min([25, winwidth(0) / 4])
+let g:tagbar_width = min([30, winwidth(0) / 4])
 nnoremap <C-B> :Tagbar<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0
