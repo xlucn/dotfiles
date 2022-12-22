@@ -16,8 +16,9 @@ set directory=/tmp
 set ignorecase
 " Show tab as ^I, EOL as $, literally. It's not good looking.
 set nolist
-" Search for 'vi:' for commands
-set modelines
+" Modelines, search for 'vi:' for commands
+" Using the abbreviation ml here to keep compatible with vim
+set ml
 " Show line number, Arch Linux's package has a fix patch
 set number
 " No repeat mapping

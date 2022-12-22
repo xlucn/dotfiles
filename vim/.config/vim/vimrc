@@ -1,3 +1,6 @@
+" leader key, for key mappings
+let mapleader = ','
+let maplocalleader = '\'
 " Vim or NeoVim? {{{
 if !has("nvim")
     so $XDG_CONFIG_HOME/vim/vim.vimrc
@@ -7,9 +10,6 @@ endif
 set backupdir=$XDG_CACHE_HOME/vim/backup
 " }}}
 " Vim basic config {{{
-" leader key, for key mappings
-let mapleader = ','
-let maplocalleader = '\'
 " detect filetype and apply syntax highlighting
 syntax on
 filetype on
@@ -48,10 +48,10 @@ set foldcolumn=0
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
     if $TERM != "linux"
-        let &t_SI = "\e[6 q"
-        let &t_SR = "\e[4 q"
-        let &t_EI = "\e[2 q"
-    else
+        let &t_SI = "\e[6 q"  " sent when entering insert mode
+        let &t_SR = "\e[4 q"  " sent when entering replace mode
+        let &t_EI = "\e[2 q"  " sent when leaving insert or replace mode
+    else  " for Linux tty
         let &t_ve = "\e[?25h"
         let &t_vi = "\e[?25l"
         let &t_SI = "\e[?0c"
@@ -85,7 +85,7 @@ hi StatusLineNC ctermbg=None ctermfg=7    cterm=None
 hi TabLine      ctermbg=None ctermfg=7    cterm=None
 hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
 hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
-" symbol hightlight
+" symbol highlight
 hi LspReferenceText  ctermbg=238
 hi LspReferenceRead  ctermbg=238
 hi LspReferenceWrite ctermbg=238
@@ -98,27 +98,6 @@ hi GitGUtterChange ctermbg=none ctermfg=3
 hi GitGUtterDelete ctermbg=none ctermfg=1
 " }}}
 " built-in plugins or file type supports {{{
-let g:loaded_gzip = 1
-let g:loaded_tar = 1
-let g:loaded_tarPlugin = 1
-let g:loaded_zip = 1
-let g:loaded_zipPlugin = 1
-
-let g:loaded_getscript = 1
-let g:loaded_getscriptPlugin = 1
-let g:loaded_vimball = 1
-let g:loaded_vimballPlugin = 1
-
-let g:loaded_matchit = 1
-let g:loaded_matchparen = 1
-let g:loaded_2html_plugin = 1
-let g:loaded_logiPat = 1
-let g:loaded_rrhelper = 1
-
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
-let g:loaded_netrwFileHandlers = 1
 let g:loaded_python3_provider = 0
 let g:termdebug_wide=1
 let g:markdown_folding = 1
@@ -168,8 +147,6 @@ noremap <leader>z :call Goyo()<CR>
 " Autocmd {{{
 augroup normal
     autocmd!
-    " make sure the cursor reset to block shape, see the cursor shape settings
-    autocmd VimEnter * normal! :startinsert :stopinsert
     " some file types
     autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
     autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
@@ -247,20 +224,6 @@ augroup im_toggle
     autocmd!
     autocmd InsertLeave * call IMDisable()
     autocmd InsertEnter * call IMEnable()
-augroup END
-" }}}
-" Netrw {{{
-" Make Netrw function like NerdTree
-let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
-let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
-let g:netrw_winsize      = -20  " split size, minus meaning absolute size
-let g:netrw_dirhistmax   = 0    " disable history
-let g:netrw_liststyle    = 0    " one file per line with nothing else
-nnoremap L :silent Lexplore<CR>
-augroup NetrwKeys
-    autocmd!
-    autocmd Filetype netrw nmap <buffer> h <Plug>NetrwBrowseUpDir
-    autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
 augroup END
 " }}}
 " My own goyo mode {{{
@@ -368,6 +331,18 @@ endfunction
 hi User1 ctermbg=0
 hi User2 ctermbg=8
 hi User3 ctermfg=0 ctermbg=6
+function TagbarToggle(wid, n, bn, mod)
+    if a:bn == 'l'
+        Tagbar
+    endif
+endfunction
+function TagbarIcon()
+    if tagbar#IsOpen() == 1
+        return ' >> '
+    else
+        return ' << '
+    endif
+endfunction
 let stl1 = ' %{GetModeStr()} '                    " vim modes
 let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
 let stl3 = '%< %t %m %w '                         " file name, modified, preview
@@ -375,18 +350,17 @@ let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
 let stl5 = ' %p%% | %l:%v '                       " cursor location
 let stl6 = ' %{LSPStatus()} '                     " lsp status
 let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
+let &stl = ''.&stl.'%10@TagbarToggle@%{TagbarIcon()}%X'
 " }}}
 " Git {{{
 " show the log in a pretty way
-function! GitTig()
-    if has('nvim')
+if !has('nvim')
+    function! GitTig()
         silent !tig -C "$(dirname "$(realpath "%")")" --all
         redraw!
-    else
-        terminal tig -C "$(dirname "$(realpath "%")")" --all
-    endif
-endfunction
-nnoremap <leader>gg :call GitTig()<CR>
+    endfunction
+    nnoremap <leader>gg :call GitTig()<CR>
+endif
 " }}}
 " Markdown preview{{{
 function MarkdownPreviewToggle()
@@ -411,10 +385,6 @@ endfunction
 nnoremap <leader>c <Plug>CommentaryLine
 onoremap <leader>c <Plug>Commentary
 xnoremap <leader>c <Plug>Commentary
-" }}}
-" slime {{{
-xmap <leader>s <Plug>SlimeSend
-nmap <leader>s <Plug>SlimeSend
 " }}}
 " buftabline {{{
 let g:buftabline_numbers = 2
@@ -467,7 +437,7 @@ let g:tagbar_indent = 1
 let g:tagbar_left = 1
 let g:tagbar_silent = 1
 let g:tagbar_sort = 0
-let g:tagbar_width = min([30, winwidth(0) / 4])
+let g:tagbar_width = max([30, winwidth(0) / 4])
 nnoremap <C-B> :Tagbar<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0

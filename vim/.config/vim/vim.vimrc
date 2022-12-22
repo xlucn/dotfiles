@@ -18,38 +18,37 @@ set display+=lastline   " show partial line
 set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
-" Vim-Packager {{{
-function! s:packager_init(packager) abort
-  " Package manager
-  call a:packager.add('kristijanhusak/vim-packager', {'type': 'opt'})
-  " Basic
-  call a:packager.add('tpope/vim-commentary')
-  call a:packager.add('tpope/vim-endwise')
-  call a:packager.add('tpope/vim-repeat')
-  call a:packager.add('tpope/vim-sensible')
-  call a:packager.add('tpope/vim-surround')
-  call a:packager.add('tpope/vim-dispatch')
-  call a:packager.add('ap/vim-buftabline')
-  " Enhancements
-  call a:packager.add('majutsushi/tagbar')
-  call a:packager.add('jpalardy/vim-slime')
-  call a:packager.add('airblade/vim-gitgutter')
-  call a:packager.add('liuchengxu/vim-which-key')
-  " vim language server
-  call a:packager.add('prabirshrestha/vim-lsp')
-  call a:packager.add('mattn/vim-lsp-settings')
-  call a:packager.add('prabirshrestha/async.vim')
-  call a:packager.add('prabirshrestha/asyncomplete.vim')
-  call a:packager.add('prabirshrestha/asyncomplete-lsp.vim')
-  call a:packager.add('natebosch/vim-lsc', {'type': 'opt'})
-  " Snippets
-  call a:packager.add('honza/vim-snippets')
-  call a:packager.add('rafamadriz/friendly-snippets')
+" vim-jetpack {{{
+function! ConfigComm() abort
+    echo "test"
 endfunction
-packadd vim-packager
-if exists("*packager#setup")
-    call packager#setup(function('s:packager_init'))
-endif
+packadd vim-jetpack
+call jetpack#begin()
+call jetpack#add('tani/vim-jetpack', {'opt': 1}) "bootstrap
+" Basic
+call jetpack#add('tpope/vim-commentary')
+call jetpack#add('tpope/vim-endwise')
+call jetpack#add('tpope/vim-repeat')
+call jetpack#add('tpope/vim-sensible')
+call jetpack#add('tpope/vim-surround')
+call jetpack#add('tpope/vim-dispatch')
+call jetpack#add('tpope/vim-fugitive')
+call jetpack#add('ap/vim-buftabline')
+" Enhancements
+call jetpack#add('majutsushi/tagbar')
+call jetpack#add('jpalardy/vim-slime')
+call jetpack#add('airblade/vim-gitgutter')
+call jetpack#add('liuchengxu/vim-which-key')
+" vim language server
+call jetpack#add('prabirshrestha/vim-lsp')
+call jetpack#add('mattn/vim-lsp-settings')
+call jetpack#add('prabirshrestha/async.vim')
+call jetpack#add('prabirshrestha/asyncomplete.vim')
+call jetpack#add('prabirshrestha/asyncomplete-lsp.vim')
+" Snippets
+call jetpack#add('honza/vim-snippets')
+call jetpack#add('rafamadriz/friendly-snippets')
+call jetpack#end()
 " }}}
 " Vim Settings
 set mouse=a             " enable mouse support in console
@@ -59,7 +58,26 @@ if $TERM =~ "rxvt-unicode"
 elseif $TERM =~ "st*"
     set ttymouse=sgr
 endif
+augroup vim
+    autocmd!
+    " make sure the cursor reset to block shape, see the cursor shape settings
+    autocmd VimEnter * normal! :startinsert :stopinsert
+augroup END
 " Plugin settings
+" Netrw {{{
+" Make Netrw function like NerdTree
+let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
+let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
+let g:netrw_winsize      = -20  " split size, minus meaning absolute size
+let g:netrw_dirhistmax   = 0    " disable history
+let g:netrw_liststyle    = 0    " one file per line with nothing else
+nnoremap L :silent Lexplore<CR>
+augroup NetrwKeys
+    autocmd!
+    autocmd Filetype netrw nmap <buffer> h <Plug>NetrwBrowseUpDir
+    autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
+augroup END
+" }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
 let g:which_key_centered = 1
@@ -94,6 +112,10 @@ function WhichKeyRegister()
     endif
 endfunction
 autocmd VimEnter * call WhichKeyRegister()
+" }}}
+" slime {{{
+xmap <leader>s <Plug>SlimeSend
+nmap <leader>s <Plug>SlimeSend
 " }}}
 " vim-lsp {{{
 function! s:on_lsp_buffer_enabled() abort
