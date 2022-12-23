@@ -13,12 +13,12 @@ Xcursor.size: 36
 
 ! the color are from 256 colors, in order:
 ! 229 254 233
-! 236 166 71 136 27 92 31 249
+! 235 166 71 136 27 92 31 249
 ! 241 173 77 178 33 134 37 254
 *cursorColor:   #ffffaf
 *foreground:    #e4e4e4
 *background:    #121212
-*color0:        #3a3a3a
+*color0:        #262626
 *color1:        #d75f00
 *color2:        #5faf5f
 *color3:        #af8700
