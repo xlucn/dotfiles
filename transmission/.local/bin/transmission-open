@@ -2,8 +2,8 @@
 # Script to work with transmission-remote-gtk's action functionality.
 [ $# != 1 ] && exit
 if [ -f "$1" ] || [ -d "$1" ]; then
-    dest="$1"
+    dest=$1
 else
     dest=$(dirname "$1")
 fi
-pcmanfm "$dest"
+nemo "$dest"
