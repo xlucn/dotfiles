@@ -57,6 +57,8 @@ WM=${1:-dwm}
 
 if [ "${WM%2x}" != "$WM" ]; then
     export XCURSOR_SIZE=48
+    export GDK_SCALE=2
+    export GDK_DPI_SCALE=0.6
     export QT_AUTO_SCREEN_SCALE_FACTOR=0
     {   echo "Xft.dpi: 144"
         echo "Xcursor.size: 48"
