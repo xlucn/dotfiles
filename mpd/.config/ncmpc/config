@@ -1,6 +1,3 @@
-# connection
-host                = localhost
-port                = 6600
 # interface
 enable-mouse        = no
 auto-center         = yes
@@ -14,14 +11,16 @@ screen-list         = help playlist browse library search lyrics outputs chat so
 crossfade-time      = 3
 search-mode         = filename
 # display
-scroll              = yes
-welcome-screen-list = yes
+scroll              = no
+welcome-screen-list = no
 wide-cursor         = yes
 hardware-cursor     = no
+hide-cursor         = 0
 visible-bitrate     = yes
 set-xterm-title     = yes
 status-message-time = 5
 list-format         = "[#[%album%#] ][##%track% ][%artist% - ][%title%|%file%]"
+search-format       = "[#[%album%#] ][##%track% ][%artist% - ][%title%|%file%]"
 status-format       = "[#[%album%#] ][##%track% ][%artist% - ][%title%|%file%]"
 xterm-title-format  = "ncmpc - [%artist% - ][%title%|%file%]"
 # colors
