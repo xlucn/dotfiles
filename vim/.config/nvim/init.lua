@@ -91,28 +91,17 @@ local function config_nvim_lspconfig()
     local lsp = require('lspconfig')
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    -- servers with simple setup
-    local servers = {
-        'ccls',
-        'pylsp',
-        'bashls',
-        'marksman',
-    }
-
-    for _, server in ipairs(servers) do
-        lsp[server].setup({ capabilities = capabilities })
-    end
-
-    lsp['sumneko_lua'].setup({
-        capabilities = capabilities,
-        settings = { Lua = {
-            diagnostics = { globals = { 'vim' } }
-        } },
-    })
-
-    lsp['texlab'].setup({
-        capabilities = capabilities,
-        settings = { texlab = {
+    local server_config = {
+        bashls = {},
+        ccls = {},
+        marksman = {},
+        pylsp = {},
+        sumneko_lua = { settings = { Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }}},
+        texlab = { settings = { texlab = {
             build = {
                 executable = "latexmk",
                 args = { "-xelatex",
@@ -129,8 +118,14 @@ local function config_nvim_lspconfig()
             chktex = {
                 onOpenAndSave = false,
             }
-        } }
-    })
+        }}}
+    }
+
+    vim.lsp.stop_client(vim.lsp.get_active_clients())
+    for server, config in pairs(server_config) do
+        config.capabilities = capabilities
+        lsp[server].setup(config)
+    end
 end
 
 local function config_nvim_cmp()
@@ -150,6 +145,7 @@ local function config_nvim_cmp()
         }),
         sources = {
             { name = 'path' },
+            { name = 'nvim_lua' },
             { name = 'luasnip' },
             { name = 'nvim_lsp' },
             { name = 'buffer' },
@@ -201,10 +197,8 @@ local function config_nvim_treesitter()
                     ['@function.outer'] = 'V',
                     ['@class.outer'] = 'V',
                 },
-                -- If you set this to `true` (default is `false`) then any textobject is
-                -- extended to include preceding or succeeding whitespace. Succeeding
-                -- whitespace has priority in order to act similarly to eg the built-in
-                -- `ap`.
+                -- Extended textobjects to include preceding or succeeding
+                -- whitespace. Succeeding whitespace has priority.
                 include_surrounding_whitespace = true,
             },
             swap = {
@@ -262,7 +256,6 @@ local function config_gitsigns()
 end
 
 local function config_luasnip()
-    print('load luasnip')
     require('luasnip.loaders.from_vscode').lazy_load()
 end
 
@@ -343,6 +336,7 @@ require('dep')({
     -- completion engine and sources
     { 'hrsh7th/cmp-buffer' },
     { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-nvim-lua' },
     { 'saadparwaiz1/cmp_luasnip' },
     { 'hrsh7th/nvim-cmp', config_nvim_cmp },
     -- lsp and integrations
