@@ -133,6 +133,12 @@ local function config_nvim_cmp()
     local luasnip = require('luasnip')
 
     cmp.setup({
+        view = {
+            entries = {  -- dynamic menu direction
+                name = 'custom',
+                selection_order = 'near_cursor'
+            }
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -143,14 +149,50 @@ local function config_nvim_cmp()
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<CR>'] = cmp.mapping.confirm({ select = false }),
         }),
-        sources = {
-            { name = 'path' },
-            { name = 'nvim_lua' },
-            { name = 'luasnip' },
+        sources = cmp.config.sources({
             { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+            { name = 'nvim_lua' },
+        }, {
+            { name = 'path' },
             { name = 'buffer' },
-        }
+        }),
+        formatting = {
+            format = require'lspkind'.cmp_format({
+                mode = 'symbol_text',
+                preset = 'codicons',
+                maxwidth = 30, -- pop up menu width
+            })
+        },
     })
+
+    -- highlightings
+    local colors = {
+        CmpItemAbbrDeprecated = { ctermfg = 7, strikethrough = true },
+        CmpItemAbbrMatch = { ctermfg = 12, bold = true },
+        CmpItemAbbrMatchFuzzy = { ctermfg = 12, bold = true },
+        CmpItemMenu = { ctermfg = 13, italic = true },
+        CmpItemKind = { ctermfg = 0, ctermbg = 12 },
+    }
+    for key, value in pairs(colors) do
+        vim.api.nvim_set_hl(0, key, value)
+    end
+
+    local kind_colors = {  -- base16 colors for completion types
+        [1] = { "Field", "Property", "Event", },
+        [2] = { "Text", "Enum", "Keyword", },
+        [3] = { "Unit", "Snippet", "Folder", },
+        [4] =  { "Method", "Value", "EnumMember", },
+        [5] = { "Function", "Struct", "Class", "Module", "Operator", },
+        [7] = { "Variable", "File", },
+        [11] = { "Constant", "Constructor", "Reference", },
+        [14] = { "Interface", "Color", "TypeParameter", }
+    }
+    for color, kinds in pairs(kind_colors) do
+        for _, kind in ipairs(kinds) do
+            vim.api.nvim_set_hl(0, 'CmpItemKind' .. kind, { ctermfg = color })
+        end
+    end
 end
 
 local function config_vim_illuminate()
@@ -334,6 +376,7 @@ require('dep')({
     { 'rafamadriz/friendly-snippets', deps = 'L3MON4D3/LuaSnip' },
     { 'L3MON4D3/LuaSnip', config_luasnip, deps = 'hrsh7th/nvim-cmp' },
     -- completion engine and sources
+    { 'onsails/lspkind.nvim', deps = 'hrsh7th/nvim-cmp' },
     { 'hrsh7th/cmp-buffer' },
     { 'hrsh7th/cmp-path' },
     { 'hrsh7th/cmp-nvim-lua' },
