@@ -78,6 +78,78 @@ augroup NetrwKeys
     autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
 augroup END
 " }}}
+" statusline {{{
+" update status on LSP status changes
+augroup UpdateStatus
+  autocmd!
+  autocmd User lsp_diagnostics_updated redrawstatus
+augroup END
+function! LSPStatus()
+    if exists('*lsp#get_buffer_diagnostics_counts')
+        let l:counts = lsp#get_buffer_diagnostics_counts()
+        let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
+        let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
+        let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
+        let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
+        let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
+        return ' ' . l:lsp_status
+    else
+        return ""
+    endif
+endfunction
+function GitBranch()
+    let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
+    silent return trim(system(cmd))
+endfunction
+" statusline
+let s:modestr = {
+    \   'c': 'COMMAND',
+    \   'i': 'INSERT',
+    \   'n': 'NORMAL',
+    \   'R': 'REPLACE',
+    \   's': 'SELECT',
+    \   't': 'TERMINAL',
+    \   'v': 'VISUAL',
+    \   'V': 'V-LINE',
+    \   '': 'S-BLOCK',
+    \   '': 'V-BLOCK',
+    \ }
+function GetModeStr()
+    let mode = mode()
+    return get(s:modestr, mode, mode)
+endfunction
+" NOTE: %{} will be evaluated upon update
+" NOTE: keep the spaces in the %(%) group
+hi User1 ctermbg=0
+hi User2 ctermbg=8
+hi User3 ctermfg=0 ctermbg=6
+function TagbarToggle(wid, n, bn, mod)
+    if a:bn == 'l'
+        Tagbar
+    endif
+endfunction
+function TagbarIcon()
+    if tagbar#IsOpen() == 1
+        return ' >> '
+    else
+        return ' << '
+    endif
+endfunction
+let stl1 = ' %{GetModeStr()} '                    " vim modes
+let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
+let stl3 = '%< %t %m %w '                         " file name, modified, preview
+let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
+let stl5 = ' %p%% | %l:%v '                       " cursor location
+let stl6 = ' %{LSPStatus()} '                     " lsp status
+let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
+" }}}
+" Git {{{
+function! GitTig()
+    silent !tig -C "$(dirname "$(realpath "%")")" --all
+    redraw!
+endfunction
+nnoremap <leader>gg :call GitTig()<CR>
+" }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
 let g:which_key_centered = 1
@@ -143,6 +215,13 @@ augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+" }}}
+" Gitgutter {{{
+" the previous ~_ take two columns
+let g:gitgutter_sign_modified_removed   = '^'
+" update signs after focus
+let g:gitgutter_terminal_reports_focus  = 0
+let g:gitgutter_max_signs = 1000
 " }}}
 " vim-lsc {{{
 let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'

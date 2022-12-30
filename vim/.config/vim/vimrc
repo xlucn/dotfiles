@@ -17,13 +17,14 @@ filetype plugin on
 filetype indent on
 set backup " create back files
 set autowrite " automatically write a file when leaving a buffer
+set undofile " persistent undo between restarts
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set spelllang=en,cjk " spell check but exclude CJK language
 set clipboard=unnamedplus " use x11 normal clipboard
 set timeoutlen=300 " time out for key code delays
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
-set completeopt=menu,preview " completion
+set completeopt=menu,menuone,noselect " completion
 set formatoptions+=jormB " ro for comments, mB for CJK
 set ignorecase smartcase
 " }}}
@@ -77,7 +78,7 @@ hi DiffChange   ctermbg=None ctermfg=11
 hi DiffDelete   ctermbg=None ctermfg=9
 " popup menu
 hi Pmenu        ctermbg=0    ctermfg=7
-hi PmenuSel     ctermbg=None ctermfg=6    cterm=None
+hi PmenuSel     ctermbg=8    ctermfg=None cterm=None
 " status line
 hi StatusLine   ctermbg=None ctermfg=7    cterm=None
 hi StatusLineNC ctermbg=None ctermfg=7    cterm=None
@@ -86,12 +87,12 @@ hi TabLine      ctermbg=None ctermfg=7    cterm=None
 hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
 hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
 " symbol highlight
-hi LspReferenceText  ctermbg=238
-hi LspReferenceRead  ctermbg=238
-hi LspReferenceWrite ctermbg=238
-hi IlluminatedWordText  ctermbg=238
-hi IlluminatedWordRead  ctermbg=238
-hi IlluminatedWordWrite ctermbg=238
+hi LspReferenceText  ctermbg=8
+hi LspReferenceRead  ctermbg=8
+hi LspReferenceWrite ctermbg=8
+hi IlluminatedWordText  ctermbg=8
+hi IlluminatedWordRead  ctermbg=8
+hi IlluminatedWordWrite ctermbg=8
 " git gutter
 hi GitGUtterAdd    ctermbg=none ctermfg=2
 hi GitGUtterChange ctermbg=none ctermfg=3
@@ -280,88 +281,6 @@ function Make()
     call AsyncRun(["make", "-C", makefile])
 endfunction
 " }}}
-" statusline {{{
-" update status on LSP status changes
-augroup UpdateStatus
-  autocmd!
-  autocmd User lsp_diagnostics_updated redrawstatus
-augroup END
-function! LSPStatus()
-    if has('nvim')
-        return luaeval('NvimLSPStatus()')
-    elseif exists('*lsp#get_buffer_diagnostics_counts')
-        let l:counts = lsp#get_buffer_diagnostics_counts()
-        let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
-        let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
-        let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
-        let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
-        let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
-        return ' ' . l:lsp_status
-    else
-        return ""
-    endif
-endfunction
-function GitBranch()
-    if has('nvim')
-        return luaeval('NvimGitBranch()')
-    else
-        let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
-        silent return trim(system(cmd))
-    endif
-endfunction
-" statusline
-let s:modestr = {
-    \   'c': 'COMMAND',
-    \   'i': 'INSERT',
-    \   'n': 'NORMAL',
-    \   'R': 'REPLACE',
-    \   's': 'SELECT',
-    \   't': 'TERMINAL',
-    \   'v': 'VISUAL',
-    \   'V': 'V-LINE',
-    \   '': 'S-BLOCK',
-    \   '': 'V-BLOCK',
-    \ }
-function GetModeStr()
-    let mode = mode()
-    return get(s:modestr, mode, mode)
-endfunction
-" NOTE: %{} will be evaluated upon update
-" NOTE: keep the spaces in the %(%) group
-hi User1 ctermbg=0
-hi User2 ctermbg=8
-hi User3 ctermfg=0 ctermbg=6
-function TagbarToggle(wid, n, bn, mod)
-    if a:bn == 'l'
-        Tagbar
-    endif
-endfunction
-function TagbarIcon()
-    if tagbar#IsOpen() == 1
-        return ' >> '
-    else
-        return ' << '
-    endif
-endfunction
-let stl1 = ' %{GetModeStr()} '                    " vim modes
-let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
-let stl3 = '%< %t %m %w '                         " file name, modified, preview
-let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
-let stl5 = ' %p%% | %l:%v '                       " cursor location
-let stl6 = ' %{LSPStatus()} '                     " lsp status
-let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
-let &stl = ''.&stl.'%10@TagbarToggle@%{TagbarIcon()}%X'
-" }}}
-" Git {{{
-" show the log in a pretty way
-if !has('nvim')
-    function! GitTig()
-        silent !tig -C "$(dirname "$(realpath "%")")" --all
-        redraw!
-    endfunction
-    nnoremap <leader>gg :call GitTig()<CR>
-endif
-" }}}
 " Markdown preview{{{
 function MarkdownPreviewToggle()
     if !exists('b:mdp_job')
@@ -397,13 +316,6 @@ autocmd FileType tex
   \ let b:endwise_words = 'begin' |
   \ let b:endwise_pattern = '\\begin{.\{-}}' |
   \ let b:endwise_syngroups = 'texSection,texBeginEnd,texBeginEndName,texStatement'
-" }}}
-" Gitgutter {{{
-" the previous ~_ take two columns
-let g:gitgutter_sign_modified_removed   = '^'
-" update signs after focus
-let g:gitgutter_terminal_reports_focus  = 0
-let g:gitgutter_max_signs = 1000
 " }}}
 " vim-slime {{{
 let g:slime_no_mappings = 1
