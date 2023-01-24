@@ -27,5 +27,7 @@ for i in 3 2 1; do
 done
 
 ffmpeg -y -f x11grab -framerate 30 \
-       -video_size "${w}x${h}" -i ":0.0+$x,$y" -pix_fmt yuv420p \
+       -video_size "${w}x${h}" \
+       -i "${DISPLAY:-:0}.0+$x,$y" \
+       -pix_fmt yuv420p \
        "$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mp4"
