@@ -1,5 +1,11 @@
 local mapopts = { noremap=true, silent=true }
 
+local function config_commentary()
+    vim.keymap.set('n', '<leader>c', '<Plug>CommentaryLine', mapopts)
+    vim.keymap.set('o', '<leader>c', '<Plug>Commentary', mapopts)
+    vim.keymap.set('x', '<leader>c', '<Plug>Commentary', mapopts)
+end
+
 local function config_leap()
     require('leap').add_default_mappings()
 end
@@ -10,10 +16,13 @@ local function config_nvim_lspconfig()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
     local server_config = {
-        bashls = {},
-        ccls = {},
-        marksman = {},
-        pylsp = {},
+        bashls = { },
+        -- ccls = { cmd = {
+        --     'ccls', '--init={ "cache": { "directory": "'.. os.getenv('XDG_CACHE_HOME') .. '/ccls" } }'
+        -- }},
+        clangd = { },
+        marksman = { },
+        pylsp = { },
         sumneko_lua = { settings = { Lua = {
             diagnostics = {
                 globals = { 'vim' }
@@ -25,6 +34,7 @@ local function config_nvim_lspconfig()
                 args = { "-xelatex",
                          "-interaction=nonstopmode",
                          "-synctex=1",
+                         "-outdir=./output/",
                          "%f" },
                 onSave = true,
             },
@@ -36,7 +46,8 @@ local function config_nvim_lspconfig()
             chktex = {
                 onOpenAndSave = false,
             }
-        }}}
+        }}},
+        vimls = { }
     }
 
     vim.lsp.stop_client(vim.lsp.get_active_clients())
@@ -116,7 +127,7 @@ end
 local function config_vim_illuminate()
     require('illuminate').configure({
         filetypes_denylist = { '', 'mail', 'markdown', 'text' },
-        modes_denylist = { 'v', 'V' },
+        modes_denylist = { 'v', 'V', '' },
     })
 end
 
@@ -133,13 +144,16 @@ local function config_nvim_treesitter()
     vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 
     require("nvim-treesitter.configs").setup({
-        highlight = { enable = true },
+        highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = true,
+        },
         textobjects = {
             select = {
                 enable = true,
 
                 -- Automatically jump forward to textobj, similar to targets.vim
-                lookahead = true,
+                -- lookahead = true,
 
                 keymaps = {
                     -- You can use the capture groups defined in textobjects.scm
@@ -201,16 +215,8 @@ local function config_nvim_treesitter()
     })
 end
 
-local function config_gitsigns()
-    require('gitsigns').setup({})
-end
-
 local function config_luasnip()
     require('luasnip.loaders.from_vscode').lazy_load()
-end
-
-local function config_slime()
-    vim.keymap.set({'x', 'n'}, '<leader>s', '<Plug>SlimeSend<CR>', mapopts)
 end
 
 local function config_nvim_tree()
@@ -233,58 +239,156 @@ local function config_bufdel()
     vim.keymap.set('n', '<leader>D', '<cmd>BufDel<cr>', mapopts)
 end
 
-local function config_fidget()
-    require('fidget').setup({})
+local function config_lightbulb()
+    require('nvim-lightbulb').setup({
+        autocmd = { enabled = true }
+    })
 end
 
--- check or install dep plugin manager
-local dep_path = vim.fn.stdpath("data") .. "/site/pack/deps/opt/dep"
-local dep_url = "https://github.com/oliverlew/dep"
-if vim.fn.empty(vim.fn.glob(dep_path)) > 0 then
-  vim.fn.system({ "git", "clone", "--depth=1", dep_url, dep_path })
+local function config_toggleterm()
+    vim.keymap.set({'t', 'n'}, '<C-Bslash>', '<cmd>ToggleTerm<cr>', mapopts)
+    vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<cr>', mapopts)
+    vim.keymap.set('n', '<leader>ts', '<cmd>ToggleTermSendCurrentLine<cr>', mapopts)
+    vim.keymap.set('x', '<leader>ts', '<cmd>ToggleTermSendVisualLines<cr>', mapopts)
+    require("toggleterm").setup()
 end
-vim.cmd("packadd dep")
 
-require('dep')({
-    -- basic
+local function config_neogit()
+    require("neogit").setup({
+        kind = 'split',
+    })
+end
+
+local function config_lualine()
+    local colors = {
+        black        = 0,
+        darkgray     = 0,
+        gray         = 7,
+        lightgray    = 8,
+        white        = 15,
+        inactivegray = 0,
+        red          = 9,
+        green        = 10,
+        yellow       = 11,
+        blue         = 12,
+    }
+    local theme = {
+        normal = {
+            a = { bg = colors.gray, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.darkgray, fg = colors.gray }
+        },
+        insert = {
+            a = { bg = colors.blue, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.lightgray, fg = colors.white }
+        },
+        visual = {
+            a = { bg = colors.yellow, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.inactivegray, fg = colors.black }
+        },
+        replace = {
+            a = { bg = colors.red, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.black, fg = colors.white }
+        },
+        command = {
+            a = { bg = colors.green, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.lightgray, fg = colors.white },
+            c = { bg = colors.inactivegray, fg = colors.black }
+        },
+        inactive = {
+            a = { bg = colors.darkgray, fg = colors.gray, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray }
+        }
+    }
+    require('lualine').setup({
+        options = {
+            theme = theme,
+            icons_enabled = false,
+            disable_hint = true,
+            disable_commit_confirmation = true,
+        },
+    })
+end
+
+local function config_dap_ui()
+    local dapui = require("dapui")
+    vim.keymap.set('n', '<leader>D', dapui.toggle, mapopts)
+    dapui.setup({})
+end
+
+local function config_dap_python()
+    require('dap-python').setup()
+end
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
     -- { 'aymericbeaumet/vim-symlink' },
-    { 'tpope/vim-commentary' },
-    { 'tpope/vim-endwise' },
-    { 'tpope/vim-repeat' },
-    { 'tpope/vim-sensible' },
-    { 'tpope/vim-surround' },
-    { 'tpope/vim-dispatch' },
-    { 'tpope/vim-fugitive' },
-    { 'ojroques/nvim-bufdel', config_bufdel },
+    { 'tpope/vim-commentary', config = config_commentary, keys = { "<leader>c" } },
+    { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
+    { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
     { 'ap/vim-buftabline' },
-    -- others
-    { 'lewis6991/gitsigns.nvim', config_gitsigns },
-    { 'nvim-tree/nvim-web-devicons', deps = 'nvim-tree/nvim-tree.lua' },
-    { 'nvim-tree/nvim-tree.lua', config_nvim_tree },
-    { 'preservim/tagbar' },
-    { 'jpalardy/vim-slime', config_slime },
-    { 'RRethy/vim-illuminate', config_vim_illuminate },
-    { 'ggandor/leap.nvim', config_leap },
-    { 'folke/which-key.nvim', config_which_key },
-    { 'nvim-lua/plenary.nvim' },
-    { 'nvim-lualine/lualine.nvim' },
-    { 'nvim-telescope/telescope.nvim' },
-    { 'nvim-treesitter/nvim-treesitter', config_nvim_treesitter },
-    { 'nvim-treesitter/nvim-treesitter-textobjects' },
-    -- snippet engine and sources
-    { 'honza/vim-snippets', deps = 'L3MON4D3/LuaSnip' },
-    { 'rafamadriz/friendly-snippets', deps = 'L3MON4D3/LuaSnip' },
-    { 'L3MON4D3/LuaSnip', config_luasnip, deps = 'hrsh7th/nvim-cmp' },
+    { 'kylechui/nvim-surround', config = true, keys = { 'ys', 'ds', 'cs' } },
+    { 'TimUntersberger/neogit', config = config_neogit, dependencies = {
+        { 'nvim-lua/plenary.nvim' },
+    }, cmd = 'Neogit' },
+    { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = { '<C-Bslash>' } },
+    { 'lewis6991/gitsigns.nvim', config = true, event = "VeryLazy" },
+    { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { 'L' } },
+    { 'preservim/tagbar', cmd = "Tagbar" },
+    { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
+    { 'ggandor/leap.nvim', config = config_leap, keys = { 's', 'S' } },
+    { 'folke/which-key.nvim', config = config_which_key, keys = { '<leader>' } },
+    { 'nvim-lualine/lualine.nvim', config = config_lualine, enabled = false },
+    { 'nvim-telescope/telescope.nvim', dependencies = {
+        { 'nvim-lua/plenary.nvim' },
+    }, cmd = "Telescope" },
+    { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = {
+        { 'nvim-treesitter/nvim-treesitter', config = config_nvim_treesitter },
+    }, ft = {
+        'sh', 'c', 'cpp', 'lua', 'python', 'tex'
+    }},
+    { 'rcarriga/nvim-dap-ui', config = config_dap_ui, dependencies = {
+        { 'mfussenegger/nvim-dap' },
+        { 'mfussenegger/nvim-dap-python', config = config_dap_python },
+    }, keys = { '<leader>D' }},
     -- completion engine and sources
-    { 'onsails/lspkind.nvim', deps = 'hrsh7th/nvim-cmp' },
-    { 'hrsh7th/cmp-buffer' },
-    { 'hrsh7th/cmp-path' },
-    { 'hrsh7th/cmp-nvim-lua' },
-    { 'saadparwaiz1/cmp_luasnip' },
-    { 'hrsh7th/nvim-cmp', config_nvim_cmp },
+    { 'hrsh7th/nvim-cmp', config = config_nvim_cmp, dependencies = {
+        { 'onsails/lspkind.nvim', dependencies = {
+            { 'nvim-tree/nvim-web-devicons' },
+        }},
+        { 'hrsh7th/cmp-buffer', },
+        { 'hrsh7th/cmp-path', },
+        { 'hrsh7th/cmp-nvim-lua', },
+        { 'hrsh7th/cmp-nvim-lsp' },
+        -- snippet engine and sources
+        { 'saadparwaiz1/cmp_luasnip', dependencies = {
+            { 'L3MON4D3/LuaSnip', config = config_luasnip, dependencies = {
+                -- { 'honza/vim-snippets' },
+                { 'rafamadriz/friendly-snippets' },
+            }},
+        }},
+    }, event = 'InsertEnter' },
     -- lsp and integrations
-    { 'j-hui/fidget.nvim', config_fidget },
-    { 'hrsh7th/cmp-nvim-lsp' },
-    { 'neovim/nvim-lspconfig', config_nvim_lspconfig },
-    sync="never"
+    { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig, ft = {
+        'sh', 'c', 'cpp', 'markdown', 'python', 'lua', 'tex', 'vim'
+    }, dependencies = {
+        { 'j-hui/fidget.nvim', config = true },
+        { 'kosayoda/nvim-lightbulb', config = config_lightbulb, enabled = false },
+    }},
 })

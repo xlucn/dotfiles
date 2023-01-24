@@ -140,7 +140,7 @@ let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
 let stl3 = '%< %t %m %w '                         " file name, modified, preview
 let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
 let stl5 = ' %p%% | %l:%v '                       " cursor location
-let stl6 = ' %{LSPStatus()} '                     " lsp status
+let stl6 = '%{LSPStatus()}'                     " lsp status
 let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
 " }}}
 " Git {{{
@@ -217,6 +217,9 @@ augroup lsp_install
 augroup END
 " }}}
 " Gitgutter {{{
+hi GitGUtterAdd    ctermbg=none ctermfg=2
+hi GitGUtterChange ctermbg=none ctermfg=3
+hi GitGUtterDelete ctermbg=none ctermfg=1
 " the previous ~_ take two columns
 let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
@@ -252,4 +255,35 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 1
+" }}}
+" commentary {{{
+nnoremap <leader>c <Plug>CommentaryLine
+onoremap <leader>c <Plug>Commentary
+xnoremap <leader>c <Plug>Commentary
+" }}}
+" vim-slime {{{
+let g:slime_no_mappings = 1
+" set config to use the pane on the right by default
+let g:slime_default_config = {
+    \ "socket_name": get(split($TMUX, ","), 0),
+    \ "target_pane": "{right-of}"
+    \ }
+" vim terminal config
+let g:slime_vimterminal_config = {
+    \ "vertical": 1
+    \ }
+let g:slime_dont_ask_default = 0
+" use temp file
+let g:slime_paste_file = tempname()
+" ipython specific setting
+let g:slime_python_ipython = 0
+" targets
+if len($TMUX) != 0
+    let g:slime_target = "tmux"
+    let g:slime_dont_ask_default = 1
+elseif match($TERM, "screen") != -1
+    let g:slime_target = "screen"
+else
+    let g:slime_target = "vimterminal"
+endif
 " }}}
