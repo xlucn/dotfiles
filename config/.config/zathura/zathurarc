@@ -25,8 +25,12 @@ map [fullscreen] f toggle_fullscreen
 map p toggle_presentation
 map [presentation] p toggle_presentation
 
+set incremental-search true
+set selection-notification false
+
 # Synctex
 set synctex true
+set synctex-editor-command "nvim --remote-silent +%{line} %{input}"
 # Do not raise window after forward search, from version 0.4.8
 set dbus-raise-window false
 
@@ -48,6 +52,7 @@ set recolor-lightcolor "#212121"
 
 # Default
 set adjust-open "width"
+set first-page-column 1:2
 
 # window properties
 set window-title-basename true
