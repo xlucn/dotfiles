@@ -10,7 +10,13 @@ colors:
 
   cursor:
     text: CellBackground
-    cursor: '#ffffaf'
+    cursor: '#e4e4e4'
+
+  hints:
+    start:
+      background: '#d7af00'
+    end:
+      foreground: '#d7af00'
 
   normal:
     black:   '#262626'

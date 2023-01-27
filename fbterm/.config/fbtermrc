@@ -6,7 +6,7 @@
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
 
 # Recommendations 14-8-18 16-10-20 21-12-24 26-15-32
-font-names=JetBrains Mono SemiBold,WenQuanYi Micro Hei,Noto Sans CJK SC,Monospace
+font-names=JetBrainsMono Nerd Font Mono,WenQuanYi Micro Hei,Noto Sans CJK SC
 font-size=26
 font-width=15
 font-height=36

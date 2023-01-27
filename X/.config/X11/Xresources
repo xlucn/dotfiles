@@ -9,7 +9,7 @@ Xft.hintstyle : hintslight
 Xcursor.theme: capitaine-cursors-light
 Xcursor.size: 36
 
-*.font: Monospace:size=12
+*.font: JetBrainsMono Nerd Font:size=12
 
 ! the color are from 256 colors, in order:
 ! 229 254 233
@@ -22,15 +22,15 @@ Xcursor.size: 36
 *color1:        #d75f00
 *color2:        #5faf5f
 *color3:        #af8700
-*color4:        #0087d7
+*color4:        #0087ff
 *color5:        #875fff
 *color6:        #0087af
 *color7:        #b2b2b2
-*color8:        #444444
+*color8:        #3a3a3a
 *color9:        #d7875f
 *color10:       #5fd75f
 *color11:       #d7af00
-*color12:       #00afd7
+*color12:       #00afff
 *color13:       #af5fff
 *color14:       #00afaf
 *color15:       #e4e4e4
