@@ -105,7 +105,7 @@ export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 # proxychains-ng
 export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
-export PROXY="socks5h://proxy-host:1081"
+export PROXY="socks5://proxy-host:1081"
 # dash interactive mode
 export ENV="$HOME/.bashrc"
 # zsh
@@ -116,6 +116,8 @@ export BIBTOOLRSC="$XDG_CONFIG_HOME/bibtool/resource"
 export TMSU_DB="$XDG_DATA_HOME/tmsu.db"
 # fv the fits viewer
 export FVTMP="$XDG_CACHE_HOME/fvtmp"
+# pspg
+export PSPG_CONF="$XDG_CONFIG_HOME/pspg.conf"
 
 # PATH
 add_to_path() {
