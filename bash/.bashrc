@@ -67,20 +67,6 @@ x() {
     xauth remove :"$tty"
 }
 
-# timing function for dash
-timeit() {
-    # do 10 times of the timing itself and substract it later
-    begin=$(date +%s%N);
-    for _ in $(seq 9); do
-        _=$(($(date +%s%N) - begin))
-    done
-    span=$((($(date +%s%N) - begin) / 10))
-
-    begin=$(date +%s%N);
-    "$@"
-    echo $((($(date +%s%N) - begin - span) / 1000)) us
-}
-
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ] && tty | grep -q tty; then
     SEDCMD='s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p'
