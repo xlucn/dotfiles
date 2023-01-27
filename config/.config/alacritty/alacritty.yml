@@ -1,4 +1,9 @@
-# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# Configuration for Alacritty
+draw_bold_text_with_bright_colors: true
+
+window:
+  column: 80
+  lines: 24
 
 font:
   size: 12.0
