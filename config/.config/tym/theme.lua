@@ -1,26 +1,25 @@
+local convert = {
+    background = { 'background', 'cursor_foreground', 'window_background' },
+    foreground = { 'foreground' },
+    cursorColor = { 'cursor' },
+}
+for i = 0, 15 do
+    convert['color' .. i] = { i }
+end
+
 local colors = { }
-local index, color, name, color_name
+local xrdb_query = io.popen('xrdb -query')
 
-for line in io.popen('xrdb -query'):lines() do
-    name, color = line:match("%*%.?(.+):.*(#[0-9a-fA-F]+)")
-    if name ~= nil then
-        index = name:match("color([0-9]+)")
-
-        if index ~= nil then
-            color_name = 'color_' .. index
-        elseif name == "background" then
-            color_name = 'color_background'
-            color_name = 'color_cursor_foreground'
-        elseif name == "foreground" then
-            color_name = 'color_foreground'
-        elseif name == "cursorColor" then
-            color_name = 'color_cursor'
-        end
-
-        if color_name ~= nil then
-            colors[color_name] = color
+if xrdb_query == nil then return {} end
+for line in xrdb_query:lines() do
+    -- match '*[.]foo: #000000'
+    local name, color = line:match("%*%.?(.+):%s*(#[0-9a-fA-F]+)")
+    if convert[name] ~= nil then
+        for _, var in ipairs(convert[name]) do
+            colors['color_' .. var] = color
         end
     end
 end
-
+-- remember to close the handle, garbage collection might be forever
+xrdb_query:close()
 return colors
