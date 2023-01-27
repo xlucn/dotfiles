@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""
+Bulk rename in lf
+"""
+import os
+import subprocess
+import tempfile
+
+
+class LF:
+    def __init__(self, id):
+        self.id = id
+
+    def msg_err(self, msg):
+        """ Show error message in lf """
+        os.system(f'lf -remote "send {self.id} echoerr Bulk rename: {msg}"')
+        exit(1)
+
+    def unselect(self, fn):
+        """ Unselect item in lf """
+        os.system(f'lf -remote "send {self.id} glob-unselect {fn}"')
+
+    def get_files(self):
+        # get selected files
+        fs = os.getenv('fs')
+        if fs is not None and len(fs) > 0:
+            pwd = os.getenv('PWD')
+            fs = [os.path.relpath(f, pwd) for f in fs.split('\n')]
+        else:
+            fs = os.listdir(pwd)
+        return '\n'.join(fs)
+
+
+lf = LF(os.getenv('id', ''))
+fs = lf.get_files()
+
+# put file names into a temporary file
+fd, fn = tempfile.mkstemp()
+os.write(fd, fs.encode())
+os.close(fd)
+
+# let user edit the temporary file
+res = subprocess.run([os.getenv('EDITOR'), fn])
+if res.returncode != 0:
+    lf.msg_err("Edit command failed.")
+
+fs_old = fs.strip().split('\n')
+fs_new = open(fn).read().strip().split('\n')
+os.remove(fn)
+
+# check counts
+if len(fs_old) != len(fs_new):
+    lf.msg_err("Total number of files is inconsistent.")
+
+# check duplicated destination files
+if sorted(list(set(fs_new))) != sorted(fs_new):
+    lf.msg_err("Destination file conflicted.")
+
+# remove unchanged
+for f_old, f_new in zip(fs_old[::-1], fs_new[::-1]):
+    if f_old == f_new:
+        lf.unselect(f_old)
+        fs_old.remove(f_old)
+        fs_new.remove(f_new)
+
+# check conflicts
+for f_old, f_new in zip(fs_old, fs_new):
+    if os.path.exists(f_new):
+        lf.msg_err(f"Destination exists: {f_new}")
+
+# rename
+for f_old, f_new in zip(fs_old, fs_new):
+    os.rename(f_old, f_new)

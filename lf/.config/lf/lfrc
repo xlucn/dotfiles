@@ -1,46 +1,29 @@
-# Setting
+# options
 set mouse
 set nodrawbox
 set icons
 set nohidden
 set info size
+set scrolloff 99
 set ifs "\n"
 set filesep "\n"
+set errorfmt "\033[31m%s\033[0m"
 set previewer pv
 set cleaner preview-image
 
-# Key bindings
+# key mapping
 map <esc> cmd-escape
-map e $$EDITOR $fx
-map D delete
 map <c-y> up
 map <c-e> down
-map <enter> open
+map <m-up> up
+map <m-down> down
 map gh cd ~
 map gr cd /
-map <m-up>    up
-map <m-down>  down
-map R bulk-rename
+map D delete
 map zp set preview!
-map t $tig -C $PWD
+# shell mappings
+map <enter> $open $fx
+map e $$EDITOR $fx
 map M push $mkdir<space>
-
-# Commands
-cmd open $open $fx
-cmd bulk-rename ${{
-    old="$(mktemp)"
-    new="$(mktemp)"
-    [ -n "$fs" ] || fs="$(ls)"
-    printf '%s\n' "$fs" > "$old"
-    printf '%s\n' "$fs" > "$new"
-    $EDITOR "$new"
-    [ "$(wc -l "$new")" -ne "$(wc -l "$old")" ] && exit
-    paste "$old" "$new" | while IFS=$(printf "\t") read -r src dst; do
-        if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
-            continue
-        fi
-        mv -- "$src" "$dst"
-    done
-    rm -- "$old" "$new"
-    lf -remote "send $id unselect"
-}}
+map R $bulk-rename
+map t $tig -C $PWD
