@@ -2,7 +2,6 @@ local mapopts = { noremap=true, silent=true }
 
 local function config_commentary()
     vim.keymap.set('n', '<leader>c', '<Plug>CommentaryLine', mapopts)
-    vim.keymap.set('o', '<leader>c', '<Plug>Commentary', mapopts)
     vim.keymap.set('x', '<leader>c', '<Plug>Commentary', mapopts)
 end
 
@@ -247,10 +246,12 @@ end
 
 local function config_toggleterm()
     vim.keymap.set({'t', 'n'}, '<C-Bslash>', '<cmd>ToggleTerm<cr>', mapopts)
-    vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<cr>', mapopts)
-    vim.keymap.set('n', '<leader>ts', '<cmd>ToggleTermSendCurrentLine<cr>', mapopts)
-    vim.keymap.set('x', '<leader>ts', '<cmd>ToggleTermSendVisualLines<cr>', mapopts)
-    require("toggleterm").setup()
+    vim.keymap.set('n', '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mapopts)
+    vim.keymap.set('v', '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mapopts)
+    require("toggleterm").setup({
+        size = function(_) return math.min(vim.o.lines / 2, 15) end,
+        persist_size = false,
+    })
 end
 
 local function config_neogit()
@@ -339,16 +340,22 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     -- { 'aymericbeaumet/vim-symlink' },
-    { 'tpope/vim-commentary', config = config_commentary, keys = { "<leader>c" } },
+    { 'tpope/vim-commentary', config = config_commentary, keys = {
+        { "<leader>c", mode = { 'n', 'v' } },
+    }},
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
-    { 'ap/vim-buftabline' },
-    { 'kylechui/nvim-surround', config = true, keys = { 'ys', 'ds', 'cs' } },
+    { 'ap/vim-buftabline', event = 'BufRead' },
+    { 'kylechui/nvim-surround', config = true, keys = {
+        { 'ys', 'ds', 'cs' }, { 'S', mode = 'v' },
+    }},
     { 'TimUntersberger/neogit', config = config_neogit, dependencies = {
         { 'nvim-lua/plenary.nvim' },
     }, cmd = 'Neogit' },
-    { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = { '<C-Bslash>' } },
-    { 'lewis6991/gitsigns.nvim', config = true, event = "VeryLazy" },
+    { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = {
+        '<C-Bslash>'
+    }},
+    { 'lewis6991/gitsigns.nvim', config = true, event = "BufRead" },
     { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { 'L' } },
     { 'preservim/tagbar', cmd = "Tagbar" },
     { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
