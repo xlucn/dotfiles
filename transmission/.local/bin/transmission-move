@@ -20,9 +20,9 @@ Optional arguments:
     -h host:port    host and port
     -n username:password
         username and password for transmission session
-    -l <loc>:       the regex to match the Location line
-    -n <name>:      the regex to match the Name line
-    -t <tracker>:   the regex to match the Magnet line
+    -L <loc>:       the regex to match the Location line
+    -N <name>:      the regex to match the Name line
+    -T <tracker>:   the regex to match the Magnet line
 EOF
 }
 
@@ -41,7 +41,7 @@ done
 
 host_args="${host:-localhost}:${port:-9091}"
 [ -n "$username" ] && [ -n "$password" ] && pass_args="-n $username:$password"
-remote_args="$host_args $pass_args"
+remote_args="${host_args}${pass_args+ $pass_args}"
 
 shift $((OPTIND - 1))
 [ "$#" != 1 ] && usage && exit || dest="$1"
