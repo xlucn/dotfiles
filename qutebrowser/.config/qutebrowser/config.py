@@ -1,18 +1,18 @@
-from subprocess import run, PIPE
-
-from qutebrowser.config.configfiles import ConfigAPI
-from qutebrowser.config.config import ConfigContainer
-config: ConfigAPI = config
-c: ConfigContainer = c
+import os
+# pylint: disable=C0111
+from qutebrowser.config.configfiles import ConfigAPI  # noqa: F401
+from qutebrowser.config.config import ConfigContainer  # noqa: F401
+config: ConfigAPI = config  # noqa: F821 pylint: disable=E0602,C0103
+c: ConfigContainer = c  # noqa: F821 pylint: disable=E0602,C0103
 
 
 def read_xresources(prefix):
     props = dict()
-    res = run(['xrdb', '-query'], stdout=PIPE)
-    for line in res.stdout.decode().split('\n'):
+    xrdb = os.path.join(os.getenv('XDG_CONFIG_HOME'), 'X11', 'Xresources')
+    for line in open(xrdb, 'r').read().split('\n'):
         if line.startswith(prefix):
             prop, _, value = line.partition(':')
-            props[prop] = value.strip()
+            props[prop.strip()] = value.strip()
     return props
 
 
@@ -51,6 +51,7 @@ c.colors.hints.bg = '#fff785'
 c.statusbar.show = 'never'
 c.statusbar.position = 'bottom'
 c.statusbar.widgets = ['url', 'history', 'scroll', 'progress']
+c.downloads.position = 'bottom'
 
 c.scrolling.smooth = True
 
