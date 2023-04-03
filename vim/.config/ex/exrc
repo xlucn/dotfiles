@@ -17,12 +17,11 @@ set ignorecase
 " Show tab as ^I, EOL as $, literally. It's not good looking.
 set nolist
 " Modelines, search for 'vi:' for commands
-" Using the abbreviation ml here to keep compatible with vim
-set ml
+set modelines
 " Show line number, Arch Linux's package has a fix patch
 set number
-" No repeat mapping
-set noremap
+" Do repeat mapping, e.g., for g -> 1G
+set remap
 " Show messsage for edits exceeds this number of lines
 set report=1
 " Use bash for :shell command
@@ -43,6 +42,7 @@ set notimeout
 """"""""""""
 "
 " Mappings to quit, edit, save and more.
+map g 1G
 map ,q :q
 map ,z :q!
 map ,e :e
@@ -67,10 +67,8 @@ map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
 map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
 "
 " Do fmt command (join lines in a paragraph)
-" See https://hea-www.harvard.edu/~fine/Tech/vi.html
+" Modified from https://hea-www.harvard.edu/~fine/Tech/vi.html
 map V 0ma}b:'a,.j}j
-" This does not work
-" map V 0ma}b:'a,.j070 ?  *dwi
 "
 " Execute current line (it's not working)
 map  "ayy:@a
