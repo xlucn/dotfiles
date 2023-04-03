@@ -11,10 +11,12 @@ rofi -show window \
     -kb-row-up "Super+ISO_Left_Tab,Super+Shift+Tab,Super+Up,Up"
 
 # super + Return
-st
+## st
+tym
 
 # super + shift + Return
-st -c floating
+## st -c floating
+tym --role=floating
 
 # super + w
 firefox

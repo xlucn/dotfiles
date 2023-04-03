@@ -25,6 +25,7 @@ startibus() {
 prewm() {
     startfcitx
 
+    pgrep -x tym || tym --daemon > /dev/null 2>&1 &
     pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
