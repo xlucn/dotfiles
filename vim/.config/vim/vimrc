@@ -3,7 +3,7 @@ let mapleader = ','
 let maplocalleader = '\'
 " Vim or NeoVim? {{{
 if !has("nvim")
-    so $XDG_CONFIG_HOME/vim/vim.vimrc
+    so $XDG_CONFIG_HOME/vim/init.vim
 else
     luafile $XDG_CONFIG_HOME/nvim/init.lua
 endif
