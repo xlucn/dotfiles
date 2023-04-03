@@ -11,30 +11,19 @@ end
 
 local function config_nvim_lspconfig()
     -- LSP configs
-    local lsp = require('lspconfig')
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
     local server_config = {
         bashls = { },
-        -- ccls = { cmd = {
-        --     'ccls', '--init={ "cache": { "directory": "'.. os.getenv('XDG_CACHE_HOME') .. '/ccls" } }'
-        -- }},
         clangd = { },
         marksman = { },
         pylsp = { },
-        sumneko_lua = { settings = { Lua = {
-            diagnostics = {
-                globals = { 'vim' }
-            }
+        lua_ls = { settings = { Lua = {
+            diagnostics = { globals = { 'vim' } }
         }}},
         texlab = { settings = { texlab = {
             build = {
                 executable = "latexmk",
-                args = { "-xelatex",
-                         "-interaction=nonstopmode",
-                         "-synctex=1",
-                         "-outdir=./output/",
-                         "%f" },
+                args = { "-outdir=./output/", "-xelatex", "-synctex=1",
+                         "-interaction=nonstopmode", "%f" },
                 onSave = true,
             },
             forwardSearch = {
@@ -42,16 +31,14 @@ local function config_nvim_lspconfig()
                 args = { "--synctex-forward", "%l:1:%f", "%p" },
             },
             auxDirectory = "./output",
-            chktex = {
-                onOpenAndSave = false,
-            }
+            chktex = { onOpenAndSave = false, },
         }}},
         vimls = { }
     }
 
     vim.lsp.stop_client(vim.lsp.get_active_clients())
+    local lsp = require('lspconfig')
     for server, config in pairs(server_config) do
-        config.capabilities = capabilities
         lsp[server].setup(config)
     end
 end
@@ -68,19 +55,20 @@ local function config_nvim_cmp()
             }
         },
         snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+            expand = function(args)
+                luasnip.lsp_expand(args.body)
+            end,
         },
         mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<CR>'] = cmp.mapping.confirm({ select = false }),
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<CR>'] = cmp.mapping.confirm({ select = false }),
         }),
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
             { name = 'nvim_lua' },
+            { name = 'nvim_lsp_signature_help' },
         }, {
             { name = 'path' },
             { name = 'buffer' },
@@ -92,6 +80,7 @@ local function config_nvim_cmp()
                 maxwidth = 30, -- pop up menu width
             })
         },
+        experimental = { ghost_text = true },
     })
 
     -- highlightings
@@ -138,10 +127,6 @@ local function config_which_key()
 end
 
 local function config_nvim_treesitter()
-    vim.o.foldmethod = 'expr'
-    vim.o.foldenable = false
-    vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-
     require("nvim-treesitter.configs").setup({
         highlight = {
             enable = true,
@@ -238,19 +223,13 @@ local function config_bufdel()
     vim.keymap.set('n', '<leader>D', '<cmd>BufDel<cr>', mapopts)
 end
 
-local function config_lightbulb()
-    require('nvim-lightbulb').setup({
-        autocmd = { enabled = true }
-    })
-end
-
 local function config_toggleterm()
     vim.keymap.set({'t', 'n'}, '<C-Bslash>', '<cmd>ToggleTerm<cr>', mapopts)
     vim.keymap.set('n', '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mapopts)
     vim.keymap.set('v', '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mapopts)
     require("toggleterm").setup({
-        size = function(_) return math.min(vim.o.lines / 2, 15) end,
-        persist_size = false,
+        -- size = function(_) return math.min(vim.o.lines / 2, 15) end,
+        -- persist_size = false,
     })
 end
 
@@ -325,16 +304,69 @@ local function config_dap_python()
     require('dap-python').setup()
 end
 
+local function config_telescope()
+    require("telescope").setup({
+        defaults = {
+            layout_strategy = 'flex',
+            layout_config = {
+                flex = { flip_columns = 140, },
+                vertical = { preview_cutoff = 20 },
+            },
+        }
+    })
+end
+
+local function config_neorg()
+    require('neorg').setup({
+        load = {
+            ["core.defaults"] = {},
+            ["core.norg.concealer"] = {},
+        }
+    })
+end
+
+local function config_ufo()
+    require('ufo').setup({
+        provider_selector = function(bufnr, filetype, buftype)
+            return {'treesitter', 'indent'}
+        end
+    })
+end
+
+local function config_symbols_outline()
+    vim.api.nvim_set_hl(0, 'FocusedSymbol', { ctermfg = 2, ctermbg = 8 })
+    vim.api.nvim_set_hl(0, 'SymbolsOutlineConnector', { ctermfg = 8 })
+
+    local augroup = vim.api.nvim_create_augroup('SymbolsOutline', { clear = true })
+    vim.api.nvim_create_autocmd(
+        { 'FileType' },
+        { group = augroup, pattern = 'Outline', callback = function()
+            vim.o.signcolumn = 'no'
+            vim.o.cursorline = true
+        end }
+    )
+
+    require('symbols-outline').setup({
+        auto_close = true,
+        -- lsp_blacklist = { 'pylsp' },
+    })
+end
+
+local function config_scrollbar()
+    require('scrollbar').setup()
+    require("scrollbar.handlers.gitsigns").setup()
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -343,33 +375,45 @@ require("lazy").setup({
     { 'tpope/vim-commentary', config = config_commentary, keys = {
         { "<leader>c", mode = { 'n', 'v' } },
     }},
+    { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
+    { 'liuchengxu/vista.vim', cmd = 'Vista' },
+    { 'stevearc/aerial.nvim', config = function()
+        require('aerial').setup()
+    end, cmd = 'AerialToggle' },
+    { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
+    -- { 'kevinhwang91/nvim-ufo', config = config_ufo, dependencies =
+    --     { 'kevinhwang91/promise-async' }
+    -- },
     { 'ap/vim-buftabline', event = 'BufRead' },
     { 'kylechui/nvim-surround', config = true, keys = {
-        { 'ys', 'ds', 'cs' }, { 'S', mode = 'v' },
+        'ys', 'ds', 'cs', { 'S', mode = 'v' },
     }},
     { 'TimUntersberger/neogit', config = config_neogit, dependencies = {
         { 'nvim-lua/plenary.nvim' },
     }, cmd = 'Neogit' },
-    { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = {
-        '<C-Bslash>'
-    }},
+    { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = { '<C-Bslash>' }},
     { 'lewis6991/gitsigns.nvim', config = true, event = "BufRead" },
     { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { 'L' } },
+    { 'nvim-neo-tree/neo-tree.nvim', config = true, dependencies = {
+        'MunifTanjim/nui.nvim',
+    }, cmd = 'NeoTreeShowToggle'},
+    -- { 'petertriho/nvim-scrollbar', config = config_scrollbar, dependencies = {
+    --     'kevinhwang91/nvim-hlslens'
+    -- }},
     { 'preservim/tagbar', cmd = "Tagbar" },
     { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
     { 'ggandor/leap.nvim', config = config_leap, keys = { 's', 'S' } },
     { 'folke/which-key.nvim', config = config_which_key, keys = { '<leader>' } },
-    { 'nvim-lualine/lualine.nvim', config = config_lualine, enabled = false },
     { 'nvim-telescope/telescope.nvim', dependencies = {
         { 'nvim-lua/plenary.nvim' },
-    }, cmd = "Telescope" },
-    { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = {
-        { 'nvim-treesitter/nvim-treesitter', config = config_nvim_treesitter },
+    }, cmd = "Telescope", config = config_telescope },
+    { 'nvim-treesitter/nvim-treesitter', tag = 'v0.8.5.2', dependencies = {
+        { 'nvim-treesitter/nvim-treesitter-textobjects' },
     }, ft = {
-        'sh', 'c', 'cpp', 'lua', 'python', 'tex'
-    }},
+        'sh', 'c', 'cpp', 'lua', 'python', 'tex',
+    }, config = config_nvim_treesitter },
     { 'rcarriga/nvim-dap-ui', config = config_dap_ui, dependencies = {
         { 'mfussenegger/nvim-dap' },
         { 'mfussenegger/nvim-dap-python', config = config_dap_python },
@@ -383,6 +427,7 @@ require("lazy").setup({
         { 'hrsh7th/cmp-path', },
         { 'hrsh7th/cmp-nvim-lua', },
         { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/cmp-nvim-lsp-signature-help' },
         -- snippet engine and sources
         { 'saadparwaiz1/cmp_luasnip', dependencies = {
             { 'L3MON4D3/LuaSnip', config = config_luasnip, dependencies = {
@@ -394,8 +439,10 @@ require("lazy").setup({
     -- lsp and integrations
     { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig, ft = {
         'sh', 'c', 'cpp', 'markdown', 'python', 'lua', 'tex', 'vim'
-    }, dependencies = {
-        { 'j-hui/fidget.nvim', config = true },
-        { 'kosayoda/nvim-lightbulb', config = config_lightbulb, enabled = false },
     }},
+    { 'j-hui/fidget.nvim', config = true, event = 'LspAttach' },
+    { 'nvim-neorg/neorg', config = config_neorg, cmd = 'Neorg', ft = 'norg' },
+    { "utilyre/barbecue.nvim", config = true, dependencies = {
+        "SmiteshP/nvim-navic"
+    }, event = 'BufRead' },
 })

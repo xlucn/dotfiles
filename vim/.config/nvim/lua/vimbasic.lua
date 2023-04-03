@@ -2,6 +2,10 @@ vim.o.mousemodel = 'extend'
 vim.o.cmdheight = 1
 vim.o.laststatus = 3
 
+vim.o.foldenable = false
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+
 local mapopts = { noremap=true, silent=true }
 vim.keymap.set('n', '<leader>gg', vim.cmd.Git, mapopts)
 vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
