@@ -4,6 +4,7 @@ tym.set_config({
     autohide = true,
     bold_is_bright = true,
     silent = true,
+    font = 'Monospace 12',
 })
 
 tym.set_keymaps({
