@@ -86,13 +86,13 @@ export MAXIMA_USERDIR="$XDG_DATA_HOME/maxima"
 # android
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
+export ANDROID_HOME="$XDG_DATA_HOME"/android
 # java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
 export JDK_JAVA_OPTIONS="
     -Dawt.useSystemAAFontSettings=on
     -Dswing.aatext=true
     -Dsun.java2d.opengl=true
-    -Dsun.java2d.uiScale=2
     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
     -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
@@ -117,6 +117,8 @@ export TMSU_DB="$XDG_DATA_HOME/tmsu.db"
 export FVTMP="$XDG_CACHE_HOME/fvtmp"
 # pspg
 export PSPG_CONF="$XDG_CONFIG_HOME/pspg.conf"
+# Kivy
+export KIVY_HOME="$XDG_CONFIG_HOME/kivy"
 
 # PATH
 add_to_path() {
