@@ -1,6 +1,4 @@
 # GUI
-sub-font-size=40
-osd-font-size=40
 no-keepaspect-window
 
 slang=eng,chs
@@ -26,4 +24,6 @@ term-osd-bar-chars="[=>-]"
 # Hardware decoding, for my AMD graphics card and x11 desktop environment.
 vo=gpu-next
 hwdec=vaapi
-gpu-context=x11egl
+
+# FFmpeg options
+demuxer-lavf-o=protocol_whitelist=[crypto,http,https,tls,rtp,tcp,udp,httpproxy,file],allowed_extensions=ALL
