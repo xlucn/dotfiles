@@ -1,6 +1,9 @@
 # Configuration for Alacritty
 draw_bold_text_with_bright_colors: true
 
+font:
+  size: 12.0
+
 window:
   column: 80
   lines: 24
@@ -8,18 +11,20 @@ window:
 
 colors:
   primary:
-   background: '#1c1c1c'
+   background: '#121212'
    foreground: '#e4e4e4'
 
   cursor:
     text: CellBackground
-    cursor: '#e4e4e4'
+    cursor: '#ffffff'
 
   hints:
     start:
-      background: '#d7af00'
+      background: '#ff8800'
+      foreground: '#000000'
     end:
-      foreground: '#d7af00'
+      background: '#ffff00'
+      foreground: '#000000'
 
   normal:
     black:   '#262626'
