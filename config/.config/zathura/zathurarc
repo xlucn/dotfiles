@@ -26,6 +26,7 @@ map p toggle_presentation
 map [presentation] p toggle_presentation
 
 set incremental-search true
+set selection-clipboard clipboard
 set selection-notification false
 
 # Synctex
