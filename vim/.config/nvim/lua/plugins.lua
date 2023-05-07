@@ -305,12 +305,16 @@ local function config_dap_python()
 end
 
 local function config_telescope()
+    local actions = require("telescope.actions")
     require("telescope").setup({
         defaults = {
             layout_strategy = 'flex',
             layout_config = {
                 flex = { flip_columns = 140, },
                 vertical = { preview_cutoff = 20 },
+            },
+            mappings = {
+                i = { ["<esc>"] = actions.close },
             },
         }
     })
