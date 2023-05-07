@@ -25,6 +25,7 @@ local function config_nvim_lspconfig()
                 args = { "-outdir=./output/", "-xelatex", "-synctex=1",
                          "-interaction=nonstopmode", "%f" },
                 onSave = true,
+                forwardSearchAfter = true,
             },
             forwardSearch = {
                 executable = "zathura",
@@ -32,6 +33,9 @@ local function config_nvim_lspconfig()
             },
             auxDirectory = "./output",
             chktex = { onOpenAndSave = false, },
+            experimental = {
+                mathEnvironments = { 'align' },
+            },
         }}},
         vimls = { }
     }
@@ -382,7 +386,7 @@ require("lazy").setup({
     { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
     { 'liuchengxu/vista.vim', cmd = 'Vista' },
     { 'stevearc/aerial.nvim', config = function()
-        require('aerial').setup()
+        require('aerial').setup({ disable_max_lines = 100000 })
     end, cmd = 'AerialToggle' },
     { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
@@ -413,7 +417,7 @@ require("lazy").setup({
     { 'nvim-telescope/telescope.nvim', dependencies = {
         { 'nvim-lua/plenary.nvim' },
     }, cmd = "Telescope", config = config_telescope },
-    { 'nvim-treesitter/nvim-treesitter', tag = 'v0.8.5.2', dependencies = {
+    { 'nvim-treesitter/nvim-treesitter', dependencies = {
         { 'nvim-treesitter/nvim-treesitter-textobjects' },
     }, ft = {
         'sh', 'c', 'cpp', 'lua', 'python', 'tex',
