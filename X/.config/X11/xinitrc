@@ -30,14 +30,6 @@ prewm() {
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
 
-    # configure trackpad
-    for id in $(xinput list --id-only); do
-        if xinput --list-props "$id" | grep -q "Tapping Enabled"; then
-            xinput set-prop "$id" "libinput Tapping Enabled" 1
-            xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1
-            xinput set-prop "$id" "libinput Accel Speed" 0.5
-        fi
-    done
     libinput-gestures-setup restart > /dev/null 2>&1 &
 }
 
