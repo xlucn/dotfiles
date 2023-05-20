@@ -45,7 +45,7 @@ set lazyredraw          " redraw when needed
 set shortmess+=Ic       " don't show welcome screen
 set showtabline=2       " show tabs on top
 set noshowmode          " do not show mode on the last line
-set foldcolumn=0
+set foldcolumn=1
 set wrap
 set conceallevel=2      " replace concealable texts
 " cursor shape for terminal emulators or linux console
@@ -132,6 +132,8 @@ set smarttab
 " show tabs and trailing white space
 set list
 set listchars=tab:│\ ,trail:.,eol:
+" show fold indicator as arrows
+set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:│,foldclose:
 " }}}
 " Navigations {{{
 " go up/down in one wrapped long line

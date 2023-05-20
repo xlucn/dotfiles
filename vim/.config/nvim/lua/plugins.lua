@@ -334,9 +334,9 @@ require("lazy").setup({
     { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
-    -- { 'kevinhwang91/nvim-ufo', config = config_ufo, dependencies =
-    --     { 'kevinhwang91/promise-async' }
-    -- },
+    { 'kevinhwang91/nvim-ufo', config = config_ufo, dependencies = {
+        { 'kevinhwang91/promise-async' }
+    }, event = "BufRead"},
     { 'ap/vim-buftabline', event = 'BufRead' },
     { 'kylechui/nvim-surround', config = true, keys = {
         'ys', 'ds', 'cs', { 'S', mode = 'v' },
