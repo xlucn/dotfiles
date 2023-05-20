@@ -8,9 +8,17 @@ for i = 0, 15 do
 end
 
 local colors = { }
-local xrdb_query = io.popen('xrdb -query')
 
-if xrdb_query == nil then return {} end
+local xrdb_query = nil -- io.popen('xrdb -query')
+if xrdb_query == nil then
+    local xresources = io.open(os.getenv('HOME')..'/.config/X11/Xresources')
+    if xresources ~= nil then
+        xrdb_query = xresources
+    else
+        return {}
+    end
+end
+
 for line in xrdb_query:lines() do
     -- match '*[.]foo: #000000'
     local name, color = line:match("%*%.?(.+):%s*(#[0-9a-fA-F]+)")
