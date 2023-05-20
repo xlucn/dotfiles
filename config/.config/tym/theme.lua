@@ -1,5 +1,5 @@
 local convert = {
-    background = { 'background', 'cursor_foreground', 'window_background' },
+    background = { 'background', 'cursor_foreground' },
     foreground = { 'foreground' },
     cursorColor = { 'cursor' },
 }
