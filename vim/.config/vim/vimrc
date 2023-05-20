@@ -42,7 +42,7 @@ set updatetime=100      " update time, related to fugitive sign column update, e
 set signcolumn=yes      " always show sign column
 set colorcolumn=80      " highlight column 80
 set lazyredraw          " redraw when needed
-set shortmess+=Ic       " don't show welcome screen
+set shortmess+=nocI     " don't show welcome screen
 set showtabline=2       " show tabs on top
 set noshowmode          " do not show mode on the last line
 set foldcolumn=1
@@ -333,6 +333,6 @@ let g:tagbar_left = 1
 let g:tagbar_silent = 1
 let g:tagbar_sort = 0
 let g:tagbar_width = min([30, winwidth(0) / 3])
-nnoremap <C-B> :Tagbar<CR>
+nnoremap <leader>b :Tagbar<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0

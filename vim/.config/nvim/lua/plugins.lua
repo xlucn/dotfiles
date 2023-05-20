@@ -1,4 +1,4 @@
-local mapopts = { noremap=true, silent=true }
+local mapopts = { noremap = true, silent = true }
 
 local function config_comment()
     -- use ignore to skip empty lines
