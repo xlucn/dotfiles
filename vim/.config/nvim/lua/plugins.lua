@@ -1,8 +1,10 @@
 local mapopts = { noremap=true, silent=true }
 
-local function config_commentary()
-    vim.keymap.set('n', '<leader>c', '<Plug>CommentaryLine', mapopts)
-    vim.keymap.set('x', '<leader>c', '<Plug>Commentary', mapopts)
+local function config_comment()
+    -- use ignore to skip empty lines
+    require('Comment').setup({ ignore = '^$' })
+    vim.keymap.set('n', '<leader>c', '<Plug>(comment_toggle_linewise_current)', mapopts)
+    vim.keymap.set('x', '<leader>c', '<Plug>(comment_toggle_linewise_visual)', mapopts)
 end
 
 local function config_leap()
@@ -380,8 +382,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     -- { 'aymericbeaumet/vim-symlink' },
-    { 'tpope/vim-commentary', config = config_commentary, keys = {
+    { 'numToStr/Comment.nvim', config = config_comment, keys = {
         { "<leader>c", mode = { 'n', 'v' } },
+        { "gc", mode = { 'n', 'v' } },
     }},
     { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
     { 'liuchengxu/vista.vim', cmd = 'Vista' },
