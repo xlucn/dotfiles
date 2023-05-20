@@ -245,61 +245,6 @@ local function config_neogit()
     })
 end
 
-local function config_lualine()
-    local colors = {
-        black        = 0,
-        darkgray     = 0,
-        gray         = 7,
-        lightgray    = 8,
-        white        = 15,
-        inactivegray = 0,
-        red          = 9,
-        green        = 10,
-        yellow       = 11,
-        blue         = 12,
-    }
-    local theme = {
-        normal = {
-            a = { bg = colors.gray, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.darkgray, fg = colors.gray }
-        },
-        insert = {
-            a = { bg = colors.blue, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.lightgray, fg = colors.white }
-        },
-        visual = {
-            a = { bg = colors.yellow, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.inactivegray, fg = colors.black }
-        },
-        replace = {
-            a = { bg = colors.red, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.black, fg = colors.white }
-        },
-        command = {
-            a = { bg = colors.green, fg = colors.black, gui = 'bold' },
-            b = { bg = colors.lightgray, fg = colors.white },
-            c = { bg = colors.inactivegray, fg = colors.black }
-        },
-        inactive = {
-            a = { bg = colors.darkgray, fg = colors.gray, gui = 'bold' },
-            b = { bg = colors.darkgray, fg = colors.gray },
-            c = { bg = colors.darkgray, fg = colors.gray }
-        }
-    }
-    require('lualine').setup({
-        options = {
-            theme = theme,
-            icons_enabled = false,
-            disable_hint = true,
-            disable_commit_confirmation = true,
-        },
-    })
-end
-
 local function config_dap_ui()
     local dapui = require("dapui")
     vim.keymap.set('n', '<leader>D', dapui.toggle, mapopts)
@@ -362,11 +307,6 @@ local function config_symbols_outline()
     })
 end
 
-local function config_scrollbar()
-    require('scrollbar').setup()
-    require("scrollbar.handlers.gitsigns").setup()
-end
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -410,9 +350,7 @@ require("lazy").setup({
     { 'nvim-neo-tree/neo-tree.nvim', config = true, dependencies = {
         'MunifTanjim/nui.nvim',
     }, cmd = 'NeoTreeShowToggle'},
-    -- { 'petertriho/nvim-scrollbar', config = config_scrollbar, dependencies = {
-    --     'kevinhwang91/nvim-hlslens'
-    -- }},
+    { 'kevinhwang91/nvim-hlslens', config = true, event = "BufRead" },
     { 'preservim/tagbar', cmd = "Tagbar" },
     { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
     { 'ggandor/leap.nvim', config = config_leap, keys = { 's', 'S' } },
