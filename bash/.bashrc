@@ -8,7 +8,7 @@ if [ "$PS1" ] && [ -n "$BASH" ] && \
     . /usr/share/bash-completion/bash_completion
 fi
 
-# shellcheck disable=1091
+# shellcheck source=/dev/null
 . "$HOME"/.profile
 
 # Alias
@@ -41,7 +41,8 @@ alias psg="pgrep -ifa"
 # du tree
 alias sdu="tree --du --sort=size -CFhrax"
 # ffmpeg, quiet!
-alias ffmpeg="ffmpeg -hide_banner"
+alias ffmpeg="ffmpeg -protocol_whitelist crypto,tls,file,tcp,https,http -hide_banner"
+alias ffplay="ffplay -protocol_whitelist crypto,tls,file,tcp,https,http -hide_banner"
 alias ffprobe="ffprobe -hide_banner"
 # ncdu within one file system
 alias ncdu="ncdu -x"
@@ -49,6 +50,7 @@ alias ncdu="ncdu -x"
 alias au="sudo pacman -Syu && proxychains paru -Sua"
 # fricas
 alias fricas="fricas -nox -noht -rl"
+alias neo-matrix="neo-matrix -a -D background -F"
 
 hdu() {
     du -haxd 1 "$@" 2> /dev/null | sort -h
