@@ -7,12 +7,15 @@
 # Enjoy the vintage multimedia!
 #
 # Idea: VCD playback was already well supported in Windows 3.1 era, so
-# the script tries to re-encode the video close to that standard. For
-# details see `man ffmpeg` -target. XingMPEG was one of the best players
-# to play mpg video or VCDs.
-#   I have considered other codecs, such as Microsoft Video 1 or cinepak
+# the script tries to re-encode the video to the codecs close to that
+# standard. For details, see `man ffmpeg` for -target option.
+#
+# Player recommendation:
+# XingMPEG was one of the best players to play mpg video or VCDs.
+#
+# I have considered other codecs, such as Microsoft Video 1 or cinepak
 # supported by Video for Windows, but the former is crap quality and the
-# latter is terribly slow, I am talking about ffmpeg's encode.
+# latter is terribly slow when using ffmpeg to re-encode.
 
 usage() {
     cat << EOF
@@ -20,10 +23,17 @@ $(basename "$0") input_video [output_video]
 
 A script to re-encode video for playback in Windows 3.1 or similar.
 
-Video name:
-    The output video name defaults to input_video.mpg (including extension).
+Environment variables:
+  WIDTH:
+    Width of the video, default to 352, as in VCD standard. The height of
+    the video will be width * 3 / 4, to make the aspect ratio to be 4:3.
 
-Subtitles:
+Note:
+  Output:
+    The output video name defaults to '<input_video>.mpg' (including extension).
+    If 'output_video' option is provided, then output to '<output_video>.mpg'
+
+  Subtitles:
     The script will look for subtitles in the video's internal tracks and
     in the local folder, and prompt you to choose one to burn into the
     output video.
@@ -47,7 +57,7 @@ else
     usage
 fi
 
-# Video resolution, will add padding to top and bottom
+# Video resolution, will add padding to top and bottom and make it 
 WIDTH=${WIDTH:-352}         # width of VCD
 HEIGHT=$((WIDTH * 3 / 4))   # height of 4:3 ratio
 
@@ -64,7 +74,7 @@ audio_channel=2                 # stereo, 2 channels
 audio_bitrate=224k              # control the audio bitrate, default was 384k
 
 # Add black bars (each of (out_h - in_h) / 2) to top and bottom,
-# so that the video keeps it's original aspect ratio.
+# so that the video keeps it's original aspect ratio by ffmpeg.
 pad_filter=",pad=$WIDTH:$HEIGHT:0:-(oh-ih)/2"
 
 # Burn subtitles, try external srt or ass subtitle, fallback to internal subtitles
@@ -99,7 +109,7 @@ else
             printf "\n"
         }'
         printf "Enter the subtitle index you want to burn into the video.\n"
-        printf "E.g. 0, 1. Press only Enter to skip: "
+        printf "Must be a single integer. E.g. 0 or 1. Enter without input to skip: "
         read -r index
         if [ -n "$index" ]; then
             echo "Using subtitle No. $index"
