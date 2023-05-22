@@ -23,15 +23,17 @@ $(basename "$0") input_video [output_video]
 
 A script to re-encode video for playback in Windows 3.1 or similar.
 
-Environment variables:
-  WIDTH:
-    Width of the video, default to 352, as in VCD standard. The height of
-    the video will be width * 3 / 4, to make the aspect ratio to be 4:3.
+Options:
+  -t target
+    * win31 (default): targetting video playback in Windows 3.1 (with XingMPEG player)
+        convert to 352x264 mpeg1video+mp2 in mpg container
+    * n900: targetting video playback in Nokia N900 (with Maemo's built-in player)
+        convert to 720x480 H264(Baseline@L3)+AAC in mp4 container
 
 Note:
   Output:
-    The output video name defaults to '<input_video>.mpg' (including extension).
-    If 'output_video' option is provided, then output to '<output_video>.mpg'
+    The output video name defaults to '<input_video>.<ext>' (including extension).
+    If 'output_video' option is provided, then output to '<output_video>.<ext>'
 
   Subtitles:
     The script will look for subtitles in the video's internal tracks and
@@ -40,49 +42,35 @@ Note:
 EOF
 }
 
-while getopts h arg; do
+while getopts 'ht:' arg; do
     case "$arg" in
+        t) target=$OPTARG ;;
         h|*) usage; exit 1 ;;
     esac
 done
 shift $((OPTIND - 1))
 
+case "$target" in
+    n900) EXT=mp4 WIDTH=800 HEIGHT=480 ;;
+    win31|*) EXT=mpg WIDTH=352 HEIGHT=264 ;;
+esac
+
 if [ $# = 2 ]; then
     orig=$1
-    dest=${2%.mpg}.mpg
+    dest=${2%."$EXT"}.$EXT
 elif [ $# = 1 ]; then
     orig=$1
-    dest=$orig.mpg
+    dest=$orig.$EXT
 else
     usage
 fi
 
-# Video resolution, will add padding to top and bottom and make it 
-WIDTH=${WIDTH:-352}         # width of VCD
-HEIGHT=$((WIDTH * 3 / 4))   # height of 4:3 ratio
-
-# Similar to -target *-vcd, but with some changes
-# Video part
-video_codec=mpeg1video          # use video codec for VCDs
-video_fps=25                    # frame rate being 25
-video_quality=0                 # better video quality (0 is good)
-video_scale="scale=$WIDTH:-4"   # keep ratio, and make resolution dividable by 4
-# Audio part
-audio_codec=mp2                 # use audio codec for VCDs
-audio_rate=44100                # common sample rate, multiplies of 11025 Hz
-audio_channel=2                 # stereo, 2 channels
-audio_bitrate=224k              # control the audio bitrate, default was 384k
-
-# Add black bars (each of (out_h - in_h) / 2) to top and bottom,
-# so that the video keeps it's original aspect ratio by ffmpeg.
-pad_filter=",pad=$WIDTH:$HEIGHT:0:-(oh-ih)/2"
-
 # Burn subtitles, try external srt or ass subtitle, fallback to internal subtitles
 if [ -f "${1%.*}.srt" ]; then
-    subtitle_filter=",subtitles=${1%.*}.srt"
+    vf_subtitles="subtitles=${1%.*}.srt"
     echo "Burning subtitle file ${1%.*}.srt into the video"
 elif [ -f "${1%.*}.ass" ]; then
-    subtitle_filter=",ass=${1%.*}.ass:original_size="
+    vf_subtitles="ass=${1%.*}.ass:original_size="
     echo "Burning subtitle file ${1%.*}.ass into the video"
 else
     # Find first subtitle
@@ -113,28 +101,59 @@ else
         read -r index
         if [ -n "$index" ]; then
             echo "Using subtitle No. $index"
-            subtitle_filter=",subtitles=$orig:si=$index"
+            vf_subtitles="subtitles=$orig:si=$index"
         else
             echo "Not burning any subtitles"
         fi
     fi
 fi
 
-video_filter=$video_scale$pad_filter$subtitle_filter
+# HACKY way to add black bars to top/bottom or left/right to keep aspect ratio
+vf_scale="scale=min($WIDTH\,$HEIGHT*iw/ih):min($HEIGHT\,$WIDTH*ih/iw)"
+vf_pad="pad=$WIDTH:$HEIGHT:max(0\,(ow-iw)/2):max(0\,(oh-ih)/2)"
+video_filter=$vf_scale${vf_pad+,$vf_pad}${vf_subtitles+,$vf_subtitles}
 
-# The -bufsize and -maxrate is to fix some playback issue with XingMPEG,
-# apparently default values breaks something.
-ffmpeg -i "$orig" -f vcd \
-    -v error -stats \
-    -c:v $video_codec \
-    -bufsize 327680 \
-    -maxrate:v 1150k \
-    -r $video_fps \
-    -q:v $video_quality \
-    -vf "$video_filter" \
-    -c:a $audio_codec \
-    -ar $audio_rate \
-    -ac $audio_channel \
-    -b:a $audio_bitrate \
-    "$dest" && \
-echo "Generated video: $dest"
+case "$target" in
+    n900)
+        # baseline profile required
+        # default crf (23) and preset (medium) are good enough
+        ffmpeg  -i "$orig" -y \
+            -v error -stats \
+            -f mp4 \
+            -c:v libx264 \
+            -profile:v baseline \
+            -r 30 \
+            -vf "$video_filter" \
+            -c:a aac \
+            -ac 2 \
+            "$dest" && \
+        echo "Generated video: $dest"
+        ;;
+    win31|*)
+        # Similar to -target ntsc-vcd, but with some changes
+        # Video:
+        # frame rate being 25
+        # better video quality (0 is good)
+        # The -bufsize and -maxrate is to fix some playback issue with XingMPEG,
+        # apparently default values breaks something.
+        # Audio:
+        # common sample rate, multiplies of 11025 Hz
+        # stereo, 2 channels
+        # control the audio bitrate, default was 384k
+        ffmpeg -i "$orig" -y \
+            -v error -stats \
+            -f vcd \
+            -c:v mpeg1video \
+            -bufsize 327680 \
+            -maxrate:v 1150k \
+            -r 25 \
+            -q:v 0 \
+            -vf "$video_filter" \
+            -c:a mp2 \
+            -ar 44100 \
+            -ac 2 \
+            -b:a 224k \
+            "$dest" && \
+        echo "Generated video: $dest"
+        ;;
+esac
