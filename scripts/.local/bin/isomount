@@ -1,0 +1,13 @@
+#!/bin/sh
+# mount iso with fuseiso
+
+if ! command -v udisksctl; then
+    notify-send "Udisks not installed"
+    exit 1
+fi
+
+for f in "$@"; do
+    if [ "${f%.iso}" != "$f" ]; then
+        udisksctl loop-setup -f "$f"
+    fi
+done

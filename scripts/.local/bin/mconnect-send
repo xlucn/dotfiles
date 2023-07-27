@@ -1,0 +1,41 @@
+#!/bin/sh
+# send files with mconnect
+
+msg() {
+    notify-send "MConnect Send" "$1";
+}
+
+connected() {
+    if mconnectctl show-device "$device" | grep -iq "connected:\s*true"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+if ! mconnectctl list-devices; then
+    msg "Mconnect not installed or running"
+fi |
+grep /org/mconnect/device |
+while read -r device _ _ name; do
+    if connected "$device"; then
+        echo "$device"
+        echo "$name"
+    fi
+done |
+zenity --list \
+    --text "Send those files to" \
+    --column=device --column=name \
+    --print-column=ALL \
+    --separator=' ' |
+{
+    read -r device name
+    if [ -z "$device" ]; then
+        msg "No devices found/selected"
+    else
+        for file in "$@"; do
+            msg "Sending $file to $name"
+            mconnectctl share-file "$device" "$file"
+        done
+    fi
+}

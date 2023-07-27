@@ -1,0 +1,8 @@
+[Nemo Action]
+Active=true
+Name=Extract here
+Comment=Extract here
+Exec=file-roller -h %F
+Icon-Name=extract-archive-symbolic
+Selection=Any
+Extensions=zip;7z;ar;cbz;cpio;exe;iso;jar;tar;tar;7z;tar.Z;tar.bz2;tar.gz;tar.lz;tar.lzma;tar.xz;

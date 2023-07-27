@@ -1,0 +1,8 @@
+[Nemo Action]
+Active=false
+Name=Mount ISO
+Comment=Mount ISO
+Exec=isomount %F
+Icon-Name=application-x-iso
+Selection=Any
+Extensions=iso;
