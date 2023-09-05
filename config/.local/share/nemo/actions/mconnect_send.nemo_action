@@ -3,6 +3,6 @@ Active=true
 Name=Send to device
 Comment=Send files with mconnect
 Exec=mconnect-send %F
-Icon-Name=extract-archive-symbolic
+Icon-Name=send-to-symbolic
 Selection=Any
 Extensions=any

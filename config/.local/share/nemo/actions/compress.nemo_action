@@ -1,0 +1,8 @@
+[Nemo Action]
+Active=true
+Name=Create Zip
+Comment=Create compressed archive
+Exec=file-roller -d %F
+Icon-Name=add-files-to-archive-symbolic
+Selection=Any
+Extensions=any
