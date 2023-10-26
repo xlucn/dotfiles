@@ -24,6 +24,8 @@ export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
 export XAUTHORITY="${XAUTHORITY:-$XDG_DATA_HOME/Xauthority}"
+export XCURSOR_THEME="Adwaita"
+export XCURSOR_SIZE="24"
 # less history
 export LESSHISTFILE=-
 # rlwrap history
@@ -97,6 +99,7 @@ export JDK_JAVA_OPTIONS="
     -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 # rust cargo
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
 # texlive
 export TEXMFHOME="$XDG_DATA_HOME/texmf"
@@ -119,6 +122,10 @@ export FVTMP="$XDG_CACHE_HOME/fvtmp"
 export PSPG_CONF="$XDG_CONFIG_HOME/pspg.conf"
 # Kivy
 export KIVY_HOME="$XDG_CONFIG_HOME/kivy"
+# W3M
+export W3M_DIR="$XDG_DATA_HOME/w3m"
+# wget
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 
 # PATH
 add_to_path() {
