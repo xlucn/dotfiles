@@ -31,16 +31,16 @@ rofi -theme launcher -show drun
 slock
 
 # super + {bracketleft,bracketright,backslash}
-statusc vol {down,up,mute}
+statusctl vol {down,up,mute}
 
 # XF86Audio{LowerVolume,RaiseVolume,Mute}
-statusc vol {down,up,mute}
+statusctl vol {down,up,mute}
 
 # super + {minus,equal}
-statusc light {down,up}
+statusctl backlight {down,up}
 
 # XF86MonBrightness{Down,Up}
-statusc light {down,up}
+statusctl backlight {down,up}
 
 # super + shift + {minus,equal}
 mpc -q seek {-,+}10
@@ -49,7 +49,7 @@ mpc -q seek {-,+}10
 mpc -q {next,prev}
 
 # super + shift + backslash
-statusc mpd pause
+statusctl mpd pause
 
 # @Print
 scrot "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
@@ -79,6 +79,9 @@ setmonitor
 setmonitor
 
 # super + shift + p
+openrefs
+
+# super + shift + ctrl + p
 openpdf
 
 ## Translate selected text with translate-shell
