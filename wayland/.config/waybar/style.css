@@ -1,0 +1,7 @@
+@import '/etc/xdg/waybar/style.css';
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: FontAwesome, monospace;
+    font-size: 14px;
+}

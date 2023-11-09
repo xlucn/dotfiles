@@ -1,0 +1,21 @@
+profile internal_only {
+    output eDP-1 enable scale 1.5
+}
+
+profile external_dell {
+    output eDP-1 enable scale 1.5
+    output "Dell Inc. DELL P2418D 6C3VD88R0V0T" enable scale 1.0
+}
+
+profile external_dell_only {
+    output "Dell Inc. DELL P2418D 6C3VD88R0V0T" enable scale 1.0
+}
+
+profile external_general {
+    output eDP-1 enable scale 1.5 mode
+    output "*" enable scale 1.0
+}
+
+profile external_general_only {
+    output "*" enable scale 1.0 position 0,0
+}
