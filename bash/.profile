@@ -9,6 +9,11 @@ export BROWSER=firefox
 export NOTES_DIRECTORY="$HOME/Code/notes"
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
+# chinese input method
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS=@im=fcitx5
+
 # XDG base directories
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"

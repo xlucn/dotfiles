@@ -6,26 +6,10 @@
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
 
-startfcitx() {
-    # chinese input method
-    export GTK_IM_MODULE=fcitx5
-    export QT_IM_MODULE=fcitx5
-    export XMODIFIERS=@im=fcitx5
-    pgrep -x fcitx5 || fcitx5 -d > /dev/null 2>&1
-}
-
-startibus() {
-    # chinese input method
-    export GTK_IM_MODULE=ibus
-    export QT_IM_MODULE=ibus
-    export XMODIFIERS=@im=ibus
-    pgrep -x ibus-daemon || ibus-daemon -x -d > /dev/null 2>&1
-}
-
 prewm() {
-    startfcitx
 
     pgrep -x tym || tym --daemon > /dev/null 2>&1 &
+    pgrep -x fcitx5 || fcitx5 -d > /dev/null 2>&1
     pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
