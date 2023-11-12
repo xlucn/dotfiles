@@ -39,6 +39,7 @@ dwm.barheight: 48
 dwm.borderpx: 4
 dwm.gappx: 24
 dwm.mfact: 0.5
+dwm.systrayiconsize: 24
 
 st.alpha: 0.8
 st.borderpx: 0
@@ -55,7 +56,8 @@ dmenu.lines: 15
 Xautolock.time: 10
 Xautolock.locker: slock
 
-xmenu.font: JetBrains Mono:size=12, Noto Sans CJK SC:size=12
+xmenu.faceName: JetBrains Mono, Noto Sans CJK SC
+xmenu.faceSize: 12
 xmenu.height: 48
 xmenu.width: 256
 xmenu.border: #B0BEC5
