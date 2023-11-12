@@ -1,4 +1,8 @@
 #!/bin/bash
+## screenshot functions
+
+scrot_template="$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
+scrot_lineopts="mode=edge,width=4,color=red,opacity=70"
 
 # super + d
 rofi -theme launcher -show drun
@@ -52,22 +56,16 @@ mpc -q {next,prev}
 statusctl mpd pause
 
 # @Print
-scrot "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
+scrot "$scrot_template"
 
 # ctrl + @Print
-tmpfile=$(mktemp -u --tmpdir scrot.temp.XXXX.png)
-scrot "$tmpfile"
-xclip -selection clipboard -t image/png < "$tmpfile"
-rm "$tmpfile"
+scrot - | xclip -selection clipboard -t image/png
 
 # shift + @Print
-scrot -s --line mode=edge,width=4,color=red,opacity=70 "$HOME/Pictures/Screenshot_%F_%H-%M-%S.png"
+scrot -s -l "$scrot_lineopts" "$scrot_template"
 
 # ctrl + shift + @Print
-tmpfile=$(mktemp -u --tmpdir scrot.temp.XXXX.png)
-scrot -s --line mode=edge,width=4,color=red,opacity=70 "$tmpfile"
-xclip -selection clipboard -t image/png < "$tmpfile"
-rm "$tmpfile"
+scrot -s -l "$scrot_lineopts" - | xclip -selection clipboard -t image/png
 
 # super + r
 rofi -show run
@@ -83,8 +81,3 @@ openrefs
 
 # super + shift + ctrl + p
 openpdf
-
-## Translate selected text with translate-shell
-## Idea from https://github.com/4lgn/word-lookup
-# super + shift + t
-st -c floating sh -c "trans \"$(xclip -o)\" | less -R"
