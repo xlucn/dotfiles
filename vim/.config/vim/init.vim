@@ -19,9 +19,6 @@ set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
 " vim-jetpack {{{
-function! ConfigComm() abort
-    echo "test"
-endfunction
 packadd vim-jetpack
 call jetpack#begin()
 call jetpack#add('tani/vim-jetpack', {'opt': 1}) "bootstrap

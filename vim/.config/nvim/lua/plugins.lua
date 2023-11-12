@@ -16,8 +16,9 @@ local function config_nvim_lspconfig()
     local server_config = {
         bashls = { },
         clangd = { },
-        marksman = { },
-        pylsp = { },
+        pylsp = { settings = { pylsp = {
+            rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" }
+        }}},
         lua_ls = { settings = { Lua = {
             diagnostics = { globals = { 'vim' } }
         }}},
@@ -101,7 +102,8 @@ local function config_nvim_cmp()
         vim.api.nvim_set_hl(0, key, value)
     end
 
-    local kind_colors = {  -- base16 colors for completion types
+    local kind_colors = {
+        -- [base16 colors] = { completion types }
         [1] = { "Field", "Property", "Event", },
         [2] = { "Text", "Enum", "Keyword", },
         [3] = { "Unit", "Snippet", "Folder", },
@@ -255,8 +257,17 @@ local function config_dap_python()
     require('dap-python').setup()
 end
 
+local function init_telescope()
+    local builtin = require("telescope.builtin")
+
+    vim.keymap.set('n', '<leader>lr', builtin.lsp_references, mapopts)
+    vim.keymap.set('n', '<leader>ld', builtin.diagnostics, mapopts)
+    vim.keymap.set('n', '<leader>li', builtin.lsp_implementations, mapopts)
+end
+
 local function config_telescope()
     local actions = require("telescope.actions")
+
     require("telescope").setup({
         defaults = {
             layout_strategy = 'flex',
@@ -275,18 +286,31 @@ local function config_neorg()
     require('neorg').setup({
         load = {
             ["core.defaults"] = {},
-            ["core.norg.concealer"] = {},
+            ["core.concealer"] = {},
+            ["core.completion"] = {
+                config = {
+                    engine = "nvim-cmp"
+                }
+            },
+            ["core.dirman"] = {
+                config = {
+                    workspaces = {
+                        main = "~/Code/notes",
+                        test = "~/Code/test"
+                    }
+                }
+            }
         }
     })
 end
 
-local function config_ufo()
-    require('ufo').setup({
-        provider_selector = function(bufnr, filetype, buftype)
-            return {'treesitter', 'indent'}
-        end
-    })
-end
+-- local function config_ufo()
+--     require('ufo').setup({
+--         provider_selector = function(bufnr, filetype, buftype)
+--             return {'treesitter', 'indent'}
+--         end
+--     })
+-- end
 
 local function config_symbols_outline()
     vim.api.nvim_set_hl(0, 'FocusedSymbol', { ctermfg = 2, ctermbg = 8 })
@@ -296,14 +320,15 @@ local function config_symbols_outline()
     vim.api.nvim_create_autocmd(
         { 'FileType' },
         { group = augroup, pattern = 'Outline', callback = function()
-            vim.o.signcolumn = 'no'
-            vim.o.cursorline = true
+            vim.wo.signcolumn = 'no'
+            vim.wo.foldcolumn = '0'
+            vim.wo.cursorline = true
         end }
     )
 
     require('symbols-outline').setup({
         auto_close = true,
-        -- lsp_blacklist = { 'pylsp' },
+        autofold_depth = 1,
     })
 end
 
@@ -327,16 +352,12 @@ require("lazy").setup({
         { "gc", mode = { 'n', 'v' } },
     }},
     { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
-    { 'liuchengxu/vista.vim', cmd = 'Vista' },
     { 'stevearc/aerial.nvim', config = function()
         require('aerial').setup({ disable_max_lines = 100000 })
     end, cmd = 'AerialToggle' },
     { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
-    { 'kevinhwang91/nvim-ufo', config = config_ufo, dependencies = {
-        { 'kevinhwang91/promise-async' }
-    }, event = "BufRead"},
     { 'ap/vim-buftabline', event = 'BufRead' },
     { 'kylechui/nvim-surround', config = true, keys = {
         'ys', 'ds', 'cs', { 'S', mode = 'v' },
@@ -349,7 +370,7 @@ require("lazy").setup({
     { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { 'L' } },
     { 'nvim-neo-tree/neo-tree.nvim', config = true, dependencies = {
         'MunifTanjim/nui.nvim',
-    }, cmd = 'NeoTreeShowToggle'},
+    }, cmd = 'Neotree', branch = "v3.x" },
     { 'kevinhwang91/nvim-hlslens', config = true, event = "BufRead" },
     { 'preservim/tagbar', cmd = "Tagbar" },
     { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
@@ -357,7 +378,7 @@ require("lazy").setup({
     { 'folke/which-key.nvim', config = config_which_key, keys = { '<leader>' } },
     { 'nvim-telescope/telescope.nvim', dependencies = {
         { 'nvim-lua/plenary.nvim' },
-    }, cmd = "Telescope", config = config_telescope },
+    }, cmd = "Telescope", init = init_telescope, config = config_telescope },
     { 'nvim-treesitter/nvim-treesitter', dependencies = {
         { 'nvim-treesitter/nvim-treesitter-textobjects' },
     }, ft = {
@@ -380,18 +401,14 @@ require("lazy").setup({
         -- snippet engine and sources
         { 'saadparwaiz1/cmp_luasnip', dependencies = {
             { 'L3MON4D3/LuaSnip', config = config_luasnip, dependencies = {
-                -- { 'honza/vim-snippets' },
                 { 'rafamadriz/friendly-snippets' },
             }},
         }},
     }, event = 'InsertEnter' },
     -- lsp and integrations
-    { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig, ft = {
-        'sh', 'c', 'cpp', 'markdown', 'python', 'lua', 'tex', 'vim'
-    }},
-    { 'j-hui/fidget.nvim', config = true, event = 'LspAttach' },
+    { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig },
+    { 'j-hui/fidget.nvim', tag='legacy', config = true, event = 'LspAttach' },
     { 'nvim-neorg/neorg', config = config_neorg, cmd = 'Neorg', ft = 'norg' },
-    { "utilyre/barbecue.nvim", config = true, dependencies = {
-        "SmiteshP/nvim-navic"
-    }, event = 'BufRead' },
+    { 'windwp/nvim-autopairs', event = "InsertEnter", config = true }
+}, {
 })
