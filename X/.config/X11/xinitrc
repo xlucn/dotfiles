@@ -5,15 +5,23 @@
 
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
+SKIP_PRE=0
 
 prewm() {
+    [ "$SKIP_PRE" = 1 ] && return
 
-    pgrep -x tym || tym --daemon > /dev/null 2>&1 &
     pgrep -x fcitx5 || fcitx5 -d > /dev/null 2>&1
     pgrep -x dxhd || dxhd > /dev/null 2>&1 &
     pgrep -x redshift || redshift > /dev/null 2>&1 &
     pgrep -x polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 > /dev/null 2>&1 &
 
+    prede
+}
+
+prede() {
+    [ "$SKIP_PRE" = 1 ] && return
+
+    pgrep -x tym || tym --daemon > /dev/null 2>&1 &
     libinput-gestures-setup restart > /dev/null 2>&1 &
 }
 
@@ -56,10 +64,13 @@ else
     xrdb -merge /tmp/Xresources.Xft.dpi
 fi
 
+if [ "${WM%simp}" = "$WM" ]; then
+    SKIP_PRE=1
+fi
+
 case "$WM" in
     awesome*) prewm; exec awesome;;
     dwm*) prewm; startdwm;;
-    gnome*) startgnome;;
-    simple*) startdwm;;
+    gnome*) prede; startgnome;;
     *) exec "$@";;
 esac
