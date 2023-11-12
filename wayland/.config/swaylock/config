@@ -1,0 +1,7 @@
+ignore-empty-password
+show-failed-attempts
+indicator-idle-visible
+
+image=$HOME/Pictures/wallpaper.jpg
+scaling=fill
+color=121212
