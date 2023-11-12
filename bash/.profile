@@ -14,6 +14,9 @@ export GTK_IM_MODULE=fcitx5
 export QT_IM_MODULE=fcitx5
 export XMODIFIERS=@im=fcitx5
 
+# QT theme
+export QT_QPA_PLATFORMTHEME=qt5ct
+
 # XDG base directories
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -131,6 +134,8 @@ export KIVY_HOME="$XDG_CONFIG_HOME/kivy"
 export W3M_DIR="$XDG_DATA_HOME/w3m"
 # wget
 export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+# bemenu
+export BEMENU_OPTS="-l 15 -c -B 2 -H 28 -W 0.5 --fn 'Monospace 12' --fixed-height"
 
 # PATH
 add_to_path() {
