@@ -1,2 +1,2 @@
 # vim: ft=conf
-on-button-middle=exec makoctl menu -n "$id" dmenu -p 'Select action: '
+on-button-middle=exec makoctl menu -n "$id" bemenu -p 'Select action: '
