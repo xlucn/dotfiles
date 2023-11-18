@@ -1,7 +1,22 @@
 @import '/etc/xdg/waybar/style.css';
 
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, monospace;
+    /* use the "Propo" variant of Nerd font to for correct glyph widths */
+    font-family: "JetBrainsMono Nerd Font Propo";
     font-size: 14px;
+}
+
+window#waybar {
+    background-color: #1c1c1c;
+    border-bottom: 0px;
+    color: #ffffff;
+}
+
+window#waybar.empty {
+    background-color: transparent;
+}
+
+#bluetooth {
+    background-color: #64727D;
+    padding: 0 10px;
 }
