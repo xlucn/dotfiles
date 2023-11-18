@@ -1,6 +1,7 @@
 # sway config file
 
 output eDP-1 scale 1.5 adaptive_sync on
+output "*" background "$HOME/Pictures/wallpaper.jpg" fill "#121212"
 
 set $mod Mod4
 
@@ -19,6 +20,7 @@ bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec fuzzel
+bindsym $mod+r exec bemenu-run
 
 # change focus
 bindsym $mod+j focus next
@@ -36,12 +38,6 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
-# bindsym $mod+h split h
-
-# split in vertical orientation
-# bindsym $mod+v split v
-
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
@@ -53,6 +49,7 @@ bindsym $mod+Ctrl+Shift+s exec grim -g "$(slurp)" - | wl-copy
 
 bindsym $mod+w exec MOZ_ENABLE_WAYLAND=1 firefox
 bindsym $mod+e exec nemo
+bindsym $mod+Shift+p exec openrefs
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -62,9 +59,6 @@ bindsym button2 floating toggle
 bindsym $mod+space focus mode_toggle
 
 bindsym $mod+a sticky toggle
-
-# focus the child container
-#bindsym $mod+d focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -118,40 +112,14 @@ bindsym $mod+Shift+r restart
 # exit sway (logs you out of your X session)
 bindsym $mod+Shift+q exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway?' -B 'Yes, exit sway' 'swaymsg exit'"
 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+# Use waybar to have better interaction and systray
+# bar { status_command i3status }
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
-}
-
-bindsym $mod+r mode "resize"
-
-# Use other bars (waybar) to have better interaction and systray
-# Commented:
-# bar {
-#         status_command i3status
-# }
-
-smart_borders on
+gaps inner 16
+gaps outer 0
+titlebar_border_thickness 0
+default_border normal 2
+smart_borders no_gaps
 # xwayland disable
 
 input "type:touchpad" {
@@ -161,7 +129,25 @@ input "type:touchpad" {
     accel_profile adaptive
 }
 
+# workspace 2 for web browsers
+workspace $ws2 gaps inner 0
+assign [app_id="firefox"] workspace 2
+for_window [shell="xwayland"] title_format "[XWayland] %title"
+for_window [app_id="firefox" title="^Picture-in-Picture$"] {
+    floating enable
+    sticky enable
+    resize set width 640 px height 360 px
+    move position 100 ppt 100 ppt
+    move up 360 px
+    move left 640 px
+    border none
+}
+
+bindswitch --reload --locked lid:on output eDP-1 disable
+bindswitch --reload --locked lid:off output eDP-1 enable
+
 exec systemctl --user import-environment WAYLAND_DISPLAY
 exec systemctl --user reload-or-restart mako
 exec kanshi
 exec waybar
+exec swayidle -w
