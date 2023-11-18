@@ -2,31 +2,31 @@
 
 # When using internal monitor alone (2880x1800), 1.5x scale is great
 # "AU Optronics 0xC391 Unknown" is the monitor on Thinkbook 14+ 2023 AMD
-profile "Thinkbook 14+" {
-    output "AU Optronics 0xC391 Unknown" enable scale 1.5
+profile tb {
+    output "AU Optronics 0xC391 Unknown" enable mode 2880x1800@90Hz scale 1.5
 }
 
 # Dell monitor on right and slightly above
-profile "Thinkbook 14+ & Dell P2418D" {
-    output "AU Optronics 0xC391 Unknown" enable scale 1.8 position 0,540
-    output "Dell Inc. DELL P2418D 6C3VD88R0V0T" enable scale 1.0 position 1600,0
+profile tb_dell {
+    output "AU Optronics 0xC391 Unknown" enable mode 2880x1800@90Hz scale 1.8 position 0,540
+    output "Dell Inc. DELL P2418D 6C3VD88R0V0T" enable mode 2560x1440@60Hz scale 1.0 position 1600,0
 }
 
 # HP monitor at the back
-profile "Thinkbook14+ & HP P221" {
-    output "AU Optronics 0xC391 Unknown" enable scale 1.5 position 0,1080
-    output "Hewlett Packard HP P221 3CQ4350H93" enable position 0,0
+profile tb_hp {
+    output "AU Optronics 0xC391 Unknown" enable mode 2880x1800@90Hz scale 1.5 position 0,1080
+    output "Hewlett Packard HP P221 3CQ4350H93" enable mode 1920x1080@60Hz position 0,0
 }
 
-profile "general & external" {
+profile dual {
     output eDP-1 enable scale 1.5
     output "*" enable scale 1.0
 }
 
-profile general {
+profile int {
     output eDP-1 enable scale 1.5
 }
 
-profile external {
+profile ext {
     output "*" enable scale 1.0
 }
