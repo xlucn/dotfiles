@@ -74,14 +74,14 @@ fi      󰈤       # FILE
 *.nix           
 *.lua           
 *.java          
-*.sh            
-*.fish          
-*.bash          
-*.zsh           
-*.ksh           
-*.csh           
-*.awk           
-*.ps1           
+*.sh            
+*.fish          
+*.bash          
+*.zsh           
+*.ksh           
+*.csh           
+*.awk           
+*.ps1           
 *.ml            λ
 *.mli           λ
 *.diff          
@@ -327,4 +327,4 @@ Vagrantfile             
 *.xspf  
 
 # other formats
-*.pdf   
+*.pdf   

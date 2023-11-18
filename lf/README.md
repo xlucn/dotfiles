@@ -2,6 +2,10 @@
 
 ## Image preview
 
+Now I recommend use sixel, kitty or character-based image preview methods instead of ueberzug. A good utility is [chafa](https://github.com/hpjansson/chafa) which will handle different capabilities and provide the best solution available.
+
+## Old Image preview
+
 **NOTE:** *ueberzug will use a lot of memory (up to 2GB+. I think it a bug, at least a flaw, but the author doesn't think so) if previewing a lot of large images. So, either you be OK with that, or go implement thumbnails in your lf config, or not use image preview at all.*
 
 Lf has a [Preview wiki page](https://github.com/gokcehan/lf/wiki/Previews) about how to preview with ueberzug. Refer to that as well.
