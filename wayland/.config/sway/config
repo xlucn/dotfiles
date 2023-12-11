@@ -137,12 +137,11 @@ for_window [shell="xwayland"] title_format "[XWayland] %title"
 for_window [title="floating_term"] floating enable
 for_window [app_id="firefox" title="^Picture-in-Picture$"] {
     floating enable
-    sticky enable
-    resize set width 640 px height 360 px
     move position 100 ppt 100 ppt
+    resize set 640 360
     move up 360 px
     move left 640 px
-    border none
+    sticky enable
 }
 
 bindswitch --reload --locked lid:on output eDP-1 disable
@@ -152,4 +151,8 @@ exec systemctl --user import-environment WAYLAND_DISPLAY
 exec systemctl --user reload-or-restart mako
 exec kanshi
 exec waybar
-exec swayidle -w
+exec swayidle
+exec fcitx5 -d
+exec nm-applet
+exec blueman-applet
+exec libinput-gestures-setup start
