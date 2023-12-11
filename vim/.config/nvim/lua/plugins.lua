@@ -16,6 +16,7 @@ local function config_nvim_lspconfig()
     local server_config = {
         bashls = { },
         clangd = { },
+        marksman = { },
         pylsp = { settings = { pylsp = {
             rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" }
         }}},
@@ -29,12 +30,14 @@ local function config_nvim_lspconfig()
                          "-interaction=nonstopmode", "%f" },
                 onSave = true,
                 forwardSearchAfter = true,
+                auxDirectory = "./output",
+                logDirectory = "./output",
+                pdfDirectory = "./output",
             },
             forwardSearch = {
                 executable = "zathura",
                 args = { "--synctex-forward", "%l:1:%f", "%p" },
             },
-            auxDirectory = "./output",
             chktex = { onOpenAndSave = false, },
             experimental = {
                 mathEnvironments = { 'align' },
@@ -214,7 +217,7 @@ end
 local function config_nvim_tree()
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
-    vim.keymap.set('n', 'L', '<CMD>NvimTreeToggle<CR>', mapopts)
+    vim.keymap.set('n', '<leader>t', '<CMD>NvimTreeToggle<CR>', mapopts)
     vim.api.nvim_set_hl(0, 'NvimTreeCursorLine', { ctermbg = 8 })
 
     require('nvim-tree').setup({
@@ -304,6 +307,11 @@ local function config_neorg()
     })
 end
 
+local function config_aerial()
+    vim.keymap.set('n', '<leader>b', '<CMD>AerialToggle<CR>', mapopts)
+    require('aerial').setup({ disable_max_lines = 100000 })
+end
+
 -- local function config_ufo()
 --     require('ufo').setup({
 --         provider_selector = function(bufnr, filetype, buftype)
@@ -352,9 +360,7 @@ require("lazy").setup({
         { "gc", mode = { 'n', 'v' } },
     }},
     { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
-    { 'stevearc/aerial.nvim', config = function()
-        require('aerial').setup({ disable_max_lines = 100000 })
-    end, cmd = 'AerialToggle' },
+    { 'stevearc/aerial.nvim', config = config_aerial, keys = { '<leader>b' } },
     { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
     { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
@@ -367,7 +373,7 @@ require("lazy").setup({
     }, cmd = 'Neogit' },
     { 'akinsho/toggleterm.nvim', config = config_toggleterm, keys = { '<C-Bslash>' }},
     { 'lewis6991/gitsigns.nvim', config = true, event = "BufRead" },
-    { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { 'L' } },
+    { 'nvim-tree/nvim-tree.lua', config = config_nvim_tree, keys = { '<leader>t' } },
     { 'nvim-neo-tree/neo-tree.nvim', config = true, dependencies = {
         'MunifTanjim/nui.nvim',
     }, cmd = 'Neotree', branch = "v3.x" },
@@ -407,7 +413,7 @@ require("lazy").setup({
     }, event = 'InsertEnter' },
     -- lsp and integrations
     { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig },
-    { 'j-hui/fidget.nvim', tag='legacy', config = true, event = 'LspAttach' },
+    { 'j-hui/fidget.nvim', config = true, event = 'LspAttach' },
     { 'nvim-neorg/neorg', config = config_neorg, cmd = 'Neorg', ft = 'norg' },
     { 'windwp/nvim-autopairs', event = "InsertEnter", config = true }
 }, {

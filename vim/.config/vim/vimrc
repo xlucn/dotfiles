@@ -47,6 +47,7 @@ set showtabline=2       " show tabs on top
 set noshowmode          " do not show mode on the last line
 set foldcolumn=0
 set wrap
+set smoothscroll
 set conceallevel=2      " replace concealable texts
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
@@ -63,6 +64,7 @@ if has("gui_running") == 0
     endif
 endif
 " color scheme
+hi Normal       ctermbg=None ctermfg=15   cterm=None
 hi SignColumn   ctermbg=None ctermfg=0    cterm=None
 hi CursorColumn ctermbg=0
 hi CursorLine   ctermbg=0                 cterm=None
@@ -333,6 +335,5 @@ let g:tagbar_left = 1
 let g:tagbar_silent = 1
 let g:tagbar_sort = 0
 let g:tagbar_width = min([30, winwidth(0) / 3])
-nnoremap <leader>b :Tagbar<CR>
 " }}}
 " vim:foldmethod=marker:foldlevel=0

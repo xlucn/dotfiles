@@ -139,6 +139,7 @@ let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
 let stl5 = ' %p%% | %l:%v '                       " cursor location
 let stl6 = '%{LSPStatus()}'                     " lsp status
 let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
+nnoremap <leader>b :TagbarToggle<CR>
 " }}}
 " Git {{{
 function! GitTig()
