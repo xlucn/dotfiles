@@ -17,6 +17,9 @@ export XMODIFIERS=@im=fcitx5
 # QT theme
 export QT_QPA_PLATFORMTHEME=qt5ct
 
+# SDL prefer wayland
+export SDL_VIDEODRIVER=wayland,x11
+
 # XDG base directories
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
