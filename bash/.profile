@@ -139,6 +139,8 @@ export W3M_DIR="$XDG_DATA_HOME/w3m"
 export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 # bemenu
 export BEMENU_OPTS="-l 15 -c -B 2 -H 28 -W 0.5 --fn 'Monospace 12' --fixed-height"
+# nuget
+export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 
 # PATH
 add_to_path() {

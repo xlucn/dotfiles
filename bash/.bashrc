@@ -51,6 +51,8 @@ alias au="sudo pacman -Syu && proxychains paru -Sua"
 # fricas
 alias fricas="fricas -nox -noht -rl"
 alias neo-matrix="neo-matrix -a -D background -F"
+# adb
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 hdu() {
     du -haxd 1 "$@" 2> /dev/null | sort -h
