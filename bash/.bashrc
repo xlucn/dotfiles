@@ -20,7 +20,7 @@ alias grep="grep --color=auto"
 alias mv="mv -iv"
 alias cp="cp -iv"
 # do not show *tmpfs
-alias df="df -h -x tmpfs -x devtmpfs --output=source,fstype,size,used,avail,pcent,target"
+alias df="df -h -x tmpfs -x devtmpfs -x efivarfs --output=source,fstype,size,used,avail,pcent,target"
 # mpv under virtual console using drm
 alias cmpv="mpv --vo=gpu --gpu-context=drm --hwdec=vaapi --drm-drmprime-video-plane=0"
 # ranger under tty
@@ -53,6 +53,8 @@ alias fricas="fricas -nox -noht -rl"
 alias neo-matrix="neo-matrix -a -D background -F"
 # adb
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
+# system backup
+alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos"} /'
 
 hdu() {
     du -haxd 1 "$@" 2> /dev/null | sort -h
