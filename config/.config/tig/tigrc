@@ -1,0 +1,13 @@
+set mouse = true
+set tab-size = 4
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d"
+set main-view-author-display = abbreviated
+set main-view-author-maxwidth = 10
+
+bind generic g move-first-line
+bind generic G move-last-line
+bind main G move-last-line
+bind main e !git commit --amend
+bind generic <Esc>[I none  # Ignore xterm focus events
+bind generic <Esc>[O none
