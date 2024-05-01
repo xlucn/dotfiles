@@ -7,10 +7,6 @@ local function config_comment()
     vim.keymap.set('x', '<leader>c', '<Plug>(comment_toggle_linewise_visual)', mapopts)
 end
 
-local function config_leap()
-    require('leap').add_default_mappings()
-end
-
 local function config_nvim_lspconfig()
     -- LSP configs
     local server_config = {
@@ -18,16 +14,17 @@ local function config_nvim_lspconfig()
         clangd = { },
         marksman = { },
         pylsp = { settings = { pylsp = {
-            rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" }
+            rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" },
+            ruff = { enabled = true, formatEnabled = true },
         }}},
+        -- ruff = { },
         lua_ls = { settings = { Lua = {
             diagnostics = { globals = { 'vim' } }
         }}},
         texlab = { settings = { texlab = {
             build = {
                 executable = "latexmk",
-                args = { "-outdir=./output/", "-xelatex", "-synctex=1",
-                         "-interaction=nonstopmode", "%f" },
+                args = { "-synctex=1", "-interaction=nonstopmode", "%f" },
                 onSave = true,
                 forwardSearchAfter = true,
                 auxDirectory = "./output",
@@ -39,6 +36,12 @@ local function config_nvim_lspconfig()
                 args = { "--synctex-forward", "%l:1:%f", "%p" },
             },
             chktex = { onOpenAndSave = false, },
+            diagnostics = {
+                ignoredPatterns = {
+                    'Unused label',
+                    'Unused entry',
+                },
+            },
             experimental = {
                 mathEnvironments = { 'align' },
             },
@@ -340,6 +343,50 @@ local function config_symbols_outline()
     })
 end
 
+local function config_bufferline()
+    local bufferline = require("bufferline")
+    local selbg, selfg, visbg, visfg, bg = 6, 233, 0, 7, 233
+    bufferline.setup{
+        options = {
+            style_preset = bufferline.style_preset.no_italic,
+            color_icons = false,
+            numbers = function(opts) return opts.id end,
+            right_mouse_command = false,
+            show_buffer_icons = false,
+            max_name_length = 30,
+            -- indicator = { style = 'icon' },
+            separator_style = 'thin',
+            hover = {
+                enabled = true,
+                delay = 0,
+                reveal = {'close'}
+            },
+            offsets = {
+                {
+                    filetype = "NvimTree",
+                    text = "File Explorer",
+                    text_align = "center",
+                    separator = true,
+                }
+            },
+        },
+        highlights = {
+            fill = { ctermbg = bg },
+            background = { ctermbg = visbg, ctermfg = visfg },
+            buffer_selected = { ctermbg = selbg, ctermfg = selfg },
+            close_button = { ctermbg = visbg },
+            close_button_selected = { ctermbg = selbg, ctermfg = selfg },
+            numbers = { ctermbg = visbg, ctermfg = visfg },
+            numbers_selected = { ctermbg = selbg, ctermfg = selfg },
+            modified = { ctermbg = visbg },
+            modified_selected = { ctermbg = selbg, ctermfg = selfg },
+            separator = { ctermbg = visbg, ctermfg = bg },
+            separator_selected = { ctermbg = selbg, ctermfg = bg },
+            indicator_selected = { ctermbg = selbg },
+        }
+    }
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -362,9 +409,11 @@ require("lazy").setup({
     { 'simrat39/symbols-outline.nvim', config = config_symbols_outline, cmd = 'SymbolsOutline' },
     { 'stevearc/aerial.nvim', config = config_aerial, keys = { '<leader>b' } },
     { 'folke/trouble.nvim', config = true, cmd = 'TroubleToggle' },
-    { 'tpope/vim-dispatch', enabled = true, cmd = "Dispatch" },
     { 'ojroques/nvim-bufdel', config = config_bufdel, cmd = "BufDel" },
-    { 'ap/vim-buftabline', event = 'BufRead' },
+    { 'akinsho/bufferline.nvim', config = config_bufferline, dependencies = {
+        'nvim-tree/nvim-web-devicons',
+    }, event = 'BufRead' },
+    -- { 'ap/vim-buftabline', event = 'BufRead' },
     { 'kylechui/nvim-surround', config = true, keys = {
         'ys', 'ds', 'cs', { 'S', mode = 'v' },
     }},
@@ -378,9 +427,7 @@ require("lazy").setup({
         'MunifTanjim/nui.nvim',
     }, cmd = 'Neotree', branch = "v3.x" },
     { 'kevinhwang91/nvim-hlslens', config = true, event = "BufRead" },
-    { 'preservim/tagbar', cmd = "Tagbar" },
     { 'RRethy/vim-illuminate', config = config_vim_illuminate, event = "BufRead" },
-    { 'ggandor/leap.nvim', config = config_leap, keys = { 's', 'S' } },
     { 'folke/which-key.nvim', config = config_which_key, keys = { '<leader>' } },
     { 'nvim-telescope/telescope.nvim', dependencies = {
         { 'nvim-lua/plenary.nvim' },
@@ -393,6 +440,7 @@ require("lazy").setup({
     { 'rcarriga/nvim-dap-ui', config = config_dap_ui, dependencies = {
         { 'mfussenegger/nvim-dap' },
         { 'mfussenegger/nvim-dap-python', config = config_dap_python },
+        { "nvim-neotest/nvim-nio" },
     }, keys = { '<leader>D' }},
     -- completion engine and sources
     { 'hrsh7th/nvim-cmp', config = config_nvim_cmp, dependencies = {
@@ -414,7 +462,9 @@ require("lazy").setup({
     -- lsp and integrations
     { 'neovim/nvim-lspconfig', config = config_nvim_lspconfig },
     { 'j-hui/fidget.nvim', config = true, event = 'LspAttach' },
-    { 'nvim-neorg/neorg', config = config_neorg, cmd = 'Neorg', ft = 'norg' },
+    { 'nvim-neorg/neorg', config = config_neorg, dependencies = {
+        { 'vhyrro/luarocks.nvim', config = true, priority = 1000 }
+    }, cmd = 'Neorg', ft = 'norg' },
     { 'windwp/nvim-autopairs', event = "InsertEnter", config = true }
 }, {
 })
