@@ -22,7 +22,7 @@ bindsym $mod+Shift+Return exec tym --title=floating_term
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec fuzzel
+bindsym $mod+d exec rofi -show drun -theme launcher
 bindsym $mod+r exec bemenu-run
 
 # change focus
@@ -115,15 +115,13 @@ bindsym $mod+Shift+r restart
 # exit sway (logs you out of your X session)
 bindsym $mod+Shift+q exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway?' -B 'Yes, exit sway' 'swaymsg exit'"
 
-# Use waybar to have better interaction and systray
+# Commented. Use waybar to have better interaction and systray
 # bar { status_command i3status }
 
 gaps inner 16
 gaps outer 0
-titlebar_border_thickness 0
 default_border normal 2
 smart_borders no_gaps
-# xwayland disable
 
 input "type:touchpad" {
     natural_scroll enabled
@@ -137,6 +135,7 @@ workspace $ws2 gaps inner 0
 assign [app_id="firefox"] workspace 2
 for_window [shell="xwayland"] title_format "[XWayland] %title"
 for_window [title="floating_term"] floating enable
+for_window [app_id="zenity"] floating enable
 for_window [app_id="firefox" title="^Picture-in-Picture$"] {
     floating enable
     move position 100 ppt 100 ppt
@@ -149,12 +148,15 @@ for_window [app_id="firefox" title="^Picture-in-Picture$"] {
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
-exec systemctl --user import-environment WAYLAND_DISPLAY
-exec systemctl --user reload-or-restart mako
-exec kanshi
-exec waybar
 exec swayidle
+exec waybar
 exec fcitx5 -d
 exec nm-applet
 exec blueman-applet
 exec libinput-gestures-setup start
+exec systemctl --user import-environment WAYLAND_DISPLAY
+exec systemctl --user reload-or-restart mako
+exec kanshi
+exec /usr/lib/kdeconnectd
+exec kdeconnect-indicator
+exec_always kanshictl reload
