@@ -31,13 +31,12 @@ set selection-notification false
 
 # Synctex
 set synctex true
-set synctex-editor-command "nvim --remote-silent +%{line} %{input}"
+set synctex-editor-command "tym -- nvim --remote-silent +%{line} %{input}"
 # Do not raise window after forward search, from version 0.4.8
 set dbus-raise-window false
 
 # User interface
 set guioptions "vh"
-set highlight-transparency 0.2
 
 # Colors TODO: all the colors
 set default-fg "#ECEFF1"
@@ -60,5 +59,4 @@ set window-title-basename true
 set window-title-page true
 set window-icon-document false
 
-# larger scroll
-set scroll-step 192
+set database sqlite

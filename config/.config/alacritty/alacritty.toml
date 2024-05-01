@@ -41,6 +41,5 @@ foreground = "#e4e4e4"
 size = 12.0
 
 [window]
-column = 80
 decorations = "full"
-lines = 24
+dimensions = { columns = 80, lines = 24 }
