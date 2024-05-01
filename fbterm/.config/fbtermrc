@@ -7,9 +7,9 @@
 
 # Recommendations 14-8-18 16-10-20 21-12-24 26-15-32
 font-names=JetBrainsMono Nerd Font Mono,WenQuanYi Micro Hei,Noto Sans CJK SC
-font-size=26
+font-size=24
 font-width=15
-font-height=36
+font-height=32
 
 # default color of foreground/background text
 color-background=234
@@ -41,7 +41,7 @@ text-encodings=UTF-8,GB18030,GBK,CP936,LATIN1
 # cursor shape: 0 = underline, 1 = block
 # cursor flash interval in milliseconds, 0 means disable flashing
 cursor-shape=1
-cursor-interval=500
+cursor-interval=0
 
 # additional ascii chars considered as part of a word while auto-selecting text, except ' ', 0-9, a-z, A-Z
 word-chars=._-

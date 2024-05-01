@@ -17,7 +17,7 @@
     b = branch
     pl = log --all --decorate --oneline --graph --date-order
     as = autostats # my own script
-[http]
-    ; proxy = "socks5h://localhost:1080"
+; [http]
+;     proxy = "socks5://127.0.0.1:1081"
 [pull]
     rebase = false

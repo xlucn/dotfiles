@@ -11,6 +11,7 @@ export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
 # chinese input method
 # gtk settings only for xorg, see .xprofile
+export GTK_IM_MODULE=fcitx5
 export QT_IM_MODULE=fcitx5
 export XMODIFIERS=@im=fcitx5
 

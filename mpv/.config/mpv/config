@@ -3,6 +3,8 @@ no-keepaspect-window
 
 slang=eng,chs
 
+deinterlace=auto
+
 # Screenshot
 screenshot-format=png
 screenshot-directory=~/Pictures

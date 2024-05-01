@@ -12,7 +12,7 @@ crossfade-time      = 3
 search-mode         = filename
 # display
 scroll              = no
-welcome-screen-list = no
+welcome-screen-list = yes
 wide-cursor         = yes
 hardware-cursor     = no
 hide-cursor         = 0
