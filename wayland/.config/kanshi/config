@@ -12,8 +12,13 @@ profile tb {
 
 # Dell monitor on right and slightly above
 profile tb_dell {
-    # output "AU Optronics 0xC391 Unknown" enable mode 2880x1800 scale 1.8 position 0,540
-    output "AU Optronics 0xC391 Unknown" disable
+    output "AU Optronics 0xC391 Unknown" {
+        enable
+        mode 2880x1800
+        scale 1.8
+        position 0,540
+    }
+    # output "AU Optronics 0xC391 Unknown" disable
     output "Dell Inc. DELL P2418D 6C3VD88R0V0T" {
         enable
         mode 2560x1440
@@ -34,18 +39,29 @@ profile tb_hp {
         enable
         mode 1920x1080
         scale 1.0
-        position 0,0
+        position 1800,0
     }
 }
 
-# profile projector {
-#     output "*" enable 
-#     output eDP-1
-# }
+profile projector {
+    output "*" {
+        enable
+        mode 1920x1080
+        scale 1.0
+        position 3840,0
+    }
+    output eDP-1 {
+        enable
+        mode 1920x1080
+        scale 1.0
+        position 0,0
+    }
+    exec wl-mirror -F --fullscreen-output HDMI-A-1 eDP-1
+}
 
 profile dual {
     output "*" enable scale 1.0
-    output eDP-1 enable scale 1.6
+    output eDP-1 enable mode 2880x1800 scale 1.6
 }
 
 profile int {
