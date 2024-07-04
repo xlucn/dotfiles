@@ -1,0 +1,12 @@
+# If there are those files
+include /usr/share/nano/*.nanorc
+
+set autoindent
+set linenumbers
+set numbercolor white,normal
+set minibar  # use status bar to show filename instead of titlebar
+set minicolor black,lightwhite
+set multibuffer  # read file into new bufferes
+set saveonexit  # automatically save on quit ^X
+set nohelp
+set mouse
