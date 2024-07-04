@@ -135,6 +135,7 @@ workspace $ws2 gaps inner 0
 assign [app_id="firefox"] workspace 2
 for_window [shell="xwayland"] title_format "[XWayland] %title"
 for_window [title="floating_term"] floating enable
+for_window [title="Wine desktop$"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [app_id="firefox" title="^Picture-in-Picture$"] {
     floating enable
@@ -159,4 +160,5 @@ exec systemctl --user reload-or-restart mako
 exec kanshi
 exec /usr/lib/kdeconnectd
 exec kdeconnect-indicator
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec_always kanshictl reload
