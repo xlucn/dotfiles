@@ -44,6 +44,7 @@ local function config_nvim_lspconfig()
             },
             experimental = {
                 mathEnvironments = { 'align' },
+                citationCommands = { 'parencite' },
             },
         }}},
         vimls = { }
@@ -138,6 +139,15 @@ local function config_which_key()
     which_key.register({
         l = { name = "language server" },
     }, { prefix = "," })
+end
+
+local function config_nvim_treesitter_context()
+    vim.api.nvim_set_hl(0, 'TreesitterContext', { ctermbg = 8 })
+    vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 8 })
+    require('treesitter-context').setup({
+        max_lines = 1,
+        trim_scope = 'inner',
+    })
 end
 
 local function config_nvim_treesitter()
@@ -432,6 +442,7 @@ require("lazy").setup({
     { 'nvim-telescope/telescope.nvim', dependencies = {
         { 'nvim-lua/plenary.nvim' },
     }, cmd = "Telescope", init = init_telescope, config = config_telescope },
+    { 'nvim-treesitter/nvim-treesitter-context', config = config_nvim_treesitter_context },
     { 'nvim-treesitter/nvim-treesitter', dependencies = {
         { 'nvim-treesitter/nvim-treesitter-textobjects' },
     }, ft = {

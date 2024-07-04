@@ -6,6 +6,8 @@ vim.o.laststatus = 3
 vim.o.foldenable = false
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.mousemoveevent = true
+vim.o.termguicolors = false
 
 local mapopts = { noremap=true, silent=true }
 vim.keymap.set('n', '<leader>gg', vim.cmd.Git, mapopts)

@@ -68,7 +68,7 @@ hi Normal       ctermbg=None ctermfg=15   cterm=None
 hi SignColumn   ctermbg=None ctermfg=0    cterm=None
 hi CursorColumn ctermbg=0
 hi CursorLine   ctermbg=0                 cterm=None
-hi ColorColumn  ctermbg=0
+hi ColorColumn  ctermbg=0                 cterm=None
 hi LineNr       ctermbg=None ctermfg=8
 hi Folded       ctermbg=None ctermfg=8
 hi FoldColumn   ctermbg=None ctermfg=7
@@ -143,6 +143,10 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 xnoremap <silent> j gj
 xnoremap <silent> k gk
+nnoremap <silent> gj j
+nnoremap <silent> gk k
+xnoremap <silent> gj j
+xnoremap <silent> gk k
 " buffers
 nnoremap <silent> <C-K> :bprevious<CR>
 nnoremap <silent> <C-J> :bnext<CR>
@@ -206,8 +210,8 @@ augroup latex
     autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
     autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
     " add red color, or to existing text
-    autocmd FileType tex xnoremap <localleader>m s{\color{red}}<Esc>P
-    autocmd FileType tex nnoremap <localleader>m a{\color{red}}<Left>
+    autocmd FileType tex xnoremap <localleader>m s\red{}<Esc>P
+    autocmd FileType tex nnoremap <localleader>m a\red{}<Left>
     autocmd FileType tex xnoremap <localleader>b s\blue{}<Esc>P
     autocmd FileType tex xnoremap <localleader>r s\red{}<Esc>P
     " remove red color depends on vim-surround
