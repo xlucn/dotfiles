@@ -1,61 +1,32 @@
 # Kanshi config for display auto configuration
-
-# When using internal monitor alone (2880x1800), 1.5x scale is great
+#
+# aliases
 # "AU Optronics 0xC391 Unknown" is the monitor on Thinkbook 14+ 2023 AMD
+output "AU Optronics 0xC391 Unknown" alias $Thinkbook14
+output "Dell Inc. DELL P2418D 6C3VD88R0V0T" alias $DellP2418D
+output "Hewlett Packard HP P221 3CQ4350H93" alias $HpP221
+
+# When using internal monitor alone (2880x1800)
 profile tb {
-    output "AU Optronics 0xC391 Unknown" {
-        enable
-        mode 2880x1800
-        scale 1.6
-    }
+    output $Thinkbook14 enable mode 2880x1800 scale 1.6
 }
 
-# Dell monitor on right and slightly above
+# Dell monitor on right and slightly above. Add 80px gap to emulate a press threshold
 profile tb_dell {
-    output "AU Optronics 0xC391 Unknown" {
-        enable
-        mode 2880x1800
-        scale 1.8
-        position 0,540
-    }
-    # output "AU Optronics 0xC391 Unknown" disable
-    output "Dell Inc. DELL P2418D 6C3VD88R0V0T" {
-        enable
-        mode 2560x1440
-        scale 1.0
-        position 1600,0
-    }
+    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,540
+    output $DellP2418D enable mode 2560x1440 scale 1.0 position 1632,0
 }
 
-# HP monitor at the back
+# HP monitor at the back. Add 60px gap to emulate a press threshold
 profile tb_hp {
-    output "AU Optronics 0xC391 Unknown" {
-        enable
-        mode 2880x1800
-        scale 1.6
-        position 0,1080
-    }
-    output "Hewlett Packard HP P221 3CQ4350H93" {
-        enable
-        mode 1920x1080
-        scale 1.0
-        position 1800,0
-    }
+    output $Thinkbook14 enable mode 2880x1800 scale 1.6 position 0,540
+    output $HpP221 enable mode 1920x1080 scale 1.0 position 1836,0
 }
 
 profile projector {
-    output "*" {
-        enable
-        mode 1920x1080
-        scale 1.0
-        position 3840,0
-    }
-    output eDP-1 {
-        enable
-        mode 1920x1080
-        scale 1.0
-        position 0,0
-    }
+    output "*" enable mode 1920x1080 scale 1.0 position 3840,0
+    output eDP-1 enable mode 1920x1080 scale 1.0 position 0,0
+    # default to mirror the internal monitor
     exec wl-mirror -F --fullscreen-output HDMI-A-1 eDP-1
 }
 
