@@ -103,12 +103,6 @@ export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
 export ANDROID_HOME="$XDG_DATA_HOME"/android
 # java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
-export JDK_JAVA_OPTIONS="
-    -Dawt.useSystemAAFontSettings=on
-    -Dswing.aatext=true
-    -Dsun.java2d.opengl=true
-    -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
-    -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 # rust cargo
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
