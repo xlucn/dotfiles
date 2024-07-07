@@ -141,12 +141,42 @@ let stl6 = '%{LSPStatus()}'                     " lsp status
 let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
 nnoremap <leader>b :TagbarToggle<CR>
 " }}}
+" buftabline {{{
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+" }}}
+" tagbar {{{
+let g:tagbar_compact = 1
+let g:tagbar_indent = 1
+let g:tagbar_left = 1
+let g:tagbar_silent = 1
+let g:tagbar_sort = 0
+let g:tagbar_width = min([30, winwidth(0) / 3])
+" }}}
 " Git {{{
 function! GitTig()
     silent !tig -C "$(dirname "$(realpath "%")")" --all
     redraw!
 endfunction
 nnoremap <leader>gg :call GitTig()<CR>
+" }}}
+" Markdown preview{{{
+function MarkdownPreviewToggle()
+    if !exists('b:mdp_job')
+        if has('nvim')
+            let b:mdp_job = jobstart(['grip', '-b', expand("%:p")])
+        else
+            let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
+        endif
+    else
+        if has('nvim')
+            call jobstop(b:mdp_job)
+        else
+            call job_stop(b:mdp_job)
+        endif
+        unlet b:mdp_job
+    endif
+endfunction
 " }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''

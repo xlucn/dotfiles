@@ -309,35 +309,4 @@ function Make()
     call AsyncRun(["make", "-C", makefile])
 endfunction
 " }}}
-" Markdown preview{{{
-function MarkdownPreviewToggle()
-    if !exists('b:mdp_job')
-        if has('nvim')
-            let b:mdp_job = jobstart(['grip', '-b', expand("%:p")])
-        else
-            let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
-        endif
-    else
-        if has('nvim')
-            call jobstop(b:mdp_job)
-        else
-            call job_stop(b:mdp_job)
-        endif
-        unlet b:mdp_job
-    endif
-endfunction
-" }}}
-" Plugin Settings (for common plugins between vim and nvim)
-" buftabline {{{
-let g:buftabline_numbers = 2
-let g:buftabline_indicators = 1
-" }}}
-" tagbar {{{
-let g:tagbar_compact = 1
-let g:tagbar_indent = 1
-let g:tagbar_left = 1
-let g:tagbar_silent = 1
-let g:tagbar_sort = 0
-let g:tagbar_width = min([30, winwidth(0) / 3])
-" }}}
 " vim:foldmethod=marker:foldlevel=0

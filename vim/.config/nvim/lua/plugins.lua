@@ -12,6 +12,7 @@ local function config_nvim_lspconfig()
     local server_config = {
         bashls = { },
         clangd = { },
+        fortls = { },
         marksman = { },
         pylsp = { settings = { pylsp = {
             rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" },
@@ -251,10 +252,7 @@ local function config_toggleterm()
     vim.keymap.set({'t', 'n'}, '<C-Bslash>', '<cmd>ToggleTerm<cr>', mapopts)
     vim.keymap.set('n', '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mapopts)
     vim.keymap.set('v', '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mapopts)
-    require("toggleterm").setup({
-        -- size = function(_) return math.min(vim.o.lines / 2, 15) end,
-        -- persist_size = false,
-    })
+    require("toggleterm").setup({ })
 end
 
 local function config_neogit()
@@ -325,14 +323,6 @@ local function config_aerial()
     require('aerial').setup({ disable_max_lines = 100000 })
 end
 
--- local function config_ufo()
---     require('ufo').setup({
---         provider_selector = function(bufnr, filetype, buftype)
---             return {'treesitter', 'indent'}
---         end
---     })
--- end
-
 local function config_symbols_outline()
     vim.api.nvim_set_hl(0, 'FocusedSymbol', { ctermfg = 2, ctermbg = 8 })
     vim.api.nvim_set_hl(0, 'SymbolsOutlineConnector', { ctermfg = 8 })
@@ -381,18 +371,61 @@ local function config_bufferline()
             },
         },
         highlights = {
-            fill = { ctermbg = bg },
-            background = { ctermbg = visbg, ctermfg = visfg },
-            buffer_selected = { ctermbg = selbg, ctermfg = selfg },
-            close_button = { ctermbg = visbg },
-            close_button_selected = { ctermbg = selbg, ctermfg = selfg },
-            numbers = { ctermbg = visbg, ctermfg = visfg },
-            numbers_selected = { ctermbg = selbg, ctermfg = selfg },
-            modified = { ctermbg = visbg },
-            modified_selected = { ctermbg = selbg, ctermfg = selfg },
-            separator = { ctermbg = visbg, ctermfg = bg },
-            separator_selected = { ctermbg = selbg, ctermfg = bg },
-            indicator_selected = { ctermbg = selbg },
+            fill = {  --
+                ctermbg = bg
+            },
+            background = {
+                ctermbg = visbg,
+                ctermfg = visfg
+            },
+            buffer_selected = {
+                ctermbg = selbg,
+                ctermfg = selfg
+            },
+            close_button = {
+                ctermbg = visbg
+            },
+            close_button_selected = {
+                ctermbg = selbg,
+                ctermfg = selfg
+            },
+            numbers = {
+                ctermbg = visbg,
+                ctermfg = visfg
+            },
+            numbers_selected = {
+                ctermbg = selbg,
+                ctermfg = selfg
+            },
+            modified = {
+                ctermbg = visbg
+            },
+            modified_selected = {
+                ctermbg = selbg,
+                ctermfg = selfg
+            },
+            duplicate = {
+                ctermbg = visbg,
+                ctermfg = visfg,
+                italic = true,
+            },
+            duplicate_selected = {
+                ctermbg = selbg,
+                ctermfg = selfg,
+                bold = true,
+                italic = true,
+            },
+            separator = {
+                ctermbg = visbg,
+                ctermfg = bg
+            },
+            separator_selected = {
+                ctermbg = selbg,
+                ctermfg = bg
+            },
+            indicator_selected = {
+                ctermbg = selbg
+            },
         }
     }
 end
@@ -411,7 +444,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    -- { 'aymericbeaumet/vim-symlink' },
     { 'numToStr/Comment.nvim', config = config_comment, keys = {
         { "<leader>c", mode = { 'n', 'v' } },
         { "gc", mode = { 'n', 'v' } },
@@ -423,7 +455,6 @@ require("lazy").setup({
     { 'akinsho/bufferline.nvim', config = config_bufferline, dependencies = {
         'nvim-tree/nvim-web-devicons',
     }, event = 'BufRead' },
-    -- { 'ap/vim-buftabline', event = 'BufRead' },
     { 'kylechui/nvim-surround', config = true, keys = {
         'ys', 'ds', 'cs', { 'S', mode = 'v' },
     }},
@@ -476,6 +507,8 @@ require("lazy").setup({
     { 'nvim-neorg/neorg', config = config_neorg, dependencies = {
         { 'vhyrro/luarocks.nvim', config = true, priority = 1000 }
     }, cmd = 'Neorg', ft = 'norg' },
-    { 'windwp/nvim-autopairs', event = "InsertEnter", config = true }
+    { 'windwp/nvim-autopairs', event = "InsertEnter", config = true },
+    { 'voldikss/vim-mma' },
+    { 'zk-org/zk-nvim' },
 }, {
 })
