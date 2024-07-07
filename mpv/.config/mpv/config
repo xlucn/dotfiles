@@ -3,6 +3,7 @@ no-keepaspect-window
 
 slang=eng,chs
 
+# auto deinterlacing since mpv v0.38.8
 deinterlace=auto
 
 # Screenshot
