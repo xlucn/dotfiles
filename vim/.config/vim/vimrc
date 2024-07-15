@@ -65,7 +65,7 @@ if has("gui_running") == 0
 endif
 " color scheme
 hi Normal       ctermbg=None ctermfg=15   cterm=None
-hi SignColumn   ctermbg=None ctermfg=0    cterm=None
+hi SignColumn   ctermbg=None              cterm=None
 hi CursorColumn ctermbg=0
 hi CursorLine   ctermbg=0                 cterm=None
 hi ColorColumn  ctermbg=0                 cterm=None
