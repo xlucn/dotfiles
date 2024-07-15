@@ -155,9 +155,9 @@ end
 
 local function config_which_key()
     local which_key = require("which-key")
-    which_key.register({
-        l = { name = "language server" },
-    }, { prefix = "," })
+    which_key.add({
+        { ',l', group = "language server" },
+    })
 end
 
 local function config_nvim_treesitter_context()
