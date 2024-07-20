@@ -17,6 +17,15 @@ Requirement
 Setup
     Save passwords for emails with pass (password store) like this
         $ pass mail/<email-address>
+    The imap and smtp server are guessed as:
+        imaps://imap.{domain}:993/
+        smtp://{mail}@smtp.{domain}:587/
+
+    Additionally, if the imap or smtp server is not trivial, you can
+    add these addresses with ports in the password file:
+        <password>
+        imap=<imap_server>:<imap_port>
+        smtp=<smtp_server>:<smtp_port>
 
 How to use it
     Use 'source "python <this file> |"' in muttrc.
@@ -44,15 +53,33 @@ domain = mail.split('@')[1]
 
 # use pass to retrieve password
 res = run(['pass', 'show', f'mail/{mail}'], stdout=PIPE, stderr=PIPE)
+content = res.stdout.decode().split('\n')
 if res.returncode == 0:
-    password = res.stdout.decode().split('\n')[0]
+    password = content[0]
 else:
     password = ''
+
+imap_server = f'imaps://imap.{domain}:993/'
+smtp_server = f'smtps://{mail}@smtp.{domain}:465/'
+if len(content) > 1:
+    for line in content[1:]:
+        if '=' in line:
+            k, v = line.split('=')
+            if k == 'imap':
+                if not (v.startswith("imap://") or v.startswith("imaps://")):
+                    v = "imaps://" + v
+                imap_server = v
+            if k == 'smtp':
+                if not v.startswith(mail):
+                    v = mail + "@" + v
+                if not (v.startswith("smtp://") or v.startswith("smtps://")):
+                    v = "smtps://" + v
+                smtp_server = v
 
 # dump mutt configurations
 print(f'set imap_user = "{mail}"')
 print(f'set from = "{mail}"')
-print(f'set folder = "imaps://imap.{domain}:993/"')
-print(f'set smtp_url= "smtp://{mail}@smtp.{domain}:587/"')
+print(f'set folder = "{imap_server}"')
+print(f'set smtp_url = "{smtp_server}"')
 print(f'set imap_pass = {password}')
 print(f'set smtp_pass = {password}')
