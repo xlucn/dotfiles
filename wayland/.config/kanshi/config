@@ -10,10 +10,10 @@ profile tb {
     output $Thinkbook14 enable mode 2880x1800 scale 1.6
 }
 
-# Dell monitor on right and slightly above. Add 80px gap to emulate a press threshold
+# Dell monitor on right and slightly above. Add a gap to emulate a press threshold
 profile tb_dell {
-    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,540
-    output $DellP2418D enable mode 2560x1440 scale 1.0 position 1632,0
+    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,960
+    output $DellP2418D enable mode 2560x1440 scale 1.2 position 1632,0 transform 90
 }
 
 profile projector {
