@@ -4,7 +4,7 @@
         "$HOME/.config/waybar/default.json"
     ],
 
-    "output": ["DP-1", "DP-2", "eDP-1"],
+    "output": ["DP-2", "eDP-1"],
     // Choose the order of the modules
     "modules-left": [
         "sway/workspaces"
@@ -29,7 +29,7 @@
         "$HOME/.config/waybar/default.json"
     ],
 
-    "output": ["HDMI-A-2"],
+    "output": ["DP-1", "HDMI-A-2"],
     // Choose the order of the modules
     "modules-left": [
         "sway/workspaces",
