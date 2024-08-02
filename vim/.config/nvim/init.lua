@@ -1,3 +1,6 @@
+-- common config for vim and neovim
+vim.cmd(":source $XDG_CONFIG_HOME/vim/common.vim")
+
 -- nvim configuration
 vim.o.mousemodel = 'extend'
 vim.o.cmdheight = 1

@@ -1,312 +1,319 @@
-" leader key, for key mappings
-let mapleader = ','
-let maplocalleader = '\'
-" Vim or NeoVim? {{{
-if !has("nvim")
-    so $XDG_CONFIG_HOME/vim/init.vim
-else
-    luafile $XDG_CONFIG_HOME/nvim/init.lua
-endif
-set backupdir=$XDG_CACHE_HOME/vim/backup
-" }}}
-" Vim basic config {{{
-" detect filetype and apply syntax highlighting
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
-set backup " create back files
-set autowrite " automatically write a file when leaving a buffer
-set undofile " persistent undo between restarts
-set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
-set spelllang=en,cjk " spell check but exclude CJK language
-set clipboard=unnamedplus " use x11 normal clipboard
-set timeoutlen=500 " time out for key code delays
-set diffopt+=vertical " open diff window vertically
-set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
-set completeopt=menu,menuone,noselect " completion
-set formatoptions+=jormB " roj for comments, mB for CJK
-set ignorecase smartcase
-" }}}
-" UI basic {{{
-set guioptions=di       " gui options: dark, icon
-set number              " show line number
-set relativenumber      " show relative number
-set showcmd             " shows what you are typing as a command
-set title               " change the terminal's title
-set showmatch           " show matching characters
-set scrolloff=5         " minimum lines above and below cursor
-set splitright          " split into right by default
-set splitbelow          " split to below by default
-set updatetime=100      " update time, related to fugitive sign column update, etc.
-set signcolumn=yes      " always show sign column
-set colorcolumn=80      " highlight column 80
-set lazyredraw          " redraw when needed
-set shortmess+=nocI     " don't show welcome screen
-set showtabline=2       " show tabs on top
-set noshowmode          " do not show mode on the last line
-set foldcolumn=0
-set wrap
-set smoothscroll
-set conceallevel=2      " replace concealable texts
-" cursor shape for terminal emulators or linux console
-if has("gui_running") == 0
-    if $TERM != "linux"
-        let &t_SI = "\e[6 q"  " sent when entering insert mode
-        let &t_SR = "\e[4 q"  " sent when entering replace mode
-        let &t_EI = "\e[2 q"  " sent when leaving insert or replace mode
-    else  " for Linux tty
-        let &t_ve = "\e[?25h"
-        let &t_vi = "\e[?25l"
-        let &t_SI = "\e[?0c"
-        let &t_SR = "\e[?4c"
-        let &t_EI = "\e[?8c"
-    endif
-endif
-" color scheme
-hi Normal       ctermbg=None ctermfg=15   cterm=None
-hi SignColumn   ctermbg=None              cterm=None
-hi CursorColumn ctermbg=0
-hi CursorLine   ctermbg=0                 cterm=None
-hi ColorColumn  ctermbg=0                 cterm=None
-hi LineNr       ctermbg=None ctermfg=8
-hi Folded       ctermbg=None ctermfg=8
-hi FoldColumn   ctermbg=None ctermfg=7
-hi NonText      ctermbg=None ctermfg=8
-hi SpellBad     ctermbg=None ctermfg=None cterm=undercurl
-hi SpellCap     ctermbg=None ctermfg=11
-hi Visual       ctermbg=8    ctermfg=None
-hi VertSplit    ctermbg=None ctermfg=7    cterm=None
-" Diff
-hi DiffAdd      ctermbg=None ctermfg=10
-hi DiffChange   ctermbg=None ctermfg=11
-hi DiffDelete   ctermbg=None ctermfg=9
-" popup menu
-hi Pmenu        ctermbg=0    ctermfg=7
-hi PmenuSel     ctermbg=8    ctermfg=None cterm=None
-" tab line
-hi TabLine      ctermbg=None ctermfg=7    cterm=None
-hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
-hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
-" symbol highlight
-hi LspReferenceText  ctermbg=8
-hi LspReferenceRead  ctermbg=8
-hi LspReferenceWrite ctermbg=8
-hi IlluminatedWordText  ctermbg=8
-hi IlluminatedWordRead  ctermbg=8
-hi IlluminatedWordWrite ctermbg=8
-" Syntax
-hi Delimiter       ctermfg=3
-hi Identifier      ctermfg=14
-hi Type            ctermfg=6   cterm=bold
-hi Constant        ctermfg=11
-hi Comment         ctermfg=2
-hi Keyword         ctermfg=13  cterm=bold
-hi Boolean         ctermfg=3
-hi Number          ctermfg=3
-hi Function        ctermfg=12
-hi String          ctermfg=13
-hi Underlined      ctermfg=4   cterm=underline
-hi Todo            ctermbg=11  cterm=bold
-hi Statement       ctermfg=5   cterm=bold
-hi Special         ctermfg=13
-hi Ignore          ctermfg=0
-hi PreProc         ctermfg=5   cterm=bold
-hi Conceal         ctermbg=0
-hi! link Operator  Delimiter
-hi! link Error     ErrorMsg
-" }}}
-" built-in plugins or file type supports {{{
-let g:loaded_python3_provider = 0
-let g:loaded_perl_provider = 0
-let g:loaded_node_provider = 0
-let g:loaded_ruby_provider = 0
-let g:termdebug_wide=1
-let g:markdown_folding = 1
-" }}}
-" Space Tabs Indentations {{{
-" tabs
-set tabstop=4
-set shiftwidth=0  " make it the same as tabstop
-set softtabstop=-1  " make it the same as shiftwidth
-set expandtab       " change tab to spaces
-set smarttab
-" show tabs and trailing white space
-set list
-set listchars=tab:│\ ,trail:.,eol:
-" show fold indicator as arrows
-set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:│,foldclose:
-" }}}
-" Navigations {{{
-" go up/down in one wrapped long line
-nnoremap <silent> j gj
-nnoremap <silent> k gk
-xnoremap <silent> j gj
-xnoremap <silent> k gk
-nnoremap <silent> gj j
-nnoremap <silent> gk k
-xnoremap <silent> gj j
-xnoremap <silent> gk k
-" buffers
-nnoremap <silent> <C-K> :bprevious<CR>
-nnoremap <silent> <C-J> :bnext<CR>
-nnoremap <silent> <C-P> :cprevious<CR>
-nnoremap <silent> <C-N> :cnext<CR>
-nnoremap <silent> [l :lprevious<CR>
-nnoremap <silent> ]l :lnext<CR>
-" toggle fold
-nnoremap <space> za
-" center the screen when searching
-" n/N: search, zz: center, zv: unfold
-nnoremap n nzzzv
-nnoremap N Nzzzv
-" some simple key bindings
-noremap <leader>q :q<CR>
-noremap <leader>Q :qa<CR>
-noremap <leader>d :bd<CR>
-noremap <leader>w :w<CR>
-noremap <leader>e :e<CR>
-noremap <leader>x :x<CR>
-noremap <leader>k :call ExecCurrentFile()<CR>
-noremap <leader>r :so $XDG_CONFIG_HOME/vim/vimrc<CR>
-noremap <leader>z :call Goyo()<CR>
-" }}}
-" Autocmd {{{
-augroup normal
-    autocmd!
-    " some file types
-    autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
-    autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
-    autocmd BufNewFile,BufRead *.muttrc setlocal ft=muttrc
-    " load Xresources on save
-    autocmd BufWritePost Xresources,*Xresources call system("xrdb -load ".expand('%'))
-    " tabs for these file types
-    autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2
-    autocmd FileType c,cpp,mma,json setlocal noet
-    " spell check for these file types
-    autocmd FileType tex,markdown,gitcommit setlocal spell
-    autocmd FileType markdown setlocal foldlevel=1
-    " comment strings for vim-commentary
-    autocmd FileType gnuplot setlocal commentstring=#%s
-    autocmd FileType maxima setlocal commentstring=/*%s*/
-    autocmd FileType mma setlocal commentstring=(*%s*)
-    " wrap lines even in diff
-    autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
-augroup END
-augroup terminal_setup
-    autocmd!
-    if has('nvim')
-        autocmd TermOpen term://* setlocal nonu nornu signcolumn=no  " no left columns
-        autocmd TermOpen term://* startinsert  " no need to 'I' into command line
-        autocmd TermClose term://* call feedkeys("\<CR>")  " no need to 'Enter' to exit
-    elseif exists("##TerminalOpen")
-        tnoremap <C-\> <C-\><C-N>
-        autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
-    endif
-augroup END
-augroup latex
-    autocmd!
-    " add normal font in math
-    autocmd FileType tex xnoremap <localleader>n s\mathrm{}<Esc>P
-    autocmd FileType tex nnoremap <localleader>n a\mathrm{}<Left>
-    " add red color, or to existing text
-    autocmd FileType tex xnoremap <localleader>m s\red{}<Esc>P
-    autocmd FileType tex nnoremap <localleader>m a\red{}<Left>
-    autocmd FileType tex xnoremap <localleader>b s\blue{}<Esc>P
-    autocmd FileType tex xnoremap <localleader>r s\red{}<Esc>P
-    " remove red color depends on vim-surround
-    autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
-augroup END
-augroup makeprg
-    autocmd!
-    autocmd Filetype sh compiler shellcheck
-    autocmd Filetype perl compiler perl
-    autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
-    autocmd BufWrite tex exe 'Make'
-augroup END
-" }}}
-" IM Toggle {{{
-" restore input method state when enter insert mode
-function CheckFcitxCmd()
-    if !exists("s:fcitx_cmd")
-        let s:find_exe = "command -v fcitx-remote || command -v fcitx5-remote"
-        let s:fcitx_cmd = trim(system(s:find_exe))
-    endif
-endfunction
-function IMDisable()
-    call CheckFcitxCmd()
-    if !exists("s:fcitxon")
-        let s:fcitxon = system(s:fcitx_cmd) =~ '^\d'
-    endif
-    if s:fcitxon
-        let b:fcitx = system(s:fcitx_cmd)
-        call system(s:fcitx_cmd . ' -c')
-    endif
-endfunction
-function IMEnable()
-    call CheckFcitxCmd()
-    if exists('b:fcitx') && b:fcitx == 2
-        call system(s:fcitx_cmd . ' -o')
-    endif
-endfunction
-augroup im_toggle
-    autocmd!
-    autocmd InsertLeave * call IMDisable()
-    autocmd InsertEnter * call IMEnable()
-augroup END
-" }}}
-" My own goyo mode {{{
-function Goyo()
-    if exists("g:goyo_status")
-        unlet g:goyo_status
-        set nu rnu ru scl=auto stal=2 ls=2
-    else
-        let g:goyo_status = 1
-        set nonu nornu noru scl=no stal=0 ls=0
-    endif
-endfunction
-" }}}
-" Execute current file {{{
-function ShowOutput(channel, msg)
-    if bufwinnr("exec_out") == -1
-        sbuffer exec_out
-    endif
-endfunction
+" be Vi IMproved, put this line at TOP of vimrc
+set nocompatible
+" XDG Base Directories
+set runtimepath^=$XDG_CONFIG_HOME/vim
+set packpath^=$XDG_DATA_HOME/vim
+set directory=$XDG_CACHE_HOME/vim/swap
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
 
-function AsyncRun(cmd)
-    if bufexists("exec_out")
-        call deletebufline("exec_out", 1, '$')
-    endif
-    call job_start(a:cmd, {
-    \   "out_io": "buffer",
-    \   "err_io": "buffer",
-    \   "out_name": "exec_out",
-    \   "err_name": "exec_out",
-    \   "callback": function('ShowOutput'),
-    \ })
-endfunction
-
-function ExecCurrentFile()
-    if index(['gnuplot', 'perl', 'python', 'sh'], &ft) >= 0
-        let command = [&ft, expand("%:p")]
-    elseif &ft == "maxima"
-        let command = ["maxima", "-b", expand("%:p")]
-    elseif &ft == "tex"
-        let command = ["latexmk", "-xelatex", "-pvc", expand("%:p")]
+so $XDG_CONFIG_HOME/vim/common.vim
+" vim only settings
+set autoindent
+set autoread " auto reload files
+set encoding=utf-8
+set hidden
+set incsearch hlsearch
+" UI
+set background=dark     " color scheme
+set belloff=all         " don't beep
+set display+=lastline   " show partial line
+set laststatus=2        " show status line
+set ttimeoutlen=50      " do not wait too long after escape key
+set wildmenu            " turn on wild menu on :e <Tab>
+" vim-jetpack {{{
+packadd vim-jetpack
+call jetpack#begin()
+call jetpack#add('tani/vim-jetpack', {'opt': 1}) "bootstrap
+" Basic
+call jetpack#add('tpope/vim-commentary')
+call jetpack#add('tpope/vim-endwise')
+call jetpack#add('tpope/vim-repeat')
+call jetpack#add('tpope/vim-sensible')
+call jetpack#add('tpope/vim-surround')
+call jetpack#add('tpope/vim-dispatch')
+call jetpack#add('tpope/vim-fugitive')
+call jetpack#add('ap/vim-buftabline')
+" Enhancements
+call jetpack#add('majutsushi/tagbar')
+call jetpack#add('jpalardy/vim-slime')
+call jetpack#add('airblade/vim-gitgutter')
+call jetpack#add('liuchengxu/vim-which-key')
+" vim language server
+call jetpack#add('prabirshrestha/vim-lsp')
+call jetpack#add('mattn/vim-lsp-settings')
+call jetpack#add('prabirshrestha/async.vim')
+call jetpack#add('prabirshrestha/asyncomplete.vim')
+call jetpack#add('prabirshrestha/asyncomplete-lsp.vim')
+" Snippets
+call jetpack#add('honza/vim-snippets')
+call jetpack#add('rafamadriz/friendly-snippets')
+call jetpack#end()
+" }}}
+" Vim Settings
+set mouse=a             " enable mouse support in console
+" mouse support for urxvt and st
+if $TERM =~ "rxvt-unicode"
+    set ttymouse=urxvt
+elseif $TERM =~ "st*"
+    set ttymouse=sgr
+endif
+augroup vim
+    autocmd!
+    " make sure the cursor reset to block shape, see the cursor shape settings
+    autocmd VimEnter * normal! :startinsert :stopinsert
+augroup END
+" Plugin settings
+" Netrw {{{
+" Make Netrw function like NerdTree
+let g:netrw_banner       = 0    " disable banner (help message, etc. at top)
+let g:netrw_browse_split = 4    " open file in previous (CTRL-W_p) window
+let g:netrw_winsize      = -20  " split size, minus meaning absolute size
+let g:netrw_dirhistmax   = 0    " disable history
+let g:netrw_liststyle    = 0    " one file per line with nothing else
+nnoremap L :silent Lexplore<CR>
+augroup NetrwKeys
+    autocmd!
+    autocmd Filetype netrw nmap <buffer> h <Plug>NetrwBrowseUpDir
+    autocmd Filetype netrw nmap <buffer> l <Plug>NetrwLocalBrowseCheck
+augroup END
+" }}}
+" statusline {{{
+" update status on LSP status changes
+augroup UpdateStatus
+  autocmd!
+  autocmd User lsp_diagnostics_updated redrawstatus
+augroup END
+function! LSPStatus()
+    if exists('*lsp#get_buffer_diagnostics_counts')
+        let l:counts = lsp#get_buffer_diagnostics_counts()
+        let l:lsp_status  = l:counts.error == 0 ? '' : printf('E:%2d ', l:counts.error)
+        let l:lsp_status .= l:counts.warning == 0 ? '' : printf('W:%2d ', l:counts.warning)
+        let l:lsp_status .= l:counts.information == 0 ? '' : printf('I:%2d ', l:counts.information)
+        let l:lsp_status .= l:counts.hint == 0 ? '' : printf('H:%2d ', l:counts.hint)
+        let l:lsp_status .= l:lsp_status == '' ? 'OK ' : ''
+        return ' ' . l:lsp_status
     else
-        if &ft == "markdown"
-            call MarkdownPreviewToggle()
+        return ""
+    endif
+endfunction
+function GitBranch()
+    let cmd = 'git -C '.expand("%:h:S").' branch --show-current 2>/dev/null'
+    silent return trim(system(cmd))
+endfunction
+" statusline
+let s:modestr = {
+    \   'c': 'COMMAND',
+    \   'i': 'INSERT',
+    \   'n': 'NORMAL',
+    \   'R': 'REPLACE',
+    \   's': 'SELECT',
+    \   't': 'TERMINAL',
+    \   'v': 'VISUAL',
+    \   'V': 'V-LINE',
+    \   '': 'S-BLOCK',
+    \   '': 'V-BLOCK',
+    \ }
+function GetModeStr()
+    let mode = mode()
+    return get(s:modestr, mode, mode)
+endfunction
+" NOTE: %{} will be evaluated upon update
+" NOTE: keep the spaces in the %(%) group
+hi User1 ctermbg=0
+hi User2 ctermbg=8
+hi User3 ctermfg=0 ctermbg=6
+function TagbarToggle(wid, n, bn, mod)
+    if a:bn == 'l'
+        Tagbar
+    endif
+endfunction
+function TagbarIcon()
+    if tagbar#IsOpen() == 1
+        return ' >> '
+    else
+        return ' << '
+    endif
+endfunction
+let stl1 = ' %{GetModeStr()} '                    " vim modes
+let stl2 = '%(%( %{GitBranch()}%)%( %r%h%) %)'    " git branch, readonly, help
+let stl3 = '%< %t %m %w '                         " file name, modified, preview
+let stl4 = '%{&ff} %(| %{&fenc} %)%(| %{&ft} %)'  " format, encoding and type
+let stl5 = ' %p%% | %l:%v '                       " cursor location
+let stl6 = '%{LSPStatus()}'                     " lsp status
+let &stl = '%3*'.stl1.'%2*'.stl2.'%1*'.stl3.'%='.stl4.'%2*'.stl5.'%3*'.stl6.'%*'
+nnoremap <leader>b :TagbarToggle<CR>
+" }}}
+" buftabline {{{
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+" }}}
+" tagbar {{{
+let g:tagbar_compact = 1
+let g:tagbar_indent = 1
+let g:tagbar_left = 1
+let g:tagbar_silent = 1
+let g:tagbar_sort = 0
+let g:tagbar_width = min([30, winwidth(0) / 3])
+" }}}
+" Git {{{
+function! GitTig()
+    silent !tig -C "$(dirname "$(realpath "%")")" --all
+    redraw!
+endfunction
+nnoremap <leader>gg :call GitTig()<CR>
+" }}}
+" Markdown preview{{{
+function MarkdownPreviewToggle()
+    if !exists('b:mdp_job')
+        if has('nvim')
+            let b:mdp_job = jobstart(['grip', '-b', expand("%:p")])
         else
-            echo "Not supported file type"
+            let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
         endif
-        return
+    else
+        if has('nvim')
+            call jobstop(b:mdp_job)
+        else
+            call job_stop(b:mdp_job)
+        endif
+        unlet b:mdp_job
     endif
-    call AsyncRun(command)
-endfunction
-
-function Make()
-    let makefile = findfile("Makefile", ".;")
-    call AsyncRun(["make", "-C", makefile])
 endfunction
 " }}}
-" vim:foldmethod=marker:foldlevel=0
+" Vim Which Key {{{
+let g:which_key_group_dicts = ''
+let g:which_key_centered = 1
+let g:which_key_hspace = 2
+let g:which_key_use_floating_win = 1        " so won't change current window
+let g:which_key_fallback_to_native_key = 1
+let g:which_key_disable_default_offset = 1  " fill the width
+let g:which_key_map = {
+  \ 'k' : 'run current file',
+  \ 'z' : 'Goyo mode',
+  \ 's' : 'slime',
+  \ 'c' : 'comment',
+  \ 'l' : 'lsp',
+  \ 'g' : {
+    \ 'name' : '+git-operation',
+    \ 't' : { 'name' : '+stash' },
+    \ },
+  \ }
+let g:which_key_map_local = {
+  \ 'l' : { 'name' : '+vimtex' },
+  \ }
+function WhichKeyRegister()
+    if exists("*which_key#register")
+        call which_key#register(',', 'g:which_key_map')
+        call which_key#register('\', 'g:which_key_map_local')
+    endif
+    if exists(":WhichKey")
+        nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+        vnoremap <silent> <leader> :WhichKeyVisual '<leader>'<CR>
+        nnoremap <silent> <localleader> :WhichKey '<localleader>'<CR>
+        vnoremap <silent> <localleader> :WhichKeyVisual '<localleader>'<CR>
+    endif
+endfunction
+autocmd VimEnter * call WhichKeyRegister()
+" }}}
+" slime {{{
+xmap <leader>s <Plug>SlimeSend
+nmap <leader>s <Plug>SlimeSend
+" }}}
+" vim-lsp {{{
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> <C-]> <plug>(lsp-definition)
+    nmap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
+    nmap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> <leader>lr <plug>(lsp-references)
+    nmap <buffer> <leader>li <plug>(lsp-implementation)
+    nmap <buffer> <leader>lt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>lR <plug>(lsp-rename)
+    nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]d <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <leader>lb <plug>(lsp-document-build)
+    nmap <buffer> <leader>lf <plug>(lsp-document-forwardsearch)
+endfunction
+let g:lsp_diagnostics_signs_delay = 200
+let g:lsp_diagnostics_echo_delay = 200
+let g:lsp_diagnostics_highlights_delay = 200
+let g:lsp_diagnostics_echo_cursor = 1
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+" }}}
+" Gitgutter {{{
+hi GitGUtterAdd    ctermbg=none ctermfg=2
+hi GitGUtterChange ctermbg=none ctermfg=3
+hi GitGUtterDelete ctermbg=none ctermfg=1
+" the previous ~_ take two columns
+let g:gitgutter_sign_modified_removed   = '^'
+" update signs after focus
+let g:gitgutter_terminal_reports_focus  = 0
+let g:gitgutter_max_signs = 1000
+" }}}
+" vim-lsc {{{
+let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'
+let g:lsc_server_commands = {
+  \     'python': {
+  \         'command': 'pylsp',
+  \         'log_level': -1,
+  \         'workspace_config': {
+  \             'pylsp.configurationSources': ['pycodestyle'],
+  \             'pylsp.plugins.yapf.enabled': v:false,
+  \         }
+  \     },
+  \     'sh': 'bash-language-server start',
+  \     'vim': 'vim-language-server --stdio',
+  \     'json': 'vscode-json-languageserver --stdio',
+  \     'lua': 'lua-language-server',
+  \     'tex': {
+  \         'command': 'texlab',
+  \         'workspace_config': {
+  \             "latex.build.args": ["-xelatex", "-synctex=1", "%f"],
+  \         }
+  \     }
+  \ }
+" }}}
+" asyncomplete {{{
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 1
+" }}}
+" commentary {{{
+nnoremap <leader>c <Plug>CommentaryLine
+onoremap <leader>c <Plug>Commentary
+xnoremap <leader>c <Plug>Commentary
+" }}}
+" vim-slime {{{
+let g:slime_no_mappings = 1
+" set config to use the pane on the right by default
+let g:slime_default_config = {
+    \ "socket_name": get(split($TMUX, ","), 0),
+    \ "target_pane": "{right-of}"
+    \ }
+" vim terminal config
+let g:slime_vimterminal_config = {
+    \ "vertical": 1
+    \ }
+let g:slime_dont_ask_default = 0
+" use temp file
+let g:slime_paste_file = tempname()
+" ipython specific setting
+let g:slime_python_ipython = 0
+" targets
+if len($TMUX) != 0
+    let g:slime_target = "tmux"
+    let g:slime_dont_ask_default = 1
+elseif match($TERM, "screen") != -1
+    let g:slime_target = "screen"
+else
+    let g:slime_target = "vimterminal"
+endif
+" }}}
