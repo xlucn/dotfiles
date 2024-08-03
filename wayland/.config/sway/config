@@ -15,8 +15,8 @@ font pango:monospace 12
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
-bindsym $mod+Shift+Return exec alacritty --class=floating_term
+bindsym $mod+Return exec footclient
+bindsym $mod+Shift+Return exec footclient -a=floating_term
 
 # kill focused window
 bindsym $mod+q kill
