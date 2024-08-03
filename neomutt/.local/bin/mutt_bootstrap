@@ -24,62 +24,98 @@ Setup
     Additionally, if the imap or smtp server is not trivial, you can
     add these addresses with ports in the password file:
         <password>
-        imap=<imap_server>:<imap_port>
-        smtp=<smtp_server>:<smtp_port>
+        imap: <imap_server>:<imap_port>
+        smtp: <smtp_server>:<smtp_port>
 
 How to use it
     Use 'source "python <this file> |"' in muttrc.
 """
 import os
+import re
 import glob
 from subprocess import run, PIPE
 
-# grab all email address from 'mail' subfolder in password store
-PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
-PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
-PASS_DIR_MAIL = os.path.join(PASS_DIR, "mail")
-mails_gpg = glob.glob(os.path.join(PASS_DIR_MAIL, "*@*.*.gpg"))
-mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg]
 
-# use fzf to choose one email
-input_emails = '\n'.join(sorted(mails)).encode()
-res = run(['fzf', '--reverse'], input=input_emails, stdout=PIPE)
-if res.returncode != 0:
-    exit()
+def get_mail():
+    """
+    Get email address from password store.
+    """
+    # grab all email address from 'mail' subfolder in password store
+    PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
+    PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
+    PASS_SUBDIR_MAIL = os.path.join(PASS_DIR, "mail")
+    mails_gpg_files = glob.glob(os.path.join(PASS_SUBDIR_MAIL, "*@*.*.gpg"))
+    mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg_files]
 
-# get basic information
-mail = res.stdout.decode().strip()
-domain = mail.split('@')[1]
+    # use fzf to choose one email
+    list_emails = '\n'.join(sorted(mails))
+    res = run(['fzf', '--reverse'],
+              input=list_emails.encode(),
+              stdout=PIPE)
+    if res.returncode != 0:
+        raise OSError("fzf failed")
 
-# use pass to retrieve password
-res = run(['pass', 'show', f'mail/{mail}'], stdout=PIPE, stderr=PIPE)
-content = res.stdout.decode().split('\n')
-if res.returncode == 0:
+    # get basic information
+    mail = res.stdout.decode().strip()
+    return mail
+
+
+def get_password(mail_address):
+    """
+    use pass to retrieve password
+    """
+    res = run(['pass', 'show', f'mail/{mail_address}'], stdout=PIPE, stderr=PIPE)
+    content = res.stdout.decode().strip().split('\n')
+    if res.returncode != 0:
+        raise OSError("pass failed")
     password = content[0]
-else:
-    password = ''
+    extra = dict(map(str.strip, line.split(':', 1)) for line in content[1:])
+    return password, extra
 
-imap_server = f'imaps://imap.{domain}:993/'
-smtp_server = f'smtps://{mail}@smtp.{domain}:465/'
-if len(content) > 1:
-    for line in content[1:]:
-        if '=' in line:
-            k, v = line.split('=')
-            if k == 'imap':
-                if not (v.startswith("imap://") or v.startswith("imaps://")):
-                    v = "imaps://" + v
-                imap_server = v
-            if k == 'smtp':
-                if not v.startswith(mail):
-                    v = mail + "@" + v
-                if not (v.startswith("smtp://") or v.startswith("smtps://")):
-                    v = "smtps://" + v
-                smtp_server = v
 
-# dump mutt configurations
-print(f'set imap_user = "{mail}"')
-print(f'set from = "{mail}"')
-print(f'set folder = "{imap_server}"')
-print(f'set smtp_url = "{smtp_server}"')
-print(f'set imap_pass = {password}')
-print(f'set smtp_pass = {password}')
+def get_imap_server(mail, attrs):
+    domain = mail.split('@')[1]
+
+    if "imap" in attrs:
+        imap_server = attrs["imap"]
+        if not re.search(r"^(imap|imaps)://", imap_server):
+            imap_server = f"imaps://{imap_server}"
+        if not re.search(r":[1-9]+$", imap_server):
+            imap_server = f"{imap_server}:993"
+        return imap_server
+    else:
+        return f'imaps://imap.{domain}:993/'
+
+
+def get_smtp_server(mail, attrs):
+    domain = mail.split('@')[1]
+
+    if "smtp" in attrs:
+        smtp_server = attrs["smtp"]
+        if not re.search(r"{mail}@", smtp_server):
+            smtp_server = f"{mail}@{smtp_server}"
+        if not re.search(r"^(smtp|smtps)://", smtp_server):
+            smtp_server = f"smtp://{smtp_server}"
+        if not re.search(r":[1-9]+$", smtp_server):
+            smtp_server = f"{smtp_server}:465"
+        return smtp_server
+    else:
+        return f'smtp://{mail}@smtp.{domain}:465/'
+
+
+if __name__ == "__main__":
+    # get email address and password
+    mail_address = get_mail()
+    password, extra = get_password(mail_address)
+
+    # get imap and smtp server
+    imap_server = get_imap_server(mail_address, attrs=extra)
+    smtp_server = get_smtp_server(mail_address, attrs=extra)
+
+    # dump mutt configurations
+    print(f'set imap_user = "{mail_address}"')
+    print(f'set from = "{mail_address}"')
+    print(f'set folder = "{imap_server}"')
+    print(f'set smtp_url = "{smtp_server}"')
+    print(f'set imap_pass = {password}')
+    print(f'set smtp_pass = {password}')
