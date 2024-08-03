@@ -1,13 +1,9 @@
 #!/bin/sh
 
-for term in xterm termite urxvt st; do
-    command -v "$term" > /dev/null 2>&1 && TERMINAL=$term
-done
-[ -z "$TERMINAL" ] && notify-send "No available terminal emulator"
-
-for client in mutt neomutt; do
+for client in neomutt mutt; do
     command -v "$client" > /dev/null 2>&1 && MUTT=$client
 done
-[ -z "$MUTT" ] && notify-send "mutt/neomutt not installed"
+[ -z "$MUTT" ] && notify-send "mutt/neomutt not installed" && exit 1
 
-$TERMINAL -e $MUTT "$1"
+# xdg-terminal-exec is a script that opens a terminal emulator
+xdg-terminal-exec -- "$MUTT" "$1"
