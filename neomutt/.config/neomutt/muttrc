@@ -22,6 +22,7 @@ set pager_stop = yes
 # email content
 auto_view text/html                                   # view html automatically
 alternative_order text/plain text/enriched text/html  # save html for last
+set mailcap_path = ~/.config/mutt/mailcap
 
 #########
 # index #
