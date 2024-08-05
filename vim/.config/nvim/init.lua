@@ -2,13 +2,10 @@
 vim.cmd(":source $XDG_CONFIG_HOME/vim/common.vim")
 
 -- nvim configuration
-vim.o.mousemodel = 'extend'
 vim.o.cmdheight = 1
 vim.o.laststatus = 3
--- vim.o.mousemoveevent = true
 vim.o.foldenable = false
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.mousemodel = 'extend'
 vim.o.mousemoveevent = true
 vim.o.termguicolors = false
 
@@ -26,7 +23,7 @@ vim.keymap.set('n', '<M-L>', '<C-W>+', mapopts)
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         -- delay update diagnostics
-        update_in_insert = false,
+        update_in_insert = true,
     }
 )
 

@@ -19,6 +19,10 @@ return {
         ft = {
             'sh', 'c', 'cpp', 'lua', 'python', 'tex',
         },
+        init = function ()
+            vim.o.foldmethod = 'expr'
+            vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+        end,
         opts = {
             highlight = {
                 enable = false,

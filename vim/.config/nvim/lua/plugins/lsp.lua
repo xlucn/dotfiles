@@ -7,9 +7,8 @@ local server_config = {
     marksman = { },
     pylsp = { settings = { pylsp = {
         rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" },
-        ruff = { enabled = true, formatEnabled = true },
+        ruff = { enabled = true, formatEnabled = true, preview = true },
     }}},
-    -- ruff = { },
     lua_ls = { settings = { Lua = {
         diagnostics = { globals = { 'vim' } }
     }}},
@@ -39,17 +38,18 @@ local server_config = {
             citationCommands = { 'parencite' },
         },
     }}},
-    vimls = { }
+    vimls = { },
 }
 
 return {
     {
         'neovim/nvim-lspconfig',
+        event = { "BufReadPre", "BufNewFile" },
         config = function()
             local lsp = require('lspconfig')
             for server, config in pairs(server_config) do
                 lsp[server].setup(config)
             end
-        end
+        end,
     },
 }

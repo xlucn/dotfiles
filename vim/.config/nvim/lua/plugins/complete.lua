@@ -1,68 +1,78 @@
-local function config_nvim_cmp()
-    local cmp = require('cmp')
-    local luasnip = require('luasnip')
-
-    cmp.setup({
-        view = {
-            entries = {  -- dynamic menu direction
-                name = 'custom',
-                selection_order = 'near_cursor'
-            }
-        },
-        snippet = {
-            expand = function(args)
-                luasnip.lsp_expand(args.body)
-            end,
-        },
-        mapping = cmp.mapping.preset.insert({
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-g>'] = cmp.mapping.abort(),
-            ['<CR>'] = cmp.mapping.confirm({ select = false }),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<Tab>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.locally_jumpable(1) then
-                    luasnip.jump(1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.locally_jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-        }),
-        sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
-            { name = 'luasnip' },
-            { name = 'nvim_lua' },
-            { name = 'nvim_lsp_signature_help' },
-        }, {
-            { name = 'path' },
-            { name = 'buffer' },
-        }),
-        formatting = {
-            format = require'lspkind'.cmp_format({
-                mode = 'symbol_text',
-                preset = 'codicons',
-                maxwidth = 30, -- pop up menu width
-            })
-        },
-        experimental = { ghost_text = true },
-    })
-end
-
 return {
     {
         'hrsh7th/nvim-cmp',
-        config = config_nvim_cmp,
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+            'onsails/lspkind.nvim',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-nvim-lua',
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-nvim-lsp-signature-help',
+            -- snippet engine and sources
+            'saadparwaiz1/cmp_luasnip',
+            'L3MON4D3/LuaSnip'
+        },
+        config = function ()
+            local cmp = require('cmp')
+            local luasnip = require('luasnip')
+
+            cmp.setup({
+                view = {
+                    entries = {  -- dynamic menu direction
+                        name = 'custom',
+                        selection_order = 'near_cursor'
+                    }
+                },
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-g>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif luasnip.locally_jumpable(1) then
+                            luasnip.jump(1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                }),
+                sources = cmp.config.sources({
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' },
+                    { name = 'nvim_lua' },
+                    { name = 'nvim_lsp_signature_help' },
+                }, {
+                    { name = 'path' },
+                    { name = 'buffer' },
+                }),
+                formatting = {
+                    format = require'lspkind'.cmp_format({
+                        mode = 'symbol_text',
+                        preset = 'codicons',
+                        maxwidth = 30, -- pop up menu width
+                    })
+                },
+                experimental = { ghost_text = true },
+            })
+        end,
         init = function ()
             -- highlightings
             local colors = {
@@ -93,18 +103,6 @@ return {
                 end
             end
         end,
-        dependencies = {
-            'nvim-tree/nvim-web-devicons',
-            'onsails/lspkind.nvim',
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-nvim-lua',
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lsp-signature-help',
-            -- snippet engine and sources
-            'saadparwaiz1/cmp_luasnip',
-            'L3MON4D3/LuaSnip'
-        },
         event = 'InsertEnter'
     },
 }

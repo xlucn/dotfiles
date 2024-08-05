@@ -47,11 +47,6 @@ return {
                 theme = colorscheme,
                 globalstatus = true,
             },
-            -- tabline = {
-            --     lualine_a = {
-            --         "buffers"
-            --     },
-            -- },
             sections = {
                 lualine_x = {
                     'encoding',

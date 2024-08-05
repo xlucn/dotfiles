@@ -1,3 +1,6 @@
 return {
-    { 'voldikss/vim-mma', ft = 'mma' },
+    {
+        'voldikss/vim-mma',
+        ft = 'mma'
+    },
 }
