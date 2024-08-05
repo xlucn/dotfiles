@@ -28,6 +28,11 @@ return {
     },
     {
         'zk-org/zk-nvim',
+        config = function ()
+            require('zk').setup({
+                picker = 'telescope',
+            })
+        end,
         keys = {
             { '<leader>zo', ':ZkNotes<cr>', desc = "open notes" },
             { '<leader>zn', ':ZkNew<cr>', desc = "create new notes" },
