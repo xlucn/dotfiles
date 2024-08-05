@@ -1,7 +1,9 @@
-source "mutt_bootstrap $readname test |"
-
+# source account related settings
+source "mutt_bootstrap |"
 # name, will appear as `realname <youremail@address>' to the recipient
 set realname = "Xu Lu"
+
+set quit = ask-yes
 
 #########
 # Pager #
@@ -51,6 +53,7 @@ set sidebar_width = 24
 set sidebar_short_path = yes
 set sidebar_folder_indent = yes
 set sidebar_sort_method = name
+set sidebar_divider_char = "│"
 
 ###########
 # Formats #
