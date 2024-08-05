@@ -8,7 +8,8 @@ return {
         opts = {
             max_lines = 1,
             trim_scope = 'inner',
-        }
+        },
+        event = "BufEnter",
     },
     {
         'nvim-treesitter/nvim-treesitter',

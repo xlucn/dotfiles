@@ -61,7 +61,7 @@ return {
                 },
             }
         },
-        event = 'BufRead'
+        event = "VimEnter",
     },
     {
         'ojroques/nvim-bufdel',

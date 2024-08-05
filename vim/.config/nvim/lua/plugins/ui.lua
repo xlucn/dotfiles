@@ -19,7 +19,7 @@ return {
                 modes_denylist = { 'v', 'V', '' },
             })
         end,
-        event = "BufRead"
+        event = "UIEnter"
     },
     {
         'j-hui/fidget.nvim',
@@ -30,6 +30,7 @@ return {
         'folke/which-key.nvim',
         config = config_which_key,
         keys = { '<leader>', '\'', '`', 'z', 'g', '[', ']' }
+        event = "VeryLazy",
     },
     {
         'folke/trouble.nvim',

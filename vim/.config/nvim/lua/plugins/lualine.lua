@@ -67,5 +67,6 @@ return {
                 }
             }
         },
+        event = "VimEnter",
     }
 }
