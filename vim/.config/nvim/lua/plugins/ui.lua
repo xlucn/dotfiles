@@ -1,10 +1,3 @@
-local function config_which_key()
-    local which_key = require("which-key")
-    which_key.add({
-        { ',l', group = "language server" },
-    })
-end
-
 return {
     {
         'kevinhwang91/nvim-hlslens',
@@ -28,8 +21,12 @@ return {
     },
     {
         'folke/which-key.nvim',
-        config = config_which_key,
-        keys = { '<leader>', '\'', '`', 'z', 'g', '[', ']' }
+        opts = {
+            spec = {
+                { '<leader>l', group = "language server" },
+                { '<leader>z', group = "zk notes" },
+            },
+        },
         event = "VeryLazy",
     },
     {

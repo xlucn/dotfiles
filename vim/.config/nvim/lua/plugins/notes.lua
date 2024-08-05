@@ -26,5 +26,14 @@ return {
         cmd = 'Neorg',
         ft = 'norg',
     },
-    { 'zk-org/zk-nvim' },
+    {
+        'zk-org/zk-nvim',
+        keys = {
+            { '<leader>zo', ':ZkNotes<cr>', desc = "open notes" },
+            { '<leader>zn', ':ZkNew<cr>', desc = "create new notes" },
+            { '<leader>zb', ':ZkBacklinks<cr>', desc = "show back links" },
+            { '<leader>zl', ':ZkLinks<cr>', desc = "show links" },
+            { '<leader>zt', ':ZkTags<cr>', desc = "show tags" },
+        },
+    },
 }

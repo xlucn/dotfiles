@@ -163,7 +163,7 @@ noremap <leader>e :e<CR>
 noremap <leader>x :x<CR>
 noremap <leader>k :call ExecCurrentFile()<CR>
 noremap <leader>r :so $XDG_CONFIG_HOME/vim/vimrc<CR>
-noremap <leader>z :call Goyo()<CR>
+noremap <leader>Z :call Goyo()<CR>
 " }}}
 " Autocmd {{{
 augroup normal

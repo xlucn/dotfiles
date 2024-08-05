@@ -1,6 +1,17 @@
-local selbg, selfg, visbg, visfg, bg = 6, 233, 0, 7, 233
-local vis = { ctermbg = visbg, ctermfg = visfg }
-local sel = { ctermbg = selbg, ctermfg = selfg }
+local white = 15
+local black = 233
+local fill_bg = 0
+local sel_bg = 6
+local vis_bg = 7
+local norm_bg = 233
+
+local bg = { ctermbg = fill_bg }
+local sel = { ctermbg = sel_bg, ctermfg = black }
+local vis = { ctermbg = vis_bg, ctermfg = black }
+local norm = { ctermbg = norm_bg, ctermfg = white }
+local sel_sep = { ctermbg = sel_bg, ctermfg = fill_bg }
+local vis_sep = { ctermbg = vis_bg, ctermfg = fill_bg }
+local norm_sep = { ctermbg = norm_bg, ctermfg = fill_bg }
 
 return {
     {
@@ -11,11 +22,10 @@ return {
         opts = {
             options = {
                 color_icons = false,
-                numbers = function(opts) return opts.id end,
+                numbers = "ordinal",
                 right_mouse_command = false,
                 show_buffer_icons = false,
                 max_name_length = 30,
-                -- indicator = { style = 'icon' },
                 separator_style = 'slant',
                 hover = {
                     enabled = true,
@@ -32,33 +42,25 @@ return {
                 },
             },
             highlights = {
-                fill = {
-                    ctermbg = bg
-                },
-                background = vis,
+                fill = bg,
+                background = norm,
                 buffer_visible = vis,
-                buffer_selected = {
-                    ctermbg = selbg, ctermfg = selfg, italic = false,
-                },
-                close_button = vis,
+                buffer_selected = sel,
+                close_button = norm,
+                close_button_visible = vis,
                 close_button_selected = sel,
-                numbers = vis,
+                numbers = norm,
+                numbers_visible = vis,
                 numbers_selected = sel,
-                modified = vis,
+                modified = norm,
+                modified_visible = vis,
                 modified_selected = sel,
-                duplicate = vis,
-                duplicate_selected = {
-                    ctermbg = selbg, ctermfg = selfg, italic = true, bold = true,
-                },
-                separator = {
-                    ctermbg = visbg, ctermfg = bg
-                },
-                separator_selected = {
-                    ctermbg = selbg, ctermfg = bg
-                },
-                indicator_selected = {
-                    ctermbg = selbg
-                },
+                duplicate = norm,
+                duplicate_visible = vis,
+                duplicate_selected = sel,
+                separator = norm_sep,
+                separator_visible = vis_sep,
+                separator_selected = sel_sep,
             }
         },
         event = "VimEnter",
@@ -67,7 +69,7 @@ return {
         'ojroques/nvim-bufdel',
         config = true,
         keys = {
-            { '<leader>J', '<cmd>BufDel<cr>', mode = 'n' }
+            { '<leader>J', '<cmd>BufDel<cr>', mode = 'n', desc = 'Delete buffer' }
         },
     },
 }
