@@ -7,7 +7,6 @@ def configure(repl):
     # Input
     repl.vi_mode = True
     repl.confirm_exit = False
-    # Disable mouse in order to scroll in tmux
     repl.enable_mouse_support = False
     repl.enable_auto_suggest = True
     # When using ptipython, use IPython's visual mode
@@ -24,10 +23,10 @@ def configure(repl):
     repl.show_signature = True
     # Function document in a bottom pane
     repl.show_docstring = True
-    repl.show_status_bar = False
+    repl.show_status_bar = True
     repl.highlight_matching_parenthesis = True
 
     # Colors
     # use terminal's 16 basic colors
     repl.use_code_colorscheme("native")
-    repl.color_depth = "DEPTH_4_BIT"
+    repl.color_depth = "DEPTH_8_BIT"
