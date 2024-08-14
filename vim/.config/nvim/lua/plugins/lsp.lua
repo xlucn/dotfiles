@@ -3,7 +3,6 @@ local server_config = {
     bashls = { },
     clangd = { },
     fortls = { },
-    lsp_wl = { },
     marksman = { },
     pylsp = { settings = { pylsp = {
         rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" },
@@ -39,14 +38,30 @@ local server_config = {
         },
     }}},
     vimls = { },
+    wolfram_lsp = { },
 }
 
 return {
     {
         'neovim/nvim-lspconfig',
-        event = { "BufReadPre", "BufNewFile" },
+        event = { "BufReadPre", "BufNewFile" },  -- from LazyVim
+        -- event = "BufReadPre",  -- from LazyVim
+        -- cmd = { "LspInfo", "LspStart" },
         config = function()
             local lsp = require('lspconfig')
+            local configs = require("lspconfig.configs")
+            configs.wolfram_lsp = {
+                default_config = {
+                    cmd = {
+                        "wolfram", "kernel",
+                        "-noinit", "-noprompt", "-nopaclet",
+                        "-noicon", "-nostartuppaclets",
+                        "-run", 'Needs["LSPServer`"];LSPServer`StartServer[]',
+                    },
+                    filetypes = { "mma" },
+                    root_dir = lsp.util.path.dirname,
+                },
+            }
             for server, config in pairs(server_config) do
                 lsp[server].setup(config)
             end
