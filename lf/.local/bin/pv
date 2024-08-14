@@ -51,7 +51,7 @@ case "$(file -Lb --mime-type -- "$1")" in
 
     # Image
     image/*)
-        chafa --animate off "$1" -s "$2x$3"; exit ;;
+        chafa --polite on --animate off "$1" -s "$2x$3"; exit ;;
 
     # Video and audio
     video/*|audio/*|application/octet-stream)
