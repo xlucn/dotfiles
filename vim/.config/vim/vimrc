@@ -180,6 +180,13 @@ function MarkdownPreviewToggle()
     endif
 endfunction
 " }}}
+" terminal {{{
+augroup terminal_setup
+    autocmd!
+    tnoremap <C-\> <C-\><C-N>
+    autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
+augroup END
+" }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
 let g:which_key_centered = 1

@@ -59,6 +59,7 @@ if has("gui_running") == 0
 endif
 " color scheme
 hi Normal       ctermbg=None ctermfg=15   cterm=None
+hi NormalFloat  ctermbg=8
 hi SignColumn   ctermbg=None              cterm=None
 hi CursorColumn ctermbg=0
 hi CursorLine   ctermbg=0                 cterm=None
@@ -116,7 +117,7 @@ let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_ruby_provider = 0
 let g:termdebug_wide=1
-let g:markdown_folding = 1
+" let g:markdown_folding = 1
 " }}}
 " Space Tabs Indentations {{{
 " tabs
@@ -179,24 +180,12 @@ augroup normal
     autocmd FileType c,cpp,mma,json setlocal noet
     " spell check for these file types
     autocmd FileType tex,markdown,gitcommit setlocal spell
-    autocmd FileType markdown setlocal foldlevel=1
     " comment strings for vim-commentary
     autocmd FileType gnuplot setlocal commentstring=#%s
     autocmd FileType maxima setlocal commentstring=/*%s*/
     autocmd FileType mma setlocal commentstring=(*%s*)
     " wrap lines even in diff
     autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
-augroup END
-augroup terminal_setup
-    autocmd!
-    if has('nvim')
-        autocmd TermOpen term://* setlocal nonu nornu signcolumn=no  " no left columns
-        autocmd TermOpen term://* startinsert  " no need to 'I' into command line
-        autocmd TermClose term://* call feedkeys("\<CR>")  " no need to 'Enter' to exit
-    elseif exists("##TerminalOpen")
-        tnoremap <C-\> <C-\><C-N>
-        autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
-    endif
 augroup END
 augroup latex
     autocmd!
