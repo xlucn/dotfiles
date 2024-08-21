@@ -7,7 +7,9 @@ return {
         opts = {
             kind = 'split',
         },
-        cmd = 'Neogit'
+        keys = {
+            { "<leader>gg", "<cmd>Neogit<cr>", "n" },
+        },
     },
     {
         'lewis6991/gitsigns.nvim',

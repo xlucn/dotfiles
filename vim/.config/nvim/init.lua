@@ -10,7 +10,6 @@ vim.o.mousemoveevent = true
 vim.o.termguicolors = false
 
 local mapopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<leader>gg', vim.cmd.Git, mapopts)
 vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
 vim.keymap.set('n', '<M-k>', '<C-W>W', mapopts)
 vim.keymap.set('n', '<M-J>', '<C-W>r', mapopts)
