@@ -59,7 +59,7 @@ if has("gui_running") == 0
 endif
 " color scheme
 hi Normal       ctermbg=None ctermfg=15   cterm=None
-hi NormalFloat  ctermbg=8
+hi NormalFloat  ctermbg=0
 hi SignColumn   ctermbg=None              cterm=None
 hi CursorColumn ctermbg=0
 hi CursorLine   ctermbg=0                 cterm=None
@@ -77,8 +77,8 @@ hi DiffAdd      ctermbg=None ctermfg=10
 hi DiffChange   ctermbg=None ctermfg=11
 hi DiffDelete   ctermbg=None ctermfg=9
 " popup menu
-hi Pmenu        ctermbg=0    ctermfg=7
-hi PmenuSel     ctermbg=8    ctermfg=None cterm=None
+hi Pmenu        ctermbg=0    ctermfg=7    cterm=None
+hi PmenuSel     ctermbg=8    ctermfg=15   cterm=None
 " tab line
 hi TabLine      ctermbg=None ctermfg=7    cterm=None
 hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
