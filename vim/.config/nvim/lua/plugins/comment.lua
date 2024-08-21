@@ -3,11 +3,12 @@ return {
         'numToStr/Comment.nvim',
         opts = {
             ignore = '^$',
-            toggler = { line = '<leader>c' },
-            opleader = { line = '<leader>c' },
+            sticky = true,
         },
+        event = "UIEnter",
         keys = {
-            { "<leader>c", mode = {'n', 'x'}, desc = 'Comment lines' },
+            { "<leader>c", "<Plug>(comment_toggle_linewise_current)", mode = 'n' },
+            { "<leader>c", "<Plug>(comment_toggle_linewise_visual)", mode = 'x' },
         }
     },
 }
