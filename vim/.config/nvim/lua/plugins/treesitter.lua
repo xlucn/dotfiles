@@ -1,13 +1,16 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter-context',
+        dependencies = {
+            { 'nvim-treesitter/nvim-treesitter' },
+        },
         init = function()
             vim.api.nvim_set_hl(0, 'TreesitterContext', { ctermbg = 8 })
             vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 8 })
         end,
         opts = {
-            max_lines = 1,
-            trim_scope = 'inner',
+            max_lines = 2,
+            trim_scope = 'outer',
         },
         event = "BufEnter",
     },
@@ -16,25 +19,32 @@ return {
         dependencies = {
             { 'nvim-treesitter/nvim-treesitter-textobjects' },
         },
-        ft = {
-            'sh', 'c', 'cpp', 'lua', 'python', 'tex',
-        },
-        init = function ()
-            vim.o.foldmethod = 'expr'
-            vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-        end,
+        -- ft = {
+        --     'sh', 'c', 'cpp', 'lua', 'python', 'tex', 'fortran', "markdown",
+        -- },
+        event = "BufEnter",
+        main = 'nvim-treesitter.configs',  -- tell lazy what setup function is
         opts = {
+            ensure_installed = {
+                'bash', 'c', 'cpp', 'lua', 'python', 'latex',
+                'markdown', 'markdown_inline', 'html',  -- markview
+                'java',
+            },
+            auto_install = true,
             highlight = {
-                enable = false,
-                additional_vim_regex_highlighting = true,
+                enable = true,
+            },
+            incremental_selection = {
+                enable = true,
+            },
+            indent = {
+                enable = true,
             },
             textobjects = {
                 select = {
                     enable = true,
-
                     -- Automatically jump forward to textobj, similar to targets.vim
                     -- lookahead = true,
-
                     keymaps = {
                         -- You can use the capture groups defined in textobjects.scm
                         ["ap"] = "@parameter.outer",
@@ -46,9 +56,10 @@ return {
                     },
                     -- You can choose the select mode (default is charwise 'v')
                     selection_modes = {
-                        ['@parameter.outer'] = 'v',
                         ['@function.outer'] = 'V',
+                        ['@function.inner'] = 'V',
                         ['@class.outer'] = 'V',
+                        ['@class.inner'] = 'V',
                     },
                     -- Extended textobjects to include preceding or succeeding
                     -- whitespace. Succeeding whitespace has priority.
