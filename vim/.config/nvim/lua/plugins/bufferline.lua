@@ -69,7 +69,7 @@ return {
         'ojroques/nvim-bufdel',
         config = true,
         keys = {
-            { '<leader>J', '<cmd>BufDel<cr>', mode = 'n', desc = 'Delete buffer' }
+            { '<leader>d', '<cmd>BufDel<cr>', mode = 'n', desc = 'Delete buffer' }
         },
     },
 }
