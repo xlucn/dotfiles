@@ -1,0 +1,6 @@
+#!/bin/sh
+# script to search within astronomy glossary
+cat "$HOME"/Code/astrodict/astrodict_*ec.txt \
+| bemenu --ignorecase --binding vim --prompt "天文学名词搜索" \
+| cut -d "$(printf '\t')" -f 2 \
+| wl-copy --trim-newline
