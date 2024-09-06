@@ -37,6 +37,7 @@ local server_config = {
             citationCommands = { 'parencite' },
         },
     }}},
+    tsserver = { },
     vimls = { },
     wolfram_lsp = { },
 }
@@ -45,8 +46,6 @@ return {
     {
         'neovim/nvim-lspconfig',
         event = { "BufReadPre", "BufNewFile" },  -- from LazyVim
-        -- event = "BufReadPre",  -- from LazyVim
-        -- cmd = { "LspInfo", "LspStart" },
         config = function()
             local lsp = require('lspconfig')
             local configs = require("lspconfig.configs")
@@ -62,8 +61,8 @@ return {
                     root_dir = lsp.util.path.dirname,
                 },
             }
-            for server, config in pairs(server_config) do
-                lsp[server].setup(config)
+            for server, opts in pairs(server_config) do
+                lsp[server].setup(opts)
             end
         end,
     },

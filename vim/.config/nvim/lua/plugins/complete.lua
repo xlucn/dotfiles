@@ -9,7 +9,7 @@ return {
             'hrsh7th/cmp-nvim-lua',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-nvim-lsp-signature-help',
-            "zbirenbaum/copilot-cmp",
+            -- "zbirenbaum/copilot-cmp",
             -- snippet engine and sources
             'saadparwaiz1/cmp_luasnip',
             'L3MON4D3/LuaSnip'
@@ -56,7 +56,7 @@ return {
                     end, { "i", "s" }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "copilot", keyword_length = 0 },
+                    -- { name = "copilot", keyword_length = 0 },
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
                     { name = 'nvim_lua' },
@@ -70,7 +70,7 @@ return {
                         mode = 'symbol_text',
                         preset = 'codicons',
                         maxwidth = 30, -- pop up menu width
-                        symbol_map = { Copilot = "" },
+                        -- symbol_map = { Copilot = "" },
                     })
                 },
                 experimental = { ghost_text = true },

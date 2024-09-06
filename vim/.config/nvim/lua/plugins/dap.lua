@@ -22,7 +22,7 @@ return {
         config = function()
             require('dap-python').setup()
             -- Allow step into library code
-            require('dap').configurations.python[1].justMyCode = false
+            -- require('dap').configurations.python[1].justMyCode = false
         end
     },
     {

@@ -9,6 +9,7 @@ return {
         init = function ()
             vim.api.nvim_set_hl(0, "RenderMarkdownCode", { ctermbg = 0 })
             vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { ctermbg = 'none' })
+            vim.api.nvim_set_hl(0, "RenderMarkdownTableFill", { ctermbg = 'none' })
         end,
         opts = {
             latex = { enabled = false },

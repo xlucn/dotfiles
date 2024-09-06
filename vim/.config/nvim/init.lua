@@ -19,13 +19,6 @@ vim.keymap.set('n', '<M-l>', '<C-W>>', mapopts)
 vim.keymap.set('n', '<M-H>', '<C-W>-', mapopts)
 vim.keymap.set('n', '<M-L>', '<C-W>+', mapopts)
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- delay update diagnostics
-        update_in_insert = true,
-    }
-)
-
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         -- Enable completion triggered by <c-x><c-o>
