@@ -4,16 +4,30 @@
 # "AU Optronics 0xC391 Unknown" is the monitor on Thinkbook 14+ 2023 AMD
 output "AU Optronics 0xC391 Unknown" alias $Thinkbook14
 output "Dell Inc. DELL P2418D 6C3VD88R0V0T" alias $DellP2418D
+output "Dell Inc. DELL P2423DE 9H33614" alias $DellP2423DE
 
 # When using internal monitor alone (2880x1800)
 profile tb {
     output $Thinkbook14 enable mode 2880x1800 scale 1.6
 }
 
-# Dell monitor on right and slightly above. Add a gap to emulate a press threshold
+# Dell monitor on right and slightly above.
+profile tb_2dell {
+    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,400
+    output $DellP2423DE enable mode 2560x1440 scale 1.0 position 1600,0
+    output $DellP2418D enable mode 2560x1440 scale 1.0 position 4160,0
+}
+
+# Dell monitor on right and slightly above.
+profile tb_dell2 {
+    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,400
+    output $DellP2423DE enable mode 2560x1440 scale 1.0 position 1600,0
+}
+
+# Dell monitor on right and slightly above.
 profile tb_dell {
     output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,400
-    output $DellP2418D enable mode 2560x1440 scale 1.0 position 1632,0
+    output $DellP2418D enable mode 2560x1440 scale 1.0 position 1600,0
 }
 
 profile projector {

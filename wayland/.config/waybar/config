@@ -4,11 +4,11 @@
         "$HOME/.config/waybar/default.json"
     ],
 
-    "output": ["DP-2", "eDP-1"],
+    "output": ["!DP-1", "!HDMI-A-2", "*"],
     // Choose the order of the modules
     "modules-left": [
-        "sway/workspaces"
-        // "sway/window"
+        "sway/workspaces",
+        "hyprland/workspaces"
     ],
     "modules-right": [
         "mpd",
