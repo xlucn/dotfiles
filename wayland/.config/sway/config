@@ -24,8 +24,8 @@ bindsym $mod+Shift+Return exec foot -T floating_term
 bindsym $mod+d exec rofi -show drun -theme launcher
 bindsym $mod+r exec bemenu-run
 
-# screenshot with grim, slurp and wl-copy
-bindsym $mod+s exec grim
+# screenshot with grim, slurp, swappy and wl-copy
+bindsym $mod+s exec grim -g "$(slurp)" - | satty -f -
 bindsym $mod+Ctrl+s exec grim - | wl-copy
 bindsym $mod+Shift+s exec grim -g "$(slurp)"
 bindsym $mod+Ctrl+Shift+s exec grim -g "$(slurp)" - | wl-copy
@@ -187,7 +187,6 @@ input "type:touchpad" {
 }
 
 # workspace 2 for web browsers
-workspace $ws2 gaps inner 0
 assign [app_id="firefox"] workspace 2
 for_window [shell="xwayland"] title_format "[XWayland] %title"
 for_window [title="Wine desktop$"] floating enable
@@ -205,15 +204,15 @@ for_window [app_id="firefox" title="^Picture-in-Picture$"] {
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
-exec swayidle
+exec systemctl --user import-environment WAYLAND_DISPLAY
+exec systemctl --user import-environment XDG_CURRENT_DESKTOP
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec waybar
+exec swayidle
 exec fcitx5 -d
+exec /usr/lib/kdeconnectd
 exec nm-applet
 exec blueman-applet
-exec libinput-gestures-setup start
-exec systemctl --user import-environment WAYLAND_DISPLAY
-exec kanshi
-exec /usr/lib/kdeconnectd
 exec kdeconnect-indicator
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec_always kanshictl reload
+exec_always systemctl --user start sway-session.target
