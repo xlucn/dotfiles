@@ -18,7 +18,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec foot
-bindsym $mod+Shift+Return exec foot -a=floating_term
+bindsym $mod+Shift+Return exec foot -T floating_term
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec rofi -show drun -theme launcher
@@ -191,7 +191,7 @@ workspace $ws2 gaps inner 0
 assign [app_id="firefox"] workspace 2
 for_window [shell="xwayland"] title_format "[XWayland] %title"
 for_window [title="Wine desktop$"] floating enable
-for_window [app_id="floating_term"] floating enable
+for_window [title="floating_term"] floating enable
 for_window [app_id="zenity"] floating enable
 for_window [app_id="firefox" title="^Picture-in-Picture$"] {
     floating enable
