@@ -56,10 +56,10 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+# bindsym $mod+Shift+Left move left
+# bindsym $mod+Shift+Down move down
+# bindsym $mod+Shift+Up move up
+# bindsym $mod+Shift+Right move right
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -108,10 +108,20 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 bindsym $mod+comma workspace prev_on_output
-bindsym $mod+Left workspace prev_on_output
 bindsym $mod+period workspace next_on_output
+bindsym $mod+Left workspace prev_on_output
 bindsym $mod+Right workspace next_on_output
 bindsym $mod+Escape workspace back_and_forth
+
+bindsym $mod+Shift+comma move workspace prev_on_output
+bindsym $mod+Shift+period move workspace next_on_output
+bindsym $mod+Shift+Left move workspace prev_on_output
+bindsym $mod+Shift+Right move workspace next_on_output
+
+bindsym $mod+Ctrl+comma focus output left
+bindsym $mod+Ctrl+period focus output right
+bindsym $mod+Ctrl+Shift+comma move workspace to output left
+bindsym $mod+Ctrl+Shift+period move workspace to output right
 
 # lock screen with swaylock
 bindsym $mod+Ctrl+l exec swaylock
@@ -122,27 +132,51 @@ bindsym $mod+Shift+r restart
 # exit sway (logs you out of your X session)
 bindsym $mod+Shift+q exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway?' -B 'Yes, exit sway' 'swaymsg exit'"
 
+# passthrough mode, useful for using a remote desktop
+mode passthrough {
+    bindsym $mod+Delete mode default
+}
+bindsym $mod+Delete mode passthrough
+
 bindsym XF86AudioMute exec "pactl set-sink-mute @DEFAULT_SINK@ toggle"
 bindsym XF86AudioLowerVolume exec "pactl set-sink-volume @DEFAULT_SINK@ -4%"
 bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume @DEFAULT_SINK@ +4%"
 bindsym XF86MonBrightnessDown exec "brightnessctl set 5%-"
 bindsym XF86MonBrightnessUp exec "brightnessctl set 5%+"
 
+# bindgesture swipe:3:left  focus prev
+# bindgesture swipe:3:right focus next
+
+# Browser, file managers, etc.
+bindgesture swipe:3:right exec wtype -M ctrl -k tab -m ctrl
+bindgesture swipe:3:left  exec wtype -M ctrl -M shift -k tab -m shift -m ctrl
+bindgesture swipe:3:up    exec wtype -M ctrl -d 20 -k w -d 20 -m ctrl
+bindgesture swipe:3:down  exec wtype -M ctrl -k r -m ctrl
+
+# Workspace
+bindgesture swipe:4:down  workspace back_and_forth
+bindgesture swipe:4:up    exec pkill rofi || rofi -show drun -theme launcher
+# bindgesture swipe:4:up    exec pkill rofi || rofi -show window
+bindgesture swipe:4:right workspace prev_on_output
+bindgesture swipe:4:left  workspace next_on_output
+
 bindgesture pinch:4:inward focus child
 bindgesture pinch:4:outward focus parent
-
-bindgesture pinch:3:inward+up move up
-bindgesture pinch:3:inward+down move down
-bindgesture pinch:3:inward+left move left
-bindgesture pinch:3:inward+right move right
 
 # Commented. Use waybar to have better interaction and systray
 # bar { status_command i3status }
 
 gaps inner 16
 gaps outer 0
-default_border normal 2
+default_border normal 4
 smart_borders no_gaps
+smart_gaps on
+
+# Set colors            border  back    text    indicator
+client.focused          #3a3a3a #3a3a3a #e4e4e4 #e4e4e4
+client.unfocused        #1c1c1c #1c1c1c #3a3a3a #3a3a3a
+client.focused_inactive #1c1c1c #1c1c1c #e4e4e4 #e4e4e4
+client.urgent           #d75f00 #d75f00 #d75f00 #d75f00
 
 input "type:touchpad" {
     natural_scroll enabled
