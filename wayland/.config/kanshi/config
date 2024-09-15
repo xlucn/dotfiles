@@ -50,6 +50,11 @@ profile ext {
     output "*" enable scale 1.0
 }
 
+profile int_only {
+    output "*" disable
+    output eDP-1 enable scale 1.6
+}
+
 profile ext_only {
     output "*" enable scale 1.0
     output eDP-1 disable
