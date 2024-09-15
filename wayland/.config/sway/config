@@ -3,6 +3,7 @@
 seat seat0 xcursor_theme Adwaita 24
 set $mod Mod4
 
+output "HEADLESS-*" mode 1920x1080
 output "*" {
     scale_filter linear
     background "$HOME/Pictures/wallpaper.jpg" fill "#121212"
