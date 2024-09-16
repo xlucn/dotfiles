@@ -204,15 +204,15 @@ for_window [app_id="firefox" title="^Picture-in-Picture$"] {
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
-exec systemctl --user import-environment WAYLAND_DISPLAY
-exec systemctl --user import-environment XDG_CURRENT_DESKTOP
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec waybar
+exec kanshi
 exec swayidle
 exec fcitx5 -d
 exec /usr/lib/kdeconnectd
 exec nm-applet
 exec blueman-applet
 exec kdeconnect-indicator
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec systemctl --user import-environment WAYLAND_DISPLAY
+exec systemctl --user import-environment XDG_CURRENT_DESKTOP
 exec_always kanshictl reload
-exec_always systemctl --user start sway-session.target
