@@ -11,33 +11,47 @@ local server_config = {
     lua_ls = { settings = { Lua = {
         diagnostics = { globals = { 'vim' } }
     }}},
-    texlab = { settings = { texlab = {
-        build = {
-            executable = "latexmk",
-            args = { "-synctex=1", "-interaction=nonstopmode", "%f" },
-            onSave = true,
-            forwardSearchAfter = true,
-            auxDirectory = "./output",
-            logDirectory = "./output",
-            pdfDirectory = "./output",
-        },
-        forwardSearch = {
-            executable = "zathura",
-            args = { "--synctex-forward", "%l:1:%f", "%p" },
-        },
-        chktex = { onOpenAndSave = false, },
-        diagnostics = {
-            ignoredPatterns = {
-                'Unused label',
-                'Unused entry',
+    texlab = {
+        on_attach = function(_, bufnr)
+            local function buf_set_keymap(key, cmd)
+                vim.api.nvim_buf_set_keymap(bufnr, 'n', key, cmd, {
+                    noremap = true, silent = true
+                })
+            end
+            buf_set_keymap('<localleader>ll', '<cmd>TexlabBuild<CR>')
+            buf_set_keymap('<localleader>lv', '<cmd>TexlabForward<CR>')
+            buf_set_keymap('<localleader>lc', '<cmd>TexlabCleanAuxiliary<CR>')
+            buf_set_keymap('<localleader>lC', '<cmd>TexlabCleanArtifacts<CR>')
+            buf_set_keymap('<localleader>lr', '<cmd>TexlabChangeEnvironment<CR>')
+        end,
+        settings = { texlab = {
+            build = {
+                executable = "latexmk",
+                args = { "-synctex=1", "-interaction=nonstopmode", "%f" },
+                onSave = true,
+                forwardSearchAfter = true,
+                auxDirectory = "./output",
+                logDirectory = "./output",
+                pdfDirectory = "./output",
             },
-        },
-        experimental = {
-            mathEnvironments = { 'align' },
-            citationCommands = { 'parencite' },
-        },
-    }}},
-    tsserver = { },
+            forwardSearch = {
+                executable = "zathura",
+                args = { "--synctex-forward", "%l:1:%f", "%p" },
+            },
+            chktex = { onOpenAndSave = false, },
+            diagnostics = {
+                ignoredPatterns = {
+                    'Unused label',
+                    'Unused entry',
+                },
+            },
+            experimental = {
+                mathEnvironments = { 'align' },
+                citationCommands = { 'parencite' },
+            },
+        }},
+    },
+    ts_ls = { },
     vimls = { },
     wolfram_lsp = { },
 }
