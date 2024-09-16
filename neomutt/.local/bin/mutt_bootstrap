@@ -95,12 +95,12 @@ def get_smtp_server(mail, attrs):
         if not re.search(r"{mail}@", smtp_server):
             smtp_server = f"{mail}@{smtp_server}"
         if not re.search(r"^(smtp|smtps)://", smtp_server):
-            smtp_server = f"smtp://{smtp_server}"
+            smtp_server = f"smtps://{smtp_server}"
         if not re.search(r":[1-9]+$", smtp_server):
-            smtp_server = f"{smtp_server}:465"
+            smtp_server = f"{smtp_server}:587"
         return smtp_server
     else:
-        return f'smtp://{mail}@smtp.{domain}:465/'
+        return f'smtps://{mail}@smtp.{domain}:587/'
 
 
 if __name__ == "__main__":
