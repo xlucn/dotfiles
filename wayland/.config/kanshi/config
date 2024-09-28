@@ -14,9 +14,9 @@ profile tb {
 
 # Dell monitor on right and slightly above.
 profile tb_2dell {
-    output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,400
-    output $DellP2423DE enable mode 2560x1440 scale 1.0 position 1600,0
-    output $DellP2418D enable mode 2560x1440 scale 1.0 position 4160,0
+    output $Thinkbook14 enable mode 2880x1800 scale 2.0 position 0,400
+    output $DellP2423DE enable mode 2560x1440 scale 1.25 position 1440,0
+    output $DellP2418D enable mode 2560x1440 scale 1.25 position 3488,0
 }
 
 # Dell monitor on right and slightly above.
@@ -63,6 +63,6 @@ profile int_only {
 }
 
 profile ext_only {
-    output "*" enable scale 1.0
+    output "*" enable scale 1.3
     output eDP-1 disable
 }
