@@ -24,11 +24,10 @@ bindsym $mod+Shift+Return exec foot -T floating_term
 bindsym $mod+d exec rofi -show drun -theme launcher
 bindsym $mod+r exec bemenu-run
 
-# screenshot with grim, slurp, swappy and wl-copy
-bindsym $mod+s exec grim -g "$(slurp)" - | satty -f -
-bindsym $mod+Ctrl+s exec grim - | wl-copy
-bindsym $mod+Shift+s exec grim -g "$(slurp)"
-bindsym $mod+Ctrl+Shift+s exec grim -g "$(slurp)" - | wl-copy
+# screenshot with grim, slurp, satty and wl-copy
+bindsym $mod+s exec grim -g "$(slurp -o)"
+bindsym $mod+Ctrl+s exec grim -g "$(slurp -o)" - | wl-copy
+bindsym $mod+Shift+s exec grim -g "$(slurp -o)" - | satty -f -
 
 bindsym $mod+w exec firefox
 bindsym $mod+e exec nemo
