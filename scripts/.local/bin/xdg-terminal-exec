@@ -1,2 +1,6 @@
 #!/bin/sh
-tym -- "$@"
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    exec foot -- "$@"
+else
+    exec alacritty -e "$@"
+fi
