@@ -5,11 +5,11 @@ return {
             { 'nvim-treesitter/nvim-treesitter' },
         },
         init = function()
-            vim.api.nvim_set_hl(0, 'TreesitterContext', { ctermbg = 8 })
-            vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 8 })
+            vim.api.nvim_set_hl(0, 'TreesitterContext', { ctermbg = 0 })
+            vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 0 })
         end,
         opts = {
-            max_lines = 2,
+            max_lines = 99,
             trim_scope = 'outer',
         },
         event = "BufEnter",
@@ -19,9 +19,6 @@ return {
         dependencies = {
             { 'nvim-treesitter/nvim-treesitter-textobjects' },
         },
-        -- ft = {
-        --     'sh', 'c', 'cpp', 'lua', 'python', 'tex', 'fortran', "markdown",
-        -- },
         event = "BufEnter",
         main = 'nvim-treesitter.configs',  -- tell lazy what setup function is
         opts = {
@@ -33,6 +30,7 @@ return {
             auto_install = true,
             highlight = {
                 enable = true,
+                disable = { "fortran" },
             },
             incremental_selection = {
                 enable = true,

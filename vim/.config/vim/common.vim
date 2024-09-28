@@ -73,8 +73,8 @@ hi SpellCap     ctermbg=None ctermfg=11
 hi Visual       ctermbg=8    ctermfg=None
 hi VertSplit    ctermbg=None ctermfg=7    cterm=None
 " Diff
-hi DiffAdd      ctermbg=None ctermfg=10
-hi DiffChange   ctermbg=None ctermfg=11
+hi DiffAdd      ctermbg=10   ctermfg=0
+hi DiffChange   ctermbg=11   ctermfg=0
 hi DiffDelete   ctermbg=None ctermfg=9
 " popup menu
 hi Pmenu        ctermbg=0    ctermfg=7    cterm=None

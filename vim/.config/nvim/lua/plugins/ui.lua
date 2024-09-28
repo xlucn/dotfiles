@@ -9,7 +9,7 @@ return {
         config = function ()
             require('illuminate').configure({
                 filetypes_denylist = { '', 'mail', 'markdown', 'text' },
-                modes_denylist = { 'v', 'V', '' },
+                modes_denylist = { 'v', 'V', '', '' },
             })
         end,
         event = "UIEnter"
