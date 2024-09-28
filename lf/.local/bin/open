@@ -1,50 +1,24 @@
 #!/bin/sh
+
+# Open files with the appropriate application
+[ -n "$DISPLAY" ] && { for f in "$@"; do xdg-open "$f" & done; exit; }
+
 # Handle by MIME type
 case "$(file -Lb --mime-type -- "$1")" in
     text/html)
-        if [ -n "$DISPLAY" ]; then
-            firefox -- "$@"
-        else
-            lynx "$@" || elinks "$@" || w3m "$@" || links "$@"
-        fi && exit ;;
+        lynx "$@" || elinks "$@" || w3m "$@" || links "$@" && exit ;;
     text/*|*/xml|*/csv|*/json)
         ${EDITOR:-vim} "$@" && exit ;;
     video/*)
-        if [ -n "$DISPLAY" ]; then
-            mpv --msg-level=all=no -- "$@" || mplayer -- "$@" &
-        else
-            cmplayer "$@" ||
-            mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
-            mpv --vo=gpu --gpu-context=drm --msg-level=all=no -- "$@"
-        fi > /dev/null 2>&1 && exit ;;
+        cmplayer "$@" ||
+        mplayer -vo fbdev2 -vc ffh264, -- "$@" ||
+        mpv --vo=gpu --gpu-context=drm --msg-level=all=no -- "$@" &&
+        exit ;;
     audio/*)
         mpv -- "$@" || mplayer -- "$@" && exit ;;
-    application/pdf)
-        if [ -n "$DISPLAY" ]; then
-            zathura "$@" 2> /dev/null &
-        else
-            jfbview "$@"
-        fi && exit ;;
+    application/pdf|application/postscript)
+        jfbview "$@" && exit ;;
     image/*)
-        if [ -n "$DISPLAY" ]; then
-            nsxiv "$@" || sxiv "$@" || vimiv "$@" &
-        else
-            jfbview "$@" || fbv "$@"
-        fi && exit ;;
+        jfbview "$@" || fbv "$@" && exit ;;
     *) ;;
 esac
-
-# Handle by extension
-case "$(echo "${1##*.}" | tr '[:upper:]' '[:lower:]')" in
-    ts) ;;
-
-    azw*) ;;
-
-    *) ;; # Go on to handle by mime type
-esac
-
-if [ -n "$DISPLAY" ]; then
-    for f in "$@"; do
-        if [ -x "$f" ]; then "$f"; else xdg-open "$f"; fi
-    done &
-fi
