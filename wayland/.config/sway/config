@@ -148,10 +148,10 @@ bindsym XF86MonBrightnessUp exec "brightnessctl set 5%+"
 # bindgesture swipe:3:right focus next
 
 # Browser, file managers, etc.
-bindgesture swipe:3:right exec wtype -M ctrl -k tab -m ctrl
-bindgesture swipe:3:left  exec wtype -M ctrl -M shift -k tab -m shift -m ctrl
-bindgesture swipe:3:up    exec wtype -M ctrl -d 20 -k w -d 20 -m ctrl
-bindgesture swipe:3:down  exec wtype -M ctrl -k r -m ctrl
+bindgesture swipe:3:right exec ydotool key 29:1 15:1 15:0 29:0
+bindgesture swipe:3:left  exec ydotool key 29:1 42:1 15:1 15:0 42:0 29:0
+bindgesture swipe:3:up    exec ydotool key 29:1 17:1 17:0 29:0
+bindgesture swipe:3:down  exec ydotool key 29:1 19:1 19:0 29:0
 
 # Workspace
 bindgesture swipe:4:down  workspace back_and_forth
