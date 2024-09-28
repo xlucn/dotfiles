@@ -208,10 +208,9 @@ exec waybar
 exec kanshi
 exec swayidle
 exec fcitx5 -d
-exec /usr/lib/kdeconnectd
+exec valent --gapplication-service
 exec nm-applet
 exec blueman-applet
-exec kdeconnect-indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec systemctl --user import-environment WAYLAND_DISPLAY
 exec systemctl --user import-environment XDG_CURRENT_DESKTOP
