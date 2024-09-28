@@ -3,6 +3,9 @@ no-keepaspect-window
 
 slang=eng,chs
 
+# since mpv v0.39.0
+autocreate-playlist=same
+
 # auto deinterlacing since mpv v0.38.8
 deinterlace=auto
 
@@ -24,7 +27,7 @@ osd-duration=3000
 term-osd-bar=yes
 term-osd-bar-chars="[=>-]"
 
-# Hardware decoding, for my AMD graphics card and x11 desktop environment.
+# Hardware decoding
 vo=gpu-next
 hwdec=vaapi
 
