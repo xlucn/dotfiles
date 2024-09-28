@@ -5,6 +5,7 @@
 output "AU Optronics 0xC391 Unknown" alias $Thinkbook14
 output "Dell Inc. DELL P2418D 6C3VD88R0V0T" alias $DellP2418D
 output "Dell Inc. DELL P2423DE 9H33614" alias $DellP2423DE
+output "IPA E272CU-ZS 000000000000" alias $IPAE272CU
 
 # When using internal monitor alone (2880x1800)
 profile tb {
@@ -28,6 +29,12 @@ profile tb_dell2 {
 profile tb_dell {
     output $Thinkbook14 enable mode 2880x1800 scale 1.8 position 0,400
     output $DellP2418D enable mode 2560x1440 scale 1.0 position 1600,0
+}
+
+# IPA monitor on the right
+profile tb_ipa {
+    output $Thinkbook14 disable
+    output $IPAE272CU enable mode 3840x2160 scale 1.3 position 0,0
 }
 
 profile projector {
