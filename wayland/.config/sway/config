@@ -23,6 +23,7 @@ bindsym $mod+Shift+Return exec foot -T floating_term
 # start dmenu (a program launcher)
 bindsym $mod+d exec rofi -show drun -theme launcher
 bindsym $mod+r exec bemenu-run
+bindsym Ctrl+Semicolon exec cliphist list | bemenu | cliphist decode | xargs -rd '\n' wl-copy
 
 # screenshot with grim, slurp, satty and wl-copy
 bindsym $mod+s exec grim -g "$(slurp -o)"
@@ -214,4 +215,5 @@ exec kdeconnect-indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec systemctl --user import-environment WAYLAND_DISPLAY
 exec systemctl --user import-environment XDG_CURRENT_DESKTOP
+exec wl-paste --watch cliphist store
 exec_always kanshictl reload
