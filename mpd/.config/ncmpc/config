@@ -1,5 +1,5 @@
 # interface
-enable-mouse        = no
+enable-mouse        = yes
 auto-center         = yes
 scroll-offset       = 99
 audible-bell        = no
@@ -7,7 +7,7 @@ visible-bell        = no
 seek-time           = 20
 text-editor         = vim
 second-column       = yes
-screen-list         = help playlist browse library search lyrics outputs chat song keydef
+screen-list         = help playlist browse library search outputs song keydef
 crossfade-time      = 3
 search-mode         = filename
 # display
