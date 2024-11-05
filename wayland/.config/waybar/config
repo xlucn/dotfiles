@@ -7,6 +7,7 @@
     ],
     "modules-right": [
         "mpd",
+        "custom/dunst",
         "idle_inhibitor",
         "pulseaudio",
         "bluetooth",
@@ -149,4 +150,9 @@
 		"icon-size": 24,
 		"on-click": "minimize-raise"
 	},
+	"custom/dunst": {
+		"exec": "~/.config/waybar/scripts/dunst.sh",
+		"on-click": "dunstctl set-paused toggle",
+		"restart-interval": 1,
+	}
 }

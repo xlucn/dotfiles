@@ -20,3 +20,13 @@ window#waybar.empty {
     background-color: #64727D;
     padding: 0 10px;
 }
+
+#custom-dunst.enabled {
+    color: #000000;;
+    background-color: #2ecc71;
+}
+
+#custom-dunst.disabled {
+    color: #000000;;
+    background-color: #f0932b;
+}
