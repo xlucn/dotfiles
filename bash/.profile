@@ -55,6 +55,7 @@ export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 # mathematica
 export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME/Mathematica"
+export WOLFRAM_USERBASE="$XDG_CONFIG_HOME/Wolfram"
 # passwordstore
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export PASSWORD_STORE_GENERATED_LENGTH=15
@@ -136,6 +137,14 @@ export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 export BEMENU_OPTS="-l 15 -c -B 2 -H 28 -W 0.5 --fn 'Monospace 12' --fixed-height"
 # nuget
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+# tgpt
+export AI_PROVIDER=blackboxai
+# zk
+export ZK_NOTEBOOK_DIR="$HOME/Code/test/zk/"
+# pip
+export PIP_INDEX_URL="https://mirror.nju.edu.cn/pypi/web/simple"
+# minetest
+export MINETEST_USER_PATH="$XDG_DATA_HOME"/minetest
 
 # PATH
 add_to_path() {
