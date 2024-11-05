@@ -71,6 +71,7 @@ fi
 
 if [ "${WM%simp}" = "$WM" ]; then
     SKIP_PRE=1
+    WM=${WM%simp}
 fi
 
 case "$WM" in
