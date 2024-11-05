@@ -12,9 +12,9 @@ then
     exit
 elif [ "$1" = 1 ] || [ "$1" = hdt ]
 then
-    old_pattern='/hdts/'
+    old_pattern='/hd-torrents/'
     old_key='pid'
-    new_url='http://hd-torrents.org'
+    new_url='http://hdts-announce.ru'
 elif [ "$1" = 2 ] || [ "$1" = pter ]
 then
     old_pattern='/pter.club/'
@@ -36,9 +36,9 @@ else
 fi
 
 # find the torrent ids
-for i in $(transmission-remote -l | grep -o "^ *[0-9]\+"); do
-    pid=$(transmission-remote -t"$i" -i | awk -F"$old_key%3D" "$old_pattern"'{print $2}')
+for i in $(transmission-remote "$HOST" -l | grep -o "^ *[0-9]\+"); do
+    pid=$(transmission-remote "$HOST" -t"$i" -i | awk -F"$old_key%3D" "$old_pattern"'{print $2}')
     if [ -n "$pid" ]; then
-        transmission-remote -t"$i" -tr 0 -td "$new_url/announce.php?$old_key=$pid"
+        transmission-remote "$HOST" -t"$i" -tr 0 -td "$new_url/announce.php?$old_key=$pid"
     fi
 done
