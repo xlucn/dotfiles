@@ -1,10 +1,5 @@
 return {
     {
-        'kevinhwang91/nvim-hlslens',
-        config = true,
-        event = "BufRead"
-    },
-    {
         'RRethy/vim-illuminate',
         config = function ()
             require('illuminate').configure({
@@ -13,11 +8,6 @@ return {
             })
         end,
         event = "UIEnter"
-    },
-    {
-        'j-hui/fidget.nvim',
-        config = true,
-        event = 'LspAttach'
     },
     {
         'folke/which-key.nvim',

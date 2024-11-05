@@ -5,7 +5,6 @@ local server_config = {
     fortls = { },
     marksman = { },
     pylsp = { settings = { pylsp = {
-        rope = { ropeFolder = os.getenv("HOME").."/.cache/rope" },
         ruff = { enabled = true, formatEnabled = true, preview = true },
     }}},
     lua_ls = { settings = { Lua = {

@@ -1,10 +1,13 @@
 return {
     {
         'akinsho/toggleterm.nvim',
-        config = true,
+        opts = {
+            direction = 'float',
+            auto_scroll = false,
+            open_mapping = '<C-BSlash>'
+        },
         keys = {
-            { '<C-BSlash>', '<cmd>ToggleTerm direction=float<cr>', mode = { 'n', 't' } },
-            { '<C-S-BSlash>', '<cmd>ToggleTerm direction=horizontal<cr>', mode = { 'n', 't' } },
+            { '<C-BSlash>', mode = { 'n', 't' } },
             { '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mode = 'n' },
             { '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mode = 'v' },
         }

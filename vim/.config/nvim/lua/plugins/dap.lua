@@ -32,16 +32,21 @@ return {
         },
         config = function()
             local dap = require('dap')
+            -- First, configure debug adapters
             dap.adapters.cppdbg = {
-                id = 'cppdbg',
                 type = 'executable',
                 command = 'cppdbg',  -- packaged in AUR
             }
             dap.adapters.lldb = {
                 type = 'executable',
-                command = '/usr/bin/lldb-dap',
-                name = "lldb",
+                command = 'lldb-dap', -- from lldb package
             }
+            dap.adapters.gdb = {
+                type = "executable",
+                command = "gdb",
+                args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+            }
+            -- Then, configure different filetypes to use specific adapters
             dap.configurations.cpp = {
                 {
                     name = "Launch file (cppdbg)",
@@ -49,6 +54,8 @@ return {
                     request = "launch",
                     program = prompt_inputfile,
                     cwd = '${workspaceFolder}',
+                    -- console = 'integratedTerminal',
+                    -- terminalKind = "integrated",
                     stopAtEntry = true,
                 },
                 {
@@ -57,8 +64,20 @@ return {
                     request = "launch",
                     program = prompt_inputfile,
                     cwd = '${workspaceFolder}',
+                    -- console = 'integratedTerminal',
+                    -- terminalKind = "integrated",
                     stopOnEntry = false,
                     args = {},
+                },
+                {
+                    name = "Launch file (gdb)",
+                    type = "gdb",
+                    request = "launch",
+                    program = prompt_inputfile,
+                    cwd = "${workspaceFolder}",
+                    -- console = 'integratedTerminal',
+                    -- terminalKind = "integrated",
+                    stopAtBeginningOfMainSubprogram = false,
                 },
             }
             dap.configurations.c = dap.configurations.cpp

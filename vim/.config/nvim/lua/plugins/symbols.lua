@@ -6,6 +6,7 @@ return {
             attach_mode = "global",
             layout = {
                 min_width = 30,
+                max_width = 30,
             }
         },
         keys = {
