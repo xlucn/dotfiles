@@ -33,7 +33,7 @@ bindsym $mod+Shift+s exec grim -g "$(slurp -o)" - | satty -f -
 bindsym $mod+w exec firefox
 bindsym $mod+e exec nemo
 bindsym $mod+Shift+p exec openrefs
-bindsym $mod+Shift+n exec foot -a=floating_term nametrans
+bindsym $mod+Shift+n exec foot -T floating_term nametrans
 bindsym $mod+Shift+g exec astrodict
 
 # kill focused window
@@ -164,9 +164,6 @@ bindgesture swipe:4:left  workspace next_on_output
 bindgesture pinch:4:inward focus child
 bindgesture pinch:4:outward focus parent
 
-# Commented. Use waybar to have better interaction and systray
-# bar { status_command i3status }
-
 gaps inner 16
 gaps outer 0
 default_border normal 4
@@ -204,15 +201,16 @@ for_window [app_id="firefox" title="^Picture-in-Picture$"] {
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
-exec waybar
 exec kanshi
+exec waybar
 exec swayidle
 exec fcitx5 -d
 exec valent --gapplication-service
 exec nm-applet
 exec blueman-applet
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec systemctl --user import-environment WAYLAND_DISPLAY
-exec systemctl --user import-environment XDG_CURRENT_DESKTOP
 exec wl-paste --watch cliphist store
+exec clash-verge
 exec_always kanshictl reload
+
+include /etc/sway/config.d/*
