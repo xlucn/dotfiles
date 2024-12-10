@@ -68,7 +68,7 @@
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-		"format": "{:%H:%M} ",
+        "format": "{:%H:%M} ",
         "format-alt": "{:%Y-%m-%d} "
     },
     "cpu": {
@@ -114,12 +114,12 @@
         "format-disconnected": "Disconnected ",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
-	"wireplumber": {
-		"format": "{volume}% {icon}",
-		"format-muted": "",
-		"on-click": "pavucontrol",
-		"format-icons": ["", "", ""]
-	},
+    "wireplumber": {
+        "format": "{volume}% {icon}",
+        "format-muted": "",
+        "on-click": "pavucontrol",
+        "format-icons": ["", "", ""]
+    },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} {format_source}",
@@ -135,7 +135,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-		"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
         "on-click-right": "pavucontrol",
         "smooth-scrolling-threshold": 1.0
     },
@@ -146,13 +146,15 @@
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
     },
-	"wlr/taskbar": {
-		"icon-size": 24,
-		"on-click": "minimize-raise"
-	},
-	"custom/dunst": {
-		"exec": "~/.config/waybar/scripts/dunst.sh",
-		"on-click": "dunstctl set-paused toggle",
-		"restart-interval": 1,
-	}
+    "wlr/taskbar": {
+        "icon-size": 24,
+        "on-click": "minimize-raise"
+    },
+    "custom/dunst": {
+        "exec": "~/.config/waybar/scripts/dunst.sh",
+        "on-click": "dunstctl set-paused toggle",
+        "on-scroll-up": "dunstctl history-pop",
+        "on-scroll-down": "dunstctl close",
+        "restart-interval": 1,
+    }
 }
