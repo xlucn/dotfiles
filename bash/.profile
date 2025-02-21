@@ -141,10 +141,10 @@ export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export AI_PROVIDER=blackboxai
 # zk
 export ZK_NOTEBOOK_DIR="$HOME/Code/test/zk/"
-# pip
-export PIP_INDEX_URL="https://mirror.nju.edu.cn/pypi/web/simple"
 # minetest
 export MINETEST_USER_PATH="$XDG_DATA_HOME"/minetest
+# virtualenvwrapper
+export WORKON_HOME="$XDG_DATA_HOME"/virtualenvs
 
 # PATH
 add_to_path() {

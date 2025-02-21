@@ -10,6 +10,7 @@ fi
 
 # shellcheck source=/dev/null
 . "$HOME"/.profile
+. /usr/bin/virtualenvwrapper.sh
 
 # Alias
 command -v doas > /dev/null && alias sudo="doas"
@@ -61,7 +62,7 @@ hdu() {
 }
 # pip update
 pip_update() {
-    pip list --user --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --user --upgrade
+    pip list --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --upgrade
 }
 # start xorg
 x() {
