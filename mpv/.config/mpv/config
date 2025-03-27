@@ -1,13 +1,10 @@
 # GUI
-no-keepaspect-window
+# no-keepaspect-window
 
 slang=eng,chs
 
 # since mpv v0.39.0
 autocreate-playlist=same
-
-# auto deinterlacing since mpv v0.38.8
-deinterlace=auto
 
 # Screenshot
 screenshot-format=png
@@ -15,13 +12,7 @@ screenshot-directory=~/Pictures
 screenshot-template="mpv-%F-%P-%#n"
 
 # OSD
-osd-font="DejaVu Sans"
-osd-color="#A0FFFFFF"
-osd-border-color="#00FFFFFF"
 osd-on-seek="msg-bar"
-osd-shadow-color="#40000000"
-osd-shadow-offset=0.5
-osd-duration=3000
 
 # osd in terminal
 term-osd-bar=yes
@@ -30,6 +21,3 @@ term-osd-bar-chars="[=>-]"
 # Hardware decoding
 vo=gpu-next
 hwdec=vaapi
-
-# FFmpeg options
-demuxer-lavf-o=protocol_whitelist=[crypto,http,https,tls,rtp,tcp,udp,httpproxy,file],allowed_extensions=ALL
