@@ -1,111 +1,64 @@
 return {
     {
-        'hrsh7th/nvim-cmp',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons',
-            'onsails/lspkind.nvim',
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-nvim-lua',
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lsp-signature-help',
-            -- "zbirenbaum/copilot-cmp",
-            -- snippet engine and sources
-            'saadparwaiz1/cmp_luasnip',
-            'L3MON4D3/LuaSnip'
-        },
-        config = function ()
-            local cmp = require('cmp')
-            local luasnip = require('luasnip')
+        'saghen/blink.cmp',
+        event = { 'InsertEnter' },
+        -- optional: provides snippets for the snippet source
+        dependencies = 'rafamadriz/friendly-snippets',
 
-            cmp.setup({
-                view = {
-                    entries = {  -- dynamic menu direction
-                        name = 'custom',
-                        selection_order = 'near_cursor'
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+
+        opts = {
+            -- 'default' for mappings similar to built-in completion
+            -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+            -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+            -- see the "default configuration" section below for full documentation on how to define
+            -- your own keymap.
+            keymap = {
+                preset = 'enter',
+                -- ['<C-g>'] = { 'hide', 'fallback' },
+                -- ['<C-y>'] = { 'accept', 'fallback' },
+                ['<C-p>'] = { 'snippet_backward', 'fallback' },
+                ['<C-n>'] = { 'snippet_forward', 'fallback' },
+                ['<Tab>'] = { 'select_next', 'fallback' },
+                ['<S-Tab>'] = { 'select_prev', 'fallback' },
+            },
+
+            appearance = {
+                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+                -- Adjusts spacing to ensure icons are aligned
+                nerd_font_variant = 'mono'
+            },
+
+            completion = {
+                list = {
+                    selection = {
+                        preselect = false,
+                        auto_insert = true,
                     }
                 },
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
+                keyword = {
+                    range = 'full',
                 },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-g>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.locally_jumpable(1) then
-                            luasnip.jump(1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.locally_jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                }),
-                sources = cmp.config.sources({
-                    -- { name = "copilot", keyword_length = 0 },
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' },
-                    { name = 'nvim_lua' },
-                    { name = 'nvim_lsp_signature_help' },
-                }, {
-                    { name = 'path' },
-                    { name = 'buffer' },
-                }),
-                formatting = {
-                    format = require'lspkind'.cmp_format({
-                        mode = 'symbol_text',
-                        preset = 'codicons',
-                        maxwidth = 30, -- pop up menu width
-                        -- symbol_map = { Copilot = "" },
-                    })
+                documentation = {
+                    auto_show = true,
                 },
-                experimental = { ghost_text = true },
-            })
-        end,
-        init = function ()
-            -- highlightings
-            local colors = {
-                CmpItemAbbrDeprecated = { ctermfg = 7, strikethrough = true },
-                CmpItemAbbrMatch = { ctermfg = 12, bold = true },
-                CmpItemAbbrMatchFuzzy = { ctermfg = 12, bold = true },
-                CmpItemMenu = { ctermfg = 13, italic = true },
-                CmpItemKind = { ctermfg = 0, ctermbg = 12 },
-            }
-            for key, value in pairs(colors) do
-                vim.api.nvim_set_hl(0, key, value)
-            end
+                menu = {
+                    draw = {
+                        treesitter = { 'lsp' },
+                    }
+                },
+            },
 
-            local kind_colors = {
-                -- [base16 colors] = { completion types }
-                [1] = { "Field", "Property", "Event", },
-                [2] = { "Text", "Enum", "Keyword", },
-                [3] = { "Unit", "Snippet", "Folder", },
-                [4] =  { "Method", "Value", "EnumMember", },
-                [5] = { "Function", "Struct", "Class", "Module", "Operator", },
-                [7] = { "Variable", "File", },
-                [11] = { "Constant", "Constructor", "Reference", },
-                [14] = { "Interface", "Color", "TypeParameter", }
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+
+            cmdline = {
+                enabled = false
             }
-            for color, kinds in pairs(kind_colors) do
-                for _, kind in ipairs(kinds) do
-                    vim.api.nvim_set_hl(0, 'CmpItemKind' .. kind, { ctermfg = color })
-                end
-            end
-        end,
-        event = 'InsertEnter'
+        },
     },
 }
