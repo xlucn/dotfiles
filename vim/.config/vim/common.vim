@@ -23,7 +23,6 @@ set formatoptions+=jormB " roj for comments, mB for CJK
 set ignorecase smartcase
 " }}}
 " UI basic {{{
-set guioptions=di       " gui options: dark, icon
 set number              " show line number
 set relativenumber      " show relative number
 set showcmd             " shows what you are typing as a command

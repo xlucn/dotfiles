@@ -14,6 +14,7 @@ set encoding=utf-8
 set hidden
 set incsearch hlsearch
 " UI
+set guioptions=di       " gui options: dark, icon
 set background=dark     " color scheme
 set belloff=all         " don't beep
 set display+=lastline   " show partial line
