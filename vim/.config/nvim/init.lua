@@ -39,3 +39,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 require("config.lazy")
+-- require("config.lsp")

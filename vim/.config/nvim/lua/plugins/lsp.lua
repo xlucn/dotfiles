@@ -59,22 +59,20 @@ return {
     'neovim/nvim-lspconfig',
     event = { "BufReadPre", "BufNewFile" },  -- from LazyVim
     config = function()
-        local lsp = require('lspconfig')
-        local configs = require("lspconfig.configs")
-        configs.wolfram_lsp = {
-            default_config = {
-                cmd = {
-                    "wolfram", "kernel",
-                    "-noinit", "-noprompt", "-nopaclet",
-                    "-noicon", "-nostartuppaclets",
-                    "-run", 'Needs["LSPServer`"];LSPServer`StartServer[]',
-                },
-                filetypes = { "mma" },
-                root_dir = lsp.util.path.dirname,
+        vim.lsp.config.wolfram_lsp = {
+            cmd = {
+                "wolfram", "kernel",
+                "-noinit", "-noprompt", "-nopaclet",
+                "-noicon", "-nostartuppaclets",
+                "-run", 'Needs["LSPServer`"];LSPServer`StartServer[]',
             },
+            filetypes = { "mma" },
+            root_markers = { '.git' },
         }
+
         for server, opts in pairs(server_config) do
-            lsp[server].setup(opts)
+            vim.lsp.config(server, opts)
+            vim.lsp.enable(server)
         end
     end,
 }
