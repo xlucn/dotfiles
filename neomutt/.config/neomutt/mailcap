@@ -1,4 +1,4 @@
-text/plain; vim %s; needsterminal
+text/plain; nvim %s; needsterminal
 text/html; iconv -f %{charset} | elinks -dump -dump-width 100; copiousoutput;
 image/*; xdg-open %s &; copiousoutput
 application/*; xdg-open %s &; copiousoutput

@@ -9,5 +9,3 @@ bind generic g move-first-line
 bind generic G move-last-line
 bind main G move-last-line
 bind main e !git commit --amend
-bind generic <Esc>[I none  # Ignore xterm focus events
-bind generic <Esc>[O none

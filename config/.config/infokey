@@ -1,8 +1,7 @@
 # Keybinding for `info' command, to make vim users happy
-# Note: keep the "#info", "#echo-area" and "#var" lines, they are required.
 
+# Note: keep the next line, it is required.
 #info
-# Section "info"
 
 ## Moving the cursor
 ### hjkl and arrow keys
@@ -61,8 +60,10 @@ N       search-previous
 ## Others
 ?       get-help-window
 
+# Note: keep the next line, it is required.
 #echo-area
 
+# Note: keep the next line, it is required.
 #var
 link-style=blue
 active-link-style=red,bold
