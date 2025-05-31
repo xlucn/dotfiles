@@ -56,13 +56,14 @@ if has("gui_running") == 0
         let &t_EI = "\e[?8c"
     endif
 endif
-" color scheme
+"" color scheme
+let g:color_0 = 234
 hi Normal       ctermbg=None ctermfg=15   cterm=None
-hi NormalFloat  ctermbg=0
+hi NormalFloat  ctermbg=239
 hi SignColumn   ctermbg=None              cterm=None
-hi CursorColumn ctermbg=0
-hi CursorLine   ctermbg=0                 cterm=None
-hi ColorColumn  ctermbg=0                 cterm=None
+hi CursorColumn ctermbg=239
+hi CursorLine   ctermbg=239               cterm=None
+hi ColorColumn  ctermbg=239               cterm=None
 hi LineNr       ctermbg=None ctermfg=8
 hi Folded       ctermbg=None ctermfg=8
 hi FoldColumn   ctermbg=None ctermfg=7
@@ -76,7 +77,7 @@ hi DiffAdd      ctermbg=10   ctermfg=0
 hi DiffChange   ctermbg=11   ctermfg=0
 hi DiffDelete   ctermbg=None ctermfg=9
 " popup menu
-hi Pmenu        ctermbg=0    ctermfg=7    cterm=None
+hi Pmenu        ctermbg=239  ctermfg=7    cterm=None
 hi PmenuSel     ctermbg=8    ctermfg=15   cterm=None
 " tab line
 hi TabLine      ctermbg=None ctermfg=7    cterm=None
@@ -127,7 +128,7 @@ set expandtab       " change tab to spaces
 set smarttab
 " show tabs and trailing white space
 set list
-set listchars=tab:│\ ,trail:.,eol:
+set listchars=tab:│\ ,trail:·
 " show fold indicator as arrows
 set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:│,foldclose:
 " }}}
@@ -180,9 +181,9 @@ augroup normal
     " spell check for these file types
     autocmd FileType tex,markdown,gitcommit setlocal spell
     " comment strings for vim-commentary
-    autocmd FileType gnuplot setlocal commentstring=#%s
-    autocmd FileType maxima setlocal commentstring=/*%s*/
-    autocmd FileType mma setlocal commentstring=(*%s*)
+    autocmd FileType gnuplot setlocal commentstring=#\ %s
+    autocmd FileType maxima setlocal commentstring=/*\ %s\ */
+    autocmd FileType mma setlocal commentstring=(*\ %s\ *)
     " wrap lines even in diff
     autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
 augroup END

@@ -1,6 +1,6 @@
 local white = 15
 local black = 233
-local fill_bg = 0
+local fill_bg = 239
 local sel_bg = 6
 local vis_bg = 7
 local norm_bg = 233
