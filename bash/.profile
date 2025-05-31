@@ -11,15 +11,14 @@ export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
 
 # chinese input method
 # gtk settings only for xorg, see .xprofile
-export GTK_IM_MODULE=fcitx5
-export QT_IM_MODULE=fcitx5
-export XMODIFIERS=@im=fcitx5
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export QT_IM_MODULES="wayland;fcitx;ibus"
+export XMODIFIERS=@im=fcitx
 
 # QT theme
-export QT_QPA_PLATFORMTHEME=qt5ct
-
-# SDL prefer wayland
-export SDL_VIDEODRIVER=wayland,x11
+export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_QPA_PLATFORM=wayland
 
 # XDG base directories
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
