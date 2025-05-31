@@ -31,11 +31,11 @@ local server_config = {
                 forwardSearchAfter = true,
                 auxDirectory = "./output",
                 logDirectory = "./output",
-                pdfDirectory = "./output",
+                pdfDirectory = ".",
             },
             forwardSearch = {
-                executable = "zathura",
-                args = { "--synctex-forward", "%l:1:%f", "%p" },
+                executable = "evince-synctex",
+                args = { "-f", "%l", "%p", "\"texlab inverse-search -i %f -l %l\"" },
             },
             chktex = { onOpenAndSave = false, },
             diagnostics = {

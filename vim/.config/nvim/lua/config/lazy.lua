@@ -28,4 +28,7 @@ require("lazy").setup({
         enabled = true,
         notify = false, -- no notifications when changes are found
     },
+    rocks = {
+        enabled = false
+    },
 })
