@@ -22,6 +22,6 @@ return {
     {
         'folke/trouble.nvim',
         config = true,
-        cmd = 'TroubleToggle'
+        cmd = 'Trouble'
     },
 }

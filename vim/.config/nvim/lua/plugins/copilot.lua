@@ -16,46 +16,16 @@ return {
             }
         }
     },
-    -- {
-    --     "zbirenbaum/copilot.lua",
-    --     event = "VimEnter",
-    --     init = function ()
-    --         vim.g.copilot_proxy = os.getenv("PROXY")  -- my proxy settings
-    --         vim.api.nvim_set_hl(0, "CopilotSuggestion", { link = "NonText" })
-    --         vim.api.nvim_set_hl(0, "CopilotAnnotation", { link = "NonText" })
-    --     end,
-    --     opts = {
-    --         filetypes = { mail = false },
-    --         suggestion = { enabled = true },
-    --         panel = { enabled = true },
-    --     }
-    -- },
-    -- {
-    --     "zbirenbaum/copilot-cmp",
-    --     config = true,
-    --     event = "InsertEnter",
-    --     dependencies = {
-    --         "zbirenbaum/copilot.lua"
-    --     },
-    -- },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "canary",
+        branch = "main",
         dependencies = {
-            -- { "zbirenbaum/copilot.lua" },
             { "github/copilot.vim" },
             { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
         },
-        config = function()
-            -- setup cmp source
-            require("CopilotChat.integrations.cmp").setup()
-            require("CopilotChat").setup({
-                mappings = {
-                    -- disable built-in completion to use cmp
-                    complete = { insert = '' },
-                }
-            })
-        end,
+        opts = {
+            chat_autocomplete = true,
+        },
         keys = {
             {
                 "<localleader>cc",

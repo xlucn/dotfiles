@@ -10,12 +10,6 @@ return {
             vim.api.nvim_set_hl(0, "RenderMarkdownCode", { ctermbg = 0 })
             vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { ctermbg = 'none' })
             vim.api.nvim_set_hl(0, "RenderMarkdownTableFill", { ctermbg = 'none' })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { ctermfg = 10, cterm = { bold = true } })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { ctermfg = 10, cterm = { bold = true } })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { ctermfg = 10, cterm = { bold = true } })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { ctermfg = 10, cterm = { bold = true } })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { ctermfg = 10, cterm = { bold = true } })
-            -- vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { ctermfg = 10, cterm = { bold = true } })
         end,
         opts = {
             latex = { enabled = false },

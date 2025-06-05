@@ -17,17 +17,6 @@ return {
         dependencies = {
             { 'nvim-lua/plenary.nvim' },
         },
-        keys = {
-            { '<leader>lr', function()
-                require("telescope.builtin").lsp_references()
-            end, mode = 'n' },
-            { '<leader>ld', function()
-                require("telescope.builtin").diagnostics()
-            end, mode = 'n' },
-            { '<leader>li', function()
-                require("telescope.builtin").lsp_implementations()
-            end, mode = 'n' },
-        },
         cmd = "Telescope",
         opts = {
             defaults = {
