@@ -23,8 +23,8 @@ class LF:
     def get_files(self):
         # get selected files
         fs = os.getenv('fs')
+        pwd = os.path.realpath(os.curdir)
         if fs is not None and len(fs) > 0:
-            pwd = os.getenv('PWD')
             fs = [os.path.relpath(f, pwd) for f in fs.split('\n')]
         else:
             fs = os.listdir(pwd)
