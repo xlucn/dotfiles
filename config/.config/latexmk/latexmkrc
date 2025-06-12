@@ -1,4 +1,5 @@
 # vim: ft=perl
-$out_dir = './output/';
+$aux_dir = './output/';
+$out_dir = '.';
 $pdf_mode = 5;
-$pdf_previewer = 'start zathura';
+$pdf_previewer = 'start evince-synctex %S';
