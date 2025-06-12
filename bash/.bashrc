@@ -10,7 +10,10 @@ fi
 
 # shellcheck source=/dev/null
 . "$HOME"/.profile
-. /usr/bin/virtualenvwrapper.sh
+if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+    # shellcheck source=/dev/null
+    . /usr/bin/virtualenvwrapper.sh
+fi
 
 # Alias
 command -v doas > /dev/null && alias sudo="doas"
@@ -55,11 +58,8 @@ alias neo-matrix="neo-matrix -a -D background -F"
 # adb
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 # system backup
-alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos"} /'
+alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games"} /'
 
-hdu() {
-    du -haxd 1 "$@" 2> /dev/null | sort -h
-}
 # pip update
 pip_update() {
     pip list --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --upgrade
