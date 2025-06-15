@@ -1,18 +1,29 @@
 return {
     'neovim/nvim-lspconfig',
-    event = { "BufReadPre", "BufNewFile" }, -- from LazyVim
+    event = {
+        "BufReadPre",
+        "BufNewFile"
+    },
     config = function()
         vim.lsp.config.pylsp = {
             settings = {
                 pylsp = {
-                    ruff = { enabled = true, formatEnabled = true, preview = true },
+                    ruff = {
+                        enabled = true,
+                        formatEnabled = true,
+                        preview = true
+                    },
                 }
             }
         }
         vim.lsp.config.lua_ls = {
             settings = {
                 Lua = {
-                    diagnostics = { globals = { 'vim' } }
+                    diagnostics = {
+                        globals = {
+                            'vim'
+                        }
+                    }
                 }
             }
         }
@@ -60,10 +71,15 @@ return {
         }
         vim.lsp.config.wolfram_lsp = {
             cmd = {
-                "wolfram", "kernel",
-                "-noinit", "-noprompt", "-nopaclet",
-                "-noicon", "-nostartuppaclets",
-                "-run", 'Needs["LSPServer`"];LSPServer`StartServer[]',
+                "wolfram",
+                "kernel",
+                "-noinit",
+                "-noprompt",
+                "-nopaclet",
+                "-noicon",
+                "-nostartuppaclets",
+                "-run",
+                'Needs["LSPServer`"];LSPServer`StartServer[]',
             },
             filetypes = { "mma" },
             root_markers = { '.git' },
