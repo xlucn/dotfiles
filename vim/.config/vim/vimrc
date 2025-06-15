@@ -5,6 +5,12 @@ set runtimepath^=$XDG_CONFIG_HOME/vim
 set packpath^=$XDG_DATA_HOME/vim
 set directory=$XDG_CACHE_HOME/vim/swap
 set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+set backupdir=$XDG_CACHE_HOME/vim/backup
+" detect filetype and apply syntax highlighting
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
 
 so $XDG_CONFIG_HOME/vim/common.vim
 " vim only settings
@@ -21,6 +27,73 @@ set display+=lastline   " show partial line
 set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
+" color scheme
+hi ColorColumn  ctermbg=DarkGray    cterm=NONE
+hi CursorColumn ctermbg=DarkGray
+hi CursorLine   ctermbg=DarkGray    cterm=NONE
+hi FoldColumn   ctermbg=NONE        ctermfg=Gray
+hi Folded       ctermbg=NONE        ctermfg=DarkGray
+hi LineNr       ctermbg=NONE        ctermfg=DarkGray
+hi NonText      ctermbg=NONE        ctermfg=DarkGray
+hi Normal       ctermbg=NONE        cterm=NONE
+hi NormalFloat  ctermbg=DarkGray
+hi SignColumn   ctermbg=NONE        cterm=NONE
+hi SpellBad     ctermbg=NONE        cterm=undercurl
+hi SpellCap     ctermbg=NONE        ctermfg=Yellow
+hi Visual       ctermbg=DarkGray    ctermfg=NONE
+" Diff
+hi DiffAdd      ctermbg=Green       ctermfg=Black
+hi DiffChange   ctermbg=Yellow      ctermfg=Black
+hi DiffDelete   ctermbg=NONE        ctermfg=Red
+" popup menu
+hi Pmenu        ctermbg=Black       cterm=NONE
+hi PmenuSel     ctermbg=DarkGray    cterm=NONE
+hi PmenuKind    ctermbg=Red
+" tab line
+hi TabLine      ctermbg=NONE        ctermfg=Gray    cterm=NONE
+hi TabLineSel   ctermbg=DarkCyan    ctermfg=Black   cterm=NONE
+hi TabLineFill  ctermbg=NONE        ctermfg=Gray    cterm=NONE
+" Syntax
+hi Boolean      ctermfg=DarkYellow
+hi Comment      ctermfg=DarkGreen
+hi Conceal      ctermbg=Black
+hi Constant     ctermfg=Yellow
+hi Delimiter    ctermfg=DarkYellow
+hi Error        ctermbg=Red
+hi Function     ctermfg=Blue
+hi Identifier   ctermfg=Cyan
+hi Ignore       ctermfg=Black
+hi Keyword      ctermfg=Magenta     cterm=bold
+hi Number       ctermfg=DarkYellow
+hi Operator     ctermfg=DarkYellow
+hi PreProc      ctermfg=DarkMagenta cterm=bold
+hi Special      ctermfg=Magenta
+hi Statement    ctermfg=DarkMagenta cterm=bold
+hi String       ctermfg=Magenta
+hi Todo         ctermbg=Yellow      cterm=bold
+hi Type         ctermfg=DarkCyan    cterm=bold
+hi Underlined   ctermfg=DarkBlue    cterm=underline
+" }}}
+" cursor shape for terminal emulators or linux console
+if has("gui_running") == 0
+    if $TERM != "linux"
+        let &t_SI = "\e[6 q"  " sent when entering insert mode
+        let &t_SR = "\e[4 q"  " sent when entering replace mode
+        let &t_EI = "\e[2 q"  " sent when leaving insert or replace mode
+    else  " for Linux tty
+        let &t_ve = "\e[?25h"
+        let &t_vi = "\e[?25l"
+        let &t_SI = "\e[?0c"
+        let &t_SR = "\e[?4c"
+        let &t_EI = "\e[?8c"
+    endif
+endif
+" built-in plugins or file type supports {{{
+let g:loaded_python3_provider = 0
+let g:loaded_perl_provider = 0
+let g:loaded_node_provider = 0
+let g:loaded_ruby_provider = 0
+" }}}
 " vim-jetpack {{{
 packadd vim-jetpack
 call jetpack#begin()
@@ -63,6 +136,66 @@ augroup vim
     " make sure the cursor reset to block shape, see the cursor shape settings
     autocmd VimEnter * normal! :startinsert :stopinsert
 augroup END
+" My own goyo mode {{{
+noremap <leader>Z :call Goyo()<CR>
+function Goyo()
+    if exists("g:goyo_status")
+        unlet g:goyo_status
+        set nu rnu ru scl=auto stal=2 ls=2
+    else
+        let g:goyo_status = 1
+        set nonu nornu noru scl=no stal=0 ls=0
+    endif
+endfunction
+" }}}
+" execute
+noremap <leader>k :call ExecCurrentFile()<CR>
+function ShowOutput(channel, msg)
+    if bufwinnr("exec_out") == -1
+        sbuffer exec_out
+    endif
+endfunction
+function AsyncRun(cmd)
+    if bufexists("exec_out")
+        call deletebufline("exec_out", 1, '$')
+    endif
+    call job_start(a:cmd, {
+    \   "out_io": "buffer",
+    \   "err_io": "buffer",
+    \   "out_name": "exec_out",
+    \   "err_name": "exec_out",
+    \   "callback": function('ShowOutput'),
+    \ })
+endfunction
+function ExecCurrentFile()
+    if index(['gnuplot', 'perl', 'python', 'sh'], &ft) >= 0
+        let command = [&ft, expand("%:p")]
+    elseif &ft == "maxima"
+        let command = ["maxima", "-b", expand("%:p")]
+    elseif &ft == "tex"
+        let command = ["latexmk", "-xelatex", "-pvc", expand("%:p")]
+    else
+        if &ft == "markdown"
+            call MarkdownPreviewToggle()
+        else
+            echo "Not supported file type"
+        endif
+        return
+    endif
+    call AsyncRun(command)
+endfunction
+" make
+augroup makeprg
+    autocmd!
+    autocmd Filetype sh compiler shellcheck
+    autocmd Filetype perl compiler perl
+    autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
+    autocmd BufWrite tex exe 'Make'
+augroup END
+function Make()
+    let makefile = findfile("Makefile", ".;")
+    call AsyncRun(["make", "-C", makefile])
+endfunction
 " Plugin settings
 " Netrw {{{
 " Make Netrw function like NerdTree
@@ -324,4 +457,37 @@ elseif match($TERM, "screen") != -1
 else
     let g:slime_target = "vimterminal"
 endif
+" }}}
+"
+" IM Toggle {{{
+" restore input method state when enter insert mode
+function CheckFcitxCmd()
+    if !exists("s:fcitx_cmd")
+        let s:find_exe = "command -v fcitx-remote || command -v fcitx5-remote"
+        let s:fcitx_cmd = trim(system(s:find_exe))
+    endif
+endfunction
+function IMDisable()
+    call CheckFcitxCmd()
+    if !exists("s:fcitxon")
+        let s:fcitxon = system(s:fcitx_cmd) =~ '^\d'
+    endif
+    if s:fcitxon
+        let b:fcitx = system(s:fcitx_cmd)
+        call system(s:fcitx_cmd . ' -c')
+    endif
+endfunction
+function IMEnable()
+    call CheckFcitxCmd()
+    if exists('b:fcitx') && b:fcitx == 2
+        call system(s:fcitx_cmd . ' -o')
+    endif
+endfunction
+augroup im_toggle
+    autocmd!
+    autocmd InsertEnter * call IMEnable()
+    autocmd VimEnter * call IMDisable()
+    autocmd InsertLeave * call IMDisable()
+    autocmd CmdlineLeave * call IMDisable()
+augroup END
 " }}}

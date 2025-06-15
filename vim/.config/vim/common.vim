@@ -1,15 +1,10 @@
 " leader key, for key mappings
 let mapleader = ','
 let maplocalleader = '\'
-set backupdir=$XDG_CACHE_HOME/vim/backup
 " }}}
 " Vim basic config {{{
-" detect filetype and apply syntax highlighting
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
 set backup " create back files
+set backupdir-=. " do not create backup files in current directory
 set autowrite " automatically write a file when leaving a buffer
 set undofile " persistent undo between restarts
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
@@ -39,85 +34,12 @@ set shortmess+=nocI     " don't show welcome screen
 set showtabline=2       " show tabs on top
 set noshowmode          " do not show mode on the last line
 set foldcolumn=0
+set foldmethod=expr
 set wrap
 set smoothscroll
-set conceallevel=2      " replace concealable texts
-" cursor shape for terminal emulators or linux console
-if has("gui_running") == 0
-    if $TERM != "linux"
-        let &t_SI = "\e[6 q"  " sent when entering insert mode
-        let &t_SR = "\e[4 q"  " sent when entering replace mode
-        let &t_EI = "\e[2 q"  " sent when leaving insert or replace mode
-    else  " for Linux tty
-        let &t_ve = "\e[?25h"
-        let &t_vi = "\e[?25l"
-        let &t_SI = "\e[?0c"
-        let &t_SR = "\e[?4c"
-        let &t_EI = "\e[?8c"
-    endif
-endif
-"" color scheme
-let g:color_0 = 234
-hi Normal       ctermbg=None ctermfg=15   cterm=None
-hi NormalFloat  ctermbg=239
-hi SignColumn   ctermbg=None              cterm=None
-hi CursorColumn ctermbg=239
-hi CursorLine   ctermbg=239               cterm=None
-hi ColorColumn  ctermbg=239               cterm=None
-hi LineNr       ctermbg=None ctermfg=8
-hi Folded       ctermbg=None ctermfg=8
-hi FoldColumn   ctermbg=None ctermfg=7
-hi NonText      ctermbg=None ctermfg=8
-hi SpellBad     ctermbg=None ctermfg=None cterm=undercurl
-hi SpellCap     ctermbg=None ctermfg=11
-hi Visual       ctermbg=8    ctermfg=None
-hi VertSplit    ctermbg=None ctermfg=7    cterm=None
-" Diff
-hi DiffAdd      ctermbg=10   ctermfg=0
-hi DiffChange   ctermbg=11   ctermfg=0
-hi DiffDelete   ctermbg=None ctermfg=9
-" popup menu
-hi Pmenu        ctermbg=239  ctermfg=7    cterm=None
-hi PmenuSel     ctermbg=8    ctermfg=15   cterm=None
-" tab line
-hi TabLine      ctermbg=None ctermfg=7    cterm=None
-hi TabLineSel   ctermbg=6    ctermfg=0    cterm=None
-hi TabLineFill  ctermbg=None ctermfg=7    cterm=None
-" symbol highlight
-hi LspReferenceText  ctermbg=8
-hi LspReferenceRead  ctermbg=8
-hi LspReferenceWrite ctermbg=8
-hi IlluminatedWordText  ctermbg=8
-hi IlluminatedWordRead  ctermbg=8
-hi IlluminatedWordWrite ctermbg=8
-" Syntax
-hi Delimiter       ctermfg=3
-hi Identifier      ctermfg=14
-hi Type            ctermfg=6   cterm=bold
-hi Constant        ctermfg=11
-hi Comment         ctermfg=2
-hi Keyword         ctermfg=13  cterm=bold
-hi Boolean         ctermfg=3
-hi Number          ctermfg=3
-hi Function        ctermfg=12
-hi String          ctermfg=13
-hi Underlined      ctermfg=4   cterm=underline
-hi Todo            ctermbg=11  cterm=bold
-hi Statement       ctermfg=5   cterm=bold
-hi Special         ctermfg=13
-hi Ignore          ctermfg=0
-hi PreProc         ctermfg=5   cterm=bold
-hi Conceal         ctermbg=0
-hi! link Operator  Delimiter
-hi! link Error     ErrorMsg
-" }}}
 " built-in plugins or file type supports {{{
-let g:loaded_python3_provider = 0
-let g:loaded_perl_provider = 0
-let g:loaded_node_provider = 0
-let g:loaded_ruby_provider = 0
 let g:termdebug_wide=1
-" let g:markdown_folding = 1
+let g:tex_flavor = "latex"
 " }}}
 " Space Tabs Indentations {{{
 " tabs
@@ -200,96 +122,4 @@ augroup latex
     " remove red color depends on vim-surround
     autocmd FileType tex nnoremap <localleader>d F{mr%x`rd12l
 augroup END
-augroup makeprg
-    autocmd!
-    autocmd Filetype sh compiler shellcheck
-    autocmd Filetype perl compiler perl
-    autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
-    autocmd BufWrite tex exe 'Make'
-augroup END
 " }}}
-" IM Toggle {{{
-" restore input method state when enter insert mode
-function CheckFcitxCmd()
-    if !exists("s:fcitx_cmd")
-        let s:find_exe = "command -v fcitx-remote || command -v fcitx5-remote"
-        let s:fcitx_cmd = trim(system(s:find_exe))
-    endif
-endfunction
-function IMDisable()
-    call CheckFcitxCmd()
-    if !exists("s:fcitxon")
-        let s:fcitxon = system(s:fcitx_cmd) =~ '^\d'
-    endif
-    if s:fcitxon
-        let b:fcitx = system(s:fcitx_cmd)
-        call system(s:fcitx_cmd . ' -c')
-    endif
-endfunction
-function IMEnable()
-    call CheckFcitxCmd()
-    if exists('b:fcitx') && b:fcitx == 2
-        call system(s:fcitx_cmd . ' -o')
-    endif
-endfunction
-augroup im_toggle
-    autocmd!
-    autocmd InsertLeave * call IMDisable()
-    autocmd InsertEnter * call IMEnable()
-augroup END
-" }}}
-" My own goyo mode {{{
-function Goyo()
-    if exists("g:goyo_status")
-        unlet g:goyo_status
-        set nu rnu ru scl=auto stal=2 ls=2
-    else
-        let g:goyo_status = 1
-        set nonu nornu noru scl=no stal=0 ls=0
-    endif
-endfunction
-" }}}
-" Execute current file {{{
-function ShowOutput(channel, msg)
-    if bufwinnr("exec_out") == -1
-        sbuffer exec_out
-    endif
-endfunction
-
-function AsyncRun(cmd)
-    if bufexists("exec_out")
-        call deletebufline("exec_out", 1, '$')
-    endif
-    call job_start(a:cmd, {
-    \   "out_io": "buffer",
-    \   "err_io": "buffer",
-    \   "out_name": "exec_out",
-    \   "err_name": "exec_out",
-    \   "callback": function('ShowOutput'),
-    \ })
-endfunction
-
-function ExecCurrentFile()
-    if index(['gnuplot', 'perl', 'python', 'sh'], &ft) >= 0
-        let command = [&ft, expand("%:p")]
-    elseif &ft == "maxima"
-        let command = ["maxima", "-b", expand("%:p")]
-    elseif &ft == "tex"
-        let command = ["latexmk", "-xelatex", "-pvc", expand("%:p")]
-    else
-        if &ft == "markdown"
-            call MarkdownPreviewToggle()
-        else
-            echo "Not supported file type"
-        endif
-        return
-    endif
-    call AsyncRun(command)
-endfunction
-
-function Make()
-    let makefile = findfile("Makefile", ".;")
-    call AsyncRun(["make", "-C", makefile])
-endfunction
-" }}}
-" vim:foldmethod=marker:foldlevel=0
