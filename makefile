@@ -20,7 +20,7 @@ dotfiles-uninstall:
 # install any non-dot files except readme into system folder
 system:
 	find . -type f -iregex "\./[a-z0-9]*/[^.].*" -not -iname readme.md -printf "%P\n" \
-		| { while read -r f; do diff -q "$$f" "/$${f#*/}" || install -Dv "$$f" "/$${f#*/}"; done; }
+		| { while read -r f; do diff -qN "$$f" "/$${f#*/}" || install -Dv "$$f" "/$${f#*/}"; done; }
 
 system-uninstall:
 	find . -type f -iregex "\./[a-z0-9]*/[^.].*" -not -iname readme.md -printf "%P\n" \
