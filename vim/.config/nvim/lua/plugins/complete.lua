@@ -3,10 +3,13 @@ return {
         'saghen/blink.cmp',
         event = { 'InsertEnter' },
         -- optional: provides snippets for the snippet source
-        dependencies = 'rafamadriz/friendly-snippets',
+        dependencies = {
+            'rafamadriz/friendly-snippets',
+            'folke/lazydev.nvim',
+        },
 
         -- use a release tag to download pre-built binaries
-        version = '1.*',
+        version = '*',
 
         opts = {
             -- 'default' for mappings similar to built-in completion
@@ -24,41 +27,24 @@ return {
                 ['<S-Tab>'] = { 'select_prev', 'fallback' },
             },
 
-            appearance = {
-                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-                -- Adjusts spacing to ensure icons are aligned
-                nerd_font_variant = 'mono'
-            },
-
             completion = {
-                list = {
-                    selection = {
-                        preselect = false,
-                        auto_insert = true,
-                    }
-                },
-                keyword = {
-                    range = 'full',
-                },
-                documentation = {
-                    auto_show = true,
-                },
-                menu = {
-                    draw = {
-                        treesitter = { 'lsp' },
-                    }
-                },
+                list = { selection = { preselect = false, auto_insert = true } },
+                keyword = { range = 'full', },
+                documentation = { auto_show = true, },
+                menu = { draw = { treesitter = { 'lsp' }, } },
             },
 
-            -- Default list of enabled providers defined so that you can extend it
-            -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer' },
+                default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+                providers = {
+                    lazydev = { module = "lazydev.integrations.blink" },
+                },
             },
-
-            cmdline = {
-                enabled = false
-            }
         },
     },
+    {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        config = true,
+    }
 }
