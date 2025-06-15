@@ -1,6 +1,8 @@
 # GUI
-# no-keepaspect-window
+profile=pseudo-gui
 
+# no-keepaspect-window
+cursor-autohide=3000
 slang=eng,chs
 
 # since mpv v0.39.0
@@ -12,12 +14,10 @@ screenshot-directory=~/Pictures
 screenshot-template="mpv-%F-%P-%#n"
 
 # OSD
+osd-font="monospace"
 osd-on-seek="msg-bar"
-
-# osd in terminal
-term-osd-bar=yes
-term-osd-bar-chars="[=>-]"
 
 # Hardware decoding
 vo=gpu-next
-hwdec=vaapi
+gpu-api=vulkan
+hwdec=vulkan
