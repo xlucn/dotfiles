@@ -1,26 +1,25 @@
 return {
     {
-        "github/copilot.vim",
-        init = function ()
-            vim.g.copilot_no_tab_map = true
-            vim.g.copilot_filetypes = {
-                mail = false,
-            }
-        end,
+        "zbirenbaum/copilot.lua",
         event = "VimEnter",
-        keys = {
-            { '<C-J>', 'copilot#Accept("\\<CR>")',
-                mode = 'i',
-                expr = true,
-                replace_keycodes = false
+        init = function()
+            vim.api.nvim_set_hl(0, "CopilotSuggestion", { link = "NonText" })
+        end,
+        opts = {
+            suggestion = {
+                enabled = true,
+                auto_trigger = true,
+                keymap = {
+                    accept = '<C-J>'
+                }
             }
-        }
+        },
     },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "main",
         dependencies = {
-            { "github/copilot.vim" },
+            { "zbirenbaum/copilot.lua" },
             { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
         },
         opts = {
