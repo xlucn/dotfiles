@@ -2,33 +2,55 @@
 """
 mutt_bootstrap
 
-What it is/does
-    Securely, interactively, conveniently start mutt with help of pass.
-    Will set imap_user, from, folder, smtp_url, imap_pass and smtp_pass.
-    It only sets privacy related options above, not any other options.
+Bootstrap mutt with pass and fzf
 
-    When starting mutt, fzf will popup, letting you choose the email you
-    want to log into.
+What it is/does
+    - Securely, interactively, conveniently start mutt with help of pass.
+    - Configurations are outside of this script, email settings are
+      automatically detected. This script does not contain any specific
+      email addresses, providers or passwords.
+    - When starting mutt, fzf will popup, letting you choose the email you
+      want to log into.
 
 Requirement
     fzf: TUI tool
     pass: Password management tool
+    oama: Optional, for OAuth2 of microsoft accounts
 
 Setup
-    Save passwords for emails with pass (password store) like this
-        $ pass mail/<email-address>
-    The imap and smtp server are guessed as:
+    1. Save passwords for emails with pass (password store)
+
+    The password should be under 'mail' subfolder, with the email address
+    as the filename. The password should be the first line
+
+        $ pass edit mail/<email-address>
+        # put the password in the first line
+
+    2. Optinal. Set IMAP and SMTP servers
+
+    By default, the imap and smtp server are guessed to be:
+
         imaps://imap.{domain}:993/
         smtp://{mail}@smtp.{domain}:587/
 
-    Additionally, if the imap or smtp server is not trivial, you can
-    add these addresses with ports in the password file:
+    For most email providers, this should work.
+
+    If the imap or smtp server is not trivial, you can add these addresses
+    with ports in the password file below the password:
+
         <password>
         imap: <imap_server>:<imap_port>
         smtp: <smtp_server>:<smtp_port>
 
-How to use it
-    Use 'source "python <this file> |"' in muttrc.
+    3. For microsoft or google accounts, you need to set up OAuth2
+
+    Here `oama` is used to authorize. See https://github.com/pdobsan/oama.
+    Use `oama authorize microsoft|google <email> --device` to authorize.
+    Then this script will use `oama access <email>` to get the access token.
+
+    4. In muttrc add this line:
+
+        source "python <this file> |"
 """
 import os
 import re
@@ -36,9 +58,9 @@ import glob
 from subprocess import run, PIPE
 
 
-def get_mail():
+def get_mail_fzf():
     """
-    Get email address from password store.
+    Get email address from password store, interactively with fzf.
     """
     # grab all email address from 'mail' subfolder in password store
     PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
@@ -62,7 +84,7 @@ def get_mail():
 
 def get_password(mail_address):
     """
-    use pass to retrieve password
+    use pass to retrieve password, with optionally extra information
     """
     res = run(['pass', 'show', f'mail/{mail_address}'], stdout=PIPE, stderr=PIPE)
     content = res.stdout.decode().strip().split('\n')
@@ -77,14 +99,14 @@ def get_imap_server(mail, attrs):
     domain = mail.split('@')[1]
 
     if "imap" in attrs:
-        imap_server = attrs["imap"]
+        imap_server = mail + '@' + attrs["imap"]
         if not re.search(r"^(imap|imaps)://", imap_server):
             imap_server = f"imaps://{imap_server}"
         if not re.search(r":[1-9]+$", imap_server):
             imap_server = f"{imap_server}:993"
         return imap_server
     else:
-        return f'imaps://imap.{domain}:993/'
+        return f'imaps://{mail}@imap.{domain}:993/'
 
 
 def get_smtp_server(mail, attrs):
@@ -97,15 +119,15 @@ def get_smtp_server(mail, attrs):
         if not re.search(r"^(smtp|smtps)://", smtp_server):
             smtp_server = f"smtps://{smtp_server}"
         if not re.search(r":[1-9]+$", smtp_server):
-            smtp_server = f"{smtp_server}:587"
+            smtp_server = f"{smtp_server}:465"
         return smtp_server
     else:
-        return f'smtps://{mail}@smtp.{domain}:587/'
+        return f'smtps://{mail}@smtp.{domain}:465/'
 
 
 if __name__ == "__main__":
     # get email address and password
-    mail_address = get_mail()
+    mail_address = get_mail_fzf()
     password, extra = get_password(mail_address)
 
     # get imap and smtp server
@@ -117,5 +139,13 @@ if __name__ == "__main__":
     print(f'set from = "{mail_address}"')
     print(f'set folder = "{imap_server}"')
     print(f'set smtp_url = "{smtp_server}"')
-    print(f'set imap_pass = {password}')
-    print(f'set smtp_pass = {password}')
+    if mail_address.split('@')[1] == "outlook.com":
+        auth = "xoauth2:oauthbearer"
+        cmd = f"oama access {mail_address}"
+        print(f'set imap_authenticators = "{auth}"')
+        print(f'set imap_oauth_refresh_command = "{cmd}"')
+        print(f'set smtp_authenticators = "{auth}"')
+        print(f'set smtp_oauth_refresh_command = "{cmd}"')
+    else:
+        print(f'set imap_pass = {password}')
+        print(f'set smtp_pass = {password}')
