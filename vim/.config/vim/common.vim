@@ -65,12 +65,12 @@ nnoremap <silent> gk k
 xnoremap <silent> gj j
 xnoremap <silent> gk k
 " buffers
-nnoremap <silent> <C-K> :bprevious<CR>
-nnoremap <silent> <C-J> :bnext<CR>
-nnoremap <silent> <C-P> :cprevious<CR>
-nnoremap <silent> <C-N> :cnext<CR>
-nnoremap <silent> [l :lprevious<CR>
-nnoremap <silent> ]l :lnext<CR>
+nnoremap <silent> <C-K> <CMD>bprevious<CR>
+nnoremap <silent> <C-J> <CMD>bnext<CR>
+nnoremap <silent> <C-P> <CMD>cprevious<CR>
+nnoremap <silent> <C-N> <CMD>cnext<CR>
+nnoremap <silent> [l <CMD>lprevious<CR>
+nnoremap <silent> ]l <CMD>lnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching
@@ -78,15 +78,13 @@ nnoremap <space> za
 nnoremap n nzzzv
 nnoremap N Nzzzv
 " some simple key bindings
-noremap <leader>q :q<CR>
-noremap <leader>Q :qa<CR>
-noremap <leader>d :bd<CR>
-noremap <leader>w :w<CR>
-noremap <leader>e :e<CR>
-noremap <leader>x :x<CR>
-noremap <leader>k :call ExecCurrentFile()<CR>
-noremap <leader>r :so $XDG_CONFIG_HOME/vim/vimrc<CR>
-noremap <leader>Z :call Goyo()<CR>
+noremap <leader>q <CMD>q<CR>
+noremap <leader>Q <CMD>qa<CR>
+noremap <leader>d <CMD>bd<CR>
+noremap <leader>w <CMD>w<CR>
+noremap <leader>e <CMD>e<CR>
+noremap <leader>x <CMD>x<CR>
+noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
 " }}}
 " Autocmd {{{
 augroup normal

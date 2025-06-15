@@ -29,61 +29,61 @@ return {
         keys = {
             {
                 "<localleader>cc",
-                ":CopilotChatToggle<CR>",
+                "<CMD>CopilotChatToggle<CR>",
                 mode = { "n", "x" },
                 desc = "Toggle"
             },
             {
                 "<localleader>ce",
-                ":CopilotChatExplain<CR>",
+                "<CMD>CopilotChatExplain<CR>",
                 mode = { "n", "x" },
                 desc = "Explain"
             },
             {
                 "<localleader>cr",
-                ":CopilotChatReview<CR>",
+                "<CMD>CopilotChatReview<CR>",
                 mode = { "n", "x" },
                 desc = "Review"
             },
             {
                 "<localleader>cf",
-                ":CopilotChatFix<CR>",
+                "<CMD>CopilotChatFix<CR>",
                 mode = { "n", "x" },
                 desc = "Fix"
             },
             {
                 "<localleader>co",
-                ":CopilotChatOptimize<CR>",
+                "<CMD>CopilotChatOptimize<CR>",
                 mode = { "n", "x" },
                 desc = "Optimize"
             },
             {
                 "<localleader>cd",
-                ":CopilotChatDocs<CR>",
+                "<CMD>CopilotChatDocs<CR>",
                 mode = { "n", "x" },
                 desc = "Docs"
             },
             {
                 "<localleader>ct",
-                ":CopilotChatTests<CR>",
+                "<CMD>CopilotChatTests<CR>",
                 mode = { "n", "x" },
                 desc = "Tests"
             },
             {
                 "<localleader>cF",
-                ":CopilotChatFixDiagnostic<CR>",
+                "<CMD>CopilotChatFixDiagnostic<CR>",
                 mode = { "n", "x" },
                 desc = "Fix Diagnostics"
             },
             {
                 "<localleader>cC",
-                ":CopilotChatCommit<CR>",
+                "<CMD>CopilotChatCommit<CR>",
                 mode = { "n", "x" },
                 desc = "Commit"
             },
             {
                 "<localleader>cS",
-                ":CopilotChatCommitStaged<CR>",
+                "<CMD>CopilotChatCommitStaged<CR>",
                 mode = { "n", "x" },
                 desc = "Commit Staged"
             },
