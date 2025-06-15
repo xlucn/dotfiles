@@ -1,17 +1,19 @@
-local white = 15
-local black = 233
-local fill_bg = 239
-local sel_bg = 6
-local vis_bg = 7
-local norm_bg = 233
+local sep_fg = 7
+local fill_bg = 8
+local sel_bg = 'NONE'
+local sel_fg = 6
+local vis_bg = 'lightgray'
+local vis_fg = 'black'
+local norm_bg = 8
+local norm_fg = 'white'
 
-local bg = { ctermbg = fill_bg }
-local sel = { ctermbg = sel_bg, ctermfg = black }
-local vis = { ctermbg = vis_bg, ctermfg = black }
-local norm = { ctermbg = norm_bg, ctermfg = white }
-local sel_sep = { ctermbg = sel_bg, ctermfg = fill_bg }
-local vis_sep = { ctermbg = vis_bg, ctermfg = fill_bg }
-local norm_sep = { ctermbg = norm_bg, ctermfg = fill_bg }
+local bg = { ctermbg = fill_bg, ctermfg = 'NONE' }
+local sel = { ctermbg = sel_bg, ctermfg = sel_fg }
+local vis = { ctermbg = vis_bg, ctermfg = vis_fg }
+local norm = { ctermbg = norm_bg, ctermfg = norm_fg }
+local sel_sep = { ctermbg = sel_bg, ctermfg = sep_fg }
+local vis_sep = { ctermbg = vis_bg, ctermfg = sep_fg }
+local norm_sep = { ctermbg = norm_bg, ctermfg = sep_fg }
 
 return {
     {
@@ -21,12 +23,13 @@ return {
         },
         opts = {
             options = {
-                color_icons = false,
                 numbers = "ordinal",
                 right_mouse_command = false,
+                indicator = { style = 'none' },
+                color_icons = false,
                 show_buffer_icons = false,
                 max_name_length = 30,
-                separator_style = 'slant',
+                separator_style = {'|', '|'},
                 hover = {
                     enabled = true,
                     delay = 0,
