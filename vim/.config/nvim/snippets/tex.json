@@ -1,0 +1,38 @@
+{
+	"Ctex Article": {
+		"prefix": "ctex",
+		"body": [
+			"\\documentclass[a4paper,11pt]{article}",
+			"\\usepackage[fontset=none]{ctex}",
+			"\\usepackage[margin=1in]{geometry}",
+			"\\usepackage{amsmath}",
+			"\\usepackage{amssymb}",
+			"\\usepackage{aas_macros}",
+			"",
+			"\\allowdisplaybreaks",
+			"\\setCJKmainfont{Noto Serif CJK SC}",
+			"\\setCJKsansfont{Noto Sans CJK SC}",
+			"\\setCJKmonofont{Noto Sans Mono CJK SC}",
+			"",
+			"\\title{${1:title}}",
+			"\\author{${2:author}}",
+			"",
+			"\\begin{document}",
+			"\\maketitle",
+			"",
+			"$0",
+			"",
+			"\\end{document}"
+		],
+		"description": "Template for a Chinese article"
+	},
+	"\\begin{}...\\end{}": {
+		"prefix": "begin",
+		"body": [
+			"\\\\begin{${1:env}}",
+			"\t$0",
+			"\\\\end{${1:env}}"
+		],
+		"description": "Begin - End"
+	}
+}
