@@ -2,10 +2,10 @@ local sep_fg = 7
 local fill_bg = 8
 local sel_bg = 'NONE'
 local sel_fg = 6
-local vis_bg = 'lightgray'
-local vis_fg = 'black'
+local vis_bg = 8
+local vis_fg = 6
 local norm_bg = 8
-local norm_fg = 'white'
+local norm_fg = 15
 
 local bg = { ctermbg = fill_bg, ctermfg = 'NONE' }
 local sel = { ctermbg = sel_bg, ctermfg = sel_fg }
@@ -61,6 +61,8 @@ return {
                 duplicate = norm,
                 duplicate_visible = vis,
                 duplicate_selected = sel,
+                indicator_visible = vis,
+                indicator_selected = sel,
                 separator = norm_sep,
                 separator_visible = vis_sep,
                 separator_selected = sel_sep,

@@ -14,55 +14,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
--- color scheme
-local highlights = {
-    ColorColumn = { ctermbg = 237 },
-    CursorColumn = { ctermbg = 237 },
-    CursorLine = { ctermbg = 237 },
-    FoldColumn = { ctermbg = nil, ctermfg = 8 },
-    Folded = { ctermbg = nil, ctermfg = 8 },
-    LineNr = { ctermbg = nil, ctermfg = 8 },
-    NonText = { ctermbg = nil, ctermfg = 8 },
-    Normal = { ctermbg = nil },
-    NormalFloat = { ctermbg = 237 },
-    SignColumn = { ctermbg = nil },
-    SpellBad = { ctermbg = nil, undercurl = true },
-    SpellCap = { ctermbg = nil, ctermfg = 3 },
-    Visual = { ctermbg = 237, ctermfg = nil },
-    DiffAdd = { ctermbg = 10, ctermfg = 0 },
-    DiffChange = { ctermbg = 3, ctermfg = 0 },
-    DiffDelete = { ctermbg = nil, ctermfg = 1 },
-    Pmenu = { ctermbg = 235 },
-    PmenuSel = { ctermbg = 237 },
-    TabLine = { ctermbg = nil, ctermfg = 8 },
-    TabLineSel = { ctermbg = 6, ctermfg = 0 },
-    TabLineFill = { ctermbg = nil, ctermfg = 8 },
-    StatusLine = { ctermbg = 235 },
-    -- Syntax groups
-    Boolean = { ctermfg = 3 },
-    Comment = { ctermfg = 2 },
-    Conceal = { ctermbg = 237 },
-    Constant = { ctermfg = 3 },
-    Delimiter = { ctermfg = 3 },
-    Error = { ctermbg = 1 },
-    Function = { ctermfg = 12 },
-    Identifier = { ctermfg = 14 },
-    Ignore = { ctermfg = 0 },
-    Keyword = { ctermfg = 13, bold = true },
-    Number = { ctermfg = 3 },
-    Operator = { ctermfg = 3 },
-    PreProc = { ctermfg = 5, bold = true },
-    Special = { ctermfg = 13 },
-    Statement = { ctermfg = 5, bold = true },
-    String = { ctermfg = 13 },
-    Todo = { ctermbg = 3, bold = true },
-    Type = { ctermfg = 6, bold = true },
-    Underlined = { ctermfg = 4, underline = true }
-}
-for group, hl in pairs(highlights) do
-    vim.api.nvim_set_hl(0, group, hl)
-end
-
 local mapopts = { noremap=true, silent=true }
 vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
 vim.keymap.set('n', '<M-k>', '<C-W>W', mapopts)
@@ -121,3 +72,4 @@ vim.api.nvim_create_autocmd(
 )
 
 require("config.lazy")
+require("config.colors")
