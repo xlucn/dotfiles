@@ -74,7 +74,10 @@ def get_mail_fzf():
     res = run(['fzf', '--reverse'],
               input=list_emails.encode(),
               stdout=PIPE)
-    if res.returncode != 0:
+    if res.returncode == 130:
+        print("fzf was interrupted")
+        exit()
+    elif res.returncode != 0:
         raise OSError("fzf failed")
 
     # get basic information
