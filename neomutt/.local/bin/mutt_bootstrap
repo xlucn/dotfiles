@@ -137,12 +137,16 @@ if __name__ == "__main__":
     imap_server = get_imap_server(mail_address, attrs=extra)
     smtp_server = get_smtp_server(mail_address, attrs=extra)
 
+    xoauth2_providers = [
+        "outlook.com",
+        "gmail.com",
+    ]
     # dump mutt configurations
     print(f'set imap_user = "{mail_address}"')
     print(f'set from = "{mail_address}"')
     print(f'set folder = "{imap_server}"')
     print(f'set smtp_url = "{smtp_server}"')
-    if mail_address.split('@')[1] == "outlook.com":
+    if mail_address.split('@')[1] in xoauth2_providers:
         auth = "xoauth2:oauthbearer"
         cmd = f"oama access {mail_address}"
         print(f'set imap_authenticators = "{auth}"')
