@@ -7,7 +7,6 @@ set info size
 # set a large offset to center the cursor
 set scrolloff 99
 set errorfmt "\033[31m%s\033[0m"
-set sixel
 
 # pass arguments with delimiter '\n'
 set ifs "\n"
