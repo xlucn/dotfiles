@@ -73,3 +73,4 @@ vim.api.nvim_create_autocmd(
 
 require("config.lazy")
 require("config.colors")
+require("config.lsp")
