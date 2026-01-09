@@ -1,7 +1,7 @@
 return {
     {
         "zbirenbaum/copilot.lua",
-        event = "VimEnter",
+        event = "InsertEnter",
         init = function()
             vim.api.nvim_set_hl(0, "CopilotSuggestion", { link = "NonText" })
         end,

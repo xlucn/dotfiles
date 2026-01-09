@@ -18,7 +18,7 @@ vim.api.nvim_set_hl(0, "LazyNormal", { ctermbg = 8 })
 -- Setup lazy.nvim
 require("lazy").setup({
     defaults = {
-        lazy = true,
+        lazy = false,
     },
     spec = {
         import = "plugins"

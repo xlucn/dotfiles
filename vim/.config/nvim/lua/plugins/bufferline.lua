@@ -68,7 +68,6 @@ return {
                 separator_selected = sel_sep,
             }
         },
-        event = "VimEnter",
     },
     {
         'ojroques/nvim-bufdel',
