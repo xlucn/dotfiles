@@ -5,6 +5,7 @@ profile=pseudo-gui
 cursor-autohide=3000
 slang=eng,chs
 
+deinterlace=auto
 # since mpv v0.39.0
 autocreate-playlist=same
 
@@ -18,6 +19,4 @@ osd-font="monospace"
 osd-on-seek="msg-bar"
 
 # Hardware decoding
-vo=gpu-next
-gpu-api=vulkan
-hwdec=vulkan
+hwdec=auto
