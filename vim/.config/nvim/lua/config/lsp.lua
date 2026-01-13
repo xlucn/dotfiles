@@ -1,4 +1,4 @@
-vim.lsp.config.pylsp = {
+vim.lsp.config('pylsp', {
     settings = {
         pylsp = {
             ruff = {
@@ -8,8 +8,8 @@ vim.lsp.config.pylsp = {
             },
         }
     }
-}
-vim.lsp.config.lua_ls = {
+})
+vim.lsp.config('lua_ls', {
     settings = {
         Lua = {
             diagnostics = {
@@ -19,27 +19,33 @@ vim.lsp.config.lua_ls = {
             }
         }
     }
-}
-vim.lsp.config.texlab = {
-    on_attach = function(_, bufnr)
-        local function buf_set_keymap(key, cmd)
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', key, cmd, {
-                noremap = true, silent = true
-            })
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function (args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client then
+            return
         end
-        buf_set_keymap('<localleader>ll', '<cmd>TexlabBuild<CR>')
-        buf_set_keymap('<localleader>lv', '<cmd>TexlabForward<CR>')
-        buf_set_keymap('<localleader>lc', '<cmd>TexlabCleanAuxiliary<CR>')
-        buf_set_keymap('<localleader>lC', '<cmd>TexlabCleanArtifacts<CR>')
-        buf_set_keymap('<localleader>lr', '<cmd>TexlabChangeEnvironment<CR>')
-    end,
+        if client.name == "texlab" then
+            local function buf_set_keymap(key, cmd)
+                vim.api.nvim_buf_set_keymap(args.buf, 'n', key, cmd, {
+                    noremap = true, silent = true
+                })
+            end
+            buf_set_keymap('<localleader>ll', '<cmd>LspTexlabBuild<CR>')
+            buf_set_keymap('<localleader>lv', '<cmd>LspTexlabForward<CR>')
+            buf_set_keymap('<localleader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
+            buf_set_keymap('<localleader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
+            buf_set_keymap('<localleader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
+        end
+    end
+})
+vim.lsp.config('texlab', {
     settings = {
         texlab = {
             build = {
-                executable = "latexmk",
-                args = { "-synctex=1", "-interaction=nonstopmode", "%f" },
                 onSave = true,
-                forwardSearchAfter = true,
                 auxDirectory = "./output",
                 logDirectory = "./output",
                 pdfDirectory = ".",
@@ -48,7 +54,6 @@ vim.lsp.config.texlab = {
                 executable = "evince-synctex",
                 args = { "-f", "%l", "%p", "\"texlab inverse-search -i %f -l %l\"" },
             },
-            chktex = { onOpenAndSave = false, },
             diagnostics = {
                 ignoredPatterns = {
                     'Unused label',
@@ -61,13 +66,13 @@ vim.lsp.config.texlab = {
             },
         }
     },
-}
-vim.lsp.config.tinymist = {
+})
+vim.lsp.config('tinymist', {
     settings = {
         exportPdf = "onSave",
     }
-}
-vim.lsp.config.wolfram_lsp = {
+})
+vim.lsp.config('wolfram_lsp', {
     cmd = {
         "wolfram",
         "kernel",
@@ -81,7 +86,7 @@ vim.lsp.config.wolfram_lsp = {
     },
     filetypes = { "mma" },
     root_markers = { '.git' },
-}
+})
 
 vim.lsp.enable({
     "bashls",
