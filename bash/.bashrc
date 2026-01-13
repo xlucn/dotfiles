@@ -58,7 +58,7 @@ alias neo-matrix="neo-matrix -a -D background -F"
 # adb
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 # system backup
-alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games"} /'
+alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/var/tmp/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games","/home/*/.cache/paru"} /'
 
 # pip update
 pip_update() {

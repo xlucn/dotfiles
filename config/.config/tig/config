@@ -1,5 +1,6 @@
 set mouse = true
 set tab-size = 4
+set wrap-lines = true
 set main-view-date = custom
 set main-view-date-format = "%Y-%m-%d"
 set main-view-author-display = abbreviated
@@ -7,5 +8,9 @@ set main-view-author-maxwidth = 10
 
 bind generic g move-first-line
 bind generic G move-last-line
+bind generic <Ctrl-b> move-page-up
+bind generic <Ctrl-f> move-page-down
+bind main g move-first-line
 bind main G move-last-line
+
 bind main e !git commit --amend
