@@ -144,6 +144,11 @@ export ZK_NOTEBOOK_DIR="$HOME/Code/test/zk/"
 export MINETEST_USER_PATH="$XDG_DATA_HOME"/minetest
 # virtualenvwrapper
 export WORKON_HOME="$XDG_DATA_HOME"/virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+# vulkan hardware de/encoding support for intel
+export ANV_DEBUG=video-decode,video-encode
+# wine prefix
+export WINEPREFIX="${XDG_DATA_HOME}/wineprefix"
 
 # PATH
 add_to_path() {
