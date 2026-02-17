@@ -48,7 +48,7 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 # gtk2
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 # python: ipython, jupyter, pylint
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export PYTHON_HISTORY="$XDG_CACHE_HOME/python_history"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
