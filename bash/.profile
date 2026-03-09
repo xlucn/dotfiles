@@ -149,6 +149,8 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export ANV_DEBUG=video-decode,video-encode
 # wine prefix
 export WINEPREFIX="${XDG_DATA_HOME}/wineprefix"
+# wechat data
+export WECHAT_DATA_DIR="$XDG_DATA_HOME/wechat_universe"
 
 # PATH
 add_to_path() {
