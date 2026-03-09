@@ -37,39 +37,30 @@ vim.diagnostic.config({
 vim.lsp.inlay_hint.enable()
 
 -- Convert IM Toggle to Lua
+local fcitx_cmd = nil
+local fcitx_status = nil
 local function check_fcitx_cmd()
-    if not vim.g.fcitx_cmd then
-        local fcitx_cmd = vim.fn.exepath('fcitx5-remote')
-        if fcitx_cmd ~= '' then
-            vim.g.fcitx_cmd = fcitx_cmd
-        else
-            return false
-        end
+    local search_result = vim.fn.exepath('fcitx5-remote')
+    if search_result ~= '' then
+        fcitx_cmd = 'fcitx5-remote'
     end
-    return true
 end
 local function im_disable()
-    if check_fcitx_cmd() then
-        local fcitx_stats = tonumber(vim.fn.system(vim.g.fcitx_cmd))
-        vim.g.fcitx_stats = fcitx_stats
-        if fcitx_stats ~= 0 then
-            vim.system({vim.g.fcitx_cmd, '-c'})
-        end
+    if fcitx_cmd == nil then return end
+    fcitx_status = tonumber(vim.fn.system(fcitx_cmd))
+    if fcitx_status == 2 then
+        vim.system({fcitx_cmd, '-c'})
     end
 end
 local function im_enable()
-    if check_fcitx_cmd() and vim.g.fcitx_stats == 2 then
-        vim.system({vim.g.fcitx_cmd, '-o'})
+    if fcitx_cmd == nil then return end
+    if fcitx_status == 2 then
+        vim.system({fcitx_cmd, '-o'})
     end
 end
-vim.api.nvim_create_autocmd(
-    'InsertEnter',
-    { callback = im_enable }
-)
-vim.api.nvim_create_autocmd(
-    {'VimEnter', 'InsertLeave', 'CmdlineLeave'},
-    { callback = im_disable }
-)
+vim.api.nvim_create_autocmd('VimEnter', { callback = check_fcitx_cmd })
+vim.api.nvim_create_autocmd('InsertEnter', { callback = im_enable })
+vim.api.nvim_create_autocmd('InsertLeave', { callback = im_disable })
 
 require("config.lazy")
 require("config.colors")
