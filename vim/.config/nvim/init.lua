@@ -23,12 +23,6 @@ vim.keymap.set('n', '<M-h>', '<C-W><', mapopts)
 vim.keymap.set('n', '<M-l>', '<C-W>>', mapopts)
 vim.keymap.set('n', '<M-H>', '<C-W>-', mapopts)
 vim.keymap.set('n', '<M-L>', '<C-W>+', mapopts)
-vim.keymap.set('n', '[d', function()
-    vim.diagnostic.jump({ count = -1, float = true })
-end, mapopts)
-vim.keymap.set('n', ']d', function()
-    vim.diagnostic.jump({ count = 1, float = true })
-end, mapopts)
 
 vim.diagnostic.config({
     virtual_text = true,
