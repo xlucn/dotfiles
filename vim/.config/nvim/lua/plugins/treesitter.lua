@@ -20,7 +20,6 @@ return {
             { 'nvim-treesitter/nvim-treesitter-textobjects' },
         },
         event = "BufEnter",
-        main = 'nvim-treesitter.configs',  -- tell lazy what setup function is
         opts = {
             ensure_installed = {
                 'bash', 'c', 'cpp', 'lua', 'python', 'latex',
