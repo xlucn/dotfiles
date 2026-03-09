@@ -1,6 +1,6 @@
 set mouse = true
 set tab-size = 4
-set wrap-lines = true
+set wrap-lines = false
 set main-view-date = custom
 set main-view-date-format = "%Y-%m-%d"
 set main-view-author-display = abbreviated
