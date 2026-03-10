@@ -10,7 +10,7 @@ fi
 
 # shellcheck source=/dev/null
 . "$HOME"/.profile
-if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+if [ -n "$BASH" ] && [ -f /usr/bin/virtualenvwrapper.sh ]; then
     # shellcheck source=/dev/null
     . /usr/bin/virtualenvwrapper.sh
 fi
