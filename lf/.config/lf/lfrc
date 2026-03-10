@@ -11,7 +11,7 @@ set errorfmt "\033[31m%s\033[0m"
 # pass arguments with delimiter '\n'
 set ifs "\n"
 set filesep "\n"
-set previewer pv
+set previewer lf-pv
 
 # key mapping
 map <esc> cmd-escape
@@ -24,7 +24,7 @@ map gr cd /
 map D delete
 map zp set preview!
 # shell mappings
-map <enter> $open $fx
+map <enter> $lf-open $fx
 map e $$EDITOR $fx
 map M push $mkdir<space>
 map R $bulk-rename
