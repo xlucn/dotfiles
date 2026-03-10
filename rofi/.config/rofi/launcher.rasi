@@ -16,7 +16,7 @@ configuration {
     ml-row-up:            "";
     ml-row-down:          "";
     drun {
-        fallback-icon:        "application-x-executable";
+        fallback-icon:    "application-x-executable";
     }
 }
 
@@ -78,6 +78,3 @@ element-text, element-icon {
     background-color: none;
     color:            inherit;
 }
-
-/* vim magic line below, but don't add closing comment, since vim can't parse them */
-/* vim: ft=css
