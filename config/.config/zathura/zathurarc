@@ -36,13 +36,9 @@ set synctex-editor-command "texlab inverse-search -i %{input} -l %{line}"
 set dbus-raise-window false
 
 # User interface
-set guioptions "vh"
+set guioptions "v"
+set default-fg "#000000"
 
-# Colors TODO: all the colors
-set default-fg "#ECEFF1"
-set default-bg "#212121"
-set statusbar-bg "#212121"
-set statusbar-fg "#ECEFF1"
 # Recolor
 set recolor false
 set recolor-keephue true
