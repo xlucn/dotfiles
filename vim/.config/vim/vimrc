@@ -1,3 +1,9 @@
+" be Vi if started as vi, ex, edit, view, etc.
+if v:progname =~? '^\(vi\|view\|ex\|edit\)$'
+    set compatible
+    so $XDG_CONFIG_HOME/ex/exrc
+    finish
+endif
 " be Vi IMproved, put this line at TOP of vimrc
 set nocompatible
 " XDG Base Directories
