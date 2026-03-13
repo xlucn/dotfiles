@@ -94,34 +94,32 @@ let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_ruby_provider = 0
 " }}}
-" vim-jetpack {{{
-packadd vim-jetpack
-call jetpack#begin()
-call jetpack#add('tani/vim-jetpack', {'opt': 1}) "bootstrap
+" vim-plug {{{
+call plug#begin()
 " Basic
-call jetpack#add('tpope/vim-commentary')
-call jetpack#add('tpope/vim-endwise')
-call jetpack#add('tpope/vim-repeat')
-call jetpack#add('tpope/vim-sensible')
-call jetpack#add('tpope/vim-surround')
-call jetpack#add('tpope/vim-dispatch')
-call jetpack#add('tpope/vim-fugitive')
-call jetpack#add('ap/vim-buftabline')
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fugitive'
+Plug 'ap/vim-buftabline'
 " Enhancements
-call jetpack#add('majutsushi/tagbar')
-call jetpack#add('jpalardy/vim-slime')
-call jetpack#add('airblade/vim-gitgutter')
-call jetpack#add('liuchengxu/vim-which-key')
+Plug 'majutsushi/tagbar'
+Plug 'jpalardy/vim-slime'
+Plug 'airblade/vim-gitgutter'
+Plug 'liuchengxu/vim-which-key'
 " vim language server
-call jetpack#add('prabirshrestha/vim-lsp')
-call jetpack#add('mattn/vim-lsp-settings')
-call jetpack#add('prabirshrestha/async.vim')
-call jetpack#add('prabirshrestha/asyncomplete.vim')
-call jetpack#add('prabirshrestha/asyncomplete-lsp.vim')
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Snippets
-call jetpack#add('honza/vim-snippets')
-call jetpack#add('rafamadriz/friendly-snippets')
-call jetpack#end()
+Plug 'honza/vim-snippets'
+Plug 'rafamadriz/friendly-snippets'
+call plug#end()
 " }}}
 " Vim Settings
 set mouse=a             " enable mouse support in console
