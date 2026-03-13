@@ -46,9 +46,9 @@ hi DiffAdd      ctermbg=Green       ctermfg=Black
 hi DiffChange   ctermbg=Yellow      ctermfg=Black
 hi DiffDelete   ctermbg=NONE        ctermfg=Red
 " popup menu
-hi Pmenu        ctermbg=Black       cterm=NONE
-hi PmenuSel     ctermbg=DarkGray    cterm=NONE
-hi PmenuKind    ctermbg=Red
+hi Pmenu        ctermbg=Black       ctermfg=NONE    cterm=NONE
+hi PmenuSel     ctermbg=DarkGray    ctermfg=NONE    cterm=NONE
+hi PmenuKind    ctermbg=Gray        ctermfg=Black   cterm=NONE
 " tab line
 hi TabLine      ctermbg=NONE        ctermfg=Gray    cterm=NONE
 hi TabLineSel   ctermbg=DarkCyan    ctermfg=Black   cterm=NONE
