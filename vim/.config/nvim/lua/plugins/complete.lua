@@ -29,7 +29,6 @@ return {
 
             completion = {
                 list = { selection = { preselect = false, auto_insert = true } },
-                keyword = { range = 'full', },
                 documentation = { auto_show = true, },
                 menu = { draw = { treesitter = { 'lsp' }, } },
             },
@@ -40,6 +39,9 @@ return {
                     lazydev = { module = "lazydev.integrations.blink" },
                 },
             },
+            cmdline = {
+                enabled = false,
+            }
         },
     },
     {

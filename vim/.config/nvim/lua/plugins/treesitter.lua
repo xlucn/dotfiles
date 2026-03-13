@@ -9,8 +9,9 @@ return {
             vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 0 })
         end,
         opts = {
-            max_lines = 99,
+            max_lines = 3,
             trim_scope = 'outer',
+            multiline_threshold = 1,
         },
         event = "BufEnter",
     },

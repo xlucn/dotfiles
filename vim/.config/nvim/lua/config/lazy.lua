@@ -21,7 +21,7 @@ require("lazy").setup({
         lazy = false,
     },
     spec = {
-        import = "plugins"
+        import = "plugins"  -- import all plugins from lua/plugins/*.lua
     },
     change_detection = {
         -- automatically check for config file changes and reload the ui

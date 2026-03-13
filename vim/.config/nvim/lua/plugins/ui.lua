@@ -14,13 +14,14 @@ return {
     },
     {
         'folke/which-key.nvim',
+        ---@class wk.Opts
         opts = {
+            preset = "helix",
             spec = {
                 { '<leader>l', group = "language server" },
                 { '<leader>z', group = "zk notes" },
             },
         },
-        event = "VeryLazy",
     },
     {
         'folke/trouble.nvim',

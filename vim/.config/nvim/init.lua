@@ -39,11 +39,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
                     noremap = true, silent = true
                 })
             end
-            buf_set_keymap('<localleader>ll', '<cmd>LspTexlabBuild<CR>')
-            buf_set_keymap('<localleader>lv', '<cmd>LspTexlabForward<CR>')
-            buf_set_keymap('<localleader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
-            buf_set_keymap('<localleader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
-            buf_set_keymap('<localleader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
+            buf_set_keymap('<leader>ll', '<cmd>LspTexlabBuild<CR>')
+            buf_set_keymap('<leader>lv', '<cmd>LspTexlabForward<CR>')
+            buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
+            buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
+            buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
         end
     end
 })
