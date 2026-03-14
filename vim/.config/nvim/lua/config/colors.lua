@@ -24,22 +24,22 @@ local c = {
     blue2 = 12,
     magenta2 = 13,
     cyan2 = 14,
-    -- dark colors
-    red3 = 88,
-    green3 = 28,
-    yellow3 = 178,
-    blue3 = 25,
-    magenta3 = 91,
-    cyan3 = 31,
+    -- dark colors, for backgrounds
+    red3 = 52,
+    green3 = 22,
+    yellow3 = 58,
+    blue3 = 18,
+    magenta3 = 53,
+    cyan3 = 23,
 }
 
 c.none = "NONE"
 
 c.diff = {
-    add = c.green,
-    delete = c.red,
-    change = c.blue,
-    text = c.blue,
+    add = c.green3,
+    delete = c.red3,
+    change = c.blue3,
+    text = c.magenta3,
 }
 
 c.border = c.blue
@@ -61,7 +61,7 @@ c.todo = c.blue
 c.warning = c.yellow
 c.info = c.blue
 c.hint = c.cyan
-c.comment = c.green
+c.comment = c.light3
 
 local colorscheme = {
     -- used for the columns set with 'colorcolumn'
@@ -235,7 +235,7 @@ local colorscheme = {
     ["@property"] = { ctermfg = c.blue2 },
     ["@variable"] = { ctermfg = c.fg },
     ["@variable.member"] = { ctermfg = c.blue2 },
-    ["@variable.parameter"] = { ctermfg = c.yellow3 },
+    ["@variable.parameter"] = { ctermfg = c.yellow },
 }
 
 for group, hl in pairs(colorscheme) do
