@@ -49,19 +49,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.lsp.enable({
-    "bashls",
     "clangd",
-    -- "copilot",
-    "fortls",
-    "marksman",
-    "pylsp",
-    -- "ruff",
-    "lua_ls",
-    "rust_analyzer",
     "texlab",
-    "tinymist",
-    "ts_ls",
-    "vimls",
     "wolfram_lsp",
 })
 

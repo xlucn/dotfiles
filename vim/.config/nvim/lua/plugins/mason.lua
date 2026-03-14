@@ -11,4 +11,16 @@ return {
             }
         }
     },
+    {
+        "mason-org/mason-lspconfig.nvim",
+        opts = {
+            automatic_enable = {
+                exclude = { 'copilot' }
+            }
+        },
+        dependencies = {
+            "mason-org/mason.nvim",
+            "neovim/nvim-lspconfig",
+        },
+    }
 }
