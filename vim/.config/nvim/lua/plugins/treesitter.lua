@@ -4,23 +4,19 @@ return {
         dependencies = {
             { 'nvim-treesitter/nvim-treesitter' },
         },
-        init = function()
-            vim.api.nvim_set_hl(0, 'TreesitterContext', { ctermbg = 0 })
-            vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { ctermbg = 0 })
-        end,
         opts = {
-            max_lines = 3,
+            -- max_lines = 3,
             trim_scope = 'outer',
             multiline_threshold = 1,
         },
-        event = "BufEnter",
     },
     {
         'nvim-treesitter/nvim-treesitter',
+        lazy = false,
+        main = 'nvim-treesitter.configs',
         dependencies = {
             { 'nvim-treesitter/nvim-treesitter-textobjects' },
         },
-        event = "BufEnter",
         opts = {
             ensure_installed = {
                 'bash', 'c', 'cpp', 'lua', 'python', 'latex',
@@ -30,7 +26,6 @@ return {
             auto_install = true,
             highlight = {
                 enable = true,
-                disable = { "fortran" },
             },
             incremental_selection = {
                 enable = true,
@@ -39,6 +34,7 @@ return {
                 enable = true,
             },
             textobjects = {
+                enable = true,
                 select = {
                     enable = true,
                     -- Automatically jump forward to textobj, similar to targets.vim
@@ -101,6 +97,6 @@ return {
                     },
                 },
             }
-        }
+        },
     },
 }
