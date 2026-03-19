@@ -12,9 +12,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- set hightlight of LazyNormal in lua
-vim.api.nvim_set_hl(0, "LazyNormal", { ctermbg = 8 })
-
 -- Setup lazy.nvim
 require("lazy").setup({
     defaults = {

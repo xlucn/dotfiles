@@ -28,4 +28,12 @@ return {
         config = true,
         cmd = 'Trouble'
     },
+    {
+        "navarasu/onedark.nvim",
+        priority = 1000,
+        opts = {
+            style = 'dark',
+            transparent = true,
+        }
+    },
 }

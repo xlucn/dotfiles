@@ -7,7 +7,7 @@ vim.o.laststatus = 3
 vim.o.foldenable = false
 vim.o.mousemodel = 'extend'
 vim.o.mousemoveevent = true
-vim.o.termguicolors = false
+vim.o.termguicolors = true
 vim.g.health = { style = 'float' }
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -105,4 +105,4 @@ vim.api.nvim_create_autocmd('InsertEnter', { callback = im_enable })
 vim.api.nvim_create_autocmd('InsertLeave', { callback = im_disable })
 
 require("config.lazy")
-require("config.colors")
+vim.cmd.colorscheme "onedark"
