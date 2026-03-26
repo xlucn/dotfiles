@@ -64,15 +64,6 @@ alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progre
 pip_update() {
     pip list --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --upgrade
 }
-# start xorg
-x() {
-    tty=$(tty)
-    [ "${tty#/dev/tty}" = "$tty" ] && echo Not tty, exiting && return
-    tty=${tty#/dev/tty}
-    xauth add :"$tty" . "$(od -An -N16 -tx /dev/urandom | tr -d ' ')"
-    xinit "$@" -- :"$tty"
-    xauth remove :"$tty"
-}
 
 # Console color theme, reuse .Xresources definitions
 if [ "$TERM" = "linux" ] && tty | grep -q tty; then

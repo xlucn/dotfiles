@@ -2,6 +2,7 @@
 # shellcheck disable=SC1090
 
 [ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
+[ -f "$XDG_CONFIG_HOME/X11/xprofile" ] && . "$XDG_CONFIG_HOME/X11/xprofile"
 
 systemctl --user import-environment DISPLAY
 WALLPAPER=$HOME/Pictures/wallpaper.jpg
@@ -43,7 +44,7 @@ WM=${1:-dwm}
 if [ "${WM%2x}" != "$WM" ]; then
     # export XCURSOR_SIZE=48
     export GDK_SCALE=2
-
+    export XCURSOR_SIZE=48
     export GDK_DPI_SCALE=0.5
     export QT_AUTO_SCREEN_SCALE_FACTOR=1
     export QT_ENABLE_HIGHDPI_SCALING=1
