@@ -1,11 +1,11 @@
 return {
     settings = {
         pylsp = {
-            ruff = {
-                enabled = true,
-                formatEnabled = true,
-                preview = true
-            },
+            plugins = {
+                jedi = {
+                    environment = vim.fn.exepath('python'),
+                },
+            }
         }
     }
 }
