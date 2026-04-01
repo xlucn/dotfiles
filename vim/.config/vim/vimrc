@@ -287,17 +287,9 @@ nnoremap <leader>gg :call GitTig()<CR>
 " Markdown preview{{{
 function MarkdownPreviewToggle()
     if !exists('b:mdp_job')
-        if has('nvim')
-            let b:mdp_job = jobstart(['grip', '-b', expand("%:p")])
-        else
-            let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
-        endif
+        let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
     else
-        if has('nvim')
-            call jobstop(b:mdp_job)
-        else
-            call job_stop(b:mdp_job)
-        endif
+        call job_stop(b:mdp_job)
         unlet b:mdp_job
     endif
 endfunction
