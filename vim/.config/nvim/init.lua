@@ -15,14 +15,10 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 local mapopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
-vim.keymap.set('n', '<M-k>', '<C-W>W', mapopts)
-vim.keymap.set('n', '<M-J>', '<C-W>r', mapopts)
-vim.keymap.set('n', '<M-K>', '<C-W>R', mapopts)
-vim.keymap.set('n', '<M-h>', '<C-W><', mapopts)
-vim.keymap.set('n', '<M-l>', '<C-W>>', mapopts)
-vim.keymap.set('n', '<M-H>', '<C-W>-', mapopts)
-vim.keymap.set('n', '<M-L>', '<C-W>+', mapopts)
+vim.keymap.set('n', '<C-N>', '<cmd>bnext<cr>', mapopts)
+vim.keymap.set('n', '<C-P>', '<cmd>bprevious<cr>', mapopts)
+vim.keymap.set('n', '<C-J>', '<C-W>w', mapopts)
+vim.keymap.set('n', '<C-K>', '<C-W>W', mapopts)
 
 vim.diagnostic.config({
     virtual_text = true,

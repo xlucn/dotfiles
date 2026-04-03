@@ -33,6 +33,13 @@ set display+=lastline   " show partial line
 set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
+
+" Navigation
+nnoremap <silent> <C-P> <CMD>cprevious<CR>
+nnoremap <silent> <C-N> <CMD>cnext<CR>
+nnoremap <silent> [l <CMD>lprevious<CR>
+nnoremap <silent> ]l <CMD>lnext<CR>
+
 " color scheme
 hi ColorColumn  ctermbg=DarkGray    cterm=NONE
 hi CursorColumn ctermbg=DarkGray
