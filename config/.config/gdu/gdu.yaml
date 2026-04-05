@@ -1,4 +1,5 @@
 show-apparent-size: false
 show-relative-size: true
+show-item-count: true
 no-cross: true
 write-config: false
