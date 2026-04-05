@@ -24,22 +24,23 @@ vim.diagnostic.config({
     virtual_text = true,
     virtual_lines = {severity = { min = vim.diagnostic.severity.ERROR }},
 })
-vim.lsp.inlay_hint.enable()
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function (args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client and client.name == "texlab" then
-            local function buf_set_keymap(key, cmd)
-                vim.api.nvim_buf_set_keymap(args.buf, 'n', key, cmd, {
-                    noremap = true, silent = true
-                })
+        if client then
+            if client.name == "texlab" then
+                local function buf_set_keymap(key, cmd)
+                    vim.keymap.set('n', key, cmd, { buffer=args.buf })
+                end
+                buf_set_keymap('<leader>ll', '<cmd>LspTexlabBuild<CR>')
+                buf_set_keymap('<leader>lv', '<cmd>LspTexlabForward<CR>')
+                buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
+                buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
+                buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
+            else
+                vim.lsp.inlay_hint.enable()
             end
-            buf_set_keymap('<leader>ll', '<cmd>LspTexlabBuild<CR>')
-            buf_set_keymap('<leader>lv', '<cmd>LspTexlabForward<CR>')
-            buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
-            buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
-            buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
         end
     end
 })
@@ -59,15 +60,11 @@ vim.lsp.enable({
 --       vim.lsp.inline_completion.enable(true, { bufnr = bufnr })
 --
 --       vim.keymap.set(
---         'i',
---         '<C-F>',
---         vim.lsp.inline_completion.get,
+--         'i', '<C-F>', vim.lsp.inline_completion.get,
 --         { desc = 'LSP: accept inline completion', buffer = bufnr }
 --       )
 --       vim.keymap.set(
---         'i',
---         '<C-G>',
---         vim.lsp.inline_completion.select,
+--         'i', '<C-G>', vim.lsp.inline_completion.select,
 --         { desc = 'LSP: switch inline completion', buffer = bufnr }
 --       )
 --     end
