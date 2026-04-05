@@ -91,10 +91,10 @@ else
 fi
 
 # History, https://unix.stackexchange.com/questions/18212
-HISTSIZE=-1
-HISTFILESIZE=-1
-HISTCONTROL=ignoredups:erasedups
-HISTFILE="$XDG_DATA_HOME/bash_history"
+export HISTSIZE=-1
+export HISTFILESIZE=-1
+export HISTCONTROL=ignoredups:erasedups
+export HISTFILE="$XDG_DATA_HOME/bash_history"
 [ -n "$BASH" ] && shopt -s histappend
 
 # Disable ctrl-s and ctrl-q
