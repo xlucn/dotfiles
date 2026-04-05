@@ -1,5 +1,10 @@
 return {
     {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = { }
+    },
+    {
         'akinsho/toggleterm.nvim',
         opts = {
             direction = 'tab',
@@ -11,6 +16,25 @@ return {
             { '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mode = 'n' },
             { '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mode = 'v' },
         }
+    },
+    {
+        "danymat/neogen",
+        opts = {
+            languages = {
+                python = {
+                    template = {
+                        annotation_convention = "numpydoc"
+                    }
+                }
+            }
+        },
+        keys = {
+            { "<leader>nn", "<cmd>Neogen<cr>", desc = "Generate documentation" },
+            { "<leader>nf", "<cmd>Neogen func<cr>", desc = "Generate function documentation" },
+            { "<leader>nc", "<cmd>Neogen class<cr>", desc = "Generate class documentation" },
+            { "<leader>nt", "<cmd>Neogen type<cr>", desc = "Generate type documentation" },
+            { "<leader>nF", "<cmd>Neogen file<cr>", desc = "Generate file documentation" },
+        },
     },
     {
         'nvim-telescope/telescope.nvim',
