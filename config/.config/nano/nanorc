@@ -155,7 +155,7 @@ set nonewlines
 # set regexp
 
 ## Save a changed buffer automatically on exit; don't prompt.
-set saveonexit
+unset saveonexit
 
 ## Put the cursor on the highlighted item in the file browser, and
 ## show the cursor in the help viewer; useful for people who use a
