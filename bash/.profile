@@ -30,7 +30,8 @@ export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/share:/usr/local/share}"
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 
 export MANPATH="$XDG_DATA_HOME/man:$MANPATH"
-export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export MANROFFOPT="-P -c"
+export MANPAGER="less -Dd+r -Du+b"
 export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
@@ -39,6 +40,7 @@ export XCURSOR_THEME="Adwaita"
 export XCURSOR_SIZE="24"
 # less history
 export LESSHISTFILE=-
+export LESS="-RM --use-color"
 # rlwrap history
 export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
 # elinks
