@@ -154,9 +154,9 @@ export WINEPREFIX="${XDG_DATA_HOME}/wineprefix"
 # wechat data
 export WECHAT_DATA_DIR="$XDG_DATA_HOME/wechat_universe"
 
-# PATH
+# PATH, last '|| true' to avoid error when '&& ...' is not executed
 add_to_path() {
-    [ "$PATH" = "${PATH#*"$*"}" ] && export PATH="$*:${PATH}"
+    [ "$PATH" = "${PATH#*"$*"}" ] && export PATH="$*:${PATH}" || true
 }
 add_to_path "$HOME/.local/bin"
 add_to_path "$NPM_PACKAGES/bin"
