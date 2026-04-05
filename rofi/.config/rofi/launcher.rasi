@@ -21,14 +21,14 @@ configuration {
 }
 
 * {
-    background-color    : #21212100;
-    color               : #EEFFFFFF;
+    background-color    : #212121;
+    color               : white;
     /* color for highlighted things */
-    selected-background : #EEFFFF40;
+    selected-background : gray;
 }
 
 window {
-    background-color    : #21212180;
+    background-color    : #212121;
     width: 100%;
     height: 100%;
 }
@@ -75,6 +75,6 @@ element-icon {
 
 element-text, element-icon {
     horizontal-align: 0.5;
-    background-color: none;
+    background-color: inherit;
     color:            inherit;
 }

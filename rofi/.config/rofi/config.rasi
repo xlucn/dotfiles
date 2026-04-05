@@ -24,7 +24,7 @@ configuration {
     padding          : 0px;
     border           : 0px;
     spacing          : 0px;
-    color            : #EEFFFF;
+    color            : white;
     background-color : #212121;
 }
 
@@ -69,7 +69,3 @@ element normal active   { background-color: #C3E88D; }
 element selected normal { background-color: #4a4a4a; }
 element selected urgent { background-color: #FFCB6B; }
 element selected active { background-color: #F07178; }
-
-/* vim magic line below, but use multiline comment
- * vim: ft=css
- */
