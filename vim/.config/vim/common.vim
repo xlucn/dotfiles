@@ -85,14 +85,8 @@ noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
 " Autocmd {{{
 augroup normal
     autocmd!
-    " some file types
-    autocmd BufNewFile,BufRead *.mac setlocal ft=maxima
-    autocmd BufNewFile,BufRead *.plt setlocal ft=gnuplot
-    autocmd BufNewFile,BufRead *.muttrc setlocal ft=muttrc
-    " load Xresources on save
-    autocmd BufWritePost Xresources,*Xresources call system("xrdb -load ".expand('%'))
     " tabs for these file types
-    autocmd FileType tex,markdown,mma setlocal sw=2 ts=2 sts=2
+    autocmd FileType tex,markdown,mma,yaml setlocal sw=2 ts=2 sts=2
     autocmd FileType c,cpp,mma,json setlocal noet
     " spell check for these file types
     autocmd FileType tex,markdown,gitcommit setlocal spell
