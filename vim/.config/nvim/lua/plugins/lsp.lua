@@ -26,5 +26,10 @@ return {
             "mason-org/mason.nvim",
             "neovim/nvim-lspconfig",
         },
-    }
+    },
+    {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        config = true,
+    },
 }
