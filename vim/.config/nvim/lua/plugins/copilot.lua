@@ -1,21 +1,5 @@
 return {
     {
-        "zbirenbaum/copilot.lua",
-        event = "InsertEnter",
-        init = function()
-            vim.api.nvim_set_hl(0, "CopilotSuggestion", { link = "NonText" })
-        end,
-        opts = {
-            suggestion = {
-                enabled = true,
-                auto_trigger = true,
-                keymap = {
-                    accept = '<C-J>'
-                }
-            }
-        },
-    },
-    {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "main",
         dependencies = {

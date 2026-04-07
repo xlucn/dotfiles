@@ -30,7 +30,6 @@ set updatetime=100      " update time, related to fugitive sign column update, e
 set signcolumn=yes      " always show sign column
 set colorcolumn=80      " highlight column 80
 set lazyredraw          " redraw when needed
-set shortmess+=nocI     " don't show welcome screen
 set showtabline=2       " show tabs on top
 set noshowmode          " do not show mode on the last line
 set foldcolumn=0

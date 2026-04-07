@@ -20,9 +20,20 @@ vim.keymap.set('n', '<C-P>', '<cmd>bprevious<cr>', mapopts)
 vim.keymap.set('n', '<C-J>', '<C-W>w', mapopts)
 vim.keymap.set('n', '<C-K>', '<C-W>W', mapopts)
 
+-- enable experimental but good new ui framework
+require('vim._core.ui2').enable()
+
 vim.diagnostic.config({
     virtual_text = true,
     virtual_lines = {severity = { min = vim.diagnostic.severity.ERROR }},
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'markdown',
+    callback = function ()
+        vim.wo.foldexpr = 'v:lua.vim.treesitter#foldexpr()'
+        vim.wo.foldmethod = 'expr'
+    end
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -38,8 +49,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
                 buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
                 buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
-            else
-                vim.lsp.inlay_hint.enable()
+            -- else
+                -- vim.lsp.inlay_hint.enable()
             end
         end
     end
@@ -51,25 +62,25 @@ vim.lsp.enable({
     "wolfram_lsp",
 })
 
--- vim.api.nvim_create_autocmd('LspAttach', {
---   callback = function(args)
---     local bufnr = args.buf
---     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
---
---     if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
---       vim.lsp.inline_completion.enable(true, { bufnr = bufnr })
---
---       vim.keymap.set(
---         'i', '<C-F>', vim.lsp.inline_completion.get,
---         { desc = 'LSP: accept inline completion', buffer = bufnr }
---       )
---       vim.keymap.set(
---         'i', '<C-G>', vim.lsp.inline_completion.select,
---         { desc = 'LSP: switch inline completion', buffer = bufnr }
---       )
---     end
---   end
--- })
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local bufnr = args.buf
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+        if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
+            vim.lsp.inline_completion.enable(true, { bufnr = bufnr })
+
+            vim.keymap.set(
+                'i', '<C-J>', vim.lsp.inline_completion.get,
+                { desc = 'LSP: accept inline completion', buffer = bufnr }
+            )
+            vim.keymap.set(
+                'i', '<C-F>', vim.lsp.inline_completion.select,
+                { desc = 'LSP: switch inline completion', buffer = bufnr }
+            )
+        end
+    end
+})
 
 -- Convert IM Toggle to Lua
 local fcitx_cmd = nil
