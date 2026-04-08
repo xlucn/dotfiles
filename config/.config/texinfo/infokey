@@ -1,0 +1,84 @@
+# Keybinding for `info' command, to make vim users happy
+
+# Note: keep the next line, it is required.
+#info
+
+# Moving the cursor
+# hjkl and arrow keys
+j       next-line
+k       prev-line
+l       forward-char
+\kr     forward-char            # Right key
+h       backward-char
+\kl     backward-char           # Left key
+w       foward-word
+b       backward-word
+# some vim navigation keys
+0       beginning-of-line
+\kh     beginning-of-line       # Home key
+$       end-of-line
+\ke     end-of-line             # End key
+g       beginning-of-node
+G       end-of-node
+
+# Scolling within a window
+# some vim navigation keys
+<SPC>   scroll-forward-page-only
+<BS>    scroll-backward-page-only
+^f      scroll-forward-page-only
+^b      scroll-backward-page-only
+^d      scroll-half-screen-down
+^u      scroll-half-screen-up
+\ku     up-line                 # Up key
+^y      up-line
+\kd     down-line               # Down key
+^e      down-line
+
+# Selecting a node
+# global-*-node variants also traverse through sub-nodes
+# *-node only navigates within the current level
+^n      global-next-node
+J       global-next-node
+^p      global-prev-node
+K       global-prev-node
+^t      up-node
+T       up-node
+o       goto-node
+# for ctrl-t, think of vim's tag jumping
+^t      history-node
+H       history-node
+
+# Searching an info file
+/       search
+?       search-backward
+n       search-next
+N       search-previous
+
+# Window commands
+# vim's window switching
+^w^w    next-window
+^w^n    next-window
+^w^j    next-window
+^w^p    prev-window
+^w^k    prev-window
+
+# Others
+# ?       get-help-window
+q       quit
+\e      abort-key
+
+# Note: keep the next line, it is required.
+#echo-area
+
+# Note: keep the next line, it is required.
+#var
+link-style=blue
+active-link-style=red,bold
+match-style=white,standout
+
+automatic-footnotes=On
+# Enable mouse
+mouse=On
+# Do not scroll to next page
+scroll-behavior=Page Only
+cursor-movement-scrolls=Off
