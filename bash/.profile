@@ -91,9 +91,9 @@ export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
 # maxima
 export MAXIMA_USERDIR="$XDG_DATA_HOME/maxima"
 # android
-export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME/android"
+export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
-export ANDROID_HOME="$XDG_DATA_HOME"/android
+export ANDROID_HOME="$XDG_DATA_HOME"
 # java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"

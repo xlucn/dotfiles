@@ -54,7 +54,7 @@ alias au="sudo pacman -Syu && proxychains paru -Sua"
 alias fricas="fricas -nox -noht -rl"
 alias neo-matrix="neo-matrix -a -D background -F"
 # adb
-alias adb='HOME="$XDG_DATA_HOME"/android adb'
+alias adb='HOME="$XDG_DATA_HOME" adb'
 # system backup
 alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/var/tmp/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games","/home/*/.cache/paru"} /'
 
