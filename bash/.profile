@@ -48,6 +48,7 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 # python: ipython, jupyter, pylint
 export PYTHON_HISTORY="$XDG_CACHE_HOME/python_history"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 # mathematica
