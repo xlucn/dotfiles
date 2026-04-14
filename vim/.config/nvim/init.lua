@@ -15,10 +15,10 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 local mapopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<C-N>', '<cmd>bnext<cr>', mapopts)
-vim.keymap.set('n', '<C-P>', '<cmd>bprevious<cr>', mapopts)
-vim.keymap.set('n', '<C-J>', '<C-W>w', mapopts)
-vim.keymap.set('n', '<C-K>', '<C-W>W', mapopts)
+vim.keymap.set('n', '<C-j>', '<cmd>bnext<cr>', mapopts)
+vim.keymap.set('n', '<C-k>', '<cmd>bprevious<cr>', mapopts)
+vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
+vim.keymap.set('n', '<M-k>', '<C-W>W', mapopts)
 
 -- enable experimental but good new ui framework
 require('vim._core.ui2').enable()
