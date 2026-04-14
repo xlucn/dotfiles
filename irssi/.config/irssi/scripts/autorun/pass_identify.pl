@@ -68,4 +68,4 @@ sub nickserv_identify_with_pass {
     }
 }
 
-Irssi::signal_add_last('event connected', 'nickserv_identify_with_pass');
+Irssi::signal_add_last('server connected', 'nickserv_identify_with_pass');
