@@ -39,19 +39,15 @@ export XAUTHORITY="${XAUTHORITY:-$XDG_DATA_HOME/Xauthority}"
 export XCURSOR_THEME="Adwaita"
 export XCURSOR_SIZE="24"
 # less history
-export LESSHISTFILE=-
 export LESS="-RM --use-color"
 # rlwrap history
 export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
-# elinks
-export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 # gnupg
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 # gtk2
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 # python: ipython, jupyter, pylint
 export PYTHON_HISTORY="$XDG_CACHE_HOME/python_history"
-export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/ipython"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 # mathematica
@@ -73,15 +69,10 @@ export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 # abduco
 export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
-# ruby bundle/gem
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
 # dvdcss
 export DVDCSS_CACHE="$XDG_DATA_HOME/dvdcss"
 # ex/vi
 export EXINIT=":source $XDG_CONFIG_HOME/ex/exrc"
-unset VIMINIT
 # libice
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 # nodejs
