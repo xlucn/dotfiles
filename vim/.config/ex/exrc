@@ -1,6 +1,7 @@
-" vim: ft=vim
-" exrc: vi init file
-" Note: comment starts with ", and no empty lines
+" vim: ft=exrc syntax=vim commentstring=\"\ %s
+" exrc, vi init file
+" Note1: comment starts with "
+" Note2: NO empty lines
 "
 """"""""""""""
 " Vi Options "
