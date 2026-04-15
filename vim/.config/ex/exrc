@@ -83,3 +83,9 @@ map  "ayy:@a
 """""""""""""""""
 " Abbreviations "
 """""""""""""""""
+"
+"""""""""""""""""""""
+" Start up commands "
+"""""""""""""""""""""
+" Use the block cursor shape, works when shell=bash
+!echo -ne "\e[2 q"
