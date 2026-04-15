@@ -36,10 +36,6 @@ set foldcolumn=0
 set foldmethod=expr
 set wrap
 set smoothscroll
-" built-in plugins or file type supports {{{
-let g:termdebug_wide=1
-let g:tex_flavor = "latex"
-" }}}
 " Space Tabs Indentations {{{
 " tabs
 set tabstop=4
@@ -79,7 +75,6 @@ noremap <leader>d <CMD>bd<CR>
 noremap <leader>w <CMD>w<CR>
 noremap <leader>e <CMD>e<CR>
 noremap <leader>x <CMD>x<CR>
-noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
 " }}}
 " Autocmd {{{
 augroup normal

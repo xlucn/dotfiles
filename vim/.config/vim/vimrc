@@ -34,6 +34,7 @@ set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
 
+noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
 " Navigation
 nnoremap <silent> <C-P> <CMD>cprevious<CR>
 nnoremap <silent> <C-N> <CMD>cnext<CR>
@@ -106,6 +107,8 @@ let g:loaded_python3_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_ruby_provider = 0
+let g:termdebug_wide=1
+let g:tex_flavor = "latex"
 " }}}
 " vim-plug {{{
 call plug#begin()
