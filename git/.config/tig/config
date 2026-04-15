@@ -10,6 +10,7 @@ bind generic g move-first-line
 bind generic G move-last-line
 bind generic <Ctrl-b> move-page-up
 bind generic <Ctrl-f> move-page-down
+bind generic D :toggle word-diff
 bind main g move-first-line
 bind main G move-last-line
 
