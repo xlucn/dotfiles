@@ -57,7 +57,6 @@ return {
         dependencies = {
             { 'nvim-lua/plenary.nvim' },
         },
-        cmd = "Telescope",
         opts = {
             defaults = {
                 layout_strategy = 'flex',
@@ -72,6 +71,16 @@ return {
                 },
             }
         },
+        keys = {
+            { "<leader>fb", "<cmd>Telescope buffers<cr>",    desc = "Find buffers" },
+            { "<leader>fc", "<cmd>Telescope colorscheme<cr>",   desc = "Find colorschemes" },
+            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+            { "<leader>fg", "<cmd>Telescope live_grep<cr>",  desc = "Live grep" },
+            { "<leader>fh", "<cmd>Telescope help_tags<cr>",  desc = "Find help tags" },
+            { "<leader>fo", "<cmd>Telescope vim_options<cr>", desc = "List vim options" },
+            { "<leader>fq", "<cmd>Telescope quickfix<cr>",   desc = "Find quickfix" },
+            { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Find document symbols" },
+        }
     },
     {
         'ojroques/nvim-bufdel',
