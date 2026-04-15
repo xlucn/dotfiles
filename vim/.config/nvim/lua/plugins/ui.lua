@@ -13,6 +13,11 @@ return {
         event = "UIEnter"
     },
     {
+        "catgoose/nvim-colorizer.lua",
+        event = "BufReadPre",
+        opts = {}
+    },
+    {
         'lewis6991/gitsigns.nvim',
         config = true,
     },
