@@ -17,15 +17,11 @@ return {
             end
 
             -- Close UI automatically when debugging ends
-            -- dap.listeners.before.event_terminated.dapui_config = function()
-            --     vim.ui.input({
-            --         prompt = 'Program exited, press Enter to close:'
-            --     }, function () dapui.close() end)
-            -- end
+            dap.listeners.before.event_terminated.dapui_config = function()
+                dapui.close()
+            end
             dap.listeners.before.event_exited.dapui_config = function()
-                vim.ui.input({
-                    prompt = 'Program exited, press Enter to close:'
-                }, function () dapui.close() end)
+                dapui.close()
             end
         end,
         opts = {
@@ -104,7 +100,7 @@ return {
         config = function()
             require('dap-python').setup()
             -- Allow step into library code
-            -- require('dap').configurations.python[1].justMyCode = false
+            require('dap').configurations.python[1].justMyCode = false
         end
     },
     {
@@ -115,7 +111,11 @@ return {
             dap.adapters.gdb = {
                 type = "executable",
                 command = "gdb",
-                args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+                args = {
+                    "--interpreter=dap",
+                    "--eval-command",
+                    "set print pretty on"
+                }
             }
             -- Then, configure different filetypes to use specific adapters
             dap.configurations.cpp = {
