@@ -1,88 +1,33 @@
 return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "main",
         dependencies = {
-            { "zbirenbaum/copilot.lua" },
-            { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+            { "nvim-lua/plenary.nvim" },
         },
         opts = {
             chat_autocomplete = true,
         },
         keys = {
-            {
-                "<localleader>cc",
-                "<CMD>CopilotChatToggle<CR>",
-                mode = { "n", "x" },
-                desc = "Toggle"
-            },
-            {
-                "<localleader>ce",
-                "<CMD>CopilotChatExplain<CR>",
-                mode = { "n", "x" },
-                desc = "Explain"
-            },
-            {
-                "<localleader>cr",
-                "<CMD>CopilotChatReview<CR>",
-                mode = { "n", "x" },
-                desc = "Review"
-            },
-            {
-                "<localleader>cf",
-                "<CMD>CopilotChatFix<CR>",
-                mode = { "n", "x" },
-                desc = "Fix"
-            },
-            {
-                "<localleader>co",
-                "<CMD>CopilotChatOptimize<CR>",
-                mode = { "n", "x" },
-                desc = "Optimize"
-            },
-            {
-                "<localleader>cd",
-                "<CMD>CopilotChatDocs<CR>",
-                mode = { "n", "x" },
-                desc = "Docs"
-            },
-            {
-                "<localleader>ct",
-                "<CMD>CopilotChatTests<CR>",
-                mode = { "n", "x" },
-                desc = "Tests"
-            },
-            {
-                "<localleader>cF",
-                "<CMD>CopilotChatFixDiagnostic<CR>",
-                mode = { "n", "x" },
-                desc = "Fix Diagnostics"
-            },
-            {
-                "<localleader>cC",
-                "<CMD>CopilotChatCommit<CR>",
-                mode = { "n", "x" },
-                desc = "Commit"
-            },
-            {
-                "<localleader>cS",
-                "<CMD>CopilotChatCommitStaged<CR>",
-                mode = { "n", "x" },
-                desc = "Commit Staged"
-            },
-            {
-                "<localleader>cq",
-                function()
-                    local input = vim.fn.input("Quick Chat: ")
-                    if input ~= "" then
-                        require("CopilotChat").ask(input, {
-                            selection = require("CopilotChat.selection").buffer
-                        })
-                    end
-                end,
-                mode = { "n", "x" },
-                desc = "Quick chat",
-            }
-        }
+            { "<leader>cc", ":CopilotChatToggle<CR>",
+              mode = { "n", "x" }, desc = "Toggle" },
+            { "<leader>ce", ":CopilotChatExplain<CR>",
+              mode = { "n", "x" }, desc = "Explain" },
+            { "<leader>cr", ":CopilotChatReview<CR>",
+              mode = { "n", "x" }, desc = "Review" },
+            { "<leader>cf", ":CopilotChatFix<CR>",
+              mode = { "n", "x" }, desc = "Fix" },
+            { "<leader>co", ":CopilotChatOptimize<CR>",
+              mode = { "n", "x" }, desc = "Optimize" },
+            { "<leader>cd", ":CopilotChatDocs<CR>",
+              mode = { "n", "x" }, desc = "Docs" },
+            { "<leader>ct", ":CopilotChatTests<CR>",
+              mode = { "n", "x" }, desc = "Tests" },
+            { "<leader>cC", ":CopilotChatCommit<CR>",
+              mode = { "n", "x" }, desc = "Commit" },
+            { "<leader>cp", ":CopilotChatPrompts<CR>",
+              mode = { "n", "x" }, desc = "Commit" },
+            { "<leader>cm", ":CopilotChatModels<CR>",
+              mode = { "n", "x" }, desc = "Commit" },
+        },
     },
 }
