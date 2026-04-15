@@ -38,8 +38,8 @@ export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
 export XAUTHORITY="${XAUTHORITY:-$XDG_DATA_HOME/Xauthority}"
 export XCURSOR_THEME="Adwaita"
 export XCURSOR_SIZE="24"
-# less history
-export LESS="-RM --use-color"
+# less options
+export LESS="-RM --use-color --mouse --wheel-lines=3"
 # rlwrap history
 export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
 # gnupg
