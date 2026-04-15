@@ -1,5 +1,21 @@
 return {
     {
+        'folke/which-key.nvim',
+        ---@class wk.Opts
+        opts = {
+            preset = "helix",
+            spec = {
+                { '<leader>l', group = "language server" },
+                { '<leader>z', group = "zk notes" },
+            },
+        },
+    },
+    {
+        'folke/trouble.nvim',
+        config = true,
+        cmd = 'Trouble'
+    },
+    {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = { }
@@ -56,7 +72,7 @@ return {
                 },
             }
         },
-    {
+    },
     {
         'ojroques/nvim-bufdel',
         config = true,

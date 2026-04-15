@@ -13,20 +13,8 @@ return {
         event = "UIEnter"
     },
     {
-        'folke/which-key.nvim',
-        ---@class wk.Opts
-        opts = {
-            preset = "helix",
-            spec = {
-                { '<leader>l', group = "language server" },
-                { '<leader>z', group = "zk notes" },
-            },
-        },
-    },
-    {
-        'folke/trouble.nvim',
+        'lewis6991/gitsigns.nvim',
         config = true,
-        cmd = 'Trouble'
     },
     {
         "navarasu/onedark.nvim",
@@ -35,9 +23,5 @@ return {
             style = 'dark',
             transparent = true,
         }
-    },
-    {
-        'lewis6991/gitsigns.nvim',
-        config = true,
     },
 }
