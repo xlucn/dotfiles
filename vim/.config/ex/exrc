@@ -65,10 +65,16 @@ map  :source ~/.config/ex/exrc
 " Complete words, famous vi macros
 map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
 map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
+" https://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html#tth_sEc4.1
 "
-" Do fmt command (join lines in a paragraph)
+" Join lines in a paragraph
 " Modified from https://hea-www.harvard.edu/~fine/Tech/vi.html
 map V 0ma}b:'a,.j}j
+" Format mapping
+" Original mapping from https://hea-www.harvard.edu/~fine/Tech/vi.html
+" This will join the rest of the paragraph, break the line at the 72th column.
+" You should keep pressing the key to format the whole paragraph.
+map v 0ma}b:'a,.j072 ?  *dwi
 "
 " Execute current line (it's not working)
 map  "ayy:@a
