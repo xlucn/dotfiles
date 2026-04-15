@@ -1,13 +1,18 @@
 return {
     {
-        'nvim-treesitter/nvim-treesitter-context',
-        dependencies = {
-            { 'nvim-treesitter/nvim-treesitter' },
-        },
-        opts = {
-            trim_scope = 'outer',
-            multiline_threshold = 1,
-        },
+        'nvim-treesitter/nvim-treesitter',
+        init = function()
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = { 'bash', 'c', 'lua', 'markdown', 'python', 'vim', 'vimdoc' },
+                callback = function(ev)
+                    require'nvim-treesitter'.install(ev.match)
+                    -- Enable treesitter highlighting and disable regex syntax
+                    pcall(vim.treesitter.start)
+                    -- indentation, provided by nvim-treesitter
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end,
+            })
+        end,
     },
     {
         'nvim-treesitter/nvim-treesitter-textobjects',
@@ -63,18 +68,13 @@ return {
         },
     },
     {
-        'nvim-treesitter/nvim-treesitter',
-        -- main = 'nvim-treesitter.configs',
-        branch = "main",
-        init = function()
-            vim.api.nvim_create_autocmd('FileType', {
-                callback = function()
-                    -- Enable treesitter highlighting and disable regex syntax
-                    pcall(vim.treesitter.start)
-                    -- indentation, provided by nvim-treesitter
-                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-                end,
-            })
-        end,
+        'nvim-treesitter/nvim-treesitter-context',
+        dependencies = {
+            { 'nvim-treesitter/nvim-treesitter' },
+        },
+        opts = {
+            trim_scope = 'outer',
+            multiline_threshold = 1,
+        },
     },
 }
