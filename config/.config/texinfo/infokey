@@ -11,7 +11,7 @@ l       forward-char
 \kr     forward-char            # Right key
 h       backward-char
 \kl     backward-char           # Left key
-w       foward-word
+w       forward-word
 b       backward-word
 # some vim navigation keys
 0       beginning-of-line
