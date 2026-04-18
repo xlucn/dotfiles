@@ -63,22 +63,39 @@ map  :source ~/.config/ex/exrc
 " map! OC la
 " map! OD ha
 "
-" Complete words, famous vi macros
-map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
-map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
+" Complete words, famous vi macros, modified from original below
+map!  a.hbmmi?\<2h"zdt.@zywmx`mPlxa
+map!  a.hbmmi/\<2h"zdt.@zywmx`mPlxa
 " https://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html#tth_sEc4.1
+" map!  a. hbmmi?\<2h"zdt.@zywmx`mP xi
+" map!  a. hbmmi/\<2h"zdt.@zywmx`mP xi
 "
 " Join lines in a paragraph
 " Modified from https://hea-www.harvard.edu/~fine/Tech/vi.html
 map V 0ma}b:'a,.j}j
+"
 " Format mapping
 " Original mapping from https://hea-www.harvard.edu/~fine/Tech/vi.html
 " This will join the rest of the paragraph, break the line at the 72th column.
 " You should keep pressing the key to format the whole paragraph.
 map v 0ma}b:'a,.j072 ?  *dwi
 "
-" Execute current line (it's not working)
+" Execute current line
+" Vi doesn't have command history, this can be used to try and modify commands
 map  "ayy:@a
+"
+" Surround word with "/'/()/[]/{}
+map " ebi"ea"
+map ' ebi'ea'
+map ) ebi(ea)
+map ] ebi[ea]
+map } ebi{ea}
+" Delete surrounding "/'/()/[]/{}
+map " F"xf"x
+map ' F'xf'x
+map ) F(xf)x
+map ] F[xf]x
+map } F{xf}x
 "
 """""""""""""""""
 " Abbreviations "
