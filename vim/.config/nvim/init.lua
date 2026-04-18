@@ -38,35 +38,22 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function (args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client then
-            if client.name == "texlab" then
-                local function buf_set_keymap(key, cmd)
-                    vim.keymap.set('n', key, cmd, { buffer=args.buf })
-                end
-                buf_set_keymap('<leader>ll', '<cmd>LspTexlabBuild<CR>')
-                buf_set_keymap('<leader>lv', '<cmd>LspTexlabForward<CR>')
-                buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
-                buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
-                buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
-            -- else
-                -- vim.lsp.inlay_hint.enable()
-            end
-        end
-    end
-})
-
-vim.lsp.enable({
-    "clangd",
-    "texlab",
-    "wolfram_lsp",
-})
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(args)
-        local bufnr = args.buf
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
+        if client.name == "texlab" then
+            local function buf_set_keymap(key, cmd)
+                vim.keymap.set('n', key, cmd, { buffer=args.buf })
+            end
+            buf_set_keymap('<leader>ll', '<cmd>LspTexlabBuild<CR>')
+            buf_set_keymap('<leader>lv', '<cmd>LspTexlabForward<CR>')
+            buf_set_keymap('<leader>lc', '<cmd>LspTexlabCleanAuxiliary<CR>')
+            buf_set_keymap('<leader>lC', '<cmd>LspTexlabCleanArtifacts<CR>')
+            buf_set_keymap('<leader>lr', '<cmd>LspTexlabChangeEnvironment<CR>')
+        -- else
+            -- vim.lsp.inlay_hint.enable()
+        end
+
+        local bufnr = args.buf
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
             vim.lsp.inline_completion.enable(true, { bufnr = bufnr })
 
@@ -82,6 +69,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 })
 
+-- Additional lsp enable, others are managed by Mason
+vim.lsp.enable({
+    "clangd",
+    "texlab",
+    "wolfram_lsp",
+})
 
 require("config.lazy")
 vim.cmd.colorscheme "onedark"
