@@ -83,6 +83,10 @@ return {
         }
     },
     {
+        "keaising/im-select.nvim",
+        opts = {}
+    },
+    {
         'ojroques/nvim-bufdel',
         config = true,
         keys = {

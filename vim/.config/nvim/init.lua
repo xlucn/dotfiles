@@ -82,31 +82,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 })
 
--- Convert IM Toggle to Lua
-local fcitx_cmd = nil
-local fcitx_status = nil
-local function check_fcitx_cmd()
-    local search_result = vim.fn.exepath('fcitx5-remote')
-    if search_result ~= '' then
-        fcitx_cmd = 'fcitx5-remote'
-    end
-end
-local function im_disable()
-    if fcitx_cmd == nil then return end
-    fcitx_status = tonumber(vim.fn.system(fcitx_cmd))
-    if fcitx_status == 2 then
-        vim.system({fcitx_cmd, '-c'})
-    end
-end
-local function im_enable()
-    if fcitx_cmd == nil then return end
-    if fcitx_status == 2 then
-        vim.system({fcitx_cmd, '-o'})
-    end
-end
-vim.api.nvim_create_autocmd('VimEnter', { callback = check_fcitx_cmd })
-vim.api.nvim_create_autocmd('InsertEnter', { callback = im_enable })
-vim.api.nvim_create_autocmd('InsertLeave', { callback = im_disable })
 
 require("config.lazy")
 vim.cmd.colorscheme "onedark"
