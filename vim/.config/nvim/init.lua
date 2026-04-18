@@ -2,13 +2,15 @@
 vim.cmd(":source $XDG_CONFIG_HOME/vim/common.vim")
 
 -- nvim configuration
-vim.o.cmdheight = 1
+vim.o.cmdheight = 0
 vim.o.laststatus = 3
 vim.o.foldenable = false
 vim.o.mousemodel = 'extend'
 vim.o.mousemoveevent = true
 vim.o.termguicolors = true
-vim.g.health = { style = 'float' }
+vim.o.concealcursor = 'n'
+
+vim.g.health = { style = nil }
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0

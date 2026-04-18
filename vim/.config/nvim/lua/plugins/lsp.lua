@@ -11,7 +11,8 @@ return {
                     package_installed = "✓",
                     package_pending = "➜",
                     package_uninstalled = "✗"
-                }
+                },
+                height = 0.8,
             }
         }
     },

@@ -27,6 +27,7 @@ return {
         opts = {
             style = 'dark',
             transparent = true,
+            term_colors = false,
         }
     },
 }
