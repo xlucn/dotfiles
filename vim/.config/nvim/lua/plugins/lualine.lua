@@ -16,6 +16,10 @@ return {
                 lualine_y = {'lsp_status'},
                 lualine_z = {'tabs'},
             },
+            extensions = {
+                'lazy', 'mason', 'aerial', 'nvim-dap-ui', 'nvim-tree',
+                'toggleterm', 'trouble'
+            }
         },
     }
 }
