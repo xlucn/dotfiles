@@ -9,7 +9,7 @@ set autowrite " automatically write a file when leaving a buffer
 set undofile " persistent undo between restarts
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set spelllang=en,cjk " spell check but exclude CJK language
-set clipboard=unnamedplus " use x11 normal clipboard
+set clipboard+=unnamedplus " use system clipboard
 set timeoutlen=500 " time out for key code delays
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
