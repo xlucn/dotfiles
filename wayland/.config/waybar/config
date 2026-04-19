@@ -54,11 +54,11 @@
         "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
         "unknown-tag": "N/A",
         "interval": 2,
-        "on-click": "mpc toggle",
-        "on-click-right": "foot -a floating_term -e ncmpc",
-        "on-click-middle": "mpc stop",
-        "on-scroll-up": "mpc seek +20",
-        "on-scroll-down": "mpc seek -20",
+        "on-click": "mpc -q toggle",
+        "on-click-right": "alacritty -e ncmpc",
+        "on-click-middle": "mpc -q stop",
+        "on-scroll-up": "mpc -q seek +20",
+        "on-scroll-down": "mpc -q seek -20",
         "consume-icons": { "on": " " },
         "random-icons": { "on": " " },
         "repeat-icons": { "on": " " },
@@ -167,6 +167,6 @@
         "on-click": "dunstctl set-paused toggle",
         "on-scroll-up": "dunstctl history-pop",
         "on-scroll-down": "dunstctl close",
-        "restart-interval": 1,
+        "restart-interval": 1
     }
 }
