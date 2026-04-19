@@ -13,7 +13,7 @@ set clipboard+=unnamedplus " use system clipboard
 set timeoutlen=500 " time out for key code delays
 set diffopt+=vertical " open diff window vertically
 set nrformats+=alpha " use Ctrl-A/X to in/decrease alphabets
-set completeopt=menu,menuone,noselect " completion
+set completeopt=fuzzy,menu,popup,noselect " completion
 set formatoptions+=jormB " roj for comments, mB for CJK
 set ignorecase smartcase
 " }}}
