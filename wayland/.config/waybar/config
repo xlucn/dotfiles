@@ -3,7 +3,11 @@
     // Choose the order of the modules
     "modules-left": [
         "sway/workspaces",
-        "hyprland/workspaces"
+        "sway/window",
+        "hyprland/workspaces",
+        "hyprland/window",
+        "niri/workspaces",
+        "niri/window"
     ],
     "modules-right": [
         "mpd",
@@ -21,12 +25,20 @@
         "tray"
     ],
 
-    "layer": "bottom", // Waybar at top layer
+    "layer": "top", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 32, // Waybar height (to be removed for auto height)
     "spacing": 8, // Gaps between modules (4px)
     "fixed-center": false,
 
+    "niri/workspaces":{
+        "on-scroll-up": "niri msg action focus-workspace-up",
+        "on-scroll-down": "niri msg action focus-workspace-down"
+    },
+    "niri/window":{
+        "on-scroll-up": "niri msg action focus-window-up",
+        "on-scroll-down": "niri msg action focus-window-down"
+    },
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
