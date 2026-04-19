@@ -9,13 +9,18 @@ return {
             "nvim-treesitter/nvim-treesitter",
             "nvim-telescope/telescope.nvim",
         },
+        init = function()
+            vim.opt.conceallevel = 2 -- Enable conceal for markdown
+        end,
         opts = {
-            workspaces = {
-                {
-                    name = "default",
-                    path = "~/Code/Obsidian",
-                },
-            },
+            -- use all sub-directories in ~/Code/Obsidian as workspaces
+            workspaces = vim.iter(
+                vim.fn.glob("~/Code/notes/*/", false, true)
+            ):map(function (d)
+                return { name = vim.fs.basename(d), path = d, }
+            end):totable(),
+            legacy_commands = false,
+            ui = { enable = false },
         },
     }
 }
