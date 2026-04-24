@@ -90,6 +90,8 @@ Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Snippets
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'honza/vim-snippets'
 Plug 'rafamadriz/friendly-snippets'
 call plug#end()
