@@ -19,7 +19,6 @@ filetype plugin on
 filetype indent on
 
 so $XDG_CONFIG_HOME/vim/common.vim
-" vim only settings
 set autoindent
 set autoread " auto reload files
 set encoding=utf-8
@@ -35,6 +34,8 @@ set display+=lastline   " show partial line
 set laststatus=2        " show status line
 set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
+set mouse=a             " enable mouse support in console
+set ttymouse=sgr
 
 noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
 " Navigation
@@ -57,10 +58,6 @@ if has("gui_running") == 0
     endif
 endif
 " built-in plugins or file type supports {{{
-let g:loaded_python3_provider = 0
-let g:loaded_perl_provider = 0
-let g:loaded_node_provider = 0
-let g:loaded_ruby_provider = 0
 let g:termdebug_wide=1
 let g:tex_flavor = "latex"
 " }}}
@@ -74,12 +71,13 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
+" UI
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
-Plug 'junegunn/fzf.vim'
 " Enhancements
+Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'preservim/nerdtree'
 Plug 'jpalardy/vim-slime'
@@ -106,8 +104,6 @@ if (has("autocmd") && !has("gui_running"))
     augroup END
 endif
 colorscheme onedark
-set mouse=a             " enable mouse support in console
-set ttymouse=sgr
 " make
 augroup makeprg
     autocmd!
@@ -156,16 +152,6 @@ function! GitTig()
     redraw!
 endfunction
 nnoremap <leader>gg :call GitTig()<CR>
-" }}}
-" Markdown preview{{{
-function MarkdownPreviewToggle()
-    if !exists('b:mdp_job')
-        let b:mdp_job = job_start(['grip', '-b', expand("%:p")])
-    else
-        call job_stop(b:mdp_job)
-        unlet b:mdp_job
-    endif
-endfunction
 " }}}
 " terminal {{{
 augroup terminal_setup
@@ -291,6 +277,7 @@ endif
 "
 " IM Toggle {{{
 " restore input method state when enter insert mode
+" use this instead of fcitx.vim for faster startuptime (~30ms)
 let s:fcitx_cmd = executable('fcitx5-remote') ? 'fcitx5-remote' :
                 \ executable('fcitx-remote') ? 'fcitx-remote' : v:null
 
