@@ -24,10 +24,11 @@ set autoindent
 set autoread " auto reload files
 set encoding=utf-8
 set hidden
-set incsearch hlsearch
+set incsearch
+set hlsearch
 " UI
-set guioptions=di       " gui options: dark, icon
 set termguicolors
+set guioptions=cd       " minimal gui options
 set background=dark     " color scheme
 set belloff=all         " don't beep
 set display+=lastline   " show partial line
@@ -94,12 +95,6 @@ Plug 'rafamadriz/friendly-snippets'
 call plug#end()
 " }}}
 " Vim Settings
-set mouse=a             " enable mouse support in console
-" mouse support for urxvt and st
-if $TERM =~ "rxvt-unicode"
-    set ttymouse=urxvt
-elseif $TERM =~ "st*"
-    set ttymouse=sgr
 if (has("autocmd") && !has("gui_running"))
     augroup colorset
         autocmd!
@@ -108,67 +103,15 @@ if (has("autocmd") && !has("gui_running"))
         autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white })
     augroup END
 endif
-" My own goyo mode {{{
-noremap <leader>Z :call Goyo()<CR>
-function Goyo()
-    if exists("g:goyo_status")
-        unlet g:goyo_status
-        set nu rnu ru scl=auto stal=2 ls=2
-    else
-        let g:goyo_status = 1
-        set nonu nornu noru scl=no stal=0 ls=0
-    endif
-endfunction
-" }}}
-" execute
-noremap <leader>k :call ExecCurrentFile()<CR>
-function ShowOutput(channel, msg)
-    if bufwinnr("exec_out") == -1
-        sbuffer exec_out
-    endif
-endfunction
-function AsyncRun(cmd)
-    if bufexists("exec_out")
-        call deletebufline("exec_out", 1, '$')
-    endif
-    call job_start(a:cmd, {
-    \   "out_io": "buffer",
-    \   "err_io": "buffer",
-    \   "out_name": "exec_out",
-    \   "err_name": "exec_out",
-    \   "callback": function('ShowOutput'),
-    \ })
-endfunction
-function ExecCurrentFile()
-    if index(['gnuplot', 'perl', 'python', 'sh'], &ft) >= 0
-        let command = [&ft, expand("%:p")]
-    elseif &ft == "maxima"
-        let command = ["maxima", "-b", expand("%:p")]
-    elseif &ft == "tex"
-        let command = ["latexmk", "-xelatex", "-pvc", expand("%:p")]
-    else
-        if &ft == "markdown"
-            call MarkdownPreviewToggle()
-        else
-            echo "Not supported file type"
-        endif
-        return
-    endif
-    call AsyncRun(command)
-endfunction
 colorscheme onedark
+set mouse=a             " enable mouse support in console
+set ttymouse=sgr
 " make
 augroup makeprg
     autocmd!
     autocmd Filetype sh compiler shellcheck
     autocmd Filetype perl compiler perl
-    autocmd Filetype tex compiler tex | let &makeprg = "latexmk -xelatex -interaction=nonstopmode %"
-    autocmd BufWrite tex exe 'Make'
 augroup END
-function Make()
-    let makefile = findfile("Makefile", ".;")
-    call AsyncRun(["make", "-C", makefile])
-endfunction
 " Plugin settings
 " Netrw {{{
 " Make Netrw function like NerdTree
@@ -313,29 +256,6 @@ let g:gitgutter_sign_modified_removed   = '^'
 " update signs after focus
 let g:gitgutter_terminal_reports_focus  = 0
 let g:gitgutter_max_signs = 1000
-" }}}
-" vim-lsc {{{
-let g:lsc_auto_completeopt = 'popup,noinsert,menu,noselect'
-let g:lsc_server_commands = {
-  \     'python': {
-  \         'command': 'pylsp',
-  \         'log_level': -1,
-  \         'workspace_config': {
-  \             'pylsp.configurationSources': ['pycodestyle'],
-  \             'pylsp.plugins.yapf.enabled': v:false,
-  \         }
-  \     },
-  \     'sh': 'bash-language-server start',
-  \     'vim': 'vim-language-server --stdio',
-  \     'json': 'vscode-json-languageserver --stdio',
-  \     'lua': 'lua-language-server',
-  \     'tex': {
-  \         'command': 'texlab',
-  \         'workspace_config': {
-  \             "latex.build.args": ["-xelatex", "-synctex=1", "%f"],
-  \         }
-  \     }
-  \ }
 " }}}
 " asyncomplete {{{
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
