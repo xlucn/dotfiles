@@ -1,7 +1,10 @@
 return {
     {
         'voldikss/vim-mma',
-        ft = 'mma'
+        ft = 'mma',
+        init = function ()
+            vim.g.mma_candy = 2
+        end
     },
     {
         'brianhuster/live-preview.nvim',
