@@ -76,6 +76,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
+Plug 'junegunn/fzf.vim'
 " Enhancements
 Plug 'majutsushi/tagbar'
 Plug 'jpalardy/vim-slime'
@@ -188,6 +189,21 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = "onedark"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
+" }}}
+" FZF {{{
+let g:fzf_layout = {
+\ 'window': {
+\   'width': 0.9,
+\   'height': 0.8,
+\ }}
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fc :Colors<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fm :Maps<CR>
+nnoremap <leader>fh :Helptags<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fG :GFiles<CR>
 " }}}
 " tagbar {{{
 let g:tagbar_compact = 1
