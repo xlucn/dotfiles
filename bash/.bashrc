@@ -87,6 +87,12 @@ if [ -f ~/.local/bin/shell_prompt ]; then
 else
     PS1='$ '
 fi
+# set cursor shape back to block shape before program excecutes
+if [ $TERM == 'linux' ]; then
+    PS0="${PS0}\[\e[?8c\]"
+else
+    PS0="${PS0}\[\e[2 q\]"
+fi
 
 # History, https://unix.stackexchange.com/questions/18212
 export HISTSIZE=-1

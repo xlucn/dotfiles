@@ -145,11 +145,6 @@ if $TERM =~ "rxvt-unicode"
 elseif $TERM =~ "st*"
     set ttymouse=sgr
 endif
-augroup vim
-    autocmd!
-    " make sure the cursor reset to block shape, see the cursor shape settings
-    autocmd VimEnter * normal! :startinsert :stopinsert
-augroup END
 " My own goyo mode {{{
 noremap <leader>Z :call Goyo()<CR>
 function Goyo()
