@@ -88,7 +88,7 @@ else
     PS1='$ '
 fi
 # set cursor shape back to block shape before program excecutes
-if [ $TERM == 'linux' ]; then
+if [ "$TERM" = 'linux' ]; then
     PS0="${PS0}\[\e[?8c\]"
 else
     PS0="${PS0}\[\e[2 q\]"
