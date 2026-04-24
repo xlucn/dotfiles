@@ -27,6 +27,7 @@ set hidden
 set incsearch hlsearch
 " UI
 set guioptions=di       " gui options: dark, icon
+set termguicolors
 set background=dark     " color scheme
 set belloff=all         " don't beep
 set display+=lastline   " show partial line
@@ -40,54 +41,6 @@ nnoremap <silent> <C-P> <CMD>cprevious<CR>
 nnoremap <silent> <C-N> <CMD>cnext<CR>
 nnoremap <silent> [l <CMD>lprevious<CR>
 nnoremap <silent> ]l <CMD>lnext<CR>
-
-" color scheme
-hi ColorColumn  ctermbg=DarkGray    cterm=NONE
-hi CursorColumn ctermbg=DarkGray
-hi CursorLine   ctermbg=DarkGray    cterm=NONE
-hi FoldColumn   ctermbg=NONE        ctermfg=Gray
-hi Folded       ctermbg=NONE        ctermfg=DarkGray
-hi LineNr       ctermbg=NONE        ctermfg=DarkGray
-hi NonText      ctermbg=NONE        ctermfg=DarkGray
-hi Normal       ctermbg=NONE        cterm=NONE
-hi NormalFloat  ctermbg=DarkGray
-hi SignColumn   ctermbg=NONE        cterm=NONE
-hi SpellBad     ctermbg=NONE        cterm=undercurl
-hi SpellCap     ctermbg=NONE        ctermfg=Yellow
-hi Visual       ctermbg=DarkGray    ctermfg=NONE
-" Diff
-hi DiffAdd      ctermbg=Green       ctermfg=Black
-hi DiffChange   ctermbg=Yellow      ctermfg=Black
-hi DiffDelete   ctermbg=NONE        ctermfg=Red
-" popup menu
-hi Pmenu        ctermbg=Black       ctermfg=NONE    cterm=NONE
-hi PmenuSel     ctermbg=DarkGray    ctermfg=NONE    cterm=NONE
-hi PmenuKind    ctermbg=Gray        ctermfg=Black   cterm=NONE
-" tab line
-hi TabLine      ctermbg=NONE        ctermfg=Gray    cterm=NONE
-hi TabLineSel   ctermbg=DarkCyan    ctermfg=Black   cterm=NONE
-hi TabLineFill  ctermbg=NONE        ctermfg=Gray    cterm=NONE
-" Syntax
-hi Boolean      ctermfg=DarkYellow
-hi Comment      ctermfg=DarkGreen
-hi Conceal      ctermbg=Black
-hi Constant     ctermfg=Yellow
-hi Delimiter    ctermfg=DarkYellow
-hi Error        ctermbg=Red
-hi Function     ctermfg=Blue
-hi Identifier   ctermfg=Cyan
-hi Ignore       ctermfg=Black
-hi Keyword      ctermfg=Magenta     cterm=bold
-hi Number       ctermfg=DarkYellow
-hi Operator     ctermfg=DarkYellow
-hi PreProc      ctermfg=DarkMagenta cterm=bold
-hi Special      ctermfg=Magenta
-hi Statement    ctermfg=DarkMagenta cterm=bold
-hi String       ctermfg=Magenta
-hi Todo         ctermbg=Yellow      cterm=bold
-hi Type         ctermfg=DarkCyan    cterm=bold
-hi Underlined   ctermfg=DarkBlue    cterm=underline
-" }}}
 " cursor shape for terminal emulators or linux console
 if has("gui_running") == 0
     if $TERM != "linux"
@@ -122,6 +75,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'joshdick/onedark.vim'
 " Enhancements
 Plug 'majutsushi/tagbar'
 Plug 'jpalardy/vim-slime'
@@ -145,6 +99,13 @@ if $TERM =~ "rxvt-unicode"
     set ttymouse=urxvt
 elseif $TERM =~ "st*"
     set ttymouse=sgr
+if (has("autocmd") && !has("gui_running"))
+    augroup colorset
+        autocmd!
+        let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+        " `bg` will not be styled since there is no `bg` setting
+        autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white })
+    augroup END
 endif
 " My own goyo mode {{{
 noremap <leader>Z :call Goyo()<CR>
@@ -194,6 +155,7 @@ function ExecCurrentFile()
     endif
     call AsyncRun(command)
 endfunction
+colorscheme onedark
 " make
 augroup makeprg
     autocmd!
@@ -223,7 +185,7 @@ augroup END
 " }}}
 " Airline {{{
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'distinguished'
+let g:airline_theme = "onedark"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 " }}}
