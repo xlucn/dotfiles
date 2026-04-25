@@ -72,7 +72,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 " UI
-Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
@@ -119,7 +118,7 @@ nnoremap L :NERDTreeToggle<CR>
 autocmd Filetype nerdtree set signcolumn=no
 " }}}
 " Airline {{{
-let g:airline_powerline_fonts = 1
+let g:airline_symbols_ascii = 1
 let g:airline_theme = "onedark"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
