@@ -1,0 +1,61 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+format = """
+[░▒▓](          fg:#c0caf5)\
+[  ](          fg:#090c0c bg:#c0caf5)\
+[](            fg:#c0caf5 bg:#769ff0)\
+[$directory](   fg:#e3e5e5 bg:#769ff0  bold)\
+[](            fg:#769ff0 bg:#394260)\
+[$git_branch](  fg:#769ff0 bg:#394260)\
+[$git_state](   fg:#769ff0 bg:#394260)\
+[$git_status](  fg:#769ff0 bg:#394260)\
+[](            fg:#394260 bg:#292e42)\
+[$c](           fg:#c0caf5 bg:#292e42)\
+[$lua](         fg:#c0caf5 bg:#292e42)\
+[$python](      fg:#c0caf5 bg:#292e42)\
+[$package](     fg:#c0caf5 bg:#292e42)\
+[](            fg:#292e42 bg:#1d2230)\
+[$cmd_duration](fg:#c0caf5 bg:#1d2230)\
+[$jobs](        fg:#c0caf5 bg:#1d2230)\
+[](            fg:#1d2230)\
+\n$character"""
+
+[c]
+symbol = " "
+format = ' $symbol$name:$version '
+
+[lua]
+symbol = " "
+format = ' $symbol$version '
+
+[python]
+symbol = " "
+format = " ${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )"
+
+[cmd_duration]
+min_time = 500
+show_milliseconds = true
+format = " $duration "
+
+[directory]
+format = " $path "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+format = ' $symbol$branch '
+
+[git_state]
+format = "\\($state( $progress_current/$progress_total)\\) "
+
+[git_status]
+format = '($all_status$ahead_behind )'
+
+[jobs]
+format = " $symbol$number "
+
+[package]
+symbol = " "
+format = " $symbol$version "

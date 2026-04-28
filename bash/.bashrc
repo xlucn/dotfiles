@@ -79,11 +79,11 @@ export GIT_PS1_SHOWUPSTREAM=verbose
 export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_SHOWSTASHSTATE=1
 
-# This command is in my own dotfiles repo
-# shellcheck disable=SC1090
-if [ -f ~/.local/bin/shell_prompt ]; then
-    . ~/.local/bin/shell_prompt
-    PS1='$(__bash_ps1 2> /dev/null)'
+if [ -n "$BASH" ] && which starship > /dev/null 2>&1; then
+    eval "$(starship init bash)"
+elif which shell_prompt > /dev/null 2>&1; then
+    # This command is in my own dotfiles repo
+    eval "$(shell_prompt)"
 else
     PS1='$ '
 fi
