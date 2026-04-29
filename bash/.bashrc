@@ -76,8 +76,12 @@ fi
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM=verbose
-export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_SHOWSTASHSTATE=1
+if [ -n "$BASH" ]; then
+    export GIT_PS1_SHOWCOLORHINTS=1
+else
+    export GIT_PS1_SHOWCOLORHINTS=
+fi
 
 if [ -n "$BASH" ] && which starship > /dev/null 2>&1; then
     eval "$(starship init bash)"
@@ -103,3 +107,4 @@ export HISTFILE="$XDG_DATA_HOME/bash_history"
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
+set -o vi

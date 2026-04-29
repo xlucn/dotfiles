@@ -16,15 +16,17 @@ esac
 CWD_LIMIT=20
 SEP=" "
 
-RED="\001\033[31m\002"
-GREEN="\001\033[32m\002"
-YELLOW="\001\033[33m\002"
-BLUE="\001\033[34m\002"
-MAGENTA="\001\033[35m\002"
-CYAN="\001\033[36m\002"
-RESET="\001\033[0m\002"
-BRED="\001\033[1;31m\002"
-BYELLOW="\001\033[1;33m\002"
+if [ -n "$BASH" ]; then
+    RED="\001\033[31m\002"
+    GREEN="\001\033[32m\002"
+    YELLOW="\001\033[33m\002"
+    BLUE="\001\033[34m\002"
+    MAGENTA="\001\033[35m\002"
+    CYAN="\001\033[36m\002"
+    RESET="\001\033[0m\002"
+    BRED="\001\033[1;31m\002"
+    BYELLOW="\001\033[1;33m\002"
+fi
 
 __ssh_indicator() {
     [ -n "$SSH_CLIENT" ] && printf "${CYAN}%s$RESET" "[SSH]" && return 0
@@ -41,11 +43,6 @@ __pwd_indicator() {
     printf "$pwd%s" | colrm "$CWD_LIMIT" | tr -d '\n'
     [ ${#pwd} -gt $CWD_LIMIT ] && printf "…"
     printf "$RESET%s"
-
-    # set terminal title
-    [ "$TERM" != linux ] && printf "\001\033]0;[%s] %s\007\002" "$TERM" "$PWD"
-
-    return 0
 }
 
 __nested_indicator() {
