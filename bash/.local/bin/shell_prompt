@@ -51,28 +51,18 @@ __nested_indicator() {
     elif [ -n "$RANGER_LEVEL" ]; then # if you are in ranger
         printf "(RANGER:%s)" "$RANGER_LEVEL"
     else
-        return 1
+        return 1 # don't print
     fi
 }
 
 __job_counts() {
-    jobcount=$(jobs -p | wc -l)
-    [ "$jobcount" -gt 0 ] && printf "$GREEN(jobs:%s)$RESET" "$jobcount" || return 1
-}
-
-__git_autostats() {
-    [ -f /tmp/git-autostats ] || return 1
-
-    read -r _ ahead behind conflict staged unstaged untracked < /tmp/git-autostats
-    [ $((ahead + behind + conflict + staged + unstaged + untracked)) = 0 ] && return
-    printf "["
-    [ "$ahead"     -gt 0 ] && printf "$BLUE%s+$RESET" "$ahead"
-    [ "$behind"    -gt 0 ] && printf "$YELLOW%s-$RESET" "$behind"
-    [ "$conflict"  -gt 0 ] && printf "$RED%s±$RESET" "$conflict"
-    [ "$staged"    -gt 0 ] && printf "$GREEN%sv$RESET" "$staged"
-    [ "$unstaged"  -gt 0 ] && printf "$YELLOW%sx$RESET" "$unstaged"
-    [ "$untracked" -gt 0 ] && printf "$RED%s?$RESET" "$untracked"
-    printf "]"
+    if [ -n "$BASH" ]; then
+        jobs_count=$(jobs -p | wc -l)
+        if [ "$jobs_count" -gt 0 ]; then
+            printf "$GREEN(jobs:%s)$RESET" "$jobs_count"
+        fi
+    fi
+    return 1 # don't print
 }
 
 __git_prompt() {
@@ -84,10 +74,8 @@ __bash_ps1() {
     [ $? = 0 ] && EXITCOLOR=$BYELLOW || EXITCOLOR=$BRED
     __ssh_indicator    && printf "$SEP%s"
     __job_counts       && printf "$SEP%s"
-    # __user_host        && printf "$SEP%s"
     __pwd_indicator    && printf "$SEP%s"
     __nested_indicator && printf "$SEP%s"
-    # __git_autostats    && printf "$SEP%s"
     __git_prompt       && printf "$SEP%s"
     printf "$EXITCOLOR%s%s$RESET" "$" "$SEP"
 }
