@@ -1,9 +1,4 @@
 nolirc=yes
 osdlevel=3
-
-vo=vdpau,
-
+vo=gl,x11,fbdev
 slang=en
-
-[vo.vdpau]
-vc=ffh264vdpau,ffmpeg1vdpau,ffmpeg2vdpau,ffodivxvdpau,ffwmv3vdpau,ffvc1vdpau,ffhevcvdpau,ffhevc,
