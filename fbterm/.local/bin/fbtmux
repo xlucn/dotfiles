@@ -1,21 +1,24 @@
 #!/bin/sh
 # file: fbtmux
+#
 # Script to start tmux in fbterm/yaft/getty
 #
 # Requirement:
 #   tmux,
 #   fbterm/yaft: optional, for unicode display and wallpaper support,
 #   fbv:         optional, for setting wallpaper for fbterm/yaft,
-#   convert:     optional, for darkening and blurring wallpaper 
+#   magick:     optional, for darkening and blurring wallpaper.
 #
 # Configuration:
-#   FBTMUX_TERMINAL: start tmux in terminals other than getty, this will prefix
-#                the tmux command. E.g. "fbterm --"(default) or "yaft"
-#   FBTMUX_WALLPAPER: specify the wallpaper location, default to $HOME/Pictures/wallpaper.*
-
+#   FBTMUX_TERMINAL:
+#       Start tmux in terminals other than getty, this will prefix the tmux
+#       command. E.g. "fbterm --"(default) or "yaft"
+#   FBTMUX_WALLPAPER:
+#       Specify the wallpaper location, default to $HOME/Pictures/wallpaper.*
+#
 command -v tmux > /dev/null 2>&1 || { echo please install tmux; exit; }
 
-trap 'tput cnorm; clear' INT TERM QUIT EXIT # show cursor on quit
+trap 'tput cnorm' INT TERM QUIT EXIT # show cursor on quit
 
 TERMINAL=${FBTMUX_TERMINAL:-fbterm --}
 # Start directly in shell if not in tty
@@ -25,7 +28,8 @@ command -v "${TERMINAL%% *}" > /dev/null 2>&1 || unset TERMINAL
 
 if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
     # Finding wallpaper
-    bg_wallpaper=${FBTMUX_WALLPAPER:-$(find "$HOME/Pictures" -name 'wallpaper.*' | head -1)}
+    default_wallpaper=$(find "$HOME/Pictures" -name 'wallpaper.*' | head -1)
+    bg_wallpaper=${FBTMUX_WALLPAPER:-${default_wallpaper}}
 
     # Set wallpaper with fbv
     if command -v fbv > /dev/null 2>&1 && [ -n "$bg_wallpaper" ]; then
@@ -37,27 +41,32 @@ if [ "${TERMINAL%% *}" = fbterm ] || [ "${TERMINAL%% *}" = yaft ]; then
             # use stat instead of test -nt/-ot command which dereferences links
             script_time=$(stat -Lc %Y "$0")
             bg_wallpaper_time=$(stat -c %Y "$bg_wallpaper")
-            [ -e "$bg_framebuffer" ] && bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
+            if [ -e "$bg_framebuffer" ]; then
+                bg_framebuffer_time=$(stat -c %Y "$bg_framebuffer")
+            fi
             if [ ! -e "$bg_framebuffer" ] \
             || [ "$bg_framebuffer_time" -lt "$bg_wallpaper_time" ] \
             || [ "$bg_framebuffer_time" -lt "$script_time" ]; then
                 # convert -modulate brightness,saturation
-                convert "$bg_wallpaper" -modulate 15,40 -blur 0x4 "$bg_framebuffer"
+                magick "$bg_wallpaper" -modulate 15,40 -blur 0x4 "$bg_framebuffer"
             fi
         fi
 
         # start fbterm/yaft with background using fbv
         tput civis # hide cursor
-        fbv -ciuker "$bg_framebuffer" << EOF
-q
-EOF
+        # use fbv and proper options to show image and quit without clearing up
+        fbv -cuikery "$bg_framebuffer" > /dev/null
         export FBTERM_BACKGROUND_IMAGE=1
         export YAFT="wall"
     fi
-
 fi
 
+if [ -e ~/.config/tmux/fbtmux.conf ]; then
+    # This config is from my own dotfiles
+    TMUX_CONF="-f ~/.config/tmux/fbtmux.conf"
+fi
+TMUX_SOCKET="-L fbtmux"
+TMUX_CMD="new -A -s fbtmux -c $HOME"
+
 # Everything set, start fbterm/yaft in $HOME directory
-cd "$HOME" || exit
-# This config is from my own dotfiles
-$TERMINAL tmux -L fbtmux -f ~/.config/tmux/fbtmux.conf "$@" new -A -s fbtmux
+$TERMINAL sh -c "TERM=fbterm tmux ${TMUX_CONF} ${TMUX_SOCKET} ${TMUX_CMD}"
