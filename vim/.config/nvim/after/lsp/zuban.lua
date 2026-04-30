@@ -4,5 +4,6 @@ return {
     on_attach = function (client, _)
         client.server_capabilities.hoverProvider = nil
         client.server_capabilities.diagnosticProvider = nil
+        client.server_capabilities.renameProvider = nil
     end
 }
