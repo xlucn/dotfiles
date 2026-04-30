@@ -3,26 +3,22 @@ return {
     init_options = {
         settings = {
             lint = {
-                -- select = { "ALL" },
-                -- ignore = {
-                --     "T20", -- flake8-print
-                --     "ERA", -- eradicate
-                --     "Q", -- flake8-quotes
-                -- },
-                extendSelect = {
-                    "F", -- Pyflakes
-                    "E", -- pycodestyle error
-                    "W", -- pycodestyle warning
-                    "C90", -- mccabe
-                    "N", -- pep8-naming
-                    "D", -- pydocstyle
-                    "I", -- isort
-                    "U", -- pyupgrade
-                    "A", -- flake8-builtins
-                    "B", -- flake8-bugbear
-                    "SIM", -- flake8-simplify
-                    "NPY", -- NumPy-specific rules
-                    "PL", -- Pylint
+                select = {
+                    "ALL",
+                },
+                ignore = {
+                    "ERA", -- eradicate, for commented-out code
+                    "ANN", -- flake8-annotations, type hints
+                    "FIX", -- flake8-fixme, todos
+                    "T20", -- flake8-print, no prints
+                    "Q", -- flake8-quotes, single or double
+                    "TD", -- flake8-todos, todos
+                    "PTH", -- flake8-use-pathlib, os -> pathlib
+                    "D413", -- pydocstyle, last blank line
+                    "PLR", -- Pylint refactors
+                },
+                pydocstyle = {
+                    convention = "numpy",
                 },
             },
         },
