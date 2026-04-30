@@ -1,24 +1,24 @@
 " be Vi if started as vi, ex, edit, view, etc.
 if v:progname =~? '^\(vi\|view\|ex\|edit\)$'
     set compatible
-    so $XDG_CONFIG_HOME/ex/exrc
+    so $HOME/.config/ex/exrc
     finish
 endif
 " be Vi IMproved, put this line at TOP of vimrc
 set nocompatible
 " XDG Base Directories
-set runtimepath^=$XDG_CONFIG_HOME/vim
-set packpath^=$XDG_DATA_HOME/vim
-set directory=$XDG_CACHE_HOME/vim/swap
-set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
-set backupdir=$XDG_CACHE_HOME/vim/backup
+set runtimepath^=$HOME/.config/vim
+set packpath^=$HOME/.local/share/vim
+set directory=$HOME/.cache/vim/swap
+set viminfo+=n$HOME/.cache/vim/viminfo
+set backupdir=$HOME/.cache/vim/backup
 " detect filetype and apply syntax highlighting
 syntax on
 filetype on
 filetype plugin on
 filetype indent on
 
-so $XDG_CONFIG_HOME/vim/common.vim
+so $HOME/.config/vim/common.vim
 set autoindent
 set autoread " auto reload files
 set encoding=utf-8
@@ -27,7 +27,6 @@ set incsearch
 set hlsearch
 " UI
 set termguicolors
-set guioptions=cd       " minimal gui options
 set background=dark     " color scheme
 set belloff=all         " don't beep
 set display+=lastline   " show partial line
@@ -36,8 +35,18 @@ set ttimeoutlen=50      " do not wait too long after escape key
 set wildmenu            " turn on wild menu on :e <Tab>
 set mouse=a             " enable mouse support in console
 set ttymouse=sgr
+if has("gui_running")
+    set guicursor+=a:blinkon0  " don't blink the cursor
+    set guioptions=cd          " minimal gui options
+    set guifont=monospace\ 11  " initialize the font for the setup below
+    " Zoom in/out with Ctrl + Mouse Wheel
+    nnoremap <C-ScrollWheelUp> :silent! let &guifont = substitute(&guifont,
+                \'\s\zs\d\+', '\=eval(submatch(0)+1)', '')<CR>
+    nnoremap <C-ScrollWheelDown> :silent! let &guifont = substitute(&guifont,
+                \'\s\zs\d\+', '\=eval(submatch(0)-1)', '')<CR>
+endif
 
-noremap <leader>r <CMD>so $XDG_CONFIG_HOME/vim/vimrc<CR>
+noremap <leader>r <CMD>so $HOME/.config/vim/vimrc<CR>
 " Navigation
 nnoremap <silent> <C-P> <CMD>cprevious<CR>
 nnoremap <silent> <C-N> <CMD>cnext<CR>
@@ -99,9 +108,9 @@ call plug#end()
 if (has("autocmd") && !has("gui_running"))
     augroup colorset
         autocmd!
-        let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
-        " `bg` will not be styled since there is no `bg` setting
-        autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white })
+        " ctermfg and guifg won't be changed
+        autocmd ColorScheme * hi Normal ctermbg=NONE guibg=NONE
+        autocmd ColorScheme * hi Terminal ctermbg=NONE guibg=NONE
     augroup END
 endif
 colorscheme onedark
