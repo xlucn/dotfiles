@@ -28,9 +28,9 @@ case ${1##*.} in
     # HTML
     htm|html|xhtml)
         # Preview as text conversion
-        w3m -dump "$1" ||
+        elinks -dump "$1" ||
         lynx -dump -- "$1" ||
-        elinks -dump "$1"; exit ;;
+        w3m -dump "$1"; exit ;;
 
     *) ;; # Go on to handle by mime type
 esac
@@ -39,23 +39,25 @@ esac
 case "$(file -Lb --mime-type -- "$1")" in
     # Text
     text/*|*/xml|*/csv|*/json)
-        # try to detect the charactor encodeing
-        enc=$(head -n20 "$1" | uchardet)
-        head -n 100 "$1" |
-        { if command -v highlight > /dev/null 2>&1; then
-            highlight -O ansi --force
+        if command -v highlight > /dev/null 2>&1; then
+            highlight -O ansi --line-range=1-100 --force "$1"
         else
-            cat
-        fi } |
-        iconv -f "${enc:-UTF-8}" -t UTF-8; exit ;;
+            head -n100 "$1"
+        fi
+        exit ;;
 
     # Image
     image/*)
-        chafa --polite on --animate off "$1" -s "$2x$3"; exit ;;
+        # --work=1 will make it the fastest
+        # --view-size=wxh will not scale up small images (--size=wxh will)
+        chafa --work=1 --polite=on --animate=off \
+            --format=sixels --view-size="$2x$3" "$1"
+        exit ;;
 
     # Video and audio
     video/*|audio/*|application/octet-stream)
-        mediainfo "$1"; exit ;;
+        # pipe through column just to compact the output
+        mediainfo --Output=CSV "$1" | column -t -s ','; exit ;;
 
     *) ;; # Go on to fall back
 esac
