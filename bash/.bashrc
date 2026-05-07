@@ -83,8 +83,10 @@ else
     export GIT_PS1_SHOWCOLORHINTS=
 fi
 
-if [ -n "$BASH" ] && which starship > /dev/null 2>&1; then
-    eval "$(starship init bash)"
+if [ "$TERM" != linux ] && which starship > /dev/null 2>&1; then
+    if [ -n "$BASH" ]; then
+        eval "$(starship init bash)"
+    fi
 elif which shell_prompt > /dev/null 2>&1; then
     # This command is in my own dotfiles repo
     eval "$(shell_prompt)"
