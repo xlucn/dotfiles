@@ -60,7 +60,17 @@ alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progre
 
 # pip update
 pip_update() {
-    pip list --outdated | tail -n+3 | cut -d " " -f 1 | xargs -r pip install --upgrade
+    pip list --outdated |
+        tail -n+3 |
+        cut -d " " -f 1 |
+        xargs -r pip install --upgrade
+}
+
+fzfpak() {
+    flatpak list --app --columns=application,name |
+        column -t -s $'\t' |
+        fzf --accept-nth=1 |
+        xargs flatpak run
 }
 
 # Console color theme, reuse .Xresources definitions
