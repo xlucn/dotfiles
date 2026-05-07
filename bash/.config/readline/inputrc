@@ -37,15 +37,21 @@ set colored-completion-prefix on
 # Match parenthesis
 set blink-matching-paren on
 
+set keymap vi-insert
 # Completion like zsh
 # If there are multiple matches for completion,
 # make TAB cycle through them and shift TAB (\e[Z) backwards.
 TAB: menu-complete
 "\e[Z": menu-complete-backward
 # Re-read init file
-"\C-x\C-x": re-read-init-file
 Control-l: clear-screen
+# A macro to insert "sudo" at start
 Control-s: "\eIsudo \eA"
+
+set keymap vi-command
+"\C-x\C-x": re-read-init-file
+M: set-mark
+K: kill-region
 
 # show mode indicators
 set show-mode-in-prompt on
