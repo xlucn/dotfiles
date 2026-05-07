@@ -10,6 +10,8 @@ set enable-keypad on
 # Completion
 # Make Tab autocomplete regardless of filename case
 set completion-ignore-case on
+# Make tab autocomplete mix '_' and '-'
+set completion-map-case on
 # Intelligent autocompleting by also looking at the text after the cursor.
 set skip-completed-text on
 # Display a list of the matching files
@@ -17,6 +19,11 @@ set show-all-if-ambiguous on
 # Perform partial completion on the first Tab press, and
 # only start cycling full results on the second Tab press.
 set menu-complete-display-prefix on
+# Color the common prefix in menu-complete
+set menu-complete-display-prefix on
+
+# Search
+set search-ignore-case on
 
 # Eye candies
 # Note that this may cause completion text blink in some terminals (e.g. xterm).
@@ -27,8 +34,6 @@ set visible-stats on
 set mark-symlinked-directories on
 # Color the common prefix
 set colored-completion-prefix on
-# Color the common prefix in menu-complete
-set menu-complete-display-prefix on
 # Match parenthesis
 set blink-matching-paren on
 
