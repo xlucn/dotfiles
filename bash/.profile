@@ -145,6 +145,8 @@ export ANV_DEBUG=video-decode,video-encode
 export WINEPREFIX="${XDG_DATA_HOME}/wineprefix"
 # wechat data
 export WECHAT_DATA_DIR="$XDG_DATA_HOME/wechat_universe"
+# copilot
+export COPILOT_HOME="$XDG_CONFIG_HOME/copilot"
 
 # PATH, last '|| true' to avoid error when '&& ...' is not executed
 add_to_path() {
