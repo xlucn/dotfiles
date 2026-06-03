@@ -71,3 +71,6 @@ format = " $symbol$number "
 [package]
 symbol = " "
 format = " $symbol$version "
+
+[env_var.LF_LEVEL]
+format = " LF: $env_value "
