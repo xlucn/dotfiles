@@ -1,25 +1,37 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
+palette = "default"
 format = """
-[░▒▓](          fg:#c0caf5)\
-[  ](          fg:#090c0c bg:#c0caf5)\
-[](            fg:#c0caf5 bg:#565f89)\
-[$directory](   fg:#e3e5e5 bg:#565f89  bold)\
-[](            fg:#565f89 bg:#394260)\
-[$git_branch](  fg:#c0caf5 bg:#394260)\
-[$git_state](   fg:#c0caf5 bg:#394260)\
-[$git_status](  fg:#c0caf5 bg:#394260)\
-[](            fg:#394260 bg:#292e42)\
-[$c](           fg:#9aa5ce bg:#292e42)\
-[$lua](         fg:#9aa5ce bg:#292e42)\
-[$python](      fg:#9aa5ce bg:#292e42)\
-[$package](     fg:#9aa5ce bg:#292e42)\
-[](            fg:#292e42 bg:#1d2230)\
-[$cmd_duration](fg:#565f89 bg:#1d2230)\
-[$jobs](        fg:#565f89 bg:#1d2230)\
-[](            fg:#1d2230)\
+[░▒▓](          fg:color1)\
+[  ](          fg:color7 bg:color1)\
+[](            fg:color1 bg:color2)\
+[$directory](   fg:color0 bg:color2 bold)\
+[](            fg:color2 bg:color4)\
+[$git_branch](  fg:color1 bg:color4)\
+[$git_state](   fg:color1 bg:color4)\
+[$git_status](  fg:color1 bg:color4)\
+[](            fg:color4 bg:color5)\
+[$c](           fg:color2 bg:color5)\
+[$lua](         fg:color2 bg:color5)\
+[$python](      fg:color2 bg:color5)\
+[$package](     fg:color2 bg:color5)\
+[](            fg:color5 bg:color6)\
+[$cmd_duration](fg:color3 bg:color6)\
+[$jobs](        fg:color3 bg:color6)\
+[$env_var](     fg:color3 bg:color6)\
+[](            fg:color6)\
 \n$character"""
+
+[palettes.default]
+color0 = "#ffffff"
+color1 = "#c0caf5"
+color2 = "#9aa5ce"
+color3 = "#565f89"
+color4 = "#394260"
+color5 = "#292e42"
+color6 = "#1d2230"
+color7 = "#090c0c"
 
 [c]
 symbol = " "
