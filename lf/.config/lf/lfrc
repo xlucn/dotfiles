@@ -31,27 +31,3 @@ map R $bulk-rename
 map t $tig -C $PWD
 
 cmd open $lf-open $fx
-cmd on-load &{{
-    cd "$(dirname "$1")" || exit 1
-    [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" = false ] || exit 0
-
-    cmds=""
-
-    for file in "$@"; do
-        case "$file" in
-            */.git|*/.git/*) continue;;
-        esac
-
-        status=$(git status --porcelain --ignored -- "$file" | cut -c1-2 | head -n1)
-
-        if [ -n "$status" ]; then
-            cmds="${cmds}addcustominfo \"${file}\" \"$status\"; "
-        else
-            cmds="${cmds}addcustominfo \"${file}\" ''; "
-        fi
-    done
-
-    if [ -n "$cmds" ]; then
-        lf -remote "send $id :$cmds"
-    fi
-}}
