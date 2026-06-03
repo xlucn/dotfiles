@@ -15,3 +15,8 @@ bind main g move-first-line
 bind main G move-last-line
 
 bind main e !git commit --amend
+
+color cursor black green bold
+color cursor-blur black green bold
+color title-focus black blue bold
+color title-blur black blue bold

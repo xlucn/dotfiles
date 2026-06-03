@@ -3,3 +3,8 @@ show-relative-size: true
 show-item-count: true
 no-cross: true
 write-config: false
+style:
+  selected-row:
+    text-color: "lightyellow"
+  footer:
+    number-color: "lightyellow"
