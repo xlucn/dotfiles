@@ -29,6 +29,14 @@ require('vim._core.ui2').enable()
 vim.diagnostic.config({
     virtual_text = true,
     virtual_lines = false,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '\u{ea87}',
+            [vim.diagnostic.severity.WARN] = '\u{ea6c}',
+            [vim.diagnostic.severity.INFO] = '\u{ea74}',
+            [vim.diagnostic.severity.HINT] = '\u{eaa2}',
+        }
+    }
 })
 
 vim.api.nvim_create_autocmd('FileType', {
