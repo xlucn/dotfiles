@@ -52,8 +52,8 @@ format = " $duration "
 
 [directory]
 format = " $path "
-truncation_length = 3
-truncation_symbol = "…/"
+truncation_length = 1
+truncation_symbol = ""
 
 [git_branch]
 symbol = " "
