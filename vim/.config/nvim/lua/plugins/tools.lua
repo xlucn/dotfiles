@@ -72,14 +72,33 @@ return {
             }
         },
         keys = {
-            { "<leader>fb", "<cmd>Telescope buffers<cr>",    desc = "Find buffers" },
-            { "<leader>fc", "<cmd>Telescope colorscheme<cr>",   desc = "Find colorschemes" },
-            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-            { "<leader>fg", "<cmd>Telescope live_grep<cr>",  desc = "Live grep" },
-            { "<leader>fh", "<cmd>Telescope help_tags<cr>",  desc = "Find help tags" },
-            { "<leader>fo", "<cmd>Telescope vim_options<cr>", desc = "List vim options" },
-            { "<leader>fq", "<cmd>Telescope quickfix<cr>",   desc = "Find quickfix" },
-            { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Find document symbols" },
+            { "<leader>fb", function ()
+                require("telescope.builtin").buffers()
+            end, desc = "Find buffers" },
+            { "<leader>fc", function ()
+                require("telescope.builtin").colorscheme()
+            end, desc = "Find colorschemes" },
+            { "<leader>ff", function ()
+                require("telescope.builtin").find_files({ hidden = true })
+            end, desc = "Find files" },
+            { "<leader>fg", function ()
+                require("telescope.builtin").live_grep()
+            end, desc = "Live grep" },
+            { "<leader>fG", function ()
+                require("telescope.builtin").git_files()
+            end, desc = "Git files" },
+            { "<leader>fh", function ()
+                require("telescope.builtin").help_tags()
+            end, desc = "Find help tags" },
+            { "<leader>fo", function ()
+                require("telescope.builtin").vim_options()
+            end, desc = "List vim options" },
+            { "<leader>fq", function ()
+                require("telescope.builtin").quickfix()
+            end, desc = "Find quickfix" },
+            { "<leader>fs", function ()
+                require("telescope.builtin").lsp_document_symbols()
+            end, desc = "Find document symbols" },
         }
     },
     {

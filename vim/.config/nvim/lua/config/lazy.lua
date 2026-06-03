@@ -17,13 +17,13 @@ require("lazy").setup({
     defaults = {
         lazy = false,
     },
+    -- import plugins from lua/plugins/*.lua
     spec = {
-        import = "plugins"  -- import all plugins from lua/plugins/*.lua
+        import = "plugins"
     },
     change_detection = {
-        -- automatically check for config file changes and reload the ui
         enabled = true,
-        notify = false, -- no notifications when changes are found
+        notify = false,
     },
     rocks = {
         enabled = false

@@ -22,21 +22,31 @@ return {
                 ['<S-Tab>'] = { 'select_prev', 'fallback' },
             },
             completion = {
-                keyword = { range = 'full' },
+                keyword = {
+                    range = 'full'
+                },
                 list = { selection = {
                     preselect = false,
                     auto_insert = true,
                 } },
-                documentation = { auto_show = true },
-                menu = { draw = { treesitter = { 'lsp' } } },
+                documentation = {
+                    auto_show = true
+                },
+                menu = { draw = {
+                    treesitter = { 'lsp' },
+                } },
             },
             sources = {
-                default = { "lsp", "buffer", "path", "snippets" },
+                default = {
+                    "lsp", "buffer", "path", "snippets"
+                },
                 per_filetype = { lua = {
                     inherit_defaults = true, 'lazydev'
                 } },
                 providers = {
-                    lazydev = { module = "lazydev.integrations.blink" },
+                    lazydev = {
+                        module = "lazydev.integrations.blink"
+                    },
                     path = { opts = {
                         show_hidden_files_by_default = true,
                     }}
@@ -44,7 +54,9 @@ return {
             },
             cmdline = {
                 enabled = true,
-                keymap = { preset = 'inherit' },
+                keymap = {
+                    preset = 'inherit',
+                },
                 completion = {
                     menu = { auto_show = true },
                     list = { selection = {
