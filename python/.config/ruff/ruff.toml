@@ -10,8 +10,10 @@ ignore = [
     "Q",      # flake8-quotes, single or double
     "TD",     # flake8-todos, todos
     "PTH",    # flake8-use-pathlib, os -> pathlib
-    "D413",   # pydocstyle, last blank line
+    "RET504", # flakt8-return, unnecessary assignment before return
+    "EM",     # flake8-errmsgs, no strings in exceptions
     "PLR",    # Pylint refactors
+    "TRY003", # tryceratops, messages in exceptions
 ]
 
 [lint.pydocstyle]
