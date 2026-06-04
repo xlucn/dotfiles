@@ -1,3 +1,4 @@
+# vim: ft=nanorc
 ## Sample initialization file for GNU nano.
 ##
 ## For the options that take parameters, the default value is shown.
@@ -52,7 +53,7 @@ set autoindent
 
 ## Interpret digits given on the command line after a colon after a filename
 ## as the line number to go to in that file.
-# set colonparsing
+set colonparsing
 
 ## Constantly display the cursor position in the status bar or minibar.
 set constantshow
@@ -70,7 +71,7 @@ set constantshow
 
 ## Draw a vertical stripe at the given column, to help judge text width.
 ## (This option does not have a default value.)
-# set guidestripe 75
+set guidestripe 80
 
 ## Remember the used search/replace strings for the next session.
 # set historylog
@@ -90,7 +91,7 @@ set linenumbers
 # set locking
 
 ## Fall back to slow libmagic to try and determine an applicable syntax.
-# set magic
+set magic
 
 ## The opening and closing brackets that are found by a matching-bracket
 ## search.  This may not contain blank characters.  The opening brackets
@@ -99,7 +100,7 @@ set linenumbers
 
 ## Suppress the title bar and show the filename plus a cursor-position
 ## percentage in the space of the status bar.
-set minibar
+# set minibar
 
 ## Enable mouse support, if available for your system.  When enabled,
 ## mouse clicks can be used to place the cursor, set the mark (with
@@ -127,7 +128,7 @@ set nonewlines
 # set operatingdir ""
 
 ## Remember the cursor position in each file for the next editing session.
-# set positionlog
+set positionlog
 
 ## Preserve the XON and XOFF keys (^Q and ^S).
 # set preserve
@@ -170,7 +171,7 @@ set showcursor
 # set smarthome
 
 ## Spread overlong lines over multiple screen lines.
-# set softwrap
+set softwrap
 
 ## Use this spelling checker instead of the internal one.  This option
 ## does not have a default value.
@@ -322,11 +323,6 @@ bind ^G findnext all
 bind ^B wherewas all
 bind ^D findprevious all
 bind ^R replace main
-unbind ^U all
-unbind ^N main
-unbind ^Y all
-unbind M-J main
-unbind M-T main
 bind ^A mark main
 bind ^P location main
 bind ^T gotoline main
