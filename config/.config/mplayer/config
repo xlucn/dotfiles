@@ -1,4 +1,4 @@
 nolirc=yes
 osdlevel=3
-vo=gl,x11,fbdev
-slang=en
+vo=gl,xv,x11,fbdev
+slang=en,eng,zh,zho
