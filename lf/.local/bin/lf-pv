@@ -50,7 +50,7 @@ case "$(file -Lb --mime-type -- "$1")" in
     image/*)
         # --work=1 will make it the fastest
         # --view-size=wxh will not scale up small images (--size=wxh will)
-        chafa --work=1 --polite=on --animate=off \
+        chafa --polite=on --animate=off \
             --format=sixels --view-size="$2x$3" "$1"
         exit ;;
 
