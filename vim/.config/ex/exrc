@@ -52,16 +52,30 @@ map ,x :wq
 map ,r :source ~/.config/ex/exrc
 map  :source ~/.config/ex/exrc
 "
-" Delete and navigate in insert mode, better not use them.
-" Make backspace to delete, with some bugs, e.g.:
-"  not working well deleting the first char with more chars after
-" map!  sa
-" map!  sa
-" Hacks for arrow heys, depends on timeout
-" map! OA ka
-" map! OB ja
-" map! OC la
-" map! OD ha
+" Delete inside "/'/()/[]/{}
+map " T"dt"
+map ' T'dt'
+map ) T(dt)
+map ] T[dt]
+map } T{dt}
+" Surround word with "/'/()/[]/{}
+map " ebi"ea"
+map ' ebi'ea'
+map ) ebi(ea)
+map ] ebi[ea]
+map } ebi{ea}
+" Delete surrounding "/'/()/[]/{}
+map " F"xf"x
+map ' F'xf'x
+map ) F(xf)x
+map ] F[xf]x
+map } F{xf}x
+"
+" Toggle settings
+map [n :set nu
+map ]n :set nonu
+map [w :set wrapscan
+map ]w :set nowrapscan
 "
 " Complete words, famous vi macros, modified from original below
 map!  a.hbmmi?\<2h"zdt.@zywmx`mPlxa
@@ -84,19 +98,12 @@ map v 0ma}b:'a,.j072 ?  *dwi
 " Vi doesn't have command history, this can be used to try and modify commands
 map  "ayy:@a
 "
-" Surround word with "/'/()/[]/{}
-map " ebi"ea"
-map ' ebi'ea'
-map ) ebi(ea)
-map ] ebi[ea]
-map } ebi{ea}
-" Delete surrounding "/'/()/[]/{}
-map " F"xf"x
-map ' F'xf'x
-map ) F(xf)x
-map ] F[xf]x
-map } F{xf}x
-"
 """""""""""""""""
 " Abbreviations "
 """""""""""""""""
+" Insert date
+" https://web.archive.org/http://soma.npa.uiuc.edu/docs/vi.macros
+abbr dater :.!date +\%FkJA
+abbr timer :.!date +\%TkJA
+abbr datetimer :.!date +\%FT\%TkJA
+"
