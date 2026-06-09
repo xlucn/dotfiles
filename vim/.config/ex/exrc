@@ -13,6 +13,8 @@ set autoindent
 set autowrite
 " Put buffer files in /tmp
 set directory=/tmp
+" Don't flash
+set noflash
 " Ignore case when searching
 set ignorecase
 " Show tab as ^I, EOL as $, literally. It's not good looking.
