@@ -1,12 +1,16 @@
-" vim: ft=exrc syntax=vim commentstring=\"\ %s
-" exrc, vi init file
-" Note1: comment starts with "
-" Note2: NO empty lines
+" exrc, ex/vi init file
+"
+" Note:
+" 1. Comment starts with ".
+" 2. NO empty lines! Use empty comment if needed.
+"
+" References:
+" https://heather.cs.ucdavis.edu/~matloff/UnixAndC/Editors/ViIntro.html
+" https://hea-www.harvard.edu/~fine/Tech/vi.html
 "
 """"""""""""""
 " Vi Options "
 """"""""""""""
-"
 " Automatically indent on the next line
 set autoindent
 " Auto save file after leaving the buffer
@@ -37,7 +41,9 @@ set showmatch
 set showmode
 " Tab 4 spaces
 set tabstop=4
-" Instant escape, otherwise keymapping will wait for 1 second
+" Do not wait 1 second for keymap to complete.
+" Instant escape if there aren't keymappings start with escape(^[).
+" However escape would wait indefinitely if there are any such maps.
 set notimeout
 "
 """"""""""""
@@ -88,8 +94,7 @@ map!  a.hbmmi/\<2h"zdt.@zywmx`mPlxa
 " Modified from https://hea-www.harvard.edu/~fine/Tech/vi.html
 map V 0ma}b:'a,.j}j
 "
-" Format mapping
-" Original mapping from https://hea-www.harvard.edu/~fine/Tech/vi.html
+" Format mapping from https://hea-www.harvard.edu/~fine/Tech/vi.html
 " This will join the rest of the paragraph, break the line at the 72th column.
 " You should keep pressing the key to format the whole paragraph.
 map v 0ma}b:'a,.j072 ?  *dwi
@@ -107,3 +112,4 @@ abbr dater :.!date +\%FkJA
 abbr timer :.!date +\%TkJA
 abbr datetimer :.!date +\%FT\%TkJA
 "
+" vim: syntax=vim commentstring=\"\ %s
