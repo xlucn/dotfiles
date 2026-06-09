@@ -49,8 +49,6 @@ map ,z :q!
 map ,e :e
 map ,w :w
 map ,x :wq
-map ,r :source ~/.config/ex/exrc
-map  :source ~/.config/ex/exrc
 "
 " Delete inside "/'/()/[]/{}
 map " T"dt"
