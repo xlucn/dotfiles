@@ -1,0 +1,7 @@
+#!/bin/bash
+echo | \
+# for the plocate command, don't use -r/--regex, which is slow
+fzf --multi \
+    --disabled \
+    --bind "change:reload(echo {q} | xargs -r plocate -i -l100)" | \
+xargs -r -n1 -d '\n' xdg-open
