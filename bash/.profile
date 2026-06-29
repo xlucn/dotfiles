@@ -130,8 +130,6 @@ export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 export BEMENU_OPTS="-l 15 -c -B 2 -H 28 -W 0.5 --fn 'Monospace 12' --fixed-height"
 # nuget
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
-# tgpt
-export AI_PROVIDER=blackboxai
 # zk
 export ZK_NOTEBOOK_DIR="$HOME/Code/test/zk/"
 # minetest
