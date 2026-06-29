@@ -25,3 +25,26 @@
     tool = nvimdiff
 [commit]
     verbose = true
+
+[tig]
+    mouse = true
+    tab-size = 4
+    wrap-lines = false
+    main-view-date = custom
+    main-view-date-format = "%Y-%m-%d"
+    main-view-author-display = abbreviated
+    main-view-author-maxwidth = 10
+[tig "bind"]
+    generic = g move-first-line
+    generic = G move-last-line
+    generic = <Ctrl-b> move-page-up
+    generic = <Ctrl-f> move-page-down
+    generic = D :toggle word-diff
+    main = g move-first-line
+    main = G move-last-line
+    main = e !git commit --amend
+[tig "color"]
+    cursor = black green bold
+    cursor-blur = black green bold
+    title-focus = black blue bold
+    title-blur = black blue bold
