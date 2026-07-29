@@ -58,7 +58,7 @@ alias adb='HOME="$XDG_DATA_HOME" adb'
 # system backup
 alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/var/tmp/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games","/home/*/.cache/paru"} /'
 # tgpt
-alias tgpt='tgpt --provider=deepseek --key="$(pass show token/deepseek.com/apikey)"'
+alias tgpt='tgpt --provider=deepseek --model=deepseek-v4-flash --key="$(pass show token/deepseek.com/apikey)"'
 
 # pip update
 pip_update() {
@@ -117,7 +117,11 @@ export HISTSIZE=-1
 export HISTFILESIZE=-1
 export HISTCONTROL=ignoredups:erasedups
 export HISTFILE="$XDG_DATA_HOME/bash_history"
-[ -n "$BASH" ] && shopt -s histappend
+# `history` command will output "nnn $HISTTIMEFORMAT command"
+export HISTTIMEFORMAT="%F %T "
+if [ -n "$BASH" ]; then
+    shopt -s histappend autocd lithist
+fi
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
