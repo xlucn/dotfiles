@@ -36,8 +36,6 @@ export XORGCONFIG="$XDG_CONFIG_HOME/xorg.conf"
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
 export XAUTHORITY="${XAUTHORITY:-$XDG_DATA_HOME/Xauthority}"
-export XCURSOR_THEME="Adwaita"
-export XCURSOR_SIZE="24"
 # less options
 export LESS="-RM --use-color --mouse --wheel-lines=3"
 # rlwrap history
@@ -95,6 +93,7 @@ export MAXIMA_USERDIR="$XDG_DATA_HOME/maxima"
 export ANDROID_PREFS_ROOT="$XDG_CONFIG_HOME"
 export ADB_KEYS_PATH="$ANDROID_PREFS_ROOT"
 export ANDROID_HOME="$XDG_DATA_HOME"
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 # java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
@@ -107,7 +106,6 @@ export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 # proxychains-ng
 export PROXYCHAINS_CONF_FILE="$XDG_CONFIG_HOME/proxychains-ng/proxychains.conf"
-export PROXY="localhost:1080"
 # dash interactive mode
 export ENV="$HOME/.bashrc"
 # zsh
@@ -145,6 +143,9 @@ export WINEPREFIX="${XDG_DATA_HOME}/wineprefix"
 export WECHAT_DATA_DIR="$XDG_DATA_HOME/wechat_universe"
 # copilot
 export COPILOT_HOME="$XDG_CONFIG_HOME/copilot"
+# golang
+export GOPATH="$XDG_DATA_HOME/go"
+export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 
 # PATH, last '|| true' to avoid error when '&& ...' is not executed
 add_to_path() {
@@ -153,3 +154,4 @@ add_to_path() {
 add_to_path "$HOME/.local/bin"
 add_to_path "$NPM_PACKAGES/bin"
 add_to_path "$XDG_DATA_HOME"/gem/ruby/*/bin
+add_to_path "$XDG_DATA_HOME"/nvim/mason/bin
