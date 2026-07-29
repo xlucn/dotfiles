@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-"""
-mutt_bootstrap
-
-Bootstrap mutt with pass and fzf
+"""Bootstrap mutt with pass and fzf.
 
 What it is/does
     - Securely, interactively, conveniently start mutt with help of pass.
@@ -52,27 +49,28 @@ Setup
 
         source "python <this file> |"
 """
+import glob
 import os
 import re
-import glob
-from subprocess import run, PIPE
+from subprocess import PIPE, run
+
+HOME = os.getenv("HOME", os.path.join("/home", os.getlogin()))
+PASS_DIR_DEFAULT = os.path.join(HOME, ".passwordstore")
+PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
+PASS_SUBDIR_MAIL = os.path.join(PASS_DIR, "mail")
 
 
 def get_mail_fzf():
-    """
-    Get email address from password store, interactively with fzf.
-    """
+    """Get email address from password store, interactively with fzf."""
     # grab all email address from 'mail' subfolder in password store
-    PASS_DIR_DEFAULT = os.path.join(os.getenv("HOME"), ".passwordstore")
-    PASS_DIR = os.getenv("PASSWORD_STORE_DIR", PASS_DIR_DEFAULT)
-    PASS_SUBDIR_MAIL = os.path.join(PASS_DIR, "mail")
     mails_gpg_files = glob.glob(os.path.join(PASS_SUBDIR_MAIL, "*@*.*.gpg"))
-    mails = [os.path.basename(m).rstrip(".gpg") for m in mails_gpg_files]
+    mails = [os.path.basename(m).removesuffix(".gpg") for m in mails_gpg_files]
 
     # use fzf to choose one email
     list_emails = '\n'.join(sorted(mails))
-    res = run(['fzf', '--reverse'],
+    res = run(['/bin/fzf', '--reverse'],
               input=list_emails.encode(),
+              check=True,
               stdout=PIPE)
     if res.returncode == 130:
         print("fzf was interrupted")
@@ -86,19 +84,20 @@ def get_mail_fzf():
 
 
 def get_password(mail_address):
-    """
-    use pass to retrieve password, with optionally extra information
-    """
-    res = run(['pass', 'show', f'mail/{mail_address}'], stdout=PIPE, stderr=PIPE)
+    """Use pass to retrieve password, with optionally extra information."""
+    res = run(['/bin/pass', 'show', f'mail/{mail_address}'],
+              check=True,
+              capture_output=True)
     content = res.stdout.decode().strip().split('\n')
     if res.returncode != 0:
         raise OSError("pass failed")
     password = content[0]
-    extra = dict(map(str.strip, line.split(':', 1)) for line in content[1:])
+    extra = dict(list(map(str.strip, line.split(':', 1))) for line in content[1:])
     return password, extra
 
 
 def get_imap_server(mail, attrs):
+    """Determine the imap server from the email address."""
     domain = mail.split('@')[1]
 
     if "imap" in attrs:
@@ -108,11 +107,12 @@ def get_imap_server(mail, attrs):
         if not re.search(r":[1-9]+$", imap_server):
             imap_server = f"{imap_server}:993"
         return imap_server
-    else:
-        return f'imaps://{mail}@imap.{domain}:993/'
+
+    return f'imaps://{mail}@imap.{domain}:993/'
 
 
 def get_smtp_server(mail, attrs):
+    """Determine the smtp server from the email address."""
     domain = mail.split('@')[1]
 
     if "smtp" in attrs:
@@ -124,8 +124,8 @@ def get_smtp_server(mail, attrs):
         if not re.search(r":[1-9]+$", smtp_server):
             smtp_server = f"{smtp_server}:465"
         return smtp_server
-    else:
-        return f'smtps://{mail}@smtp.{domain}:465/'
+
+    return f'smtps://{mail}@smtp.{domain}:465/'
 
 
 if __name__ == "__main__":
