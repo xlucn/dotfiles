@@ -20,6 +20,7 @@ format = """
 [$cmd_duration](fg:color3 bg:color6)\
 [$jobs](        fg:color3 bg:color6)\
 [$env_var](     fg:color3 bg:color6)\
+[$hostname](    fg:color3 bg:color6)\
 [](            fg:color6)\
 \n$character"""
 
@@ -49,6 +50,9 @@ format = " ${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )"
 min_time = 500
 show_milliseconds = true
 format = " $duration "
+
+[hostname]
+format = ' on $hostname '
 
 [directory]
 format = " $path "
