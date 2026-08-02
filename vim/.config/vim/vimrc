@@ -133,7 +133,10 @@ augroup END
 " NERDTree {{{
 let g:NERDTreeStatusline = 'NERDTree'
 nnoremap L :NERDTreeToggle<CR>
-autocmd Filetype nerdtree set signcolumn=no
+augroup nerdtree_ui
+    autocmd!
+    autocmd Filetype nerdtree set signcolumn=no
+augroup END
 " }}}
 " Airline {{{
 let g:airline_symbols_ascii = 1
