@@ -141,7 +141,8 @@ augroup END
 " Airline {{{
 let g:airline_symbols_ascii = 1
 let g:airline_theme = "onedark"
-let g:airline#extensions#tabline#enabled = 1
+" selectively load extensions to minimize startup time
+let g:airline_extensions = [ "lsp", "tabline" ]
 let g:airline#extensions#tabline#show_buffers = 1
 " }}}
 " FZF {{{
