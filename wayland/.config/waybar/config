@@ -1,4 +1,4 @@
-// vim: ft=jsonc
+// vim: ft=json5
 {
     // Choose the order of the modules
     "modules-left": [
@@ -7,7 +7,7 @@
         "hyprland/workspaces",
         "hyprland/window",
         "niri/workspaces",
-        "niri/window"
+        "niri/window",
     ],
     "modules-right": [
         "mpd",
@@ -21,8 +21,8 @@
         "temperature",
         "backlight",
         "battery",
+        "tray",
         "clock",
-        "tray"
     ],
 
     "layer": "top", // Waybar at top layer
@@ -33,7 +33,7 @@
 
     "niri/workspaces":{
         "on-scroll-up": "niri msg action focus-workspace-up",
-        "on-scroll-down": "niri msg action focus-workspace-down"
+        "on-scroll-down": "niri msg action focus-workspace-down",
     },
     "niri/window":{
         "on-scroll-up": "niri msg action focus-window-up",
@@ -45,8 +45,8 @@
         "format": "{name} {icon}",
         "format-icons": {
             "locked": "",
-            "unlocked": " "
-        }
+            "unlocked": " ",
+        },
     },
     "mpd": {
        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon} {elapsedTime:%M:%S}/{totalTime:%M:%S} ",
@@ -65,30 +65,30 @@
         "single-icons": { "on": "1 " },
         "state-icons": { "paused": "", "playing": "" },
         "tooltip-format": "MPD (connected)",
-        "tooltip-format-disconnected": "MPD (disconnected)"
+        "tooltip-format-disconnected": "MPD (disconnected)",
     },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
             "activated": "",
-            "deactivated": ""
-        }
+            "deactivated": "",
+        },
     },
     "tray": {
         "icon-size": 16,
-        "spacing": 10
+        "spacing": 10,
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M} ",
-        "format-alt": "{:%Y-%m-%d} "
+        "format-alt": "{:%Y-%m-%d} ",
     },
     "cpu": {
         "format": "{usage}% ",
-        "tooltip": false
+        "tooltip": false,
     },
     "memory": {
-        "format": "{}% "
+        "format": "{}% ",
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -96,18 +96,18 @@
         "critical-threshold": 80,
         // "format-critical": "{temperatureC}°C {icon}",
         "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""]
+        "format-icons": ["", "", ""],
     },
     "backlight": {
         // "device": "acpi_video1",
         "format": "{percent}% ",
-        "format-icons": ["󰃞", "󰃟", "󰃠"]
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
     },
     "battery": {
         "states": {
             // "good": 95,
             "warning": 30,
-            "critical": 15
+            "critical": 15,
         },
         "format": "{capacity}% {icon}",
         "format-charging": "{capacity}% ",
@@ -115,7 +115,7 @@
         "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": ["", "", "", "", ""],
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
@@ -124,13 +124,13 @@
         "tooltip-format": "{ifname} via {gwaddr} 󰈀",
         "format-linked": "{ifname} (No IP) 󰈀",
         "format-disconnected": "Disconnected ",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
     },
     "wireplumber": {
         "format": "{volume}% {icon}",
         "format-muted": "",
         "on-click": "pavucontrol",
-        "format-icons": ["", "", ""]
+        "format-icons": ["", "", ""],
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
@@ -145,18 +145,18 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
+            "default": ["", "", ""],
         },
         "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
         "on-click-right": "pwvucontrol",
-        "smooth-scrolling-threshold": 1.0
+        "smooth-scrolling-threshold": 1.0,
     },
     "bluetooth": {
         "format": "{status} ",
         "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
     },
     "wlr/taskbar": {
         "icon-size": 24,
@@ -167,6 +167,6 @@
         "on-click": "dunstctl set-paused toggle",
         "on-scroll-up": "dunstctl history-pop",
         "on-scroll-down": "dunstctl close",
-        "restart-interval": 1
+        "restart-interval": 1,
     }
 }
