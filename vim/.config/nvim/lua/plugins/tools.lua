@@ -24,8 +24,11 @@ return {
     },
     {
         'folke/trouble.nvim',
-        config = true,
-        cmd = 'Trouble'
+        cmd = 'Trouble',
+        ---@class trouble.Config
+        opts = {
+            multiline = false,
+        }
     },
     {
         "folke/todo-comments.nvim",
