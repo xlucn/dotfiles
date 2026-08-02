@@ -212,18 +212,20 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> <C-]> <plug>(lsp-definition)
-    nmap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
-    nmap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> <leader>lr <plug>(lsp-references)
-    nmap <buffer> <leader>li <plug>(lsp-implementation)
-    nmap <buffer> <leader>lt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>lR <plug>(lsp-rename)
-    nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nmap <buffer> <leader>lb <plug>(lsp-document-build)
-    nmap <buffer> <leader>lf <plug>(lsp-document-forwardsearch)
+    nnoremap <buffer> <C-]> <plug>(lsp-definition)
+    nnoremap <buffer> <leader>ls <plug>(lsp-document-symbol-search)
+    nnoremap <buffer> <leader>lS <plug>(lsp-workspace-symbol-search)
+    nnoremap <buffer> <leader>lr <plug>(lsp-references)
+    nnoremap <buffer> <leader>li <plug>(lsp-implementation)
+    nnoremap <buffer> <leader>lt <plug>(lsp-type-definition)
+    nnoremap <buffer> <leader>lR <plug>(lsp-rename)
+    nnoremap <buffer> [d <plug>(lsp-previous-diagnostic)
+    nnoremap <buffer> ]d <plug>(lsp-next-diagnostic)
+    nnoremap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> gQ <plug>(lsp-document-format)
+    xnoremap <buffer> gQ <plug>(lsp-document-range-format)
+    nnoremap <buffer> <leader>lb <plug>(lsp-document-build)
+    nnoremap <buffer> <leader>lf <plug>(lsp-document-forwardsearch)
 endfunction
 let g:lsp_diagnostics_signs_delay = 200
 let g:lsp_diagnostics_echo_delay = 200
