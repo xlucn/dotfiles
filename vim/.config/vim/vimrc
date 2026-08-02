@@ -85,6 +85,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
 " Enhancements
+Plug 'voldikss/vim-floaterm'
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'preservim/nerdtree'
@@ -121,6 +122,14 @@ augroup makeprg
     autocmd Filetype perl compiler perl
 augroup END
 " Plugin settings
+let g:floaterm_width = 0.8
+let g:floaterm_height = 0.8
+let g:floaterm_keymap_toggle = '<C-\>'
+augroup floaterm_exit
+    autocmd!
+    autocmd QuitPre * FloatermKill!
+augroup END
+
 " NERDTree {{{
 let g:NERDTreeStatusline = 'NERDTree'
 nnoremap L :NERDTreeToggle<CR>
@@ -158,13 +167,6 @@ function! GitTig()
     redraw!
 endfunction
 nnoremap <leader>gg :call GitTig()<CR>
-" }}}
-" terminal {{{
-augroup terminal_setup
-    autocmd!
-    tnoremap <C-\> <C-\><C-N>
-    autocmd TerminalOpen * setlocal nonu nornu signcolumn=no
-augroup END
 " }}}
 " Vim Which Key {{{
 let g:which_key_group_dicts = ''
