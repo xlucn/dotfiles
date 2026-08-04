@@ -52,7 +52,7 @@ show_milliseconds = true
 format = " $duration "
 
 [hostname]
-format = ' on $hostname '
+format = ' SSH:$hostname '
 
 [directory]
 format = " $path "
