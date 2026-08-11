@@ -8,7 +8,6 @@ vim.o.foldenable = false
 vim.o.mousemodel = 'extend'
 vim.o.mousemoveevent = true
 vim.o.termguicolors = true
-vim.o.concealcursor = 'cn'
 
 vim.g.health = { style = nil }
 vim.g.loaded_python3_provider = 0

@@ -7,9 +7,6 @@ return {
             "Saghen/blink.cmp",
             "nvim-telescope/telescope.nvim",
         },
-        init = function()
-            vim.opt.conceallevel = 2 -- Enable conceal for markdown
-        end,
         opts = {
             -- use all sub-directories in ~/Code/Obsidian as workspaces
             workspaces = vim.iter(
