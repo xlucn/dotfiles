@@ -69,10 +69,10 @@ pip_update() {
 }
 
 fzfpak() {
-    flatpak list --app --columns=application,name |
+    name=$(flatpak list --app --columns=application,name |
         column -t -s $'\t' |
-        fzf --accept-nth=1 |
-        xargs flatpak run
+        fzf --accept-nth=1)
+    flatpak run "$name" "$@"
 }
 
 # Console color theme, reuse .Xresources definitions
