@@ -66,7 +66,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
 
         if client:supports_method(methods.textDocument_inlineCompletion, bufnr) then
-            vim.lsp.inline_completion.enable(true, { bufnr = bufnr })
             vim.keymap.set(
                 'i', '<C-J>', vim.lsp.inline_completion.get,
                 { desc = 'LSP: accept inline completion', buffer = bufnr }
@@ -84,6 +83,7 @@ vim.lsp.enable({
     "clangd",
     "wolfram_lsp",
 })
+vim.lsp.inline_completion.enable(true)
 
 require("config.lazy")
 vim.cmd.packadd "nvim.undotree"
