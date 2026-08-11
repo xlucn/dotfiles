@@ -125,6 +125,10 @@ augroup floaterm_exit
     autocmd QuitPre * FloatermKill!
 augroup END
 
+" Expand or jump
+inoremap <expr> <C-j> vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-j>"
+snoremap <expr> <C-j> vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-j>"
+
 " NERDTree {{{
 let g:NERDTreeStatusline = 'NERDTree'
 nnoremap L :NERDTreeToggle<CR>
