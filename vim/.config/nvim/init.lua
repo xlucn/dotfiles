@@ -1,5 +1,5 @@
 -- common config for vim and neovim
-vim.cmd(":source $HOME/.config/vim/common.vim")
+vim.cmd.source "$HOME/.config/vim/common.vim"
 
 -- nvim configuration
 vim.o.cmdheight = 1
@@ -15,7 +15,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
-vim.cmd"packadd nvim.undotree"
 -- enable experimental but good new ui framework
 require('vim._core.ui2').enable()
 
@@ -87,4 +86,5 @@ vim.lsp.enable({
 })
 
 require("config.lazy")
+vim.cmd.packadd "nvim.undotree"
 vim.cmd.colorscheme "onedark"
