@@ -1,7 +1,10 @@
 return {
     {
         'saghen/blink.cmp',
-        event = { 'InsertEnter', 'CmdlineEnter' },
+        event = {
+            'InsertEnter',
+            'CmdlineEnter',
+        },
         -- optional: provides snippets for the snippet source
         dependencies = {
             'rafamadriz/friendly-snippets',
@@ -13,8 +16,7 @@ return {
 
         opts = {
             keymap = {
-                preset = 'enter',
-                ['<C-c>'] = { 'hide', 'fallback' },
+                ['<C-e>'] = { 'hide', 'fallback' },
                 ['<Enter>'] = { 'accept', 'fallback' },
                 ['<C-p>'] = { 'snippet_backward', 'fallback' },
                 ['<C-n>'] = { 'snippet_forward', 'fallback' },
@@ -61,7 +63,7 @@ return {
                     menu = { auto_show = true },
                     list = { selection = {
                         preselect = false,
-                        auto_insert = false,
+                        auto_insert = true,
                     } }
                 },
             },
