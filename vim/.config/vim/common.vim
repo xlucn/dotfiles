@@ -77,10 +77,16 @@ noremap <leader>d <CMD>bd<CR>
 noremap <leader>w <CMD>w<CR>
 noremap <leader>e <CMD>e<CR>
 noremap <leader>x <CMD>x<CR>
+noremap <leader>E <CMD>e $MYVIMRC<CR>
+noremap <leader>r <CMD>so $MYVIMRC<CR>
+noremap <leader>R <CMD>restart<CR>
 " }}}
 " Autocmd {{{
 augroup normal
     autocmd!
+    " some filetype workarounds
+    autocmd BufNewFile,BufRead exrc set syntax=vim
+    autocmd BufNewFile,BufRead *.ron set ft=json5 ts=4
     " tabs for these file types
     autocmd FileType tex,markdown,mma,yaml setlocal sw=2 ts=2 sts=2
     autocmd FileType c,cpp,mma,json setlocal noet
