@@ -42,9 +42,7 @@ return {
             open_mapping = '<C-BSlash>'
         },
         keys = {
-            { '<C-BSlash>', mode = { 'n', 't' } },
-            { '<leader>s', '<cmd>ToggleTermSendCurrentLine<cr>', mode = 'n' },
-            { '<leader>s', '<cmd>ToggleTermSendVisualSelection<cr>', mode = 'v' },
+            '<C-BSlash>',
         }
     },
     {
