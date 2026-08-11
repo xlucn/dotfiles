@@ -20,7 +20,7 @@ ignore = [
 convention = "numpy"
 
 [lint.per-file-ignores]
-"tests/*.py" = [
+"**/tests/*.py" = [
     "S101",
     "INP001",
 ]
