@@ -60,8 +60,10 @@ nnoremap <silent> gk k
 xnoremap <silent> gj j
 xnoremap <silent> gk k
 " buffers
-nnoremap <silent> <C-K> <CMD>bprevious<CR>
-nnoremap <silent> <C-J> <CMD>bnext<CR>
+nnoremap <silent> <M-k> <C-w>W
+nnoremap <silent> <M-j> <C-w>w
+nnoremap <silent> <C-k> <CMD>bprevious<CR>
+nnoremap <silent> <C-j> <CMD>bnext<CR>
 " toggle fold
 nnoremap <space> za
 " center the screen when searching

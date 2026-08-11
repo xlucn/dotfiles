@@ -15,12 +15,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
-local mapopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<C-j>', '<cmd>bnext<cr>', mapopts)
-vim.keymap.set('n', '<C-k>', '<cmd>bprevious<cr>', mapopts)
-vim.keymap.set('n', '<M-j>', '<C-W>w', mapopts)
-vim.keymap.set('n', '<M-k>', '<C-W>W', mapopts)
-
 vim.cmd"packadd nvim.undotree"
 -- enable experimental but good new ui framework
 require('vim._core.ui2').enable()
