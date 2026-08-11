@@ -55,7 +55,7 @@ case "$(file -Lb --mime-type -- "$1")" in
         exit ;;
 
     # Video and audio
-    video/*|audio/*|application/octet-stream)
+    video/*|audio/*)
         # pipe through column just to compact the output
         mediainfo --Output=CSV "$1" | column -t -s ','; exit ;;
 
