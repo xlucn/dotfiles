@@ -47,7 +47,7 @@ set smarttab
 set list
 set listchars=tab:│\ ,trail:·
 " show fold indicator as arrows
-set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:│,foldclose:
+set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:│,foldclose:,vert:│
 " }}}
 " Navigations {{{
 " go up/down in one wrapped long line
