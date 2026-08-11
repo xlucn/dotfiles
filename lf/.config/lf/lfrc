@@ -24,6 +24,7 @@ map gr cd /
 map D delete
 map zp set preview!
 map <enter> open
+map F filter
 # shell mappings
 map e $$EDITOR $fx
 map M push $mkdir<space>
