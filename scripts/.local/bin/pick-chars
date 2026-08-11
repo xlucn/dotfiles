@@ -1,7 +1,11 @@
 #!/usr/bin/env python
+"""Choose and copy characters given a font name or file."""
+
 import os
 import sys
-from subprocess import PIPE, run
+from subprocess import CalledProcessError, check_output
+
+import pyperclip
 from fontTools.ttLib import TTFont
 from fontTools.unicode import Unicode
 
@@ -10,27 +14,38 @@ if len(sys.argv) != 2:
 elif os.path.exists(sys.argv[1]):
     font_file = sys.argv[1]
 else:
-    cmd = "fc-match '{font}' --format='%{{file}}'".format(font=sys.argv[1])
-    font_file = run(cmd, shell=True, stdout=PIPE).stdout
+    font_name = sys.argv[1]
+    font_file = check_output(
+        ["/bin/fc-match", font_name, "--format='%{{file}}"],
+        text=True,
+    )
 if not os.path.exists(font_file):
     exit(1)
 
 lines = []
 with TTFont(font_file) as ttf:
     cmap = ttf.getBestCmap()
+    if cmap is None:
+        print(f"No cmap found in font file: {font_file}")
+        exit(1)
     for y in cmap:
-        c = chr(y).replace('&', '&amp;').replace('<', '&lt;')
-        if y < 32 or len(c) == 0:
+        c = chr(y)
+        if y <= 32 or y == 127:
             continue
 
         desc = Unicode[y].lower() if cmap[y].startswith("uni") else cmap[y]
-        lines.append("<span size=\"x-large\"> {char}  </span> {n:05x} {desc}".
-                     format(char=c, n=y, desc=desc))
+        lines.append(f"{c} {y:05x} {desc}")
 
-cmd = ['rofi', '-dmenu', '-i', '-p', 'Choose a glyph',
-       '-multi-select', '-markup-rows', '-columns', '2']
-choice = run(cmd, stdout=PIPE, input=bytes('\n'.join(lines), encoding='utf-8'))
-glyphs = ' '.join([chr(int(line.split('</span>')[1].split()[0], base=16))
-                   for line in choice.stdout.decode().split('\n')[:-1]])
-run(['xclip', '-selection', 'clipboard'],
-    input=bytes(glyphs, encoding='utf-8'))
+try:
+    choice = check_output(
+        ["/bin/fzf", "--prompt", "Choose a glyph: ", "--multi"],
+        text=True,
+        input="\n".join(lines),
+    )
+except CalledProcessError:
+    exit(1)
+
+glyphs = " ".join(
+    [chr(int(line.split()[1], base=16)) for line in choice.split("\n")[:-1]],
+)
+pyperclip.copy(bytes(glyphs, encoding="utf-8"))
