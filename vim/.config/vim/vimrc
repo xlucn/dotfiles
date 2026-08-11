@@ -39,11 +39,6 @@ if has("gui_running")
     set guicursor+=a:blinkon0  " don't blink the cursor
     set guioptions=cd          " minimal gui options
     set guifont=monospace\ 11  " initialize the font for the setup below
-    " Zoom in/out with Ctrl + Mouse Wheel
-    nnoremap <C-ScrollWheelUp> :silent! let &guifont = substitute(&guifont,
-                \'\s\zs\d\+', '\=eval(submatch(0)+1)', '')<CR>
-    nnoremap <C-ScrollWheelDown> :silent! let &guifont = substitute(&guifont,
-                \'\s\zs\d\+', '\=eval(submatch(0)-1)', '')<CR>
 endif
 
 noremap <leader>r <CMD>so $HOME/.config/vim/vimrc<CR>
