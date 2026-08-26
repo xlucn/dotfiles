@@ -147,6 +147,8 @@ export COPILOT_HOME="$XDG_CONFIG_HOME/copilot"
 export GOPATH="$XDG_DATA_HOME/go"
 export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 export GOPROXY="https://goproxy.cn,direct"
+# deepseek harness
+export DSH_HOME="$XDG_CONFIG_HOME/dsh"
 
 # PATH, last '|| true' to avoid error when '&& ...' is not executed
 add_to_path() {
