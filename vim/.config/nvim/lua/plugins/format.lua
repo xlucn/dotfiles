@@ -9,7 +9,7 @@ return {
     },
     keys = {
         {
-            "<leader>f",
+            "gQ",
             function()
                 require('conform').format({
                     lsp_format = 'prefer',
