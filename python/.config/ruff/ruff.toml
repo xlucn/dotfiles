@@ -18,9 +18,3 @@ ignore = [
 
 [lint.pydocstyle]
 convention = "numpy"
-
-[lint.per-file-ignores]
-"**/tests/*.py" = [
-    "S101",
-    "INP001",
-]
