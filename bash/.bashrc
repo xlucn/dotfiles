@@ -58,7 +58,7 @@ alias adb='HOME="$XDG_DATA_HOME" adb'
 # system backup
 alias rsync-backup-to='sudo rsync -aAXz --delete --delete-excluded --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/var/tmp/*","/mnt/*","/media/*","/lost+found","/swap","/home/*/Music","/home/*/Videos","/home/*/Games","/home/*/.cache/paru"} /'
 # tgpt
-alias tgpt='tgpt --provider=deepseek --model=deepseek-v4-flash --key="$(pass show token/deepseek.com/apikey)"'
+alias tgpt='tgpt --provider=deepseek --model=deepseek-flash --key="$(pass show token/deepseek.com/apikey-opencode)"'
 
 # pip update
 pip_update() {
