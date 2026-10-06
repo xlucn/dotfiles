@@ -149,6 +149,8 @@ export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 export GOPROXY="https://goproxy.cn,direct"
 # deepseek harness
 export DSH_HOME="$XDG_CONFIG_HOME/dsh"
+# tmuxp
+export TMUXP_CONFIGDIR="$XDG_CONFIG_HOME/tmuxp"
 
 # PATH, last '|| true' to avoid error when '&& ...' is not executed
 add_to_path() {
