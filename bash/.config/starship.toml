@@ -5,6 +5,7 @@ palette = "default"
 format = """
 [░▒▓](          fg:color1)\
 [  ](          fg:color7 bg:color1)\
+[$hostname](    fg:color7 bg:color1)\
 [](            fg:color1 bg:color2)\
 [$directory](   fg:color0 bg:color2 bold)\
 [](            fg:color2 bg:color4)\
@@ -20,7 +21,6 @@ format = """
 [$cmd_duration](fg:color3 bg:color6)\
 [$jobs](        fg:color3 bg:color6)\
 [$env_var](     fg:color3 bg:color6)\
-[$hostname](    fg:color3 bg:color6)\
 [](            fg:color6)\
 \n$character"""
 
